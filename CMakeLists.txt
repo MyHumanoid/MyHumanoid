@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(animorph)
-add_subdirectory(makehuman-0.9.1-rc1a)
+add_subdirectory(makehuman)
