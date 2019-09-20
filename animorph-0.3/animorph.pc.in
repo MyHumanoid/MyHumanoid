@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@prefix@
+libdir=@exec_prefix@/lib
+includedir=@prefix@/include
+
+Name: @PACKAGE@
+Description: 3D Animation and Morph Library
+Version: @VERSION@
+Requires: 
+Conflicts: 
+Libs: -L${libdir} -lanimorph
+Cflags: -I${includedir}
+

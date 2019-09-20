@@ -1,0 +1,33 @@
+- create automatic camera movement to focused part. In example, if the
+  user press "nose", the camera zoom on the nose.  Perhaps this could be  
+  compined with Hotspot support in animorph
+
+- Add a lot of targets and bs, for somatotypes and standard characters 
+  series
+
+- Add verts to mesh, to make clothes and extra details
+
+- Study/apply rendering features by renderman
+
+- Redo from scratch all target icons
+
+- a little transparency bug in some toolbar icons
+
+- Select the best targets, and delete retundant/nosense targets
+
+- BUG: something is wrong with axis and grid angle
+  -> grid corrected, but axis too?
+
+- BUG: if closing MakeHuman not with <ESC>, but with window menu I get a segfault and core file on Linux. Need to investigate this!
+
+- rewrite README.txt and explain licence
+
+- the target buttons in face and body are mirrored. See if this is a mhgui or makehuman problem and fix it
+
+- show splash image
+
+- use windres in xmingw 
+
+- replace the "cp" command in Makefile.am with "find --exec cp"
+
+- fix the "make distcheck" problem

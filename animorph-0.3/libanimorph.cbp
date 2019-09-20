@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="libanimorph" />
+		<Option pch_mode="0" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output="src\libanimorph.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option projectResourceIncludeDirsRelation="2" />
+			</Target>
+			<Target title="Debug">
+				<Option output="src\libanimorph.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option projectResourceIncludeDirsRelation="2" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-pg" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+				</Linker>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="default;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-D_WIN32=1" />
+		</Compiler>
+		<Unit filename="include\animorph\BodySettings.h" />
+		<Unit filename="include\animorph\ColladaExporter.h" />
+		<Unit filename="include\animorph\Color.h" />
+		<Unit filename="include\animorph\DirectoryList.h" />
+		<Unit filename="include\animorph\EdgeStrip.h" />
+		<Unit filename="include\animorph\Euler.h" />
+		<Unit filename="include\animorph\Face.h" />
+		<Unit filename="include\animorph\FaceGroup.h" />
+		<Unit filename="include\animorph\FaceVector.h" />
+		<Unit filename="include\animorph\FileReader.h" />
+		<Unit filename="include\animorph\FileWriter.h" />
+		<Unit filename="include\animorph\Hotspot.h" />
+		<Unit filename="include\animorph\Material.h" />
+		<Unit filename="include\animorph\MathUtil.h" />
+		<Unit filename="include\animorph\Matrix.h" />
+		<Unit filename="include\animorph\Mesh.h" />
+		<Unit filename="include\animorph\ObjExporter.h" />
+		<Unit filename="include\animorph\OgreXMLExporter.h" />
+		<Unit filename="include\animorph\PoseRotation.h" />
+		<Unit filename="include\animorph\PoseTarget.h" />
+		<Unit filename="include\animorph\PoseTranslation.h" />
+		<Unit filename="include\animorph\Quaternion.h" />
+		<Unit filename="include\animorph\RIBExporter.h" />
+		<Unit filename="include\animorph\RawMesh.h" />
+		<Unit filename="include\animorph\Skin.h" />
+		<Unit filename="include\animorph\SkinVertex.h" />
+		<Unit filename="include\animorph\SmoothVertex.h" />
+		<Unit filename="include\animorph\Target.h" />
+		<Unit filename="include\animorph\TextureVector.h" />
+		<Unit filename="include\animorph\Vector2.h" />
+		<Unit filename="include\animorph\Vector3.h" />
+		<Unit filename="include\animorph\Vertex.h" />
+		<Unit filename="include\animorph\VertexGroup.h" />
+		<Unit filename="include\animorph\VertexVector.h" />
+		<Unit filename="include\animorph\util.h" />
+		<Unit filename="include\animorph\xmlParser.h" />
+		<Unit filename="src\BodySettings.cpp" />
+		<Unit filename="src\ColladaExporter.cpp" />
+		<Unit filename="src\Color.cpp" />
+		<Unit filename="src\DirectoryList.cpp" />
+		<Unit filename="src\EdgeStrip.cpp" />
+		<Unit filename="src\Euler.cpp" />
+		<Unit filename="src\Face.cpp" />
+		<Unit filename="src\FaceGroup.cpp" />
+		<Unit filename="src\FaceVector.cpp" />
+		<Unit filename="src\FileReader.cpp" />
+		<Unit filename="src\FileWriter.cpp" />
+		<Unit filename="src\Hotspot.cpp" />
+		<Unit filename="src\Material.cpp" />
+		<Unit filename="src\MathUtil.cpp" />
+		<Unit filename="src\Matrix.cpp" />
+		<Unit filename="src\Mesh.cpp" />
+		<Unit filename="src\ObjExporter.cpp" />
+		<Unit filename="src\OgreXMLExporter.cpp" />
+		<Unit filename="src\PoseRotation.cpp" />
+		<Unit filename="src\PoseTarget.cpp" />
+		<Unit filename="src\PoseTranslation.cpp" />
+		<Unit filename="src\Quaternion.cpp" />
+		<Unit filename="src\RIBExporter.cpp" />
+		<Unit filename="src\RawMesh.cpp" />
+		<Unit filename="src\Skin.cpp" />
+		<Unit filename="src\SkinVertex.cpp" />
+		<Unit filename="src\SmoothVertex.cpp" />
+		<Unit filename="src\Target.cpp" />
+		<Unit filename="src\TextureVector.cpp" />
+		<Unit filename="src\Vertex.cpp" />
+		<Unit filename="src\VertexGroup.cpp" />
+		<Unit filename="src\VertexVector.cpp" />
+		<Unit filename="src\util.cpp" />
+		<Unit filename="src\xmlParser.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

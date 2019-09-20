@@ -1,0 +1,14 @@
+[Setup]
+Version=1
+AppName=@PACKAGE@
+AppVersion=@VERSION@
+AppVerName=@PACKAGE_STRING@
+MenuName=MakeHuman
+Description=A small OpenGL based toolkit
+Url=http://www.makehuman.org/
+License=COPYING.txt
+Readme=README.txt
+
+[Files]
+include=<app>\include\
+lib=<app>\lib\

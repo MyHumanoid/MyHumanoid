@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@prefix@
+libdir=@exec_prefix@/lib
+includedir=@prefix@/include
+
+Name: @PACKAGE@
+Description: A simple GUI library for MakeHuman
+Version: @VERSION@
+Requires: 
+Conflicts: 
+Libs: -L${libdir} -lmhgui
+Cflags: -I${includedir}
+

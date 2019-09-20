@@ -1,0 +1,16 @@
+//
+// Prefix header for all source files of the 'animorph' target in the 'animorph' repository.
+//
+
+#include <libgen.h>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <stdio.h>
+#include <cstring>
+#include <memory>
+#include <cassert>
+

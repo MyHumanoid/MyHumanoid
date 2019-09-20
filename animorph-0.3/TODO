@@ -1,0 +1,20 @@
+- create binary format files [probably abandoned]
+
+- muscle engine
+
+- hair rendering
+
+- Asymmetry system (easy) some typical asymmetrical targets [@Manuel: could you explain this?]
+
+- Symmetry system: read the targets like l_my_target.target and check if
+  r_my_target.target is applied. If not it's applied.
+
+- Add a geometry smooth function, like Blender special transformation.
+  It'a a sort of mesh relax. [@Manuel: could you explain this?]
+
+- split animorph into several small libraries
+
+- export vertex groups in OBJ file
+
+- use the same convention to get data from objects. Currently sometimes 
+  we access "x" direct or x() or getX().

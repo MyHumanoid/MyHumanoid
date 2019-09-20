@@ -1,0 +1,1 @@
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:@prefix@/lib/pkgconfig:@PACKAGE_SOURCE_DIR@"
