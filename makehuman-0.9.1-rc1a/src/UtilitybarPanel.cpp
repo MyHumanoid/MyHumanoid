@@ -27,6 +27,8 @@
 #include "UtilitybarPanel.h"
 #include "ComponentID.h"
 
+#include <algorithm>
+
 #include <mhgui/Window.h>
 #include <mhgui/Rect.h>
 #include <mhgui/Tooltip.h>

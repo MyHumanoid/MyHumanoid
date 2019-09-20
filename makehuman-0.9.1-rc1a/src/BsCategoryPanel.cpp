@@ -27,6 +27,8 @@
 #include "BsCategoryPanel.h"
 #include "Global.h"
 
+#include <algorithm>
+
 #include <mhgui/Window.h>
 #include <mhgui/Rect.h>
 #include <mhgui/Image.h>

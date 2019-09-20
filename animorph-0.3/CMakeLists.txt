@@ -1,0 +1,90 @@
+cmake_minimum_required(VERSION 3.5)
+
+set(animorph_headers
+	include/animorph/BodySettings.h
+	include/animorph/DirectoryList.h
+	include/animorph/FaceGroup.h
+	include/animorph/FileReader.h
+	include/animorph/Makefile.am
+	include/animorph/MathUtil.h
+	include/animorph/ObjExporter.h
+	include/animorph/PoseSemiTarget.h
+	include/animorph/Quaternion.h
+	include/animorph/Skin.h
+	include/animorph/Target.h
+	include/animorph/Vector2.h
+	include/animorph/Vertex.h
+	include/animorph/ColladaExporter.h
+	include/animorph/EdgeStrip.h
+	include/animorph/Face.h
+	include/animorph/FileWriter.h
+	include/animorph/Makefile.in
+	include/animorph/Matrix.h
+	include/animorph/OgreXMLExporter.h
+	include/animorph/PoseTarget.h
+	include/animorph/RawMesh.h
+	include/animorph/SkinVertex.h
+	include/animorph/TextureVector.h
+	include/animorph/Vector3.h
+	include/animorph/VertexVector.h
+	include/animorph/Color.h
+	include/animorph/Euler.h
+	include/animorph/FaceVector.h
+	include/animorph/Hotspot.h
+	include/animorph/Material.h
+	include/animorph/Mesh.h
+	include/animorph/PoseRotation.h
+	include/animorph/PoseTranslation.h
+	include/animorph/RIBExporter.h
+	include/animorph/SmoothVertex.h
+	include/animorph/util.h
+	include/animorph/VertexGroup.h
+	include/animorph/xmlParser.h
+)
+
+set(animorph_sources
+	src/BodySettings.cpp
+	src/DirectoryList.cpp
+	src/Face.cpp
+	src/FileReader.cpp
+	src/Makefile.am
+	src/MathUtil.cpp
+	src/ObjExporter.cpp
+	src/PoseSemiTarget.cpp
+	src/Quaternion.cpp
+	src/Skin.cpp
+	src/Target.cpp
+	src/Vertex.cpp
+	src/xmlParser.cpp
+	src/ColladaExporter.cpp
+	src/EdgeStrip.cpp
+	src/FaceGroup.cpp
+	src/FileWriter.cpp
+	src/Matrix.cpp
+	src/OgreXMLExporter.cpp
+	src/PoseTarget.cpp
+	src/RawMesh.cpp
+	src/SkinVertex.cpp
+	src/TextureVector.cpp
+	src/VertexGroup.cpp
+	src/Color.cpp
+	src/Euler.cpp
+	src/FaceVector.cpp
+	src/Hotspot.cpp
+	src/Material.cpp
+	src/Mesh.cpp
+	src/PoseRotation.cpp
+	src/PoseTranslation.cpp
+	src/RIBExporter.cpp
+	src/SmoothVertex.cpp
+	src/util.cpp
+	src/VertexVector.cpp
+)
+
+set(SOURCES
+	${animorph_headers}
+	${animorph_sources}
+)
+
+add_library(animorph "${SOURCES}")
+target_include_directories(animorph PUBLIC include)

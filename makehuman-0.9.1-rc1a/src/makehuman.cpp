@@ -31,6 +31,9 @@
 
 #include <iostream>
 
+#include <GL/freeglut.h>
+#include <GL/gl.h>
+
 //mhh...maybe some of these includes are retundant
 #include <time.h>
 #include <mhgui/Panel.h>

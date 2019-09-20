@@ -67,7 +67,7 @@ class ImageData
 private:
   char         *image_data; /* raw png image data */
   char         *end_bufferPtr;
-  unsigned long width, height;
+  png_uint_32 width, height;
   unsigned int  bytesPerRow;
   bool          alpha;
 

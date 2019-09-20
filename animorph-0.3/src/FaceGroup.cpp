@@ -1,5 +1,7 @@
 #include "../include/animorph/FaceGroup.h"
 
+#include <string.h>
+
 using namespace std;
 using namespace Animorph;
 

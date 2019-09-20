@@ -1,5 +1,7 @@
 #include "../include/animorph/BodySettings.h"
 
+#include <string.h>
+
 using namespace std;
 using namespace Animorph;
 
