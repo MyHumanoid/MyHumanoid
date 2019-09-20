@@ -31,3 +31,10 @@
 - replace the "cp" command in Makefile.am with "find --exec cp"
 
 - fix the "make distcheck" problem
+
+
+GUI
+
+- Use the background image for rotoscopy
+
+- support fullscreen mode
