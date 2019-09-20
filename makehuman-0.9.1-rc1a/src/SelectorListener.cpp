@@ -28,7 +28,7 @@
 #include "SelectorListener.h"
 #include "ComponentID.h"
 #include "Global.h"
-#include <mhgui/Selector.h>
+#include <gui/Selector.h>
 
 #include <stdio.h>
 #include <assert.h>

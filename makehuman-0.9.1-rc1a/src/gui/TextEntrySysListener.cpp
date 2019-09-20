@@ -25,10 +25,10 @@
  *
  */
 
-#include "../include/mhgui/TextEntrySysListener.h"
-#include "../include/mhgui/CGUtilities.h"
-#include "../include/mhgui/TextEntry.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/TextEntrySysListener.h"
+#include "gui/CGUtilities.h"
+#include "gui/TextEntry.h"
+#include "gui/GLUTWrapper.h"
 
 #include <cstdio>
 #include <cassert>

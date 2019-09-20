@@ -28,11 +28,11 @@
 #include <animorph/ObjExporter.h>
 #include <animorph/ColladaExporter.h>
 #include <animorph/BodySettings.h>
-#include <mhgui/Console.h>
-#include <mhgui/CGUtilities.h>
-#include <mhgui/Window.h>
-#include <mhgui/Component.h>
-#include <mhgui/GLUTWrapper.h>
+#include <gui/Console.h>
+#include <gui/CGUtilities.h>
+#include <gui/Window.h>
+#include <gui/Component.h>
+#include <gui/GLUTWrapper.h>
 #include <stdio.h>
 #include <iostream>
 #include <assert.h>

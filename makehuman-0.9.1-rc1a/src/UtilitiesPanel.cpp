@@ -31,9 +31,9 @@
 
 #include <algorithm>
 
-#include <mhgui/Window.h>
-#include <mhgui/Rect.h>
-#include <mhgui/Tooltip.h>
+#include <gui/Window.h>
+#include <gui/Rect.h>
+#include <gui/Tooltip.h>
 
 using namespace std;
 using namespace Animorph;

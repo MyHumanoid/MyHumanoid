@@ -25,10 +25,10 @@
  *
  */
 
-#include "../include/mhgui/Tooltip.h"
-#include "../include/mhgui/Panel.h"
-#include "../include/mhgui/CGUtilities.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/Tooltip.h"
+#include "gui/Panel.h"
+#include "gui/CGUtilities.h"
+#include "gui/GLUTWrapper.h"
 
 namespace mhgui {
 

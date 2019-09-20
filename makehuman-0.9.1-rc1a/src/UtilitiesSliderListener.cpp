@@ -25,9 +25,9 @@
  *
  */
 
-#include <mhgui/ImageSlider.h>
-#include <mhgui/CGUtilities.h>
-#include <mhgui/GLUTWrapper.h>
+#include <gui/ImageSlider.h>
+#include <gui/CGUtilities.h>
+#include <gui/GLUTWrapper.h>
 #include "UtilitiesSliderListener.h"
 #include "TargetSlider.h"
 #include <animorph/Mesh.h>

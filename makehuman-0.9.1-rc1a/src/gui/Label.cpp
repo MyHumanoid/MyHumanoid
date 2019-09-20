@@ -25,9 +25,9 @@
  *
  */
 
-#include "../include/mhgui/Label.h"
-#include "../include/mhgui/Tooltip.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/Label.h"
+#include "gui/Tooltip.h"
+#include "gui/GLUTWrapper.h"
 
 #include <iostream>
 

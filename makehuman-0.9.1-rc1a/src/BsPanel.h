@@ -34,8 +34,8 @@
 
 #include <vector>
 #include <algorithm>
-#include <mhgui/Panel.h>
-#include <mhgui/MultiPanel.h>
+#include <gui/Panel.h>
+#include <gui/MultiPanel.h>
 #include "TargetSlider.h"
 #include "ImageListener.h"
 #include "util.h"

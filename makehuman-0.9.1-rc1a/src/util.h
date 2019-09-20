@@ -39,7 +39,7 @@
 #include <sys/stat.h>
 #include <iostream>
 #include <dirent.h>
-#include <mhgui/Window.h>
+#include <gui/Window.h>
 
 #ifndef _WIN32
 #include <pwd.h>

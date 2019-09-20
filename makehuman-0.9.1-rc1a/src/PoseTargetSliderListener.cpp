@@ -26,9 +26,9 @@
  */
 
 #include <animorph/Mesh.h>
-#include <mhgui/ImageSlider.h>
-#include <mhgui/CGUtilities.h>
-#include <mhgui/GLUTWrapper.h>
+#include <gui/ImageSlider.h>
+#include <gui/CGUtilities.h>
+#include <gui/GLUTWrapper.h>
 #include <stdio.h>
 #include <assert.h>
 #include "PoseTargetSliderListener.h"

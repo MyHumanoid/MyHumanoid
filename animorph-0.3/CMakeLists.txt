@@ -5,7 +5,6 @@ set(animorph_headers
 	include/animorph/DirectoryList.h
 	include/animorph/FaceGroup.h
 	include/animorph/FileReader.h
-	include/animorph/Makefile.am
 	include/animorph/MathUtil.h
 	include/animorph/ObjExporter.h
 	include/animorph/PoseSemiTarget.h
@@ -18,7 +17,6 @@ set(animorph_headers
 	include/animorph/EdgeStrip.h
 	include/animorph/Face.h
 	include/animorph/FileWriter.h
-	include/animorph/Makefile.in
 	include/animorph/Matrix.h
 	include/animorph/OgreXMLExporter.h
 	include/animorph/PoseTarget.h
@@ -47,7 +45,6 @@ set(animorph_sources
 	src/DirectoryList.cpp
 	src/Face.cpp
 	src/FileReader.cpp
-	src/Makefile.am
 	src/MathUtil.cpp
 	src/ObjExporter.cpp
 	src/PoseSemiTarget.cpp

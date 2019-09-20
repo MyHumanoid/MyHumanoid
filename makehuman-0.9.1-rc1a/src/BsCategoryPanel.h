@@ -34,7 +34,7 @@
 
 #include <vector>
 #include <algorithm>
-#include <mhgui/Panel.h>
+#include <gui/Panel.h>
 #include "BsSelectionListener.h"
 #include "TargetSlider.h"
 #include "ImageListener.h"

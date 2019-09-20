@@ -25,10 +25,10 @@
  *
  */
 
-#include "../include/mhgui/SelectorSysListener.h"
-#include "../include/mhgui/CGUtilities.h"
-#include "../include/mhgui/Selector.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/SelectorSysListener.h"
+#include "gui/CGUtilities.h"
+#include "gui/Selector.h"
+#include "gui/GLUTWrapper.h"
 
 #include <cstdio>
 #include <cassert>

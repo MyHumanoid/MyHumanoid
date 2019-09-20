@@ -1,5 +1,56 @@
 cmake_minimum_required(VERSION 3.5)
 
+set(gui_sources
+	src/gui/AbstractListener.h
+	src/gui/Camera.h
+	src/gui/Camera.cpp
+	src/gui/CGUtilities.h
+	src/gui/CGUtilities.cpp
+	src/gui/Component.h
+	src/gui/Component.cpp
+	src/gui/Console.h
+	src/gui/Console.cpp
+	src/gui/GLUTWrapper.h
+	src/gui/Image.h
+	src/gui/Image.cpp
+	src/gui/ImageData.h
+	src/gui/ImageData.cpp
+	src/gui/ImageSlider.h
+	src/gui/ImageSlider.cpp
+	src/gui/ImageSliderSysListener.h
+	src/gui/ImageSliderSysListener.cpp
+	src/gui/ImageSysListener.h
+	src/gui/ImageSysListener.cpp
+	src/gui/Label.h
+	src/gui/Label.cpp
+	src/gui/MultiPanel.h
+	src/gui/MultiPanel.cpp
+	src/gui/Panel.h
+	src/gui/Panel.cpp
+	src/gui/Point.h
+	src/gui/Point.cpp
+	src/gui/Rect.h
+	src/gui/Rect.cpp
+	src/gui/Selector.h
+	src/gui/Selector.cpp
+	src/gui/SelectorSysListener.h
+	src/gui/SelectorSysListener.cpp
+	src/gui/Size.h
+	src/gui/Size.cpp
+	src/gui/TextEntry.h
+	src/gui/TextEntry.cpp
+	src/gui/TextEntrySysListener.h
+	src/gui/TextEntrySysListener.cpp
+	src/gui/Texture.h
+	src/gui/Texture.cpp
+	src/gui/Tooltip.h
+	src/gui/Tooltip.cpp
+	src/gui/Widget.h
+	src/gui/Widget.cpp
+	src/gui/Window.h
+	src/gui/Window.cpp
+)
+
 set(makehuman_sources
 	src/Animation.cpp
 	src/Animation.h
@@ -90,10 +141,14 @@ set(makehuman_sources
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
+find_package(PNG REQUIRED)
 
-add_executable(makehuman "${makehuman_sources}")
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS})
-target_link_libraries(makehuman PRIVATE animorph mhgui ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+add_executable(makehuman ${gui_sources} ${makehuman_sources})
+
+target_include_directories(makehuman PRIVATE src)
+
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
+target_link_libraries(makehuman PRIVATE animorph ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${PNG_LIBRARY})
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY pixmaps DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

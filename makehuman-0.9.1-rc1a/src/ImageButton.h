@@ -32,8 +32,8 @@
   #include <config.h>
 #endif
 
-#include <mhgui/Image.h>
-#include <mhgui/Rect.h>
+#include <gui/Image.h>
+#include <gui/Rect.h>
 
 using namespace mhgui;
 

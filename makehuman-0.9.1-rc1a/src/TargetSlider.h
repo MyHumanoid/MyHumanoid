@@ -33,7 +33,7 @@
 #endif
 
 #include <iostream>
-#include <mhgui/ImageSlider.h>
+#include <gui/ImageSlider.h>
 
 using std::string;
 using std::cerr;

@@ -25,7 +25,7 @@
  *
  */
 
-#include "../include/mhgui/ImageData.h"
+#include "gui/ImageData.h"
 #include <iostream>
 #include <sys/stat.h>
 

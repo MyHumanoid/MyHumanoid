@@ -25,11 +25,11 @@
  *
  */
 
-#include "../include/mhgui/Texture.h"
-#include "../include/mhgui/ImageData.h"
-#include "../include/mhgui/Size.h"
-#include "../include/mhgui/Point.h"
-#include "../include/mhgui/Rect.h"
+#include "gui/Texture.h"
+#include "gui/ImageData.h"
+#include "gui/Size.h"
+#include "gui/Point.h"
+#include "gui/Rect.h"
 
 #include <stdint.h>
 #include <assert.h>

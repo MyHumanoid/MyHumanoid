@@ -27,10 +27,10 @@
 
 #include <animorph/Mesh.h>
 
-#include <mhgui/CGUtilities.h>
-#include <mhgui/Window.h>
-#include <mhgui/Component.h>
-#include <mhgui/GLUTWrapper.h>
+#include <gui/CGUtilities.h>
+#include <gui/Window.h>
+#include <gui/Component.h>
+#include <gui/GLUTWrapper.h>
 
 #include <stdio.h>
 #include <assert.h>

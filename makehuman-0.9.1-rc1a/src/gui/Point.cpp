@@ -17,7 +17,7 @@
  *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
  *  USA
  *
- *  File   : Widget.cpp
+ *  File   : Point.cpp
  *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
  *  Library: MHGUI
  *
@@ -25,65 +25,8 @@
  *
  */
 
-#include "../include/mhgui/Widget.h"
-#include "../include/mhgui/AbstractListener.h"
-#include "../include/mhgui/Tooltip.h"
-#include "../include/mhgui/GLUTWrapper.h"
-
-#include <iostream>
-
-using namespace std;
+#include "gui/Point.h"
 
 namespace mhgui {
 
-Widget::Widget (uint32_t          inId,
-                const Rect&       inGeometry)
-    : Component  (inId, inGeometry),
-    parentPanel(NULL),
-    tooltip    (NULL)
-{
-}
-
-Widget::~Widget()
-{
-  if (parentPanel)
-    parentPanel->removeWidget (this);
-
-  delete tooltip;
-}
-
-void Widget::setTooltip (const Tooltip& inTooltip)
-{
-  delete tooltip;
-  tooltip = new Tooltip(inTooltip);
-}
-
-void Widget::draw()
-{
-}
-
-void Widget::drawOverlay()
-{
-}
-
-void Widget::draw_wrapper()
-{
-  if (isVisible() && tooltip && isLastMouseOver())
-  {
-    tooltip->draw();
-  }
-  draw();
-}
-
-void Widget::show ()
-{
-  setVisible(true);
-}
-
-void Widget::hide ()
-{
-  setVisible(false);
-}
-
 } // namespace mhgui
-

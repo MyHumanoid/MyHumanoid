@@ -37,17 +37,17 @@
 
 //mhh...maybe some of these includes are retundant
 #include <time.h>
-#include <mhgui/Panel.h>
-#include <mhgui/Widget.h>
-#include <mhgui/Image.h>
-#include <mhgui/ImageSlider.h>
-#include <mhgui/Window.h>
-#include <mhgui/Console.h>
-#include <mhgui/Size.h>
-#include <mhgui/Point.h>
-#include <mhgui/CGUtilities.h>
-#include <mhgui/Camera.h>
-#include <mhgui/GLUTWrapper.h>
+#include <gui/Panel.h>
+#include <gui/Widget.h>
+#include <gui/Image.h>
+#include <gui/ImageSlider.h>
+#include <gui/Window.h>
+#include <gui/Console.h>
+#include <gui/Size.h>
+#include <gui/Point.h>
+#include <gui/CGUtilities.h>
+#include <gui/Camera.h>
+#include <gui/GLUTWrapper.h>
 #include <animorph/Mesh.h>
 #include <animorph/util.h>
 #include <animorph/Vector3.h>

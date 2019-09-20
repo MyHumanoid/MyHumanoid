@@ -32,8 +32,8 @@
   #include <config.h>
 #endif
 
-#include <mhgui/Image.h>
-#include <mhgui/Panel.h>
+#include <gui/Image.h>
+#include <gui/Panel.h>
 #include "util.h"
 
 using namespace mhgui;

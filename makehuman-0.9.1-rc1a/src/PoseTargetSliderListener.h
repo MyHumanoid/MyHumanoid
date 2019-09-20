@@ -34,9 +34,9 @@
   #include <config.h>
 #endif
 
-#include <mhgui/AbstractListener.h>
-#include <mhgui/Component.h>
-#include <mhgui/Point.h>
+#include <gui/AbstractListener.h>
+#include <gui/Component.h>
+#include <gui/Point.h>
 
 using namespace mhgui;
 

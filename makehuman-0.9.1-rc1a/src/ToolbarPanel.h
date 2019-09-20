@@ -33,8 +33,8 @@
 #endif
 
 #include <vector>
-#include <mhgui/Panel.h>
-#include <mhgui/Image.h>
+#include <gui/Panel.h>
+#include <gui/Image.h>
 #include "ImageListener.h"
 #include "util.h"
 

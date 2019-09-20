@@ -34,7 +34,7 @@
 
 #include <vector>
 #include <algorithm>
-#include <mhgui/Panel.h>
+#include <gui/Panel.h>
 #include "PoseTargetSliderListener.h"
 #include "TargetSlider.h"
 #include "TargetPanel.h"

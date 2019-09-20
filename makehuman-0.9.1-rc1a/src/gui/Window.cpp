@@ -25,10 +25,10 @@
  *
  */
 
-#include "../include/mhgui/Size.h"
-#include "../include/mhgui/Window.h"
-#include "../include/mhgui/Camera.h"
-#include "../include/mhgui/CGUtilities.h"
+#include "gui/Size.h"
+#include "gui/Window.h"
+#include "gui/Camera.h"
+#include "gui/CGUtilities.h"
 
 #ifdef __APPLE__
     #include <GLUT/glut.h>
@@ -41,8 +41,8 @@
 #endif
 
 #include <iostream>
-#include "../include/mhgui/Panel.h"
-#include "../include/mhgui/Console.h"
+#include "gui/Panel.h"
+#include "gui/Console.h"
 
 
 #ifdef __APPLE__

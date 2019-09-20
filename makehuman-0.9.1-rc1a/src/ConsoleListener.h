@@ -35,8 +35,8 @@
 #endif
 
 #include <iostream>
-#include <mhgui/AbstractListener.h>
-#include <mhgui/Point.h>
+#include <gui/AbstractListener.h>
+#include <gui/Point.h>
 
 class mhgui::Component;
 

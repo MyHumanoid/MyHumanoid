@@ -25,8 +25,8 @@
  *
  */
 
-#include "../include/mhgui/Console.h"
-#include "../include/mhgui/CGUtilities.h"
+#include "gui/Console.h"
+#include "gui/CGUtilities.h"
 
 #include <iostream>
 #include <stdio.h>

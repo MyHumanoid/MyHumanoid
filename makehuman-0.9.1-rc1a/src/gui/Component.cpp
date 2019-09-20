@@ -25,9 +25,9 @@
  *
  */
 
-#include "../include/mhgui/Component.h"
-#include "../include/mhgui/AbstractListener.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/Component.h"
+#include "gui/AbstractListener.h"
+#include "gui/GLUTWrapper.h"
 
 namespace mhgui {
 

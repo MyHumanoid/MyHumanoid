@@ -29,10 +29,10 @@
 #include "ImageListener.h"
 #include "ComponentID.h"
 
-#include "mhgui/Window.h"
-#include "mhgui/Rect.h"
-#include "mhgui/Image.h"
-#include "mhgui/Tooltip.h"
+#include "gui/Window.h"
+#include "gui/Rect.h"
+#include "gui/Image.h"
+#include "gui/Tooltip.h"
 
 using namespace std;
 using namespace Animorph;

@@ -17,7 +17,7 @@
  *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
  *  USA
  *
- *  File   : Rect.cpp
+ *  File   : Size.cpp
  *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
  *  Library: MHGUI
  *
@@ -25,7 +25,7 @@
  *
  */
 
-#include "../include/mhgui/Rect.h"
+#include "gui/Size.h"
 
 namespace mhgui {
 

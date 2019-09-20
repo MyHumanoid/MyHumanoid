@@ -25,11 +25,11 @@
  *
  */
 
-#include "../include/mhgui/Rect.h"
-#include "../include/mhgui/MultiPanel.h"
-#include "../include/mhgui/Panel.h"
-#include "../include/mhgui/Widget.h"
-#include "../include/mhgui/CGUtilities.h"
+#include "gui/Rect.h"
+#include "gui/MultiPanel.h"
+#include "gui/Panel.h"
+#include "gui/Widget.h"
+#include "gui/CGUtilities.h"
 
 namespace mhgui {
 

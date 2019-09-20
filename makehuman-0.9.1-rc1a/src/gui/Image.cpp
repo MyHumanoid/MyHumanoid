@@ -25,12 +25,12 @@
  *
  */
 
-#include "../include/mhgui/Image.h"
-#include "../include/mhgui/Tooltip.h"
-#include "../include/mhgui/CGUtilities.h"
-#include "../include/mhgui/ImageSysListener.h"
-#include "../include/mhgui/ImageData.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/Image.h"
+#include "gui/Tooltip.h"
+#include "gui/CGUtilities.h"
+#include "gui/ImageSysListener.h"
+#include "gui/ImageData.h"
+#include "gui/GLUTWrapper.h"
 
 #include <iostream>
 

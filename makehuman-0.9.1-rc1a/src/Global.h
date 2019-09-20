@@ -33,9 +33,9 @@
 #endif
 
 #include <animorph/Mesh.h>
-#include <mhgui/Camera.h>
-#include <mhgui/Point.h>
-#include <mhgui/Texture.h>
+#include <gui/Camera.h>
+#include <gui/Point.h>
+#include <gui/Texture.h>
 #include "Animation.h"
 
 using namespace Animorph;

@@ -25,10 +25,10 @@
  *
  */
 
-#include "../include/mhgui/TextEntry.h"
-#include "../include/mhgui/Tooltip.h"
-#include "../include/mhgui/CGUtilities.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/TextEntry.h"
+#include "gui/Tooltip.h"
+#include "gui/CGUtilities.h"
+#include "gui/GLUTWrapper.h"
 
 #include <iostream>
 

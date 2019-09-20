@@ -25,8 +25,8 @@
  *
  */
 
-#include "../include/mhgui/CGUtilities.h"
-#include "../include/mhgui/Camera.h"
+#include "gui/CGUtilities.h"
+#include "gui/Camera.h"
 #include <iostream>
 
 #define MAX_LINE 3500

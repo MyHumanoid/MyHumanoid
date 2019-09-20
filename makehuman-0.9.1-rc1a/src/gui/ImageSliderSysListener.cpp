@@ -25,10 +25,10 @@
  *
  */
 
-#include "../include/mhgui/ImageSliderSysListener.h"
-#include "../include/mhgui/CGUtilities.h"
-#include "../include/mhgui/ImageSlider.h"
-#include "../include/mhgui/GLUTWrapper.h"
+#include "gui/ImageSliderSysListener.h"
+#include "gui/CGUtilities.h"
+#include "gui/ImageSlider.h"
+#include "gui/GLUTWrapper.h"
 
 #include <cstdio>
 #include <cassert>

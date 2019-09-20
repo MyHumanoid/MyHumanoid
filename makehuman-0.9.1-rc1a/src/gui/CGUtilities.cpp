@@ -25,12 +25,12 @@
  *
  */
 
-#include "../include/mhgui/Rect.h"
-#include "../include/mhgui/Point.h"
-#include "../include/mhgui/Size.h"
-#include "../include/mhgui/Texture.h"
-#include "../include/mhgui/Camera.h"
-#include "../include/mhgui/CGUtilities.h"
+#include "gui/Rect.h"
+#include "gui/Point.h"
+#include "gui/Size.h"
+#include "gui/Texture.h"
+#include "gui/Camera.h"
+#include "gui/CGUtilities.h"
 
 using namespace std;
 using namespace mhgui;

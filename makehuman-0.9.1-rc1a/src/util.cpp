@@ -29,8 +29,8 @@
 #include <animorph/RIBExporter.h>
 #include <animorph/util.h>
 #include <animorph/xmlParser.h>
-#include <mhgui/Console.h>
-#include <mhgui/CGUtilities.h>
+#include <gui/Console.h>
+#include <gui/CGUtilities.h>
 #include "ConsoleCommands.h"
 #include "Global.h"
 #include "util.h"
