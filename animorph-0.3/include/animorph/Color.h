@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 /*
  *  Copyright (C) 2005  Andreas Volz
  *  Copyright (C) 2006-2007  MakeHuman Project
