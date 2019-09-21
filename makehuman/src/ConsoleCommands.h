@@ -30,7 +30,6 @@
 
 static const string kConsoleCommand_Load_Background = "lbg";
 static const string kConsoleCommand_Save_Autozoom = "saz";
-static const string kConsoleCommand_Export_Collada = "eco";
 static const string kConsoleCommand_Exit = "quit";
 static const string kConsoleCommand_Load_AqsisPath = "aqs";
 static const string kConsoleCommand_Load_PixiePath = "pix";
@@ -46,11 +45,6 @@ static const string kConsoleMessage_Load_Background_Success =
 static const string kConsoleMessage_Save_Autozoom =
     "Save Autozoom file (*.camera)";
 static const string kConsoleMessage_Save_Autozoom_Success = "Autozoom saved";
-
-static const string kConsoleMessage_Export_Collada =
-    "Export Collada DAE file (insert a valid export path)";
-static const string kConsoleMessage_Export_Collada_Success =
-    "Collada DAE file exported. Press ESC to exit.";
 
 static const string kConsoleMessage_Dir_Load_Error =
     "Error: couldn't read directory. Press ESC to exit or ENTER to retry!";

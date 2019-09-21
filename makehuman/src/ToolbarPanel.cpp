@@ -64,16 +64,6 @@ void ToolbarPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_ExportColladaObj,
-	                  searchPixmapFile("ui/toolbar_exp_collada.png"),
-	                  Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Export Collada file", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_CharacterSettings,
 	                  searchPixmapFile("ui/toolbar_charac_sett.png"),

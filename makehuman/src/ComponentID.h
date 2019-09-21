@@ -231,8 +231,6 @@ static const uint32_t kComponentID_ToolbarPanel =
     FOUR_CHAR_CONST('p', 'a', 'T', 'B');
 
 // The Image ID's of the  ToolbarPanel (kComponentID_ToolbarPanel)
-static const uint32_t kComponentID_ImageToolbarPanel_ExportColladaObj =
-    FOUR_CHAR_CONST('E', 'x', 'C', 'o');
 static const uint32_t kComponentID_ImageToolbarPanel_LoadBackground =
     FOUR_CHAR_CONST('L', 'o', 'B', 'G');
 

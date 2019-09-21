@@ -150,13 +150,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 			switch (imgSource->getID()) {
 			// toolbar buttons
-			case kComponentID_ImageToolbarPanel_ExportColladaObj:
-				if (global.getAppMode() != ANIMATIONS) {
-					mainWindow.getConsole()->openWithCommand(
-					    kConsoleCommand_Export_Collada, kConsoleMessage_Export_Collada,
-					    getMyColladaPath());
-				}
-				break;
 			case kComponentID_ImageToolbarPanel_LoadBackground:
 				if (global.getAppMode() != ANIMATIONS) {
 					mainWindow.getConsole()->openWithCommand(

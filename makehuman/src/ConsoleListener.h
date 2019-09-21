@@ -57,7 +57,6 @@ protected:
 	void parseSetParameter(Console &console, const string &path);
 	void savePoses(Console &console, const string &filename);
 	void saveAutozoom(Console &console, const string &filename);
-	void exportCollada(Console &console, string &filename);
 
 	void loadAnimation(Console &console, const string &path);
 	// void saveAnimation(Console& console, const string& path);

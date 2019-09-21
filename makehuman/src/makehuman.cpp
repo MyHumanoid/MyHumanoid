@@ -47,6 +47,7 @@
 #include <animorph/Mesh.h>
 #include <animorph/Vector3.h>
 #include <animorph/util.h>
+#include <animorph/ColladaExporter.h>
 #include <animorph/ObjExporter.h>
 
 
@@ -301,7 +302,33 @@ static void exportBodySettings(string &directory, bool full)
 	}
 }
 
-
+static void exportCollada(string &filename)
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	
+	ColladaExporter collada_export(*mesh);
+	
+	if (filename.substr(filename.size() - 1, 1) != PATH_SEPARATOR) {
+		filename.append(PATH_SEPARATOR);
+	}
+	
+	fs::create_directories(filename);
+	
+	bool expMode = true;
+	
+	if (global.getExpMode() == WITHOUT_CONTROLLER)
+		expMode = false;
+	
+	bool state = collada_export.exportFile(filename, expMode);
+	
+	if (state) {
+		log("Collada exported");
+	} else {
+		log_err("Collada export failed");
+	}
+}
 
 
 
@@ -380,15 +407,18 @@ void DisplayMainMenu()
 			
 			ImGui::Separator();
 			
-			if(ImGui::MenuItem("Export wavefront obj")) {
+			if(ImGui::MenuItem("Export wavefront (.obj)")) {
 				if (g_global.getAppMode() != ANIMATIONS) {
 					std::string filename = "foo-ObjExport";
 					exportBodySettings(filename, false);
 				}
 			}
 			
-			if(ImGui::MenuItem("asdj")) {
-				
+			if(ImGui::MenuItem("Export Collada (.dae)")) {
+				if (g_global.getAppMode() != ANIMATIONS) {
+					std::string filename = "foo-ColladaExport";
+					exportCollada(filename);
+				}
 			}
 			
 			if(ImGui::MenuItem("asd")) {
