@@ -220,27 +220,6 @@ void ConsoleListener::parseCommand(Console &console)
 			} else {
 			}
 		}
-		/*
-		    else if(cmd == kConsoleCommand_Save_Animations)
-		    {
-		      if(global.getAppMode() == ANIMATIONS)
-		      {
-		        if(arg.size() == 0)
-		        {
-		          console.inputMode(kConsoleMessage_Save_Animations,
-		   getMyPosesPath());
-		        }
-		        else
-		        {
-		          saveAnimation(console, arg);
-		        }
-		      }
-		      else
-		      {
-		        console.printMessage(kConsoleMessage_WrongMode_Animations);
-		      }
-		    }
-		*/
 		else {
 			commandNotFound(console);
 		}
@@ -269,25 +248,6 @@ void ConsoleListener::startStopAnimation(Console& console)
   {
    console.printMessage(kConsoleMessage_NotLoaded_Animations);
    console.setError(true);
-  }
-}
-*/
-/*
-void ConsoleListener::saveAnimation(Console& console, const string& path)
-{
-  Global &global = Global::instance ();
-  Animation *animation = global.getAnimation();
-  assert (animation);
-
-  bool state = animation->save(path);
-  if(state)
-  {
-    console.printMessage(kConsoleMessage_Save_Animations_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Dir_Save_Error);
-    console.setError(true);
   }
 }
 */

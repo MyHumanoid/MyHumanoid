@@ -39,31 +39,15 @@ static const string kConsoleCommand_Load_PixiePath = "pix";
 static const string kConsoleCommand_Set_Parameter = "set";
 static const string kConsoleCommand_Create_WeightsMatrix = "wgt";
 
-// static const string kConsoleCommand_Save_Animations            = "san";
-
 // console messages
 static const string kConsoleMessage_Load_Background =
     "Load background image (*.png)";
 static const string kConsoleMessage_Load_Background_Success =
     "Background image loaded";
 
-static const string kConsoleMessage_Load_Bodysettings =
-    "Load BodySettings file (*.bs)";
-
-static const string kConsoleMessage_Save_Bodysettings =
-    "Save BodySettings file (*.bs)";
-
-static const string kConsoleMessage_Load_Poses = "Load Poses file (*.bs)";
-
 static const string kConsoleMessage_Save_Autozoom =
     "Save Autozoom file (*.camera)";
 static const string kConsoleMessage_Save_Autozoom_Success = "Autozoom saved";
-
-static const string kConsoleMessage_Save_Poses = "Save Poses file (*.bs)";
-
-// static const string kConsoleMessage_Save_Animations            = "Save
-// animation (select a valid dir)"; static const string
-// kConsoleMessage_Save_Animations_Success    = "Animation saved";
 
 static const string kConsoleMessage_Export_Object =
     "Export OBJ file (insert a valid export path)";

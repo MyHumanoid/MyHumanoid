@@ -239,8 +239,18 @@ static void loadPoses(const string &filename)
 
 
 
+static void saveAnimation(const string& path)
+{
+	Global &global = Global::instance ();
+	Animation *animation = global.getAnimation();
+	assert (animation);
+	
+	//bool state = animation->save(path);
+	
+	log_err("Saving animations not implemented");
+}
 
-void loadAnimation(const string &path)
+static void loadAnimation(const string &path)
 {
 	Global &global = Global::instance();
 	Animation *animation = global.getAnimation();
@@ -301,20 +311,13 @@ void DisplayMainMenu()
 					
 					
 					saveBodySettings("foo-BodySettings");
-					
-//					mainWindow.getConsole()->openWithCommand(
-//					    kConsoleCommand_Save_Bodysettings,
-//					    kConsoleMessage_Save_Bodysettings, getMyBodysettingsPath());
 				} else if (global.getAppMode() == POSES) {
 					
 					savePoses("foo-Poses");
 					
-//					mainWindow.getConsole()->openWithCommand(kConsoleCommand_Save_Poses,
-//					                                         kConsoleMessage_Save_Poses,
-//					                                         getMyPosesPath());
 				} else if (global.getAppMode() == ANIMATIONS) {
-					// mainWindow.getConsole()->openWithCommand(kConsoleCommand_Save_Animations,
-					// kConsoleMessage_Save_Animations, getMyPosesPath());
+					
+					saveAnimation("foo-Animation");
 				}
 			}
 			if(ImGui::MenuItem("Load bodysetting", "Ctrl+O")) {
