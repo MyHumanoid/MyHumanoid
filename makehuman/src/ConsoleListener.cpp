@@ -188,18 +188,6 @@ void ConsoleListener::parseCommand(Console &console)
 			} else {
 				saveAutozoom(console, arg);
 			}
-		} else if (cmd == kConsoleCommand_Export_Object) {
-			if (arg.size() == 0) {
-				console.inputMode(kConsoleMessage_Export_Object, getMyObjPath());
-			} else {
-				exportBodySettings(console, arg);
-			}
-		} else if (cmd == kConsoleCommand_Export_Full_Object) {
-			if (arg.size() == 0) {
-				console.inputMode(kConsoleMessage_Export_Object, getMyObjPath());
-			} else {
-				exportBodySettings(console, arg, true);
-			}
 		} else if (cmd == kConsoleCommand_Export_Collada) {
 			if (arg.size() == 0) {
 				console.inputMode(kConsoleMessage_Export_Collada, getMyColladaPath());
@@ -349,50 +337,6 @@ void ConsoleListener::saveAutozoom(Console &console, const string &filename)
 		console.printMessage(kConsoleMessage_Save_Autozoom_Success);
 	} else {
 		console.printMessage(kConsoleMessage_Save_Error);
-	}
-}
-
-void ConsoleListener::exportBodySettings(Console &console, string &filename,
-                                         bool full)
-{
-	Global &global = Global::instance();
-	Mesh *mesh = global.getMesh();
-	assert(mesh);
-
-	ObjExporter obj_export(*mesh);
-
-	if (filename.substr(filename.size() - 1, 1) != PATH_SEPARATOR) {
-		filename.append(PATH_SEPARATOR);
-	}
-
-#if defined(_WIN32)
-	createDirWhenNotExists(filename);
-#else
-	/* This piece of code has been tested on Mac OS X only!
-	 * On OS X the body settings (and all user specific settings as well) will be
-	 * are supposed to be saved to the Users Document folder in a directory named
-	 * makehuman.
-	 *
-	 * Since this directory does not exists the first time so we'll need to create
-	 * one.
-	 */
-
-	// First create a directory at the given location if it does not exists
-
-	string path(FileTools::getFilePath(filename));
-	if (!FileTools::fileExists(path)) {
-		bool rc = FileTools::makeDirHier(path);
-		assert(rc == true);
-	}
-#endif // MAC OS X specific code
-
-	bool state = obj_export.exportFile(filename, full);
-
-	if (state) {
-		console.printMessage(kConsoleMessage_Export_Object_Success);
-	} else {
-		console.printMessage(kConsoleMessage_Save_Error);
-		console.setError(true);
 	}
 }
 

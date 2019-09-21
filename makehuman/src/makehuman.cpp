@@ -35,14 +35,21 @@
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 
+#include <experimental/filesystem>
+
+#include <json.hpp>
+
 #include <imgui.h>
 #include <examples/imgui_impl_glut.h>
 #include <examples/imgui_impl_opengl2.h>
 
-// mhh...maybe some of these includes are retundant
+
 #include <animorph/Mesh.h>
 #include <animorph/Vector3.h>
 #include <animorph/util.h>
+#include <animorph/ObjExporter.h>
+
+
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
 #include <gui/Console.h>
@@ -79,6 +86,9 @@
 
 #define kTimerRendering 1000
 
+namespace fs = std::experimental::filesystem;
+using json = nlohmann::json;
+
 using namespace std;
 using namespace Animorph;
 
@@ -88,6 +98,8 @@ static bool loadTextures();
 static void toggleVisiblePart(const std::string &name);
 static void toggleSubdivision();
 static void renderSubsurf();
+
+json g_jsonConfig;
 
 // console listener
 static ConsoleListener *consoleListener;
@@ -266,6 +278,32 @@ static void loadAnimation(const string &path)
 
 
 
+static void exportBodySettings(string &directory, bool full)
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	
+	ObjExporter obj_export(*mesh);
+	
+	if (directory.substr(directory.size() - 1, 1) != PATH_SEPARATOR) {
+		directory.append(PATH_SEPARATOR);
+	}
+	
+	fs::create_directories(directory);
+	
+	bool state = obj_export.exportFile(directory, full);
+	
+	if (state) {
+		log("OBJ exported");
+	} else {
+		log_err("OBJ export failed");
+	}
+}
+
+
+
+
 
 
 
@@ -300,6 +338,8 @@ void DisplayQuitPopup() {
 
 void DisplayMainMenu()
 {
+	auto & g_global = Global::instance();
+	
 	if(ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if(ImGui::MenuItem("SaveBodysettings")) {
@@ -337,9 +377,24 @@ void DisplayMainMenu()
 					loadAnimation("foo-Animation");
 				}
 			}
-			if(ImGui::MenuItem("Save As..")) {
+			
+			ImGui::Separator();
+			
+			if(ImGui::MenuItem("Export wavefront obj")) {
+				if (g_global.getAppMode() != ANIMATIONS) {
+					std::string filename = "foo-ObjExport";
+					exportBodySettings(filename, false);
+				}
+			}
+			
+			if(ImGui::MenuItem("asdj")) {
 				
 			}
+			
+			if(ImGui::MenuItem("asd")) {
+				
+			}
+			
 			ImGui::Separator();
 			if(ImGui::Button("Quit...")) {
 				ImGui::OpenPopup("Quit?");
@@ -870,14 +925,6 @@ static void activeMotion(int x, int y)
 		cgutils::redisplay();
 	}
 }
-
-#include <experimental/filesystem>
-#include <json.hpp>
-
-namespace fs = std::experimental::filesystem;
-using json = nlohmann::json;
-
-json g_jsonConfig;
 
 int main(int argc, char **argv)
 {

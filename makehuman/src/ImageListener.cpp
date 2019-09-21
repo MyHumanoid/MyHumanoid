@@ -150,13 +150,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 			switch (imgSource->getID()) {
 			// toolbar buttons
-			case kComponentID_ImageToolbarPanel_ExportWavefrontObj:
-				if (global.getAppMode() != ANIMATIONS) {
-					mainWindow.getConsole()->openWithCommand(
-					    kConsoleCommand_Export_Object, kConsoleMessage_Export_Object,
-					    getMyObjPath());
-				}
-				break;
 			case kComponentID_ImageToolbarPanel_ExportColladaObj:
 				if (global.getAppMode() != ANIMATIONS) {
 					mainWindow.getConsole()->openWithCommand(
@@ -612,10 +605,6 @@ void ImageListener::hideUtilities()
 	Image *img =
 	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_MorphingList));
 	img->setEnabled(true);
-
-	img = (Image *)(tp->getWidget(
-	    kComponentID_ImageToolbarPanel_ExportWavefrontObj));
-	img->setEnabled(true);
 }
 void ImageListener::hideBsCategory()
 {
@@ -733,10 +722,6 @@ void ImageListener::showUtilities()
 
 	Image *img =
 	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_MorphingList));
-	img->setEnabled(false);
-
-	img = (Image *)(tp->getWidget(
-	    kComponentID_ImageToolbarPanel_ExportWavefrontObj));
 	img->setEnabled(false);
 }
 
