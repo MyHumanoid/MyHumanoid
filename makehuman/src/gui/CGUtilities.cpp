@@ -229,7 +229,6 @@ void cgutils::displayStart (const Matrix& m)
   glMultMatrixf (m.data);
 }
 
-#ifdef USE_VERSATILE_TEXTURES
 void cgutils::drawSquareFillTexture (const Rect& inRect, float alpha, const Texture& inTexture)
 {
   float zlayer = 0.0;
@@ -238,35 +237,6 @@ void cgutils::drawSquareFillTexture (const Rect& inRect, float alpha, const Text
   inTexture.mapToGeometry(inRect, zlayer);
 }
 
-#else //!USE_VERSATILE_TEXTURES
-
-void cgutils::drawSquareFillTexture (const Rect& inRect, float alpha, unsigned int textuID)
-{
-  if (textuID) //To avoid use unitialized ID
-  {
-    glBindTexture(GL_TEXTURE_2D,textuID);
-  }
-
-  float zlayer = 0.0;
-
-  glColor4f(1.0, 1.0, 1.0, alpha);
-  glEnable (GL_TEXTURE_2D);
-  glBegin (GL_QUADS);
-  glTexCoord2f(0, 1);
-  glVertex3f (inRect.getX(), inRect.getY(), zlayer);
-  glTexCoord2f(1, 1);
-  glVertex3f (inRect.getX() + inRect.getWidth(), inRect.getY(), zlayer);
-  glTexCoord2f(1, 0);
-  glVertex3f (inRect.getX() + inRect.getWidth(), inRect.getY() + inRect.getHeight(), zlayer);
-  glTexCoord2f(0, 0);
-  glVertex3f (inRect.getX(), inRect.getY() + inRect.getHeight(), zlayer);
-  glEnd ();
-  glDisable (GL_TEXTURE_2D);
-}
-#endif // USE_VERSATILE_TEXTURES
-
-
-#ifdef USE_VERSATILE_TEXTURES
 void cgutils::drawBackgroundSquare (const Size& inSize, float alpha, const Texture& inTexture)
 {
   glPushMatrix();
@@ -290,48 +260,6 @@ void cgutils::drawBackgroundSquare (const Size& inSize, float alpha, const Textu
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 }
-
-#else //!USE_VERSATILE_TEXTURES
-
-void cgutils::drawBackgroundSquare (const Size& inSize, float alpha, unsigned int textuID)
-{
-  if(textuID)
-  {
-    glBindTexture(GL_TEXTURE_2D,textuID);
-  }
-  glPushMatrix();
-      glMatrixMode(GL_PROJECTION);
-      glPushMatrix();
-          glLoadIdentity();
-          glOrtho(0, inSize.getWidth(), 0, inSize.getHeight(), -20.0, 20.0);
-          glScalef(1, -1, 1);
-          glTranslatef(0, -inSize.getHeight(), 0.0);
-          glMatrixMode(GL_MODELVIEW);
-          glLoadIdentity();
-
-          glTranslatef(0, 0, -19.9);
-          glColor4f(1.0, 1.0, 1.0, alpha);
-          glNormal3f( 0.0f, 0.0f, 1.0f);
-
-          glEnable (GL_TEXTURE_2D);
-              glBegin (GL_QUADS);
-                  glTexCoord2f(0, 1);
-                  glVertex3f (0, 0, 0.0);
-                  glTexCoord2f(1, 1);
-                  glVertex3f (inSize.getWidth(), 0, 0.0);
-                  glTexCoord2f(1, 0);
-                  glVertex3f (inSize.getWidth(), inSize.getHeight(), 0.0);
-                  glTexCoord2f(0, 0);
-                  glVertex3f (0, inSize.getHeight(), 0.0);
-              glEnd ();
-          glDisable (GL_TEXTURE_2D);
-
-          glMatrixMode(GL_PROJECTION);
-      glPopMatrix();
-      glMatrixMode(GL_MODELVIEW);
-  glPopMatrix();
-}
-#endif // USE_VERSATILE_TEXTURES
 
 void cgutils::drawSquareFill (const mhgui::Rect& inRect, const Color& c)
 {
@@ -574,55 +502,6 @@ void cgutils::disableScissor ()
 {
   glDisable (GL_SCISSOR_TEST);
 }
-
-#ifndef USE_VERSATILE_TEXTURES
-/* int setupGLTexture char* int int int
- * Function loads image from buffer into
- * OpenGL texture.
- */
-unsigned int cgutils::setupGLTexture (ImageData &image_data)
-{
-  GLuint textureID;
-
-  if (image_data.getData () == NULL)
-  {
-    return 0;
-  }
-
-  glGenTextures(1, &textureID);
-
-  /* create a new texture object
-   * and bind it to texname (unsigned integer > 0)
-   */
-  glBindTexture(GL_TEXTURE_2D, textureID);
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-  if (image_data.hasAlpha ())
-  {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                 image_data.getWidth (), image_data.getHeight (), 0,
-                 GL_RGBA, GL_UNSIGNED_BYTE, image_data.getData ());
-  }
-  else
-  {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
-                 image_data.getWidth (), image_data.getHeight (), 0,
-                 GL_RGB, GL_UNSIGNED_BYTE, image_data.getData ());
-  }
-
-  return textureID;
-}
-
-void cgutils::deleteGLTexture (GLuint textureID)
-{
-  glDeleteTextures (1, &textureID);
-}
-#endif // !USE_VERSATILE_TEXTURES
 
 // TODO: temporary broken; fix it!
 int cgutils::getFontWidth (FontType font)

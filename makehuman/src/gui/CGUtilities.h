@@ -53,8 +53,6 @@ using namespace mhgui;
 
 typedef void* FontType;
 
-#define USE_VERSATILE_TEXTURES 1
-
 /** \brief Computer Graphics Utilities
  *
  * This namespace contains wrappers and convenience functions for OpenGL
@@ -72,14 +70,8 @@ void enableOrthographicProjection ();
 
 void disableOrthographicProjection ();
 
-#ifdef USE_VERSATILE_TEXTURES
-    void drawSquareFillTexture (const Rect& inRect, float alpha, const Texture& inTexture);
-    void drawBackgroundSquare  (const Size& inSize, float alpha, const Texture& inTexture);
-#else
-    void drawSquareFillTexture (const Rect& inRect, float alpha, unsigned int textuID);
-    void drawBackgroundSquare  (const Size& inSize, float alpha, unsigned int textuID);
-#endif
-
+void drawSquareFillTexture (const Rect& inRect, float alpha, const Texture& inTexture);
+void drawBackgroundSquare  (const Size& inSize, float alpha, const Texture& inTexture);
 
 void drawSquareFill (const Rect& inRect, const Color& c);
 
@@ -118,14 +110,6 @@ void disableLineSmoothing();
 void enableScissor (const Rect& box);
 
 void disableScissor ();
-
-#ifndef USE_VERSATILE_TEXTURES
-// take the raw image and put it into an
-// OpenGL 2D texture.
-unsigned int setupGLTexture (ImageData &image_data);
-
-void deleteGLTexture (GLuint textureID);
-#endif // !USE_VERSATILE_TEXTURES
 
 int getFontWidth (FontType font);
 

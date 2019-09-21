@@ -259,13 +259,6 @@ bool Console::isMouseClick (const Point& inMousePos, int button, int state)
 void Console::show ()
 {
   setVisible(true);
-
-  if (image_loaded)
-  {
-#ifndef USE_VERSATILE_TEXTURES
-    textureID = cgutils::setupGLTexture (image_data);
-#endif
-  }
 }
 
 void Console::hide ()
