@@ -150,23 +150,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 			switch (imgSource->getID()) {
 			// toolbar buttons
-			case kComponentID_ImageToolbarPanel_LoadBodysettings: {
-				if (global.getAppMode() == BODY_DETAILS ||
-				    global.getAppMode() == CHARACTER_SETTING ||
-				    global.getAppMode() == CLOTHES) {
-					mainWindow.getConsole()->openWithCommand(
-					    kConsoleCommand_Load_Bodysettings,
-					    kConsoleMessage_Load_Bodysettings, getMyBodysettingsPath());
-				} else if (global.getAppMode() == POSES) {
-					mainWindow.getConsole()->openWithCommand(kConsoleCommand_Load_Poses,
-					                                         kConsoleMessage_Load_Poses,
-					                                         getMyPosesPath());
-				} else if (global.getAppMode() == ANIMATIONS) {
-					mainWindow.getConsole()->openWithCommand(
-					    kConsoleCommand_Load_Animations, kConsoleMessage_Load_Animations,
-					    getMyPosesPath());
-				}
-			} break;
 			case kComponentID_ImageToolbarPanel_ExportWavefrontObj:
 				if (global.getAppMode() != ANIMATIONS) {
 					mainWindow.getConsole()->openWithCommand(

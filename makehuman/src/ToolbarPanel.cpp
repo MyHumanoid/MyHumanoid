@@ -61,16 +61,6 @@ void ToolbarPanel::createWidgets()
 	Image *image;
 
 	// -------------------------------------------------------------------------
-	image =
-	    new Image(kComponentID_ImageToolbarPanel_LoadBodysettings,
-	              searchPixmapFile("ui/toolbar_load.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Load bodysetting", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_ExportWavefrontObj,

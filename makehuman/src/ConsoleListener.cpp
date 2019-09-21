@@ -176,29 +176,6 @@ void ConsoleListener::parseCommand(Console &console)
 			} else {
 				loadPixiePath(console, arg);
 			}
-		} else if (cmd == kConsoleCommand_Load_Bodysettings) {
-			if (global.getAppMode() == BODY_DETAILS ||
-			    global.getAppMode() == CHARACTER_SETTING ||
-			    global.getAppMode() == CLOTHES) {
-				if (arg.size() == 0) {
-					console.inputMode(kConsoleMessage_Load_Bodysettings,
-					                  getMyBodysettingsPath());
-				} else {
-					loadBodySettings(console, arg);
-				}
-			} else {
-				console.printMessage(kConsoleMessage_WrongMode_BodyDetails);
-			}
-		} else if (cmd == kConsoleCommand_Load_Poses) {
-			if (global.getAppMode() == POSES) {
-				if (arg.size() == 0) {
-					console.inputMode(kConsoleMessage_Load_Poses, getMyPosesPath());
-				} else {
-					loadPoses(console, arg);
-				}
-			} else {
-				console.printMessage(kConsoleMessage_WrongMode_Poses);
-			}
 		} else if (cmd == kConsoleCommand_Save_Autozoom) {
 			if (arg.size() == 0) {
 				Window &mainWindow(*g_mainWindow);
@@ -243,19 +220,6 @@ void ConsoleListener::parseCommand(Console &console)
 			} else {
 			}
 		}
-#ifdef _ANIMATIONS
-		else if (cmd == kConsoleCommand_Load_Animations) {
-			if (global.getAppMode() == ANIMATIONS) {
-				if (arg.size() == 0) {
-					console.inputMode(kConsoleMessage_Load_Animations, getMyPosesPath());
-				} else {
-					loadAnimation(console, arg);
-				}
-			} else {
-				console.printMessage(kConsoleMessage_WrongMode_Animations);
-			}
-		}
-#endif
 		/*
 		    else if(cmd == kConsoleCommand_Save_Animations)
 		    {
@@ -289,20 +253,7 @@ void ConsoleListener::commandNotFound(Console &console)
 	console.setStatus(Console::MESSAGE);
 }
 
-void ConsoleListener::loadAnimation(Console &console, const string &path)
-{
-	Global &global = Global::instance();
-	Animation *animation = global.getAnimation();
-	assert(animation);
 
-	bool state = animation->load(path);
-	if (state) {
-		console.printMessage(kConsoleMessage_Load_Animations_Success);
-	} else {
-		console.printMessage(kConsoleMessage_Dir_Load_Error);
-		console.setError(true);
-	}
-}
 /*
 void ConsoleListener::startStopAnimation(Console& console)
 {
@@ -355,70 +306,7 @@ void ConsoleListener::loadWindowBackground(Console &console,
 	}
 }
 
-void ConsoleListener::loadBodySettings(Console &console, const string &filename)
-{
-	Global &global = Global::instance();
-	Mesh *mesh = global.getMesh();
-	assert(mesh);
-	Window &mainWindow = *g_mainWindow;
 
-	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
-
-	BodySettings bodyset;
-	bool state = bodyset.load(filename);
-	if (state) {
-		state = clothesgroup.loadVisibilities(filename);
-	}
-
-	if (state) {
-		global.resetFuzzyValues();
-		state = loadSelectorsPositions(filename);
-
-		CharacterSettingPanel *tmpPanel =
-		    (CharacterSettingPanel *)mainWindow.getPanel(
-		        kComponentID_CharacterSettingPanel);
-		if (tmpPanel != NULL) {
-			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Age);
-			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
-			tmpPanel->calcSelectorValues(
-			    kComponentID_CharacterSettingPanel_MuscleSize);
-			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
-		}
-	}
-
-	if (state) {
-		mesh->doMorph(bodyset);
-		mesh->calcNormals();
-		if (global.getSubdivision()) {
-			mesh->calcSubsurf();
-		}
-		console.printMessage(kConsoleMessage_Load_Bodysettings_Success);
-	} else {
-		console.printMessage(kConsoleMessage_Load_Error);
-		console.setError(true);
-	}
-}
-
-void ConsoleListener::loadPoses(Console &console, const string &filename)
-{
-	Global &global = Global::instance();
-	Mesh *mesh = global.getMesh();
-	assert(mesh);
-
-	BodySettings poses;
-	bool state = poses.load(filename);
-
-	if (state) {
-		mesh->doPose(poses);
-		if (global.getSubdivision()) {
-			mesh->calcSubsurf();
-		}
-		console.printMessage(kConsoleMessage_Load_Poses_Success);
-	} else {
-		console.printMessage(kConsoleMessage_Load_Error);
-		console.setError(true);
-	}
-}
 
 void ConsoleListener::loadAqsisPath(Console &console, const string &path)
 {

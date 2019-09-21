@@ -29,14 +29,11 @@
 #define CONSOLECOMMANDS_H 1
 
 static const string kConsoleCommand_Load_Background = "lbg";
-static const string kConsoleCommand_Load_Bodysettings = "lbs";
-static const string kConsoleCommand_Load_Poses = "lps";
 static const string kConsoleCommand_Save_Autozoom = "saz";
 static const string kConsoleCommand_Export_Object = "ewo";
 static const string kConsoleCommand_Export_Full_Object = "efo";
 static const string kConsoleCommand_Export_Collada = "eco";
 static const string kConsoleCommand_Exit = "quit";
-static const string kConsoleCommand_Load_Animations = "lan";
 static const string kConsoleCommand_Load_AqsisPath = "aqs";
 static const string kConsoleCommand_Load_PixiePath = "pix";
 static const string kConsoleCommand_Set_Parameter = "set";
@@ -52,23 +49,15 @@ static const string kConsoleMessage_Load_Background_Success =
 
 static const string kConsoleMessage_Load_Bodysettings =
     "Load BodySettings file (*.bs)";
-static const string kConsoleMessage_Load_Bodysettings_Success =
-    "BodySettings loaded";
 
 static const string kConsoleMessage_Save_Bodysettings =
     "Save BodySettings file (*.bs)";
 
 static const string kConsoleMessage_Load_Poses = "Load Poses file (*.bs)";
-static const string kConsoleMessage_Load_Poses_Success = "Poses loaded";
 
 static const string kConsoleMessage_Save_Autozoom =
     "Save Autozoom file (*.camera)";
 static const string kConsoleMessage_Save_Autozoom_Success = "Autozoom saved";
-
-static const string kConsoleMessage_Load_Animations =
-    "Load animation (select a valid dir)";
-static const string kConsoleMessage_Load_Animations_Success =
-    "Animation loaded";
 
 static const string kConsoleMessage_Save_Poses = "Save Poses file (*.bs)";
 

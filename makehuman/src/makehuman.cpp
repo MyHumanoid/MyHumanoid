@@ -154,7 +154,53 @@ static void saveBodySettings(const string &filename)
 	}
 }
 
-void savePoses(const string &filename)
+static void loadBodySettings(const string &filename)
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	Window &mainWindow = *g_mainWindow;
+	
+	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
+	
+	BodySettings bodyset;
+	bool state = bodyset.load(filename);
+	if (state) {
+		state = clothesgroup.loadVisibilities(filename);
+	}
+	
+	if (state) {
+		global.resetFuzzyValues();
+		state = loadSelectorsPositions(filename);
+		
+		CharacterSettingPanel *tmpPanel =
+		    (CharacterSettingPanel *)mainWindow.getPanel(
+		        kComponentID_CharacterSettingPanel);
+		if (tmpPanel != NULL) {
+			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Age);
+			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
+			tmpPanel->calcSelectorValues(
+			    kComponentID_CharacterSettingPanel_MuscleSize);
+			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
+		}
+	}
+	
+	if (state) {
+		mesh->doMorph(bodyset);
+		mesh->calcNormals();
+		if (global.getSubdivision()) {
+			mesh->calcSubsurf();
+		}
+		
+		log("BodySettings loaded");
+	} else {
+		log("BodySettings load failed");
+	}
+}
+
+
+
+static void savePoses(const string &filename)
 {
 	Global &global = Global::instance();
 	Mesh *mesh = global.getMesh();
@@ -171,10 +217,42 @@ void savePoses(const string &filename)
 	}
 }
 
+static void loadPoses(const string &filename)
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	
+	BodySettings poses;
+	bool state = poses.load(filename);
+	
+	if (state) {
+		mesh->doPose(poses);
+		if (global.getSubdivision()) {
+			mesh->calcSubsurf();
+		}
+		log("Poses loaded");
+	} else {
+		log_err("Poses load failed");
+	}
+}
 
 
 
 
+void loadAnimation(const string &path)
+{
+	Global &global = Global::instance();
+	Animation *animation = global.getAnimation();
+	assert(animation);
+	
+	bool state = animation->load(path);
+	if (state) {
+		log("Animation loaded");
+	} else {
+		log_err("Animation load failed");
+	}
+}
 
 
 
@@ -239,8 +317,22 @@ void DisplayMainMenu()
 					// kConsoleMessage_Save_Animations, getMyPosesPath());
 				}
 			}
-			if(ImGui::MenuItem("Open", "Ctrl+O")) {
+			if(ImGui::MenuItem("Load bodysetting", "Ctrl+O")) {
 				
+				auto & global = Global::instance();
+				
+				if (global.getAppMode() == BODY_DETAILS ||
+				    global.getAppMode() == CHARACTER_SETTING ||
+				    global.getAppMode() == CLOTHES) {
+					
+					loadBodySettings("foo-BodySettings");
+				} else if (global.getAppMode() == POSES) {
+					
+					loadPoses("foo-Poses");
+				} else if (global.getAppMode() == ANIMATIONS) {
+
+					loadAnimation("foo-Animation");
+				}
 			}
 			if(ImGui::MenuItem("Save As..")) {
 				
