@@ -28,11 +28,7 @@
 #ifndef GLUTWRAPPER_H
 #define GLUTWRAPPER_H 1
 
-#ifdef USE_FREEGLUT
 #include <GL/freeglut.h>
-#else
-#include <GL/glut.h>
-#endif
 
 #if !defined(GLUT_WHEEL_UP)
   #define GLUT_WHEEL_UP    3

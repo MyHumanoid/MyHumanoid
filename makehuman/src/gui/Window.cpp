@@ -189,9 +189,7 @@ void Window::setDisplayCallback (void (*inDisplayCB)(void))
 
 void Window::setCloseCallback (void (*inCloseCB)(void))
 {
-#ifdef USE_FREEGLUT
   glutCloseFunc (inCloseCB);
-#endif
 }
 
 void Window::setMouseCallback (void (*inMouseCB) (int,int,int,int))
