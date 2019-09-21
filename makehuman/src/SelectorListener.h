@@ -42,14 +42,15 @@ using namespace mhgui;
 
 class SelectorListener : public AbstractListener
 {
-private:
+public:
 
   std::vector<string> ageLabels;
   std::vector<string> muscleSizeLabels;
   std::vector<string> breastLabels;
   std::vector<string> shapeLabels;
-
+  
   void calcWidgetTargets(Selector &selectorSource);
+  void calcWidgetTargetsFOO();
 
   Point oldPos;
 

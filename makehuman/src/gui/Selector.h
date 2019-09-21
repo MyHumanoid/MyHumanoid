@@ -57,7 +57,7 @@ class SelectorSysListener;
 class Selector : public Widget
 {
   //Textures
-private:
+public:
   Texture           texture;
   Texture           textureDisabled;
 

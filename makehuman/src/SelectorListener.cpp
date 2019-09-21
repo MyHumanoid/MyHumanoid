@@ -152,7 +152,31 @@ bool SelectorListener::keyType (unsigned char key, Component *source)
   return false;
 }
 
-void SelectorListener::calcWidgetTargets (Selector &selectorSource)
+void SelectorListener::calcWidgetTargets(Selector &selectorSource) {
+	
+	switch(selectorSource.getID())
+	{
+	case kComponentID_CharacterSettingPanel_Age:
+		ageDists = selectorSource.getDists();
+		break;
+		
+	case kComponentID_CharacterSettingPanel_MuscleSize:
+		muscleSizeDists = selectorSource.getDists();
+		break;
+		
+	case kComponentID_CharacterSettingPanel_Breast:
+		breastDists = selectorSource.getDists();
+		break;
+		
+	case kComponentID_CharacterSettingPanel_Shape:
+		shapeDists = selectorSource.getDists();
+		break;
+	}
+	
+	calcWidgetTargetsFOO();
+}
+
+void SelectorListener::calcWidgetTargetsFOO()
 {
   unsigned int i = 0;
   unsigned int j = 0;
@@ -160,25 +184,6 @@ void SelectorListener::calcWidgetTargets (Selector &selectorSource)
 
   Global &global = Global::instance ();
   Mesh *mesh = global.getMesh ();
-
-  switch(selectorSource.getID())
-  {
-    case kComponentID_CharacterSettingPanel_Age:
-      ageDists = selectorSource.getDists();
-      break;
-
-    case kComponentID_CharacterSettingPanel_MuscleSize:
-      muscleSizeDists = selectorSource.getDists();
-      break;
-
-    case kComponentID_CharacterSettingPanel_Breast:
-      breastDists = selectorSource.getDists();
-      break;
-
-    case kComponentID_CharacterSettingPanel_Shape:
-      shapeDists = selectorSource.getDists();
-      break;
-  }
 
 //std::cout << "--------------------------" << std::endl;
   vector<float>::const_iterator di_end = ageDists.end();
