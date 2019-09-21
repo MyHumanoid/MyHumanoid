@@ -145,7 +145,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 			// DialogPanel *dialogPanel;// = new DialogPanel (imgSource->getID ());
 
-			Window &mainWindow = Window::instance();
+			Window &mainWindow = *g_mainWindow;
 			imgSource->setOverlayRectangle(false);
 
 			switch (imgSource->getID()) {
@@ -623,7 +623,7 @@ void ImageListener::hidePanels(const Modes currentMode)
 
 void ImageListener::hideBodyDetails()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_BodyPanel);
 	mainWindow.removePanel(p);
 	delete p;
@@ -647,7 +647,7 @@ void ImageListener::hideBodyDetails()
 
 void ImageListener::hideCharacterSetting()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_CharacterSettingPanel);
 	mainWindow.removePanel(p);
 	delete p;
@@ -659,7 +659,7 @@ void ImageListener::hideCharacterSetting()
 
 void ImageListener::hidePoses()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_BodyPanel);
 	mainWindow.removePanel(p);
 	delete p;
@@ -671,7 +671,7 @@ void ImageListener::hidePoses()
 
 void ImageListener::hideClothes()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_ClothesPanel);
 	mainWindow.removePanel(p);
 	delete p;
@@ -683,7 +683,7 @@ void ImageListener::hideClothes()
 
 void ImageListener::hideUtilities()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_UtilitiesPanel);
 	mainWindow.removePanel(p);
 	delete p;
@@ -705,7 +705,7 @@ void ImageListener::hideUtilities()
 }
 void ImageListener::hideBsCategory()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_BsCategoryPanel);
 	mainWindow.removePanel(p);
 	delete p;
@@ -716,7 +716,7 @@ void ImageListener::hideBsCategory()
 }
 void ImageListener::hidePosesBsCategory()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_PosesBsCategoryPanel);
 	mainWindow.removePanel(p);
 	delete p;
@@ -730,7 +730,7 @@ void ImageListener::hidePosesBsCategory()
 
 void ImageListener::showCharacterSetting()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 
 	CharacterSettingPanel *characterSettingPanel = new CharacterSettingPanel();
 	mainWindow.addPanel(characterSettingPanel);
@@ -745,7 +745,7 @@ void ImageListener::showCharacterSetting()
 
 void ImageListener::showBodyDetails()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 
 	BodyPanel *bodyPanel = new BodyPanel();
 	mainWindow.addPanel(bodyPanel);
@@ -775,7 +775,7 @@ void ImageListener::showBodyDetails()
 
 void ImageListener::showPoses()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	PosesBodyPanel *posesPanel = new PosesBodyPanel();
 	mainWindow.addPanel(posesPanel);
 	posesPanel->createWidgets();
@@ -789,7 +789,7 @@ void ImageListener::showPoses()
 
 void ImageListener::showClothes()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	ClothesPanel *clothesPanel = new ClothesPanel();
 	mainWindow.addPanel(clothesPanel);
 	clothesPanel->createWidgets();
@@ -803,7 +803,7 @@ void ImageListener::showClothes()
 
 void ImageListener::showUtilities()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	UtilitiesPanel *utilitiesPanel = new UtilitiesPanel();
 	mainWindow.addPanel(utilitiesPanel);
 	utilitiesPanel->createWidgets();
@@ -832,7 +832,7 @@ void ImageListener::showUtilities()
 
 void ImageListener::showBsCategory()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	BsCategoryPanel *bsPanel = new BsCategoryPanel();
 	mainWindow.addPanel(bsPanel);
 	bsPanel->createWidgets();
@@ -846,7 +846,7 @@ void ImageListener::showBsCategory()
 
 void ImageListener::showPosesBsCategory()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	PosesBsCategoryPanel *posesBsPanel = new PosesBsCategoryPanel();
 	mainWindow.addPanel(posesBsPanel);
 	posesBsPanel->createWidgets();

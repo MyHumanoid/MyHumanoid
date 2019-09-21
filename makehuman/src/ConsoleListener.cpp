@@ -224,7 +224,7 @@ void ConsoleListener::parseCommand(Console &console)
 			}
 		} else if (cmd == kConsoleCommand_Save_Autozoom) {
 			if (arg.size() == 0) {
-				Window &mainWindow(Window::instance());
+				Window &mainWindow(*g_mainWindow);
 				TargetPanel *targetPanel = dynamic_cast<TargetPanel *>(
 				    mainWindow.getPanel(kComponentID_TargetPanel));
 				string target = targetPanel->getCategory();
@@ -367,7 +367,7 @@ void ConsoleListener::saveAnimation(Console& console, const string& path)
 void ConsoleListener::loadWindowBackground(Console &console,
                                            const string &filename)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	if (mainWindow.loadPNG(filename)) {
 		mainWindow.show();
 		console.printMessage(kConsoleMessage_Load_Background_Success);
@@ -383,7 +383,7 @@ void ConsoleListener::loadBodySettings(Console &console, const string &filename)
 	Global &global = Global::instance();
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 
 	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
 

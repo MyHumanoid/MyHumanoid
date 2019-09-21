@@ -51,7 +51,7 @@ BodyPanel::~BodyPanel()
 
 void BodyPanel::createWidgets()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 
 	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);

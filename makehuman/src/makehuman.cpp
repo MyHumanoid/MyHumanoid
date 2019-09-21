@@ -242,7 +242,7 @@ static void display()
 	if (Global::instance().getQuotedBox())
 		cgutils::mhWireCube(twopoints);
 
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	mainWindow.draw();
 
 	if (Global::instance().getDrawGrid()) {
@@ -294,7 +294,7 @@ static void display()
 
 static void reshape(int w, int h)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	mainWindow.reshape(Size(w, h), *camera);
 	camera->reshape(w, h);
 }
@@ -304,7 +304,7 @@ static void timerTrigger(int val)
 	(void)val;
 
 	bool tmp;
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 
 	tmp = camera->timerTrigger();
 	if (Global::instance().getSubdivision()) {
@@ -325,7 +325,7 @@ static void timerTrigger(int val)
 
 static void motion(int x, int y)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	splashPanel = (SplashPanel *)mainWindow.getPanel(kComponentID_SplashPanel);
 	if (splashPanel != NULL && splashMotionCount++ >= 5) {
 		mainWindow.removePanel(splashPanel);
@@ -341,7 +341,7 @@ static void motion(int x, int y)
 
 static void timerRendering(int value)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 
 	if (Global::instance().isRendering() && waitDisplay) {
 		waitDisplay = false;
@@ -356,7 +356,7 @@ static void timerRendering(int value)
 
 static void timer(int value)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 
 	if (animation->isStarted()) {
 		if (tickCount++ >=
@@ -371,7 +371,7 @@ static void timer(int value)
 
 static void special(int key)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	if (!mainWindow.isKeyTypePanel(key)) {
 		switch (key) {
 		case GLUT_KEY_UP:
@@ -393,7 +393,7 @@ static void special(int key)
 
 static void keyboard(unsigned char key)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	if (!mainWindow.isKeyTypePanel(key)) {
 		switch (toupper(key)) {
 		case '+':
@@ -479,7 +479,7 @@ static void keyboard(unsigned char key)
 
 static void mouse(int button, int state, int x, int y)
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	splashPanel = (SplashPanel *)mainWindow.getPanel(kComponentID_SplashPanel);
 	if (splashPanel != NULL) {
 		mainWindow.removePanel(splashPanel);
@@ -560,7 +560,7 @@ static void mouse(int button, int state, int x, int y)
 
 static void closeWindow()
 {
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	if (console->isActive()) {
 		console->close();
 	}
@@ -577,7 +577,7 @@ static void activeMotion(int x, int y)
 		return;
 	}
 
-	Window &mainWindow(Window::instance());
+	Window &mainWindow(*g_mainWindow);
 	if (!mainWindow.isMouseDraggedPanel(Point(x, y))) {
 		if (right_button_down) {
 			camera->moveMouse(x, y);
@@ -623,9 +623,10 @@ int main(int argc, char **argv)
 	
 	Rect mainWinRect = Rect(mainWinPosX, mainWinPosY, mainWinSizeX, mainWinSizeY);
 	
-	mhgui::Window::createSingelton(mainWinRect,
-	                               "MakeHuman 0.9.1 RC1", Color(0, 0, 0));
-	Window &mainWindow(Window::instance());
+	g_mainWindow = new mhgui::Window(mainWinRect,
+	                                 "MakeHuman 0.9.1 RC1", Color(0, 0, 0));
+	
+	Window &mainWindow(*g_mainWindow);
 	
 	mainWindow.setPosition(mhgui::Point(
 		mainWinPosX,
@@ -939,7 +940,7 @@ int main(int argc, char **argv)
 	ImGui::DestroyContext();
 	
 	{
-		Window &w = Window::instance();
+		Window &w = *g_mainWindow;
 
 		g_jsonConfig["mainWindow"]["pos"] = {
 			g_mainWindowPosX,

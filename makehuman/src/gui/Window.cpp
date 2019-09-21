@@ -46,6 +46,9 @@ using namespace Animorph;
 namespace mhgui
 {
 
+Window *g_mainWindow;
+
+
 // Remember the key modifier within the glutMouseFunc callback
 static int sKeyModifier = 0; // No modifier pressed at init
 
@@ -85,17 +88,6 @@ int getKeyModifiers()
 {
 	// Return the last remembered keyboard modifier (see mouseCallbackWrapper)
 	return sKeyModifier;
-}
-
-Window *Window::w_singleton = NULL;
-
-Window *Window::createSingelton(Rect &rect, const char *inTitle, const Color &inBgColor)
-{
-	if (w_singleton == NULL) {
-		w_singleton =
-		    new mhgui::Window(rect, inTitle, inBgColor);
-	}
-	return w_singleton;
 }
 
 // Constructor

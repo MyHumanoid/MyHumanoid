@@ -155,7 +155,7 @@ bool PosesBsSelectionListener::mouseReleased(const Point &inMousePos,
 		}
 
 		if (!character.empty()) {
-			Window &mainWindow = Window::instance();
+			Window &mainWindow = *g_mainWindow;
 			Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
 			mainWindow.removePanel(p);
 			delete p;

@@ -153,7 +153,7 @@ bool BsSelectionListener::mouseReleased(const Point &inMousePos, int button,
 		}
 
 		if (!character.empty()) {
-			Window &mainWindow = Window::instance();
+			Window &mainWindow = *g_mainWindow;
 			BsPanel *bsPanel = dynamic_cast<BsPanel *>(
 			    mainWindow.getPanel(kComponentID_TargetPanel));
 

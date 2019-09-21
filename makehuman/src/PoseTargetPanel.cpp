@@ -64,7 +64,7 @@ PoseTargetPanel::~PoseTargetPanel()
 void PoseTargetPanel::createWidgets()
 {
 	Global &global = Global::instance();
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 
 	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);

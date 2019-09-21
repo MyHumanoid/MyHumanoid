@@ -356,7 +356,7 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 			break;
 		}
 
-		Window &mainWindow = Window::instance();
+		Window &mainWindow = *g_mainWindow;
 		Global &global = Global::instance();
 
 		if (global.getAppMode() == CLOTHES) {

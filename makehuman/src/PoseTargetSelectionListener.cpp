@@ -323,7 +323,7 @@ bool PoseTargetSelectionListener::mouseReleased(const Point &inMousePos,
 			break;
 		}
 
-		Window &mainWindow = Window::instance();
+		Window &mainWindow = *g_mainWindow;
 
 		PoseTargetPanel *targetPanel = dynamic_cast<PoseTargetPanel *>(
 		    mainWindow.getPanel(kComponentID_TargetPanel));

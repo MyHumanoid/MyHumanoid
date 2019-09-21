@@ -1045,7 +1045,7 @@ void renderingStep()
 		current_step++;
 
 		Global &global = Global::instance();
-		Window &mainWindow = Window::instance();
+		Window &mainWindow = *g_mainWindow;
 
 		Mesh *mesh = global.getMesh();
 		assert(mesh);
@@ -1090,8 +1090,8 @@ void renderingStep()
 		}
 	} else {
 		Global::instance().setRendering(false);
-
-		Window::instance().getConsole()->close();
+		
+		g_mainWindow->getConsole()->close();
 		cgutils::redisplay();
 	}
 }
@@ -2063,7 +2063,7 @@ void loadDefaultBodySettings()
 	Global &global = Global::instance();
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 
 	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
 

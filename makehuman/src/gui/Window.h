@@ -62,9 +62,6 @@ int getKeyModifiers();
 /// Object oriented interface to a GLUT window
 class Window : public Component
 {
-
-private:
-	static Window *w_singleton;
 	string title;
 	bool fullscreen;
 	Color c;
@@ -82,21 +79,16 @@ private:
 	Camera *inCamera;
 	Console *console;
 	int mWindowId; ///< The GLUT Window ID;
-
-	// Constructor is private, because this is a singleton
+	
+public:
 	Window(const Rect &rect, const char *t, const Color &c);
 	virtual ~Window();
-
-	Window &operator=(Window &); // Disallowed
-	Window(const Window &);      // Disallowed
+	
+	Window &operator=(Window &) = delete;
+	Window(const Window &) = delete;
 
 	void drawConsole();
 	void drawPanels();
-
-public:
-	static Window *createSingelton(Rect &rect, const char *inTitle, const Color &inBgColor);
-
-	static Window &instance() { return *w_singleton; }
 
 	void drawBackground();
 
@@ -139,6 +131,8 @@ public:
 	virtual void show();
 	virtual void hide();
 };
+
+extern Window *g_mainWindow;
 
 void mouseCallbackWrapper(int inButton, int inState, int inX, int inY);
 

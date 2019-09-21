@@ -52,7 +52,7 @@ UtilitiesPanel::~UtilitiesPanel()
 
 void UtilitiesPanel::createWidgets()
 {
-	Window &mainWindow = Window::instance();
+	Window &mainWindow = *g_mainWindow;
 	Global &global = Global::instance();
 	Animation *animation = global.getAnimation();
 
