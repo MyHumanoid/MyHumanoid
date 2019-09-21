@@ -28,18 +28,10 @@
 #ifndef GLUTWRAPPER_H
 #define GLUTWRAPPER_H 1
 
-#if defined(__APPLE__) && defined(__MACH__)
-  #ifdef USE_FREEGLUT
-    #include <GLUT/freeglut.h>
-  #else
-    #include <GLUT/glut.h>
-  #endif
+#ifdef USE_FREEGLUT
+#include <GL/freeglut.h>
 #else
-  #ifdef USE_FREEGLUT
-    #include <GL/freeglut.h>
-  #else
-    #include <GL/glut.h>
-  #endif
+#include <GL/glut.h>
 #endif
 
 #if !defined(GLUT_WHEEL_UP)

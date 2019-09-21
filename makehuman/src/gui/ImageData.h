@@ -38,17 +38,7 @@
 
 #include "Texture.h"
 
-#ifndef __APPLE__
-    #define USE_PNGLIB
-#else
-    /* On OS X: Decide: Use pnglib or coregraphics
-     * The following define uses the pnglib but you must make sure that this lib
-     * is installed on your Mac! It is not when you are using OS-X "out of the box!"
-     * So, better leave this commented out! ;-) */
-
-//    #define USE_PNGLIB
-#endif
-
+#define USE_PNGLIB
 
 #if defined(USE_PNGLIB)
   #include <png.h>
@@ -90,11 +80,7 @@ private:
   const void*   getData   () const;
 
 private:
-    #if defined(USE_PNGLIB)
-        bool pngLoadPNGLib(const string& filename);
-    #elif defined(__APPLE__) && defined(__MACH__)
-        bool pngLoadOSX(const string& filename);
-    #endif
+    bool pngLoadPNGLib(const string& filename);
 };
 
 } // namespace mhgui

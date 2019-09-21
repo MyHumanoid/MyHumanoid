@@ -41,13 +41,8 @@
     #include <windows.h>
     #include <winbase.h>
 #else
-#if defined(__APPLE__) && defined(__MACH__)
-    #include "MACFileUtils.h"
-#else
     #include "signal.h"
     #include <sys/wait.h>
-#endif
-
 #endif
 
 #ifndef _WIN32
@@ -62,68 +57,7 @@ extern int errno; // for error return of _spawn
 
 #define USE_NEW_PATH 1
 
-#if defined(__APPLE__) && defined(__MACH__)
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
-class AQSISEnvSetter
-{
-public:
-    AQSISEnvSetter(const string& inAQSISBasePath)
-    : mBasePath(inAQSISBasePath)
-    {
-        setEnvs();
-    }
-
-private:
-    void setEnvs();
-
-private:
-    string mBasePath;
-
-/*
- export AQSIS_BASE_PATH=/Applications/Graphics/MacAqsis.0.9.1
- export AQSIS_SHADERS_PATH=$AQSIS_BASE_PATH/aqsis/share/shaders
- export AQSIS_DISPLAYS_PATH=$AQSIS_BASE_PATH/aqsis/share/displays
- export AQSIS_ARCHIVES_PATH=$AQSIS_BASE_PATH/aqsis/share/archives
- export AQSIS_TEXTURES_PATH=$AQSIS_BASE_PATH/aqsis/share/textures
- export AQSIS_DSO_LIBS=$AQSIS_BASE_PATH/aqsis/share/dso
- export AQSIS_CONFIG_PATH=$AQSIS_BASE_PATH/etc
- export AQSIS_CONFIG=$AQSIS_CONFIG_PATH/.aqsisrc
- export PATH=$PATH:$AQSIS_BASE_PATH/bin
-*/
-}; // class AQSISEnvSetter
-
-/* @rerurn true on success, false otherwise */
-static bool setEnv(const char *inEnvName, const string& inValue)
-{
-    return (::setenv(inEnvName, inValue.c_str(), 1) == 0);
-}
-
-
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
-void AQSISEnvSetter::setEnvs()
-{
-    setEnv("AQSIS_BASE_PATH",     mBasePath);
-    setEnv("AQSIS_SHADERS_PATH",  mBasePath + "/share/aqsis/shaders");
-    setEnv("AQSIS_DISPLAYS_PATH", mBasePath + "/share/aqsis/displays");
-    setEnv("AQSIS_ARCHIVES_PATH", mBasePath + "/share/aqsis/archives");
-    setEnv("AQSIS_TEXTURES_PATH", mBasePath + "/share/aqsis/textures");
-    setEnv("AQSIS_DSO_LIBS",      mBasePath + "/share/aqsis/dso");
-    setEnv("AQSIS_CONFIG_PATH",   mBasePath + "/etc");
-    setEnv("AQSIS_CONFIG",        mBasePath + "/etc/.aqsisrc");
-}
-
-    const string aqsis_base_path         ("/Applications/Graphics/MacAqsis.0.9.1/");
-    const string aqsis_bin               ("bin/");
-
-    const string pixie_base_path         ("/Applications/Graphics/Pixie/");
-    const string pixie_bin               ("bin/");
-#elif defined(_WIN32)
+#if defined(_WIN32)
 //    const string aqsis_base_path         ("");
 //    const string aqsis_bin               ("");
     #ifdef USE_NEW_PATH
@@ -567,12 +501,8 @@ const StringVector getPixmapsAlternatives (const string& pixmap)
 {
   StringVector name_vector;
 
-#if defined(__APPLE__) && defined(__MACH__)
-  name_vector.push_back ("../Resources/pixmaps/" + pixmap);
-#else
   name_vector.push_back ("pixmaps" + PATH_SEPARATOR + pixmap);
   name_vector.push_back (".." + PATH_SEPARATOR + "pixmaps" + PATH_SEPARATOR + pixmap);
-#endif
 
 #ifdef _WIN32
   name_vector.push_back (getEXEDir ());
@@ -588,12 +518,8 @@ const StringVector getDataAlternatives (const string& data)
 {
   StringVector name_vector;
 
-#if defined(__APPLE__) && defined(__MACH__)
-  name_vector.push_back ("../Resources/data/" + data);
-#else
   name_vector.push_back ("data" + PATH_SEPARATOR + data);
   name_vector.push_back (".." + PATH_SEPARATOR + "data" + PATH_SEPARATOR +data);
-#endif
 
 #ifdef _WIN32
   name_vector.push_back (getEXEDir ());
@@ -609,12 +535,8 @@ const StringVector getBackgroundsAlternatives (const string& data)
 {
   StringVector name_vector;
 
-#if defined(__APPLE__) && defined(__MACH__)
-  name_vector.push_back ("../Resources/backgrounds/" + data);
-#else
   name_vector.push_back ("backgrounds" + PATH_SEPARATOR + data);
   name_vector.push_back (".." + PATH_SEPARATOR + "backgrounds" + PATH_SEPARATOR + data);
-#endif
 
 #ifdef _WIN32
   name_vector.push_back (getEXEDir ());
@@ -693,9 +615,6 @@ static const string getEXEDir ()
 
 const string getHomeDir ()
 {
-#if defined(__APPLE__) && defined(__MACH__)
-    return getCurrentUserHomeFolderPath() + "/"; // call of MACFileUtils
-#endif
 
 #ifndef _WIN32
   uid_t uid;
@@ -754,11 +673,7 @@ const string getHomeDir ()
    dir. */
 const string getUserWorkDir()
 {
-#if defined(__APPLE__) && defined(__MACH__)
-    return getUsersDocumentsFolderPath() + "/";
-#else
     return getHomeDir();
-#endif
 }
 
 
@@ -1023,10 +938,6 @@ void rendering(Window &mainWindow, const RenderType type)
 
   if( ExecuteCommand(NMT, GetAqsisRender() , GetAqsisVersionOpt()) == true)
   {
-
-#if defined(__APPLE__) && defined(__MACH__)
-    AQSISEnvSetter aqsisEnv(aqsis_base_path);
-#endif // defined(__APPLE__) && defined(__MACH__)
 
     render = GetAqsisRender();
     options = aqsis_render_opt;

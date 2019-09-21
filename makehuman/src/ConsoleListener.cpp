@@ -621,27 +621,6 @@ void ConsoleListener::saveBodySettings(Console& console, const string& filename)
   BodySettings bodyset = mesh->getBodySettings ();
   FaceGroup   &clothesgroup  (mesh->getClothesGroupRef ());
 
-#if defined(__APPLE__) && defined(__MACH__)
-
-/* This piece of code has been tested on Mac OS X only!
- * On OS X the bodysettings (and all user specific settings as well) will be
- * are supposed to be saved to the Users Document folder in a directory named
- * makehuman.
- *
- * Since this directory does not exists the first time so we'll need to create
- * one.
- */
-
-  // First create a directory at the given location if it does not exists
-
-  string path(FileTools::getFilePath(filename));
-  if (!FileTools::fileExists(path))
-  {
-    bool rc = FileTools::makeDirHier(path);
-    assert(rc == true);
-  }
-#endif // MAC OS X specific code
-
   bool state = bodyset.save (filename);
 
   if(state)
@@ -672,26 +651,6 @@ void ConsoleListener::savePoses(Console& console, const string& filename)
   assert (mesh);
 
   BodySettings poses = mesh->getPoses ();
-
-#if defined(__APPLE__) && defined(__MACH__)
-/* This piece of code has been tested on Mac OS X only!
- * On OS X the poses (and all user specific settings as well) will be
- * are supposed to be saved to the Users Document folder in a directory named
- * makehuman.
- *
- * Since this directory does not exists the first time so we'll need to create
- * one.
- */
-
-  // First create a directory at the given location if it does not exists
-
-  string path(FileTools::getFilePath(filename));
-  if (!FileTools::fileExists(path))
-  {
-    bool rc = FileTools::makeDirHier(path);
-    assert(rc == true);
-  }
-#endif // MAC OS X specific code
 
   bool state = poses.save (filename);
 
