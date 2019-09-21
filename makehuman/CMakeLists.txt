@@ -133,8 +133,6 @@ set(makehuman_sources
 	src/UtilitiesPanel.h
 	src/UtilitiesSliderListener.cpp
 	src/UtilitiesSliderListener.h
-	src/UtilitybarPanel.cpp
-	src/UtilitybarPanel.h
 	src/ViewPanel.cpp
 	src/ViewPanel.h
 )

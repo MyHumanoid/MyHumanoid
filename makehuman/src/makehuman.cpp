@@ -71,7 +71,6 @@
 #include "TargetPanel.h"
 #include "ToolbarPanel.h"
 #include "TooltipPanel.h"
-#include "UtilitybarPanel.h"
 #include "ViewPanel.h"
 #include "util.h"
 
@@ -91,7 +90,6 @@ static void renderSubsurf();
 static ConsoleListener *consoleListener;
 static TooltipPanel *tooltipPanel;
 static ToolbarPanel *toolbarPanel;
-static UtilitybarPanel *utilitybarPanel;
 static FooterPanel *footerPanel;
 static ViewPanel *viewPanel;
 static BottomPanel *bottomPanel;
@@ -740,7 +738,6 @@ int main(int argc, char **argv)
 	ExportConfigurationXML();
 	tooltipPanel = new TooltipPanel(mainWindow.getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();
-	utilitybarPanel = new UtilitybarPanel();
 	footerPanel = new FooterPanel(mainWindow.getSize().getHeight());
 	viewPanel = new ViewPanel(mainWindow.getSize().getHeight());
 	bottomPanel = new BottomPanel();
@@ -873,7 +870,6 @@ int main(int argc, char **argv)
 	// Add panels to mainwindow
 	mainWindow.addPanel(tooltipPanel);
 	mainWindow.addPanel(toolbarPanel);
-	mainWindow.addPanel(utilitybarPanel);
 	mainWindow.addPanel(footerPanel);
 	mainWindow.addPanel(viewPanel);
 	mainWindow.addPanel(bottomPanel);
@@ -887,7 +883,6 @@ int main(int argc, char **argv)
 	// create after adding
 	tooltipPanel->createWidgets();
 	toolbarPanel->createWidgets();
-	utilitybarPanel->createWidgets();
 	footerPanel->createWidgets();
 	viewPanel->createWidgets();
 	bottomPanel->createWidgets();
@@ -899,7 +894,6 @@ int main(int argc, char **argv)
 	// Activate the images textures
 	// Note it's after context creation
 	toolbarPanel->show_all();
-	utilitybarPanel->show_all();
 	footerPanel->show_all();
 	viewPanel->show_all();
 	tooltipPanel->show_all();
