@@ -36,13 +36,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include <png.h>
+
 #include "Texture.h"
 
-#define USE_PNGLIB
-
-#if defined(USE_PNGLIB)
-  #include <png.h>
-#endif
 
 using std::string;
 
