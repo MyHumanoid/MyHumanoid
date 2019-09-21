@@ -1,7 +1,7 @@
-MyHuman
-=======
+MyHumanoid
+==========
 
-MyHuman is a modernized fork of the original MakeHuman version 0.9.1
+MyHumanoid is a modernized fork of MakeHuman 0.9.1
 
 Install dependencies under Debian and derivatives e.g. Ubuntu
 
