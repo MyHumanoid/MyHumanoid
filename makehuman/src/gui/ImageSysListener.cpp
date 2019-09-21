@@ -27,75 +27,77 @@
 
 #include "gui/ImageSysListener.h"
 #include "gui/CGUtilities.h"
-#include "gui/Image.h"
 #include "gui/GLUTWrapper.h"
+#include "gui/Image.h"
 
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 #include <iostream>
 
 using namespace Animorph;
 using namespace std;
 
-namespace mhgui {
+namespace mhgui
+{
 
 ImageSysListener::ImageSysListener()
     : AbstractListener()
 {
 }
 
-ImageSysListener::~ImageSysListener()
+ImageSysListener::~ImageSysListener() {}
+
+bool ImageSysListener::mouseOver(const Point &inMousePos, Component *source)
 {
+	cgutils::redisplay();
+
+	return false;
 }
 
-bool ImageSysListener::mouseOver (const Point& inMousePos, Component *source)
+bool ImageSysListener::mouseOut(const Point &inMousePos, Component *source)
 {
-  cgutils::redisplay();
+	cgutils::redisplay();
 
-  return false;
+	return false;
 }
 
-bool ImageSysListener::mouseOut (const Point& inMousePos, Component *source)
+bool ImageSysListener::mouseDragged(const Point &inMousePos, Component *source)
 {
-  cgutils::redisplay();
-
-  return false;
+	return false;
 }
 
-bool ImageSysListener::mouseDragged (const Point& inMousePos, Component *source)
+bool ImageSysListener::mouseWheel(const Point &inMousePos, int inButton,
+                                  Component *source)
 {
-  return false;
+	return false;
 }
 
-bool ImageSysListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool ImageSysListener::mousePressed(const Point &inMousePos, int button,
+                                    Component *source)
 {
-  return false;
+	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
+
+	imgSource->setActive(true);
+	imgSource->setClickConsumed(false);
+
+	return false;
 }
 
-bool ImageSysListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool ImageSysListener::mouseReleased(const Point &inMousePos, int button,
+                                     Component *source)
 {
-  Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
+	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
 
-  imgSource->setActive(true);
-  imgSource->setClickConsumed(false);
+	imgSource->setActive(false);
+	imgSource->setClickConsumed(false);
 
-  return false;
+	return false;
 }
 
-bool ImageSysListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool ImageSysListener::keyType(unsigned char key, Component *source)
 {
-  Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
-
-  imgSource->setActive(false);
-  imgSource->setClickConsumed(false);
-
-  return false;
-}
-
-bool ImageSysListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }
 } // namespace mhgui

@@ -29,26 +29,27 @@
 #define CONSOLE_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include <animorph/Color.h>
-#include "Widget.h"
+#include "GLUTWrapper.h"
 #include "ImageData.h"
 #include "Point.h"
 #include "Texture.h"
-#include "GLUTWrapper.h"
+#include "Widget.h"
+#include <animorph/Color.h>
+#include <string>
 
-#define LINE_SPACE             20
-#define MAX_SPLASH_LINES       5
+#define LINE_SPACE 20
+#define MAX_SPLASH_LINES 5
 
-using std::string;
 using Animorph::Color;
+using std::string;
 
-typedef void* FontType;
+typedef void *FontType;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Point;
 
@@ -56,105 +57,102 @@ class Point;
 class Console : public Widget
 {
 protected:
-  //Texture
-  Texture     texture;
+	// Texture
+	Texture texture;
 
-  Color backgroundColor; // set background transparency with alpha component of this variable
-  Color foregroundColor;
-  Color cmdForegroundColor;
-  Color splashForegroundColor;
+	Color backgroundColor; // set background transparency with alpha component of
+	                       // this variable
+	Color foregroundColor;
+	Color cmdForegroundColor;
+	Color splashForegroundColor;
 
-  string command;        // command code
-  string commandLine;    // full command line
-  string inputMessage;   // input text request
-  string message;        // op result message
-  string userText;       // user input
+	string command;      // command code
+	string commandLine;  // full command line
+	string inputMessage; // input text request
+	string message;      // op result message
+	string userText;     // user input
 
-  string commandPrompt;
-  unsigned int commandPromptLength;
+	string commandPrompt;
+	unsigned int commandPromptLength;
 
-  list <string> splashLines;
+	list<string> splashLines;
 
-  bool image_loaded;
-  unsigned int userTextMaxLength;
-  unsigned int status;
-  bool inError;
+	bool image_loaded;
+	unsigned int userTextMaxLength;
+	unsigned int status;
+	bool inError;
 
-  Point cursorPos;
+	Point cursorPos;
 
-  void drawSplashInfo();
-  void drawPrompt();
-  void drawCommandLine();
-  void drawInputMessage();
-  void drawMessage();
-  void clear();
+	void drawSplashInfo();
+	void drawPrompt();
+	void drawCommandLine();
+	void drawInputMessage();
+	void drawMessage();
+	void clear();
+
 public:
-           Console (uint32_t);
-  virtual ~Console () {}
+	Console(uint32_t);
+	virtual ~Console() {}
 
-  enum Status
-  {
-    PROMPT,
-    INPUT,
-    MESSAGE,
-    INPUT_MESSAGE
-  };
+	enum Status { PROMPT, INPUT, MESSAGE, INPUT_MESSAGE };
 
-  void setBackgroundColor (Animorph::Color c);
-  void setForegroundColor (Animorph::Color c);
-  void setCmdForegroundColor (Animorph::Color c);
-  void setSplashForegroundColor (Animorph::Color c);
+	void setBackgroundColor(Animorph::Color c);
+	void setForegroundColor(Animorph::Color c);
+	void setCmdForegroundColor(Animorph::Color c);
+	void setSplashForegroundColor(Animorph::Color c);
 
-  void setUserTextMaxLength (unsigned int len);
+	void setUserTextMaxLength(unsigned int len);
 
-  void close ();
-  void open ();
-  void openWithCommand(const string& inCmd, const string& inMessage, const string& defUserText);
-  void printMessage(const string& msg);
+	void close();
+	void open();
+	void openWithCommand(const string &inCmd, const string &inMessage,
+	                     const string &defUserText);
+	void printMessage(const string &msg);
 
-  void addUserText (const char text);
-  void removeUserText();
-  void setUserText (const string& text);
-  const string getUserText() const;
-  void setCommand (const string& text);
-  const string getCommand() const;
-  void setCommandLine (const string& text);
-  void setInputMessage (const string& text);
-  void setMessage (const string& text);
-  void setStatus (unsigned int inStatus);
-  const unsigned int getStatus() const;
-  void setError(const bool inErr) {inError = inErr;}
-  const bool isInError() const {return inError;}
+	void addUserText(const char text);
+	void removeUserText();
+	void setUserText(const string &text);
+	const string getUserText() const;
+	void setCommand(const string &text);
+	const string getCommand() const;
+	void setCommandLine(const string &text);
+	void setInputMessage(const string &text);
+	void setMessage(const string &text);
+	void setStatus(unsigned int inStatus);
+	const unsigned int getStatus() const;
+	void setError(const bool inErr) { inError = inErr; }
+	const bool isInError() const { return inError; }
 
-  void setCommandPrompt (const string& inCommandPrompt);
-  void inputMode(const string& inputMessage, const string& defaultText);
+	void setCommandPrompt(const string &inCommandPrompt);
+	void inputMode(const string &inputMessage, const string &defaultText);
 
-  void addSplashLine(const string& line);
-  void clearSplash();
+	void addSplashLine(const string &line);
+	void clearSplash();
 
-  void retryCommand();
+	void retryCommand();
 
-  virtual bool isMouseOver    (const Point& inMousePos);
-  virtual bool isMouseClick   (const Point& inMousePos, int button, int state);
-  virtual bool isMouseDragged (const Point& inMousePos);
+	virtual bool isMouseOver(const Point &inMousePos);
+	virtual bool isMouseClick(const Point &inMousePos, int button, int state);
+	virtual bool isMouseDragged(const Point &inMousePos);
 
-  const Texture& getTextures(); //return the texture object
-  void loadPNG (const string& filename);
+	const Texture &getTextures(); // return the texture object
+	void loadPNG(const string &filename);
 
-  bool acceptUserInput();
+	bool acceptUserInput();
 
-  virtual void show ();
-  virtual void hide ();
-  virtual void draw ();
-  virtual void drawOverlay ();
+	virtual void show();
+	virtual void hide();
+	virtual void draw();
+	virtual void drawOverlay();
 
 private:
-  Console             (const Console&);
-  Console& operator = (const Console&);
+	Console(const Console &);
+	Console &operator=(const Console &);
 
-  FontType textFont;
+	FontType textFont;
 };
 
 } // namespace mhgui
 
-#endif //CONSOLE_H
+#endif // CONSOLE_H

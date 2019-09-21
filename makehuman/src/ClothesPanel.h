@@ -29,32 +29,32 @@
 #define CLOTHESPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <gui/Panel.h>
-#include <gui/Image.h>
-#include "util.h"
 #include "TargetSelectionListener.h"
+#include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::vector;
 
 class ClothesPanel : public Panel
 {
 public:
-  ClothesPanel ();
-  virtual ~ClothesPanel ();
+	ClothesPanel();
+	virtual ~ClothesPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  ClothesPanel             (const ClothesPanel&);
-  ClothesPanel& operator = (const ClothesPanel&);
+	ClothesPanel(const ClothesPanel &);
+	ClothesPanel &operator=(const ClothesPanel &);
 
 private:
-  TargetSelectionListener imgListener;
-  vector <Image*> imageVector;
+	TargetSelectionListener imgListener;
+	vector<Image *> imageVector;
 };
 
 #endif // CLOTHESPANEL_H

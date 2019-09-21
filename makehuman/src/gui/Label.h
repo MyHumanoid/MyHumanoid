@@ -29,20 +29,21 @@
 #define LABEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include <iostream>
-#include <animorph/Color.h>
-#include "Widget.h"
-#include "Panel.h"
 #include "CGUtilities.h"
+#include "Panel.h"
+#include "Widget.h"
+#include <animorph/Color.h>
+#include <iostream>
+#include <string>
 
 using Animorph::Color;
 using std::string;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Tooltip;
 
@@ -50,46 +51,46 @@ class Tooltip;
 class Label : public Widget
 {
 private:
-  Color backColor;
-  Color textColor;
-  string text;
-  FontType font;
-  bool autosize;
+	Color backColor;
+	Color textColor;
+	string text;
+	FontType font;
+	bool autosize;
 
-  // intentionally not implemented
-  Label           (const Label&);
-  Label& operator=(const Label&);
+	// intentionally not implemented
+	Label(const Label &);
+	Label &operator=(const Label &);
 
-  void calcAutoSize ();
+	void calcAutoSize();
 
 public:
-  Label (uint32_t inId, const Rect& inGeometry);
-  virtual ~Label();
+	Label(uint32_t inId, const Rect &inGeometry);
+	virtual ~Label();
 
-  // TODO: Background color not yet working!
-  void  setBackgroundColor (const Color& c) {backColor = c;}
-  const Color& getBackgroundColor () {return backColor;}
+	// TODO: Background color not yet working!
+	void setBackgroundColor(const Color &c) { backColor = c; }
+	const Color &getBackgroundColor() { return backColor; }
 
-  void setTextColor (const Color& c) {textColor = c;}
-  const Color& getTextColor () {return textColor;}
+	void setTextColor(const Color &c) { textColor = c; }
+	const Color &getTextColor() { return textColor; }
 
-  void setText (const string& text);
-  const string& getText () const {return text;}
+	void setText(const string &text);
+	const string &getText() const { return text; }
 
-  void setAutoSize (bool autosize);
-  bool getAutoSize () const {return autosize;}
+	void setAutoSize(bool autosize);
+	bool getAutoSize() const { return autosize; }
 
-  /*!
-   * @param font define a GLUT font
-   */
-  void setFont (FontType font) {this->font = font;}
+	/*!
+	 * @param font define a GLUT font
+	 */
+	void setFont(FontType font) { this->font = font; }
 
-  FontType getFont () const {return font;}
+	FontType getFont() const { return font; }
 
-  virtual void show ();
-  virtual void hide ();
-  virtual void draw ();
-  virtual void drawOverlay ();
+	virtual void show();
+	virtual void hide();
+	virtual void draw();
+	virtual void drawOverlay();
 };
 
 } // namespace mhgui

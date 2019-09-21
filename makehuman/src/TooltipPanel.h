@@ -29,30 +29,29 @@
 #define TOOLTIPPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
+#include "util.h"
 #include <gui/Image.h>
 #include <gui/Panel.h>
-#include "util.h"
 
 using namespace mhgui;
 
 class TooltipPanel : public Panel
 {
 public:
-  TooltipPanel (const int winHeight);
-  virtual ~TooltipPanel ();
+	TooltipPanel(const int winHeight);
+	virtual ~TooltipPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  TooltipPanel             (const TooltipPanel&);
-  TooltipPanel& operator = (const TooltipPanel&);
+	TooltipPanel(const TooltipPanel &);
+	TooltipPanel &operator=(const TooltipPanel &);
 
-  Image     *tooltip;
-  Image     *tooltipLabel;
-
+	Image *tooltip;
+	Image *tooltipLabel;
 };
 
 #endif // TOOLTIPPANEL_H

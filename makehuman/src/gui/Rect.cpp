@@ -27,6 +27,7 @@
 
 #include "gui/Rect.h"
 
-namespace mhgui {
+namespace mhgui
+{
 
 } // namespace mhgui

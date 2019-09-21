@@ -28,23 +28,24 @@
 #ifndef SKIN_H
 #define SKIN_H 1
 
-#include <vector>
-#include <string>
-#include <cstdio>
-#include "SkinVertex.h"
 #include "FileReader.h"
+#include "SkinVertex.h"
 #include "util.h"
+#include <cstdio>
+#include <string>
+#include <vector>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Loadable vector of SkinVertexes
  */
-class Skin : public std::vector <SkinVertex>
+class Skin : public std::vector<SkinVertex>
 {
 public:
-  bool load (const std::string& filename);
+	bool load(const std::string &filename);
 };
 
-}
+} // namespace Animorph
 
-#endif	// SKIN_H
+#endif // SKIN_H

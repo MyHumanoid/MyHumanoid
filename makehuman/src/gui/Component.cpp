@@ -29,13 +29,14 @@
 #include "gui/AbstractListener.h"
 #include "gui/GLUTWrapper.h"
 
-namespace mhgui {
+namespace mhgui
+{
 
 bool Component::operator==(const Component &inRHS) const
 {
-  if (this==&inRHS) // object identity?
-    return true;
-  return (id == inRHS.id);
+	if (this == &inRHS) // object identity?
+		return true;
+	return (id == inRHS.id);
 }
 
 /* ========================================================================== *
@@ -46,18 +47,19 @@ bool Component::operator==(const Component &inRHS) const
 /** ctor.
  */
 /* ========================================================================== */
-Component::Component (uint32_t          inId,
-                      const Rect&       inGeometry)
-    : id           (inId),
-    geometry     (inGeometry),
-    absoluteGeometry (inGeometry),
-    zeroPoint    (0, 0),
-    listener     (NULL), // No listener per default (use setListener())
-    sysListener  (NULL), // No sysListener per default (use setSysListener())
-    active       (false),
-    visible      (false),
-    clickConsumed(false),
-    mouseOver(false)
+Component::Component(uint32_t inId, const Rect &inGeometry)
+    : id(inId)
+    , geometry(inGeometry)
+    , absoluteGeometry(inGeometry)
+    , zeroPoint(0, 0)
+    , listener(NULL)
+    , // No listener per default (use setListener())
+    sysListener(NULL)
+    , // No sysListener per default (use setSysListener())
+    active(false)
+    , visible(false)
+    , clickConsumed(false)
+    , mouseOver(false)
 {
 }
 
@@ -65,167 +67,153 @@ Component::Component (uint32_t          inId,
 /** dtor.
  */
 /* ========================================================================== */
-Component::~Component()
+Component::~Component() {}
+
+void Component::setPosition(const Point &inPos)
 {
+	geometry.moveTo(inPos);
+
+	absoluteGeometry = geometry;
+	absoluteGeometry.moveBy(zeroPoint);
 }
 
-void Component::setPosition (const Point& inPos)
+void Component::setSize(const Size &inSize)
 {
-  geometry.moveTo(inPos);
-
-  absoluteGeometry = geometry;
-  absoluteGeometry.moveBy (zeroPoint);
+	absoluteGeometry.resizeTo(inSize);
+	geometry.resizeTo(inSize);
 }
 
-void Component::setSize (const Size& inSize)
+void Component::setRect(const Rect &inRect)
 {
-  absoluteGeometry.resizeTo(inSize);
-  geometry.resizeTo(inSize);
-}
+	absoluteGeometry = inRect;
+	absoluteGeometry.moveBy(zeroPoint);
 
-void Component::setRect (const Rect& inRect)
-{
-  absoluteGeometry = inRect;
-  absoluteGeometry.moveBy (zeroPoint);
-
-  geometry = inRect;
-}
-
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
-void Component::show()
-{
+	geometry = inRect;
 }
 
 /* ========================================================================== */
 /**
  */
 /* ========================================================================== */
-void Component::hide()
-{
-}
+void Component::show() {}
 
-void Component::setZeroPoint (const Point& inZero)
-{
-  zeroPoint = inZero;
+/* ========================================================================== */
+/**
+ */
+/* ========================================================================== */
+void Component::hide() {}
 
-  absoluteGeometry = geometry;
-  absoluteGeometry.moveBy (inZero);
+void Component::setZeroPoint(const Point &inZero)
+{
+	zeroPoint = inZero;
+
+	absoluteGeometry = geometry;
+	absoluteGeometry.moveBy(inZero);
 }
 
 /* ========================================================================== */
 /** Check if mouse over, and use the listener mouseover function.
  */
 /* ========================================================================== */
-bool Component::isMouseOver (const Point& inMousePos)
+bool Component::isMouseOver(const Point &inMousePos)
 {
-  bool isOver = false;
+	bool isOver = false;
 
-  if (absoluteGeometry.isHitBy(inMousePos))
-  {
-    if (sysListener)
-      sysListener->mouseOver (inMousePos, this);
+	if (absoluteGeometry.isHitBy(inMousePos)) {
+		if (sysListener)
+			sysListener->mouseOver(inMousePos, this);
 
-    if (listener)
-      isOver = listener->mouseOver (inMousePos, this);
+		if (listener)
+			isOver = listener->mouseOver(inMousePos, this);
 
-    mouseOver = true;
-  }
-  else if(mouseOver)
-  {
-    if (sysListener)
-      sysListener->mouseOut (inMousePos, this);
+		mouseOver = true;
+	} else if (mouseOver) {
+		if (sysListener)
+			sysListener->mouseOut(inMousePos, this);
 
-    if (listener)
-      listener->mouseOut (inMousePos, this);
+		if (listener)
+			listener->mouseOut(inMousePos, this);
 
-    mouseOver = false;
-  }
-  return isOver;
+		mouseOver = false;
+	}
+	return isOver;
 };
 
 /* ========================================================================== */
-/** Check if mouse click, and use the listener mousepressed or mousereleased function.
+/** Check if mouse click, and use the listener mousepressed or mousereleased
+ * function.
  */
 /* ========================================================================== */
-bool Component::isMouseClick (const Point& inMousePos, int button, int state)
+bool Component::isMouseClick(const Point &inMousePos, int button, int state)
 {
-  bool isClick = false;
-  bool isHit = absoluteGeometry.isHitBy(inMousePos);
+	bool isClick = false;
+	bool isHit = absoluteGeometry.isHitBy(inMousePos);
 
-//  if (absoluteGeometry.isHitBy(inMousePos))
-//  {
-    if ((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) && state == GLUT_DOWN && isHit)
-    {
-      if (sysListener)
-        sysListener->mousePressed(inMousePos, button, this);
+	//  if (absoluteGeometry.isHitBy(inMousePos))
+	//  {
+	if ((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) &&
+	    state == GLUT_DOWN && isHit) {
+		if (sysListener)
+			sysListener->mousePressed(inMousePos, button, this);
 
-      if (listener)
-        isClick = listener->mousePressed(inMousePos, button, this);
-    }
-    else if ((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) && state == GLUT_UP && isActive())
-    {
-      if (sysListener)
-        sysListener->mouseReleased(inMousePos, button, this);
+		if (listener)
+			isClick = listener->mousePressed(inMousePos, button, this);
+	} else if ((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) &&
+	           state == GLUT_UP && isActive()) {
+		if (sysListener)
+			sysListener->mouseReleased(inMousePos, button, this);
 
-      if (listener)
-        isClick = listener->mouseReleased(inMousePos, button, this);
-    }
-    else if ( (button == GLUT_WHEEL_DOWN  ||
-               button == GLUT_WHEEL_UP    ||
-               button == GLUT_WHEEL_RIGHT ||
-               button == GLUT_WHEEL_LEFT)
-               && isHit)
-    {
-      if (listener)
-        isClick = listener->mouseWheel(inMousePos, button, this);
+		if (listener)
+			isClick = listener->mouseReleased(inMousePos, button, this);
+	} else if ((button == GLUT_WHEEL_DOWN || button == GLUT_WHEEL_UP ||
+	            button == GLUT_WHEEL_RIGHT || button == GLUT_WHEEL_LEFT) &&
+	           isHit) {
+		if (listener)
+			isClick = listener->mouseWheel(inMousePos, button, this);
 
-      if (sysListener)
-        sysListener->mouseWheel(inMousePos, button, this);
-    }
+		if (sysListener)
+			sysListener->mouseWheel(inMousePos, button, this);
+	}
 
-//  }
-  else if (active==true) active=false;
+	//  }
+	else if (active == true)
+		active = false;
 
-  return isClick;
+	return isClick;
 };
 
 /* ========================================================================== */
 /** Check keyboard events.
  */
 /* ========================================================================== */
-bool Component::isKeyType (unsigned char key)
+bool Component::isKeyType(unsigned char key)
 {
-  bool isType = false;
-  if (isActive())
-  {
-    if (sysListener)
-      sysListener->keyType (key, this);
+	bool isType = false;
+	if (isActive()) {
+		if (sysListener)
+			sysListener->keyType(key, this);
 
-    if (listener)
-      isType = listener->keyType (key, this);
-  }
-  return isType;
+		if (listener)
+			isType = listener->keyType(key, this);
+	}
+	return isType;
 }
 
 /* ========================================================================== */
 /**
  */
 /* ========================================================================== */
-bool Component::isMouseDragged (const Point& inMousePos)
+bool Component::isMouseDragged(const Point &inMousePos)
 {
-  bool dragged = false;
-  if (isActive())
-  {
-    if (sysListener)
-      dragged = sysListener->mouseDragged (inMousePos, this);
+	bool dragged = false;
+	if (isActive()) {
+		if (sysListener)
+			dragged = sysListener->mouseDragged(inMousePos, this);
 
-    if (listener)
-      dragged = listener->mouseDragged (inMousePos, this);
-  }
-  return dragged;
+		if (listener)
+			dragged = listener->mouseDragged(inMousePos, this);
+	}
+	return dragged;
 }
 
 /* ========================================================================== */
@@ -234,23 +222,23 @@ bool Component::isMouseDragged (const Point& inMousePos)
 /* ========================================================================== */
 const string Component::getIDAsString() const
 {
-  char tmpBuffer[8];
-  tmpBuffer[4] = '\0';
+	char tmpBuffer[8];
+	tmpBuffer[4] = '\0';
 
 #if BYTE_ORDER == BIG_ENDIAN
-  tmpBuffer[0] = (uint8_t)(id>>24);
-  tmpBuffer[1] = (uint8_t)(id>>16);
-  tmpBuffer[2] = (uint8_t)(id>>8);
-  tmpBuffer[3] = (uint8_t)(id>>0);
+	tmpBuffer[0] = (uint8_t)(id >> 24);
+	tmpBuffer[1] = (uint8_t)(id >> 16);
+	tmpBuffer[2] = (uint8_t)(id >> 8);
+	tmpBuffer[3] = (uint8_t)(id >> 0);
 #elif BYTE_ORDER == LITTLE_ENDIAN
-  tmpBuffer[3] = (uint8_t)(id>>24);
-  tmpBuffer[2] = (uint8_t)(id>>16);
-  tmpBuffer[1] = (uint8_t)(id>>8);
-  tmpBuffer[0] = (uint8_t)(id>>0);
+	tmpBuffer[3] = (uint8_t)(id >> 24);
+	tmpBuffer[2] = (uint8_t)(id >> 16);
+	tmpBuffer[1] = (uint8_t)(id >> 8);
+	tmpBuffer[0] = (uint8_t)(id >> 0);
 #else
-#   error "Unknown endianess!"
+#error "Unknown endianess!"
 #endif
-  return string(tmpBuffer);
+	return string(tmpBuffer);
 }
 
 } // namespace mhgui

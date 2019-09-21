@@ -30,25 +30,25 @@
 #define RIBEXPORTER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
-#include <iostream>
+#include "FaceGroup.h"
+#include "Matrix.h"
+#include "Mesh.h"
+#include "util.h"
 #include <fstream>
 #include <iostream>
 #include <list>
-#include "Mesh.h"
-#include "Matrix.h"
-#include "util.h"
-#include "FaceGroup.h"
 
-using std::string;
+using std::ifstream;
 using std::list;
 using std::ostringstream;
-using std::ifstream;
+using std::string;
 
-namespace Animorph {
+namespace Animorph
+{
 
-typedef std::pair <string, string> StringPair;
+typedef std::pair<string, string> StringPair;
 
 /*! \brief Export Mesh objects as RenderMan Interface Bytestream
  *
@@ -58,48 +58,45 @@ typedef std::pair <string, string> StringPair;
 class RIBExporter
 {
 protected:
-  Mesh &mesh;
-  Matrix tm;
+	Mesh &mesh;
+	Matrix tm;
 
-/*
-  void createObjectStream (ostringstream &outStream,
-                           const string& basename);
-*/
-  void createObjectStream (ostringstream &out_stream,
-                           const FGroupData &facegroupdata,
-                           const VertexData &vertexgroupdata);
+	/*
+	  void createObjectStream (ostringstream &outStream,
+	                           const string& basename);
+	*/
+	void createObjectStream(ostringstream &out_stream,
+	                        const FGroupData &facegroupdata,
+	                        const VertexData &vertexgroupdata);
 
-  void replaceRIBTags (ifstream                &in_stream,
-                       ostringstream           &outStream,
-                       const list <StringPair> &replaceList);
+	void replaceRIBTags(ifstream &in_stream, ostringstream &outStream,
+	                    const list<StringPair> &replaceList);
 
 public:
-  /*!
-   * \param _mesh construct RIBExporter from a Mesh object
-   */
-  RIBExporter (Animorph::Mesh &_mesh) : mesh (_mesh)
-  {
-    tm.identity ();
-  }
+	/*!
+	 * \param _mesh construct RIBExporter from a Mesh object
+	 */
+	RIBExporter(Animorph::Mesh &_mesh)
+	    : mesh(_mesh)
+	{
+		tm.identity();
+	}
 
-  /*!
-   * \param tm the Matrix which transforms the Mesh before exporting
-   */
-  void setTransformationMatrix (const Matrix &tm) {this->tm = tm;}
+	/*!
+	 * \param tm the Matrix which transforms the Mesh before exporting
+	 */
+	void setTransformationMatrix(const Matrix &tm) { this->tm = tm; }
 
-  ///
-  /*!
+	///
+	/*!
 
-  */
-  bool exportFile (const string &outFile);
+	*/
+	bool exportFile(const string &outFile);
 
-  bool exportFile (const string            &templateDirectory,
-                   const string            &templateFile,
-                   const string            &outFile,
-                   const list <StringPair> &replaceList);
-
+	bool exportFile(const string &templateDirectory, const string &templateFile,
+	                const string &outFile, const list<StringPair> &replaceList);
 };
 
-}
+} // namespace Animorph
 
-#endif	// OBJEXPORTER_H
+#endif // OBJEXPORTER_H

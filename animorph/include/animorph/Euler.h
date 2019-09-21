@@ -30,45 +30,51 @@
 #define EULER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include "Vector3.h"
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents an Euler notation (3D rotation angles).
  */
 class Euler : public Vector3f
 {
 public:
-  enum Notation
-  {
-    XYZ
-  };
+	enum Notation { XYZ };
 
 private:
-  Notation n;
+	Notation n;
 
 public:
-  /// constructor for Euler with all components 0.
-  Euler (Notation n) : Vector3f (0,0,0), n(XYZ) {}
+	/// constructor for Euler with all components 0.
+	Euler(Notation n)
+	    : Vector3f(0, 0, 0)
+	    , n(XYZ)
+	{
+	}
 
-  /// constructor for Euler with tree components and Notation (in PI)
-  /*!
-   * \param x The rotation about the X-Axis (in PI).
-   * \param y The rotation about the Y-Axis (in PI).
-   * \param z The rotation about the Z-Axis (in PI).
-   * \param n A Notation for this three rotations.
-   */
-  Euler (float x, float y, float z, Notation n) : Vector3f (x, y, z), n (n) {}
+	/// constructor for Euler with tree components and Notation (in PI)
+	/*!
+	 * \param x The rotation about the X-Axis (in PI).
+	 * \param y The rotation about the Y-Axis (in PI).
+	 * \param z The rotation about the Z-Axis (in PI).
+	 * \param n A Notation for this three rotations.
+	 */
+	Euler(float x, float y, float z, Notation n)
+	    : Vector3f(x, y, z)
+	    , n(n)
+	{
+	}
 
-  /*!
-   * \return The Notation of this Euler angle.
-   */
-  Notation getNotation () {return n;}
+	/*!
+	 * \return The Notation of this Euler angle.
+	 */
+	Notation getNotation() { return n; }
 };
 
-}
+} // namespace Animorph
 
-#endif  // EULER_H
+#endif // EULER_H

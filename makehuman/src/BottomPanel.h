@@ -16,44 +16,44 @@
  *  along with this program; if not, write to the Free Software Foun-
  *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
  *  USA
- *  
+ *
  *  File   : BottomPanel.h
  *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
  *  App    : makehuman
  *
  *  For individual developers look into the AUTHORS file.
- *   
+ *
  */
 
 #ifndef BOTTOMPANEL_H
 #define BOTTOMPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
-#include <gui/Panel.h>
-#include <gui/Image.h>
 #include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
+#include <iostream>
 
 using namespace mhgui;
 
 class BottomPanel : public Panel
 {
 public:
-  BottomPanel ();
-  virtual ~BottomPanel ();
+	BottomPanel();
+	virtual ~BottomPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  BottomPanel             (const BottomPanel&);
-  BottomPanel& operator = (const BottomPanel&);
+	BottomPanel(const BottomPanel &);
+	BottomPanel &operator=(const BottomPanel &);
 
-  Image *frame1;
-  Image *frame2;
-  Image *frame3;  
+	Image *frame1;
+	Image *frame2;
+	Image *frame3;
 };
 
 #endif // BOTTOMPANEL_H

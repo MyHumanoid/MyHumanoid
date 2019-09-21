@@ -29,48 +29,49 @@
 #define CHARACTERSETTINGPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <gui/Panel.h>
-#include <gui/ImageSlider.h>
-#include <gui/Image.h>
-#include <gui/Selector.h>
-#include "util.h"
-#include "ImageListener.h"
 #include "BsSelectionListener.h"
-#include "TargetSlider.h"
+#include "ImageListener.h"
 #include "SelectorListener.h"
+#include "TargetSlider.h"
+#include "util.h"
+#include <gui/Image.h>
+#include <gui/ImageSlider.h>
+#include <gui/Panel.h>
+#include <gui/Selector.h>
+#include <vector>
 
 using std::vector;
 
 class CharacterSettingPanel : public Panel
 {
 public:
-  CharacterSettingPanel ();
-  virtual ~CharacterSettingPanel ();
+	CharacterSettingPanel();
+	virtual ~CharacterSettingPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
-  //void resetTargetValues(const string currentTarget = "");
+	// void resetTargetValues(const string currentTarget = "");
 
-  void resetSlidersValues() ;
-  void calcSelectorValues(uint32_t index);
+	void resetSlidersValues();
+	void calcSelectorValues(uint32_t index);
+
 private: // intentionally not implemented
-  CharacterSettingPanel             (const CharacterSettingPanel&);
-  CharacterSettingPanel& operator = (const CharacterSettingPanel&);
+	CharacterSettingPanel(const CharacterSettingPanel &);
+	CharacterSettingPanel &operator=(const CharacterSettingPanel &);
 
 public:
-  vector <Image*> imageVector;
-  vector <Selector*> selectorVector;
-  Selector *selector;
-  SelectorListener selectorListener;
-  
-  Selector * m_age;
-  Selector * m_muscleSize;
-   Selector * m_breast;
-   Selector * m_shape;
+	vector<Image *> imageVector;
+	vector<Selector *> selectorVector;
+	Selector *selector;
+	SelectorListener selectorListener;
+
+	Selector *m_age;
+	Selector *m_muscleSize;
+	Selector *m_breast;
+	Selector *m_shape;
 };
 
 #endif // CHARACTERSETTINGBODYPANEL_H

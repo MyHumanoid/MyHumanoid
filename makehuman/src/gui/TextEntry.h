@@ -29,74 +29,76 @@
 #define TEXTENTRY_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include "animorph/Color.h"
-#include "Widget.h"
 #include "Panel.h"
 #include "TextEntrySysListener.h"
+#include "Widget.h"
+#include "animorph/Color.h"
+#include <string>
 //#include "ImageData.h"
 
 using Animorph::Color;
 using std::string;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Tooltip;
-
 
 /** \brief Single line input field widget
  */
 class TextEntry : public Widget
 {
 private:
-  Color overlay;
-  Color backColor;
-  Color textColor;
-  Color borderColor;
-  TextEntrySysListener *textEntrySysListener;
-  bool overlayEffect;
-  string text;
+	Color overlay;
+	Color backColor;
+	Color textColor;
+	Color borderColor;
+	TextEntrySysListener *textEntrySysListener;
+	bool overlayEffect;
+	string text;
 
-  // intentionally not implemented
-  TextEntry           (const TextEntry&);
-  TextEntry& operator=(const TextEntry&);
+	// intentionally not implemented
+	TextEntry(const TextEntry &);
+	TextEntry &operator=(const TextEntry &);
 
 public:
-  TextEntry (uint32_t inId, const Rect& inGeometry);
-  virtual ~TextEntry();
+	TextEntry(uint32_t inId, const Rect &inGeometry);
+	virtual ~TextEntry();
 
-  void  setBackgroundColor (const Color& c) {backColor = c;}
-  const Color& getBackgroundColor () const {return backColor;}
+	void setBackgroundColor(const Color &c) { backColor = c; }
+	const Color &getBackgroundColor() const { return backColor; }
 
-  void setTextColor (const Color& c) {textColor = c;}
-  const Color& getTextColor () const {return textColor;}
+	void setTextColor(const Color &c) { textColor = c; }
+	const Color &getTextColor() const { return textColor; }
 
-  void setBorderColor (const Color& c) {borderColor = c;}
-  const Color& getBorderColor () const {return borderColor;}
+	void setBorderColor(const Color &c) { borderColor = c; }
+	const Color &getBorderColor() const { return borderColor; }
 
-  /*!
-   * Set the Color for the overlay rectangle. The overlay is enabled at this time.
-   * @param c The color for the overlay. Transparency is set by the alpha component.
-   */
-  void setOverlayRectangle (const Color& c);
+	/*!
+	 * Set the Color for the overlay rectangle. The overlay is enabled at this
+	 * time.
+	 * @param c The color for the overlay. Transparency is set by the alpha
+	 * component.
+	 */
+	void setOverlayRectangle(const Color &c);
 
-  void setOverlayRectangle (bool overlayEffect);
+	void setOverlayRectangle(bool overlayEffect);
 
-  void setText (const string& text) {this->text = text;}
-  const string& getText () const {return text;}
+	void setText(const string &text) { this->text = text; }
+	const string &getText() const { return text; }
 
-  void addChar (const char c);
-  void removeChar ();
+	void addChar(const char c);
+	void removeChar();
 
-  virtual void show ();
-  virtual void hide ();
-  virtual void draw ();
-  virtual void drawOverlay ();
+	virtual void show();
+	virtual void hide();
+	virtual void draw();
+	virtual void drawOverlay();
 };
 
 } // namespace mhgui
 
-#endif //TEXTENTRY_H
+#endif // TEXTENTRY_H

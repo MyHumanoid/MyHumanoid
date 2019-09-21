@@ -30,21 +30,22 @@
 #define MATRIX_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <cmath>
-#include <iostream>
-#include <assert.h> // define NDEBUG for non debug modus!!
-#include <string>
-#include <sstream>
-#include <iomanip>
 #include "Euler.h"
-#include "Vector3.h"
 #include "Quaternion.h"
+#include "Vector3.h"
 #include "util.h"
+#include <assert.h> // define NDEBUG for non debug modus!!
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a 4x4 matrix
 
@@ -76,80 +77,91 @@ namespace Animorph {
 class Matrix
 {
 public:
-  /// the Matrix is saved in this array
-  float data[16];
+	/// the Matrix is saved in this array
+	float data[16];
 
-  /// construct Matrix with identity
-  Matrix () {identity ();}
+	/// construct Matrix with identity
+	Matrix() { identity(); }
 
-  /// set Matrix identity
-  inline void identity ()
-  {
-    // set values for identity matrix
-    data[0] = 1.0; data[4] = 0.0; data[8]  = 0.0; data[12] = 0.0;
-    data[1] = 0.0; data[5] = 1.0; data[9]  = 0.0; data[13] = 0.0;
-    data[2] = 0.0; data[6] = 0.0; data[10] = 1.0; data[14] = 0.0;
-    data[3] = 0.0; data[7] = 0.0; data[11] = 0.0; data[15] = 1.0;
-  }
+	/// set Matrix identity
+	inline void identity()
+	{
+		// set values for identity matrix
+		data[0] = 1.0;
+		data[4] = 0.0;
+		data[8] = 0.0;
+		data[12] = 0.0;
+		data[1] = 0.0;
+		data[5] = 1.0;
+		data[9] = 0.0;
+		data[13] = 0.0;
+		data[2] = 0.0;
+		data[6] = 0.0;
+		data[10] = 1.0;
+		data[14] = 0.0;
+		data[3] = 0.0;
+		data[7] = 0.0;
+		data[11] = 0.0;
+		data[15] = 1.0;
+	}
 
-  // get Euler representation of matrix rotation
-  void fromEuler (Euler &e);
+	// get Euler representation of matrix rotation
+	void fromEuler(Euler &e);
 
-  /// set Quaternion representation of matrix rotation
-  /*!
-   * \param q the Quaternion rotation to set for the Matrix
-   */
-  void fromQuaternion (const Quaternion &q);
+	/// set Quaternion representation of matrix rotation
+	/*!
+	 * \param q the Quaternion rotation to set for the Matrix
+	 */
+	void fromQuaternion(const Quaternion &q);
 
-  /*!
-   * \param theta rotation around an axis in PI
-   * \param axis the axis to rotate about
-   */
-  void setRotation (float theta, RotateAxis axis);
+	/*!
+	 * \param theta rotation around an axis in PI
+	 * \param axis the axis to rotate about
+	 */
+	void setRotation(float theta, RotateAxis axis);
 
-  void setRotation (float theta, const Vector3f &axis);
+	void setRotation(float theta, const Vector3f &axis);
 
-  /*!
-   * \param s a Vector3 to scale the matrix
-   */
-  void setScale (const Vector3f &s);
+	/*!
+	 * \param s a Vector3 to scale the matrix
+	 */
+	void setScale(const Vector3f &s);
 
-  /*!
-   * \param x the x value of the scale vector
-   * \param y the y value of the scale vector
-   * \param z the z value of the scale vector
-   */
-  void setScale (float x, float y, float z);
+	/*!
+	 * \param x the x value of the scale vector
+	 * \param y the y value of the scale vector
+	 * \param z the z value of the scale vector
+	 */
+	void setScale(float x, float y, float z);
 
-  /*!
-   * \param t a Vector3 to translate the matrix
-   */
-  void setTranslation (const Vector3f &t);
+	/*!
+	 * \param t a Vector3 to translate the matrix
+	 */
+	void setTranslation(const Vector3f &t);
 
-  /*!
-   * \param x the x value of the translation vector
-   * \param y the y value of the translation vector
-   * \param z the z value of the translation vector
-   */
-  void setTranslation (float x, float y, float z);
+	/*!
+	 * \param x the x value of the translation vector
+	 * \param y the y value of the translation vector
+	 * \param z the z value of the translation vector
+	 */
+	void setTranslation(float x, float y, float z);
 
-  /*!
-   * \return get the translation part of the matrix
-   */
-  Vector3f getTranslation ();
+	/*!
+	 * \return get the translation part of the matrix
+	 */
+	Vector3f getTranslation();
 };
 
 /// Notation for matrix multiplication is from left to right.
 /// Use [M] = [T] * [M] to transform a matrix.
-Matrix operator * (const Matrix &a, const Matrix &b);
+Matrix operator*(const Matrix &a, const Matrix &b);
 
 /// multiply vector with Matrix
-Vector3f operator * (const Vector3f &v, const Matrix &m);
+Vector3f operator*(const Vector3f &v, const Matrix &m);
 
 /// write the Matrix elements into a stream
-std::ostream &operator << (std::ostream &s, const Matrix &m);
+std::ostream &operator<<(std::ostream &s, const Matrix &m);
 
-}
+} // namespace Animorph
 
-
-#endif  // MATRIX_H
+#endif // MATRIX_H

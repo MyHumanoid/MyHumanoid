@@ -30,18 +30,19 @@
 #define HOTSPOT_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
+#include "FileReader.h"
+#include <fstream>
+#include <iostream>
 #include <map>
 #include <vector>
-#include <iostream>
-#include <fstream>
-#include "FileReader.h"
 
-namespace Animorph {
+namespace Animorph
+{
 
-typedef std::vector <int> HotspotData;
+typedef std::vector<int> HotspotData;
 
 /*! \brief Loadable map from hotspot names to vectors of ints
 
@@ -55,21 +56,21 @@ The format of Hotspot file:
 <hotspot>}
 \endverbatim
 */
-class Hotspot : public std::map <std::string, HotspotData>
+class Hotspot : public std::map<std::string, HotspotData>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  /// load a Hotspot
-  /*!
-   * \param filename the file with Hotspot data to load
-   * \return true if file was found
-   * \return false if file wasn't found
-   */
-  bool load (const std::string& filename);
+	/// load a Hotspot
+	/*!
+	 * \param filename the file with Hotspot data to load
+	 * \return true if file was found
+	 * \return false if file wasn't found
+	 */
+	bool load(const std::string &filename);
 };
 
-}
+} // namespace Animorph
 
-#endif	// HOTSPOT_H
+#endif // HOTSPOT_H

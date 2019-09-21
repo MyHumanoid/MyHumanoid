@@ -28,10 +28,10 @@
 #include "SplashPanel.h"
 #include "ComponentID.h"
 
-#include <gui/Window.h>
-#include <gui/Rect.h>
 #include <gui/Image.h>
+#include <gui/Rect.h>
 #include <gui/Tooltip.h>
+#include <gui/Window.h>
 
 using namespace std;
 using namespace Animorph;
@@ -39,22 +39,20 @@ using namespace mhgui;
 
 #include "ComponentID.h"
 
-SplashPanel::SplashPanel (const Size &winSize)
+SplashPanel::SplashPanel(const Size &winSize)
     //: Panel (kComponentID_SplashPanel, Rect(220,70,360,460))
-    : Panel (kComponentID_SplashPanel, Rect((winSize.getWidth()/2 - 240),(winSize.getHeight()/2 - 180),480,360))
+    : Panel(kComponentID_SplashPanel,
+            Rect((winSize.getWidth() / 2 - 240),
+                 (winSize.getHeight() / 2 - 180), 480, 360))
 {
 }
 
-SplashPanel::~SplashPanel ()
-{
-  delete frame1;
-}
+SplashPanel::~SplashPanel() { delete frame1; }
 
-void SplashPanel::createWidgets ()
+void SplashPanel::createWidgets()
 {
-  frame1 = new Image(kComponentID_Dummy,
-                    searchPixmapFile ("ui/splash_01.png"),
-                    Rect(0,0,480,360));
+	frame1 = new Image(kComponentID_Dummy, searchPixmapFile("ui/splash_01.png"),
+	                   Rect(0, 0, 480, 360));
 
-  addWidget (frame1);
+	addWidget(frame1);
 }

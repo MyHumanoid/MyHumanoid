@@ -26,13 +26,13 @@
  */
 
 #include "ViewPanel.h"
-#include "ImageListener.h"
 #include "ComponentID.h"
+#include "ImageListener.h"
 
-#include <gui/Window.h>
-#include <gui/Rect.h>
 #include <gui/Image.h>
+#include <gui/Rect.h>
 #include <gui/Tooltip.h>
+#include <gui/Window.h>
 
 using namespace std;
 using namespace Animorph;
@@ -40,31 +40,29 @@ using namespace Animorph;
 #include "ComponentID.h"
 #include <gui/Tooltip.h>
 
-ViewPanel::ViewPanel (const int winHeight)
-    : Panel (kComponentID_ViewPanel, Rect(0,winHeight - 32,400,32))
+ViewPanel::ViewPanel(const int winHeight)
+    : Panel(kComponentID_ViewPanel, Rect(0, winHeight - 32, 400, 32))
 {
-  setBottomAnchor (true);
+	setBottomAnchor(true);
 }
 
-ViewPanel::~ViewPanel ()
+ViewPanel::~ViewPanel()
 {
-  delete view1;
-  delete view2;
+	delete view1;
+	delete view2;
 }
 
-void ViewPanel::createWidgets ()
+void ViewPanel::createWidgets()
 {
-  const float alpha = 0.8;
+	const float alpha = 0.8;
 
-  view2 = new Image(kComponentID_Dummy,
-                    searchPixmapFile ("ui/frames_01.png"),
-                    Rect(0,0,368,32));
-  view2->setAlpha (alpha);
-  addWidget (view2);
+	view2 = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_01.png"),
+	                  Rect(0, 0, 368, 32));
+	view2->setAlpha(alpha);
+	addWidget(view2);
 
-  view1 = new Image(kComponentID_Dummy,
-                    searchPixmapFile ("ui/frames_08.png"),
-                    Rect(0,0,32,32));
-  view1->setAlpha (alpha);
-  addWidget (view1);
+	view1 = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_08.png"),
+	                  Rect(0, 0, 32, 32));
+	view1->setAlpha(alpha);
+	addWidget(view1);
 }

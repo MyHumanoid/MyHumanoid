@@ -29,29 +29,29 @@
 #define SPLASHPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
-#include <gui/Panel.h>
-#include <gui/Image.h>
 #include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
+#include <iostream>
 
 using namespace mhgui;
 
 class SplashPanel : public Panel
 {
 public:
-  SplashPanel (const Size &winSize);
-  virtual ~SplashPanel ();
+	SplashPanel(const Size &winSize);
+	virtual ~SplashPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  SplashPanel             (const SplashPanel&);
-  SplashPanel& operator = (const SplashPanel&);
+	SplashPanel(const SplashPanel &);
+	SplashPanel &operator=(const SplashPanel &);
 
-  Image *frame1;
+	Image *frame1;
 };
 
 #endif // SPLASHPANEL_H

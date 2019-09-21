@@ -30,19 +30,20 @@
 #define OBJEXPORTER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
-#include <fstream>
-#include "Mesh.h"
 #include "Matrix.h"
+#include "Mesh.h"
 #include "util.h"
+#include <fstream>
+#include <iostream>
 
 using std::ostringstream;
 using std::string;
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Exports a Mesh in Wavefront OBJ format to an ostringstream
  *
@@ -51,47 +52,45 @@ namespace Animorph {
 class ObjExporter
 {
 protected:
-  Mesh &mesh;
-  Matrix tm;
-/*
-  void createOBJStream (ostringstream &out_stream,
-                        const string& basename,
-                        const FGroupData &facegroupdata,
-                        VertexData &vertexgroupdata);
-*/
-  void createOBJStream (ostringstream &out_stream,
-                        const string& basename);
+	Mesh &mesh;
+	Matrix tm;
+	/*
+	  void createOBJStream (ostringstream &out_stream,
+	                        const string& basename,
+	                        const FGroupData &facegroupdata,
+	                        VertexData &vertexgroupdata);
+	*/
+	void createOBJStream(ostringstream &out_stream, const string &basename);
 
-  void createFullOBJStream (ostringstream &out_stream,
-                        const string& basename);
-  void createMTLStream (ostringstream &out_stream,
-                        const string& basename);
+	void createFullOBJStream(ostringstream &out_stream, const string &basename);
+	void createMTLStream(ostringstream &out_stream, const string &basename);
 
 public:
-  /*!
-   * \param _mesh construct ObjExporter from a Mesh object
-   */
-  ObjExporter (Animorph::Mesh &_mesh) : mesh (_mesh)
-  {
-    tm.identity ();
-  }
+	/*!
+	 * \param _mesh construct ObjExporter from a Mesh object
+	 */
+	ObjExporter(Animorph::Mesh &_mesh)
+	    : mesh(_mesh)
+	{
+		tm.identity();
+	}
 
-  /*!
-   * \param tm the Matrix which transforms the Mesh before exporting
-   */
-  void setTransformationMatrix (Matrix &tm) {this->tm = tm;}
+	/*!
+	 * \param tm the Matrix which transforms the Mesh before exporting
+	 */
+	void setTransformationMatrix(Matrix &tm) { this->tm = tm; }
 
-  /// Export the Mesh in OBJ file and MTL file with same name, but ending .mtl
-  /*!
-   * \param exportpath the directory in which to save the two files
-   * \param full If true, createFullOBJStream() will be used, otherwise
-   *             createOBJStream() is used to write the file contents
-   * \return true if file was saved
-   * \return false if file couldn't be saved
-  */
-  bool exportFile (const string& exportpath, bool full = false);
+	/// Export the Mesh in OBJ file and MTL file with same name, but ending .mtl
+	/*!
+	 * \param exportpath the directory in which to save the two files
+	 * \param full If true, createFullOBJStream() will be used, otherwise
+	 *             createOBJStream() is used to write the file contents
+	 * \return true if file was saved
+	 * \return false if file couldn't be saved
+	 */
+	bool exportFile(const string &exportpath, bool full = false);
 };
 
-}
+} // namespace Animorph
 
-#endif	// OBJEXPORTER_H
+#endif // OBJEXPORTER_H

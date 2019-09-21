@@ -16,45 +16,45 @@
  *  along with this program; if not, write to the Free Software Foun-
  *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
  *  USA
- *  
+ *
  *  File   : FacePanel.h
  *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
  *  App    : makehuman
  *
  *  For individual developers look into the AUTHORS file.
- *   
+ *
  */
 
 #ifndef FACEPANEL_H
 #define FACEPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <gui/Panel.h>
-#include <gui/Image.h>
 #include "TargetSelectionListener.h"
 #include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::vector;
 
 class FacePanel : public Panel
 {
 public:
-  FacePanel ();
-  virtual ~FacePanel ();
+	FacePanel();
+	virtual ~FacePanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  FacePanel             (const FacePanel&);
-  FacePanel& operator = (const FacePanel&);
+	FacePanel(const FacePanel &);
+	FacePanel &operator=(const FacePanel &);
 
 private:
-  TargetSelectionListener imgListener1;
-  vector <Image*> imageVector;
+	TargetSelectionListener imgListener1;
+	vector<Image *> imageVector;
 };
 
 #endif // FACEPANEL_H

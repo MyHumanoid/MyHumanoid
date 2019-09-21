@@ -31,13 +31,13 @@
 #include <GL/freeglut.h>
 
 #if !defined(GLUT_WHEEL_UP)
-  #define GLUT_WHEEL_UP    3
-  #define GLUT_WHEEL_DOWN  4
+#define GLUT_WHEEL_UP 3
+#define GLUT_WHEEL_DOWN 4
 #endif
 
 #if !defined(GLUT_WHEEL_RIGHT)
-  #define GLUT_WHEEL_RIGHT 5
-  #define GLUT_WHEEL_LEFT  6
+#define GLUT_WHEEL_RIGHT 5
+#define GLUT_WHEEL_LEFT 6
 #endif
 
-#endif //GLUTWRAPPER_H
+#endif // GLUTWRAPPER_H

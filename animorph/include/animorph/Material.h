@@ -30,61 +30,65 @@
 #define MATERIAL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <string>
-#include <iostream>
 #include "Color.h"
 #include "FileReader.h"
+#include <iostream>
+#include <string>
+#include <vector>
 
 using std::string;
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a material by its name, surface colour and edge colour
-*/
+ */
 class Material
 {
 private:
-  Color  rgbCol;
-  Color  edgeCol;
-  string name;
+	Color rgbCol;
+	Color edgeCol;
+	string name;
 
 public:
+	Material()
+	    : rgbCol()
+	    , edgeCol()
+	    , name()
+	{
+	}
+	~Material() {}
+	/*!
+	 * \return rgbCol the RGB Color values from this Material
+	 */
+	const Color &getRGBCol() const { return rgbCol; }
 
-   Material() : rgbCol(), edgeCol(), name() {}
-  ~Material() {}
-  /*!
-   * \return rgbCol the RGB Color values from this Material
-   */
-  const Color &getRGBCol () const {return rgbCol;}
+	/*!
+	 * \return edgeCol the RGB edge color values from this Material
+	 */
+	const Color &getEdgeCol() const { return edgeCol; }
 
-  /*!
-   * \return edgeCol the RGB edge color values from this Material
-   */
-  const Color &getEdgeCol () const {return edgeCol;}
+	/*!
+	 * \param rgbCol set the RGB Color values for this Material
+	 */
+	void setRGBCol(const Color &rgbCol) { this->rgbCol = rgbCol; }
 
-  /*!
-   * \param rgbCol set the RGB Color values for this Material
-   */
-  void setRGBCol (const Color &rgbCol) {this->rgbCol = rgbCol;}
+	/*!
+	 * \param edgeCol set the RGB edge color values for this Material
+	 */
+	void setEdgeCol(const Color &edgeCol) { this->edgeCol = edgeCol; }
 
-  /*!
-   * \param edgeCol set the RGB edge color values for this Material
-   */
-  void setEdgeCol (const Color &edgeCol) {this->edgeCol = edgeCol;}
+	/*!
+	 * \return name the name of this Material
+	 */
+	const string &getName() const { return name; }
 
-  /*!
-   * \return name the name of this Material
-   */
-  const string &getName () const {return name;}
-
-  /*!
-   * \param name set the name the name for this Material
-   */
-  void setName (const std::string &name) {this->name = name;}
-
+	/*!
+	 * \param name set the name the name for this Material
+	 */
+	void setName(const std::string &name) { this->name = name; }
 };
 
 /*! \brief A loadable vector of materials
@@ -95,22 +99,21 @@ The format of Material file:
 ...
 \endverbatim
 */
-class MaterialVector : public std::vector <Material>
+class MaterialVector : public std::vector<Material>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  /// load a Material file
-  /*!
-   * \param filename the file with Material data to load
-   * \return true if file is found
-   * \return false if file isn't found
-   */
-  bool loadMaterials (const std::string& filename);
-
+	/// load a Material file
+	/*!
+	 * \param filename the file with Material data to load
+	 * \return true if file is found
+	 * \return false if file isn't found
+	 */
+	bool loadMaterials(const std::string &filename);
 };
 
-}
+} // namespace Animorph
 
 #endif // MATERIAL_H

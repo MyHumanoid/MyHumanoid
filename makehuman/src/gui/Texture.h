@@ -29,21 +29,22 @@
 #define TEXTURE_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #ifdef WIN32
-    #include <Windows.h>
+#include <Windows.h>
 #endif
 
-#include <GL/gl.h>        // Header File For The OpenGL32 Library
-#include <GL/glu.h>       // Header File For The GLu32 Library
+#include <GL/gl.h>  // Header File For The OpenGL32 Library
+#include <GL/glu.h> // Header File For The GLu32 Library
 
 #include <string>
 
 using std::string;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class TextureCharacteristics;
 class Rect;
@@ -51,38 +52,37 @@ class Rect;
 class Texture
 {
 public:
-     Texture();
-    ~Texture();
+	Texture();
+	~Texture();
 
-    bool load(const string& inFilename);
+	bool load(const string &inFilename);
 
-    size_t getNumberOfTextures() const {return mCountTilesX * mCountTilesY;}
+	size_t getNumberOfTextures() const { return mCountTilesX * mCountTilesY; }
 
-    float getFragmentTextureWidthInPercent (size_t inIndexX) const;
-    float getFragmentTextureHeightInPercent(size_t inIndexY) const;
+	float getFragmentTextureWidthInPercent(size_t inIndexX) const;
+	float getFragmentTextureHeightInPercent(size_t inIndexY) const;
 
-    float getFragmentTextureOffsetXInPercent (size_t inIndexX) const;
-    float getFragmentTextureOffsetYInPercent (size_t inIndexY) const;
+	float getFragmentTextureOffsetXInPercent(size_t inIndexX) const;
+	float getFragmentTextureOffsetYInPercent(size_t inIndexY) const;
 
-    void mapToGeometry(const Rect& inRect, float inZLayer=0.0) const;
-    GLuint getTextureIdOfXY(size_t inX, size_t inY) const;
-private:
-    void   releaseAll();
-    void   releaseTextureCharacteristics();
-    bool   buildTiledImageBuffers(const string& inFilename);
-
+	void mapToGeometry(const Rect &inRect, float inZLayer = 0.0) const;
+	GLuint getTextureIdOfXY(size_t inX, size_t inY) const;
 
 private:
-    size_t   mCountTilesX;
-    size_t   mCountTilesY;
+	void releaseAll();
+	void releaseTextureCharacteristics();
+	bool buildTiledImageBuffers(const string &inFilename);
 
-    float *mSizeXInPercent;
-    float *mSizeYInPercent;
+private:
+	size_t mCountTilesX;
+	size_t mCountTilesY;
 
-    TextureCharacteristics **mTextureCharacteristics;
+	float *mSizeXInPercent;
+	float *mSizeYInPercent;
+
+	TextureCharacteristics **mTextureCharacteristics;
 }; // class Texture
 
 } // namespace mhgui
 
 #endif // TEXTURE_H
-

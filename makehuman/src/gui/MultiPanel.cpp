@@ -25,348 +25,286 @@
  *
  */
 
-#include "gui/Rect.h"
 #include "gui/MultiPanel.h"
-#include "gui/Panel.h"
-#include "gui/Widget.h"
 #include "gui/CGUtilities.h"
+#include "gui/Panel.h"
+#include "gui/Rect.h"
+#include "gui/Widget.h"
 
-namespace mhgui {
-
-MultiPanel::MultiPanel (uint32_t      inMultiPanelId,
-                        const Rect&   inGeometry)
-    : Panel(inMultiPanelId, inGeometry),
-    panelList(),
-    numPages(0),
-    currentPage(0)
-{}
-
-MultiPanel::~MultiPanel ()
+namespace mhgui
 {
 
-}
-
-
-//Put panel into multipanel
-bool MultiPanel::addPanel (Panel* p)
+MultiPanel::MultiPanel(uint32_t inMultiPanelId, const Rect &inGeometry)
+    : Panel(inMultiPanelId, inGeometry)
+    , panelList()
+    , numPages(0)
+    , currentPage(0)
 {
-  p->setVisible(true);
-  p->show_all();
-  panelList.push_back(p);
-  ++numPages;
-
-  return true;
 }
 
-void MultiPanel::removePanel (Panel *p)
+MultiPanel::~MultiPanel() {}
+
+// Put panel into multipanel
+bool MultiPanel::addPanel(Panel *p)
 {
-  for (PanelIterator pl_it = begin ();
-       pl_it != panelList.end ();
-       pl_it++)
-  {
-    if (p->operator==(**pl_it))
-    {
-      panelList.erase (pl_it);
-      --numPages;
-      if(currentPage >= numPages)
-      {
-        currentPage = numPages - 1;
-      }
-      break;
-    }
-  }
+	p->setVisible(true);
+	p->show_all();
+	panelList.push_back(p);
+	++numPages;
+
+	return true;
 }
 
-//Draw visible panel
-void MultiPanel::draw ()
+void MultiPanel::removePanel(Panel *p)
 {
-  if (isVisible())
-  {
-    if(numPages > 0)
-    {
-      panelList[currentPage]->draw();
-    }
-
-    cgutils::enableBlend ();
-
-    for (list<Widget*>::iterator wl_it = widgetList.begin ();
-         wl_it != widgetList.end ();
-         wl_it++)
-    {
-      Widget *w = (*wl_it);
-
-      w->draw_wrapper();
-    }
-
-    // draw overlay effects
-    // This is great, because widgets couldn't overlap effects. Perhaps there's
-    // a problem if a effect draws over another panel and this panel is drawn
-    // before the effect. If this case is a problem in future the effect drawing
-    // should be moved to the window class...
-    for (list<Widget*>::iterator wl_it = widgetList.begin ();
-         wl_it != widgetList.end ();
-         wl_it++)
-    {
-      Widget *w = (*wl_it);
-
-      w->drawOverlay();
-    }
-
-    cgutils::disableBlend ();
-  }
+	for (PanelIterator pl_it = begin(); pl_it != panelList.end(); pl_it++) {
+		if (p->operator==(**pl_it)) {
+			panelList.erase(pl_it);
+			--numPages;
+			if (currentPage >= numPages) {
+				currentPage = numPages - 1;
+			}
+			break;
+		}
+	}
 }
 
-bool MultiPanel::hasNextPage()
+// Draw visible panel
+void MultiPanel::draw()
 {
-  return (currentPage < numPages - 1);
+	if (isVisible()) {
+		if (numPages > 0) {
+			panelList[currentPage]->draw();
+		}
+
+		cgutils::enableBlend();
+
+		for (list<Widget *>::iterator wl_it = widgetList.begin();
+		     wl_it != widgetList.end(); wl_it++) {
+			Widget *w = (*wl_it);
+
+			w->draw_wrapper();
+		}
+
+		// draw overlay effects
+		// This is great, because widgets couldn't overlap effects. Perhaps there's
+		// a problem if a effect draws over another panel and this panel is drawn
+		// before the effect. If this case is a problem in future the effect drawing
+		// should be moved to the window class...
+		for (list<Widget *>::iterator wl_it = widgetList.begin();
+		     wl_it != widgetList.end(); wl_it++) {
+			Widget *w = (*wl_it);
+
+			w->drawOverlay();
+		}
+
+		cgutils::disableBlend();
+	}
 }
 
-bool MultiPanel::hasPrevPage()
-{
-  return (currentPage > 0);
-}
+bool MultiPanel::hasNextPage() { return (currentPage < numPages - 1); }
+
+bool MultiPanel::hasPrevPage() { return (currentPage > 0); }
 
 void MultiPanel::checkControlsVisibility()
 {
-  if(prevPage != NULL)
-  {
-    if(hasPrevPage())
-    {
-      prevPage->show();
-    }
-    else
-    {
-      prevPage->hide();
-    }
-  }
+	if (prevPage != NULL) {
+		if (hasPrevPage()) {
+			prevPage->show();
+		} else {
+			prevPage->hide();
+		}
+	}
 
-  if(nextPage != NULL)
-  {
-    if(hasNextPage())
-    {
-      nextPage->show();
-    }
-    else
-    {
-      nextPage->hide();
-    }
-  }
+	if (nextPage != NULL) {
+		if (hasNextPage()) {
+			nextPage->show();
+		} else {
+			nextPage->hide();
+		}
+	}
 }
 
 void MultiPanel::pageNext()
 {
-  if(hasNextPage())
-  {
-    panelList[currentPage++]->hide();
-    panelList[currentPage]->show();
-  }
+	if (hasNextPage()) {
+		panelList[currentPage++]->hide();
+		panelList[currentPage]->show();
+	}
 
-  checkControlsVisibility();
+	checkControlsVisibility();
 }
 
 void MultiPanel::pageBack()
 {
-  if(hasPrevPage())
-  {
-    panelList[currentPage--]->hide();
-    panelList[currentPage]->show();
-  }
+	if (hasPrevPage()) {
+		panelList[currentPage--]->hide();
+		panelList[currentPage]->show();
+	}
 
-  checkControlsVisibility();
+	checkControlsVisibility();
 }
 
-bool MultiPanel::isMouseOverWidgets (const Point& inMousePos)
+bool MultiPanel::isMouseOverWidgets(const Point &inMousePos)
 {
-  if (isVisible())
-  {
-    bool isOver = false;
+	if (isVisible()) {
+		bool isOver = false;
 
-    int rememberedWidgetListChangedCount = widgetListChangedCount;
+		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-    for (list<Widget*>::iterator wl_it = widgetList.begin ();
-         wl_it != widgetList.end ();
-         wl_it++)
-    {
-      Widget *w = (*wl_it);
+		for (list<Widget *>::iterator wl_it = widgetList.begin();
+		     wl_it != widgetList.end(); wl_it++) {
+			Widget *w = (*wl_it);
 
-      isOver = w->isMouseOver(inMousePos);
-      if (isOver == true)
-      {
-        break;
-      }
+			isOver = w->isMouseOver(inMousePos);
+			if (isOver == true) {
+				break;
+			}
 
-      /* Check if the widget List has been changed in between
-       * (triggered by a Widget Listener for example)
-       * If it has then "reinitialize" the iterator because it is
-       * possible that it became invalide because of this change
-       * of the list! */
-      if (widgetListChangedCount != rememberedWidgetListChangedCount)
-      {
-        rememberedWidgetListChangedCount = widgetListChangedCount;
-        wl_it = widgetList.begin (); // reinitailize the iterator
-      }
-    }
+			/* Check if the widget List has been changed in between
+			 * (triggered by a Widget Listener for example)
+			 * If it has then "reinitialize" the iterator because it is
+			 * possible that it became invalide because of this change
+			 * of the list! */
+			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+				rememberedWidgetListChangedCount = widgetListChangedCount;
+				wl_it = widgetList.begin(); // reinitailize the iterator
+			}
+		}
 
-    if(!isOver && numPages > 0)
-    {
-      isOver = panelList[currentPage]->isMouseOverWidgets(inMousePos);
-    }
-    return isOver;
-  }
-  else
-  {
-    return false;
-  }
+		if (!isOver && numPages > 0) {
+			isOver = panelList[currentPage]->isMouseOverWidgets(inMousePos);
+		}
+		return isOver;
+	} else {
+		return false;
+	}
 }
 
-bool MultiPanel::isMouseClickWidgets   (const Point& inMousePos, int button, int state)
+bool MultiPanel::isMouseClickWidgets(const Point &inMousePos, int button,
+                                     int state)
 {
-  if (isVisible())
-  {
-    bool isClick = false;
+	if (isVisible()) {
+		bool isClick = false;
 
-    int rememberedWidgetListChangedCount = widgetListChangedCount;
+		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-    for (list<Widget*>::iterator wl_it = widgetList.begin ();
-         wl_it != widgetList.end ();
-         wl_it++)
-      /*for (unsigned int i = 0; i < widgetList.size (); i++)*/
-    {
-      Widget *w = (*wl_it);
+		for (list<Widget *>::iterator wl_it = widgetList.begin();
+		     wl_it != widgetList.end(); wl_it++)
+		/*for (unsigned int i = 0; i < widgetList.size (); i++)*/
+		{
+			Widget *w = (*wl_it);
 
-      isClick = w->isMouseClick(inMousePos, button, state);
+			isClick = w->isMouseClick(inMousePos, button, state);
 
-      if (isClick == true)
-      {
-        break;
-      }
+			if (isClick == true) {
+				break;
+			}
 
-      /* Check if the widget List has been changed in between
-       * (triggered by a Widget Listener for example)
-       * If it has then "reinitialize" the iterator because it is
-       * possible that it became invalide because of this change
-       * of the list! */
-      if (widgetListChangedCount != rememberedWidgetListChangedCount)
-      {
-        rememberedWidgetListChangedCount = widgetListChangedCount;
-        wl_it = widgetList.begin (); // reinitailize the iterator
-      }
-    }
+			/* Check if the widget List has been changed in between
+			 * (triggered by a Widget Listener for example)
+			 * If it has then "reinitialize" the iterator because it is
+			 * possible that it became invalide because of this change
+			 * of the list! */
+			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+				rememberedWidgetListChangedCount = widgetListChangedCount;
+				wl_it = widgetList.begin(); // reinitailize the iterator
+			}
+		}
 
-    if(!isClick && numPages > 0)
-    {
-      isClick = panelList[currentPage]->isMouseClickWidgets(inMousePos, button, state);
-    }
+		if (!isClick && numPages > 0) {
+			isClick = panelList[currentPage]->isMouseClickWidgets(inMousePos, button,
+			                                                      state);
+		}
 
-    return isClick;
-  }
-  else
-  {
-    return false;
-  }
+		return isClick;
+	} else {
+		return false;
+	}
 }
 
-bool MultiPanel::isMouseDraggedWidgets (const Point& inMousePos)
+bool MultiPanel::isMouseDraggedWidgets(const Point &inMousePos)
 {
-  if (isVisible())
-  {
-    bool dragged = false;
+	if (isVisible()) {
+		bool dragged = false;
 
-    int rememberedWidgetListChangedCount = widgetListChangedCount;
+		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-    for (list<Widget*>::iterator wl_it = widgetList.begin ();
-         wl_it != widgetList.end ();
-         wl_it++)
-    {
-      Widget *w = (*wl_it);
+		for (list<Widget *>::iterator wl_it = widgetList.begin();
+		     wl_it != widgetList.end(); wl_it++) {
+			Widget *w = (*wl_it);
 
-      dragged = w->isMouseDragged(inMousePos);
-      if (dragged == true)
-      {
-        break;
-      }
+			dragged = w->isMouseDragged(inMousePos);
+			if (dragged == true) {
+				break;
+			}
 
-      /* Check if the widget List has been changed in between
-       * (triggered by a Widget Listener for example)
-       * If it has then "reinitialize" the iterator because it is
-       * possible that it became invalide because of this change
-       * of the list! */
-      if (widgetListChangedCount != rememberedWidgetListChangedCount)
-      {
-        rememberedWidgetListChangedCount = widgetListChangedCount;
-        wl_it = widgetList.begin (); // reinitailize the iterator
-      }
+			/* Check if the widget List has been changed in between
+			 * (triggered by a Widget Listener for example)
+			 * If it has then "reinitialize" the iterator because it is
+			 * possible that it became invalide because of this change
+			 * of the list! */
+			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+				rememberedWidgetListChangedCount = widgetListChangedCount;
+				wl_it = widgetList.begin(); // reinitailize the iterator
+			}
 
-    } // for(;;)
+		} // for(;;)
 
-    if(!dragged && numPages > 0)
-    {
-      dragged = panelList[currentPage]->isMouseDraggedWidgets(inMousePos);
-    }
-    return dragged;
-  }
-  else
-  {
-    return false;
-  }
+		if (!dragged && numPages > 0) {
+			dragged = panelList[currentPage]->isMouseDraggedWidgets(inMousePos);
+		}
+		return dragged;
+	} else {
+		return false;
+	}
 }
 
-bool MultiPanel::isKeyTypeWidgets      (unsigned char key)
+bool MultiPanel::isKeyTypeWidgets(unsigned char key)
 {
-  if (isVisible())
-  {
-    bool keyType = false;
+	if (isVisible()) {
+		bool keyType = false;
 
-    int rememberedWidgetListChangedCount = widgetListChangedCount;
+		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-    list<Widget*>::const_iterator it = widgetList.begin();
-    while(it != widgetList.end())
-    {
-      keyType = (*it++)->isKeyType(key);
-      if (keyType == true)
-      {
-        break;
-      }
+		list<Widget *>::const_iterator it = widgetList.begin();
+		while (it != widgetList.end()) {
+			keyType = (*it++)->isKeyType(key);
+			if (keyType == true) {
+				break;
+			}
 
-      /* Check if the widget List has been changed in between
-       * (triggered by a Widget Listener for example)
-       * If it has then "reinitialize" the iterator because it is
-       * possible that it became invalide because of this change
-       * of the list! */
-      if (widgetListChangedCount != rememberedWidgetListChangedCount)
-      {
-        rememberedWidgetListChangedCount = widgetListChangedCount;
-        it = widgetList.begin (); // reinitailize the iterator
-      }
-    }
+			/* Check if the widget List has been changed in between
+			 * (triggered by a Widget Listener for example)
+			 * If it has then "reinitialize" the iterator because it is
+			 * possible that it became invalide because of this change
+			 * of the list! */
+			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+				rememberedWidgetListChangedCount = widgetListChangedCount;
+				it = widgetList.begin(); // reinitailize the iterator
+			}
+		}
 
-    if(!keyType && numPages > 0)
-    {
-      keyType = panelList[currentPage]->isKeyTypeWidgets(key);
-    }
+		if (!keyType && numPages > 0) {
+			keyType = panelList[currentPage]->isKeyTypeWidgets(key);
+		}
 
-    return keyType;
-  }
-  else
-  {
-    return false;
-  }
+		return keyType;
+	} else {
+		return false;
+	}
 }
 
-void MultiPanel::calcWidgetPosition ()
+void MultiPanel::calcWidgetPosition()
 {
-  Panel::calcWidgetPosition();
+	Panel::calcWidgetPosition();
 
-  for (PanelIterator pl_it = begin ();
-       pl_it != panelList.end ();
-       pl_it++)
-  {
-    Panel *panel = (*pl_it);
+	for (PanelIterator pl_it = begin(); pl_it != panelList.end(); pl_it++) {
+		Panel *panel = (*pl_it);
 
-    panel->setPosition (getPosition ());
-    panel->calcWidgetPosition ();
-  }
-
+		panel->setPosition(getPosition());
+		panel->calcWidgetPosition();
+	}
 }
 
-}
+} // namespace mhgui

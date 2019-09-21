@@ -29,43 +29,41 @@
 #define PAGETARGETPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <algorithm>
-#include <gui/Panel.h>
-#include <gui/MultiPanel.h>
-#include "TargetSliderListener.h"
-#include "TargetSlider.h"
 #include "ImageListener.h"
+#include "TargetSlider.h"
+#include "TargetSliderListener.h"
 #include "util.h"
+#include <algorithm>
+#include <gui/MultiPanel.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::string;
 using std::vector;
 
-
 class PageTargetPanel : public Panel
 {
 private: // intentionally not implemented
-  PageTargetPanel             (const PageTargetPanel&);
-  PageTargetPanel& operator = (const PageTargetPanel&);
+	PageTargetPanel(const PageTargetPanel &);
+	PageTargetPanel &operator=(const PageTargetPanel &);
 
-  TargetSliderListener   imgSliderListener;
-  ImageListener          imgListener;
-  string                 category;
-
+	TargetSliderListener imgSliderListener;
+	ImageListener imgListener;
+	string category;
 
 public:
-  PageTargetPanel (const string& category, const Rect& rect);
-  virtual ~PageTargetPanel ();
+	PageTargetPanel(const string &category, const Rect &rect);
+	virtual ~PageTargetPanel();
 
-  const string& getCategory() const {return category;}
+	const string &getCategory() const { return category; }
 
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <TargetSlider*> targetVector;
-  void resetTargetValues(const string currentTargetName = "") ;
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<TargetSlider *> targetVector;
+	void resetTargetValues(const string currentTargetName = "");
 };
 
 #endif // PAGETARGETPANEL_H

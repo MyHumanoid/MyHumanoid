@@ -30,57 +30,65 @@
 #define VERTEX_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
+#include "Color.h"
+#include "Vector3.h"
 #include <cmath>
 #include <string>
-#include "Vector3.h"
-#include "Color.h"
+#include <vector>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a vertex by its coordinates and a normal vector.
  */
 class Vertex
 {
 protected:
-  std::vector <int> shared_faces_vector;
+	std::vector<int> shared_faces_vector;
 
 public:
-  /// vertex coordinate
-  Vector3f co;
+	/// vertex coordinate
+	Vector3f co;
 
-  /// vertex normal
-  Vector3f no;
+	/// vertex normal
+	Vector3f no;
 
-  // vertex color
-  //Color color;
+	// vertex color
+	// Color color;
 
-  Vertex () : co(), no() {co.zero (); no.zero ();}
+	Vertex()
+	    : co()
+	    , no()
+	{
+		co.zero();
+		no.zero();
+	}
 
-  /// construct Vertex with coordinates
-  /*!
-   * \param x the x component to the vertex coordinate
-   * \param y the y component to the vertex coordinate
-   * \param z the z component to the vertex coordinate
-   */
-  Vertex (float x, float y, float z)
-  : co(x,y,z), no()
-  {
-    no.zero ();
-  }
+	/// construct Vertex with coordinates
+	/*!
+	 * \param x the x component to the vertex coordinate
+	 * \param y the y component to the vertex coordinate
+	 * \param z the z component to the vertex coordinate
+	 */
+	Vertex(float x, float y, float z)
+	    : co(x, y, z)
+	    , no()
+	{
+		no.zero();
+	}
 
-  /*!
-   * \param shared_face add the index number to which face this Vertex belongs
-   */
-  void addSharedFace (int shared_face);
+	/*!
+	 * \param shared_face add the index number to which face this Vertex belongs
+	 */
+	void addSharedFace(int shared_face);
 
-  /*!
-   * \return get a vector with all faces this Vertex belongs to
-   */
-  std::vector <int> &getSharedFaces ();
+	/*!
+	 * \return get a vector with all faces this Vertex belongs to
+	 */
+	std::vector<int> &getSharedFaces();
 };
 
 /*Subdivision surfaces */
@@ -88,49 +96,46 @@ public:
 class subdVertex : public Vertex
 {
 private:
-  ///Vertices from which this one is generated
-  int vertices[4];
-  int size;
+	/// Vertices from which this one is generated
+	int vertices[4];
+	int size;
 
 public:
-  ///construct Vertex from a quad
-  subdVertex (int v0, int v1, int v2, int v3);
-  
-  ///construct Vertex from a tri
-  subdVertex (int v0, int v1, int v2);
-  
-    int getVertexAtIndex(int inIndex) const
-    {   assert(inIndex<size);
-        return vertices[inIndex];}
-    
-    int getSize() {return size;}
-};
+	/// construct Vertex from a quad
+	subdVertex(int v0, int v1, int v2, int v3);
 
+	/// construct Vertex from a tri
+	subdVertex(int v0, int v1, int v2);
+
+	int getVertexAtIndex(int inIndex) const
+	{
+		assert(inIndex < size);
+		return vertices[inIndex];
+	}
+
+	int getSize() { return size; }
+};
 
 class origVertex : public Vertex
 {
 private:
-  ///Vertices from which this one is generated
-  int valence, fvalence;
-  std::vector <int> faceVerts;
-  std::vector <int> edgeVerts;
-
+	/// Vertices from which this one is generated
+	int valence, fvalence;
+	std::vector<int> faceVerts;
+	std::vector<int> edgeVerts;
 
 public:
-  ///construct origVertex
-  origVertex (std::vector <int> &i_faceVerts, std::vector <int> &i_edgeVerts);
-  
-  int getFaceVertexAtIndex (int inIndex) const
-    {   return faceVerts[inIndex];}
-  
-  int getEdgeVertexAtIndex (int inIndex) const
-    {   return edgeVerts[inIndex];}
-  
-  int getValence() {return valence;}
-  int getFValence() {return fvalence;}
+	/// construct origVertex
+	origVertex(std::vector<int> &i_faceVerts, std::vector<int> &i_edgeVerts);
 
+	int getFaceVertexAtIndex(int inIndex) const { return faceVerts[inIndex]; }
+
+	int getEdgeVertexAtIndex(int inIndex) const { return edgeVerts[inIndex]; }
+
+	int getValence() { return valence; }
+	int getFValence() { return fvalence; }
 };
 
-}
+} // namespace Animorph
 
-#endif	// VERTEX_H
+#endif // VERTEX_H

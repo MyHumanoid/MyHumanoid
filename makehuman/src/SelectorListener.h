@@ -29,7 +29,7 @@
 #define SELECTORLISTENER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include <gui/AbstractListener.h>
@@ -43,33 +43,35 @@ using namespace mhgui;
 class SelectorListener : public AbstractListener
 {
 public:
+	std::vector<string> ageLabels;
+	std::vector<string> muscleSizeLabels;
+	std::vector<string> breastLabels;
+	std::vector<string> shapeLabels;
 
-  std::vector<string> ageLabels;
-  std::vector<string> muscleSizeLabels;
-  std::vector<string> breastLabels;
-  std::vector<string> shapeLabels;
-  
-  void calcWidgetTargets(Selector &selectorSource);
-  void calcWidgetTargetsFOO();
+	void calcWidgetTargets(Selector &selectorSource);
+	void calcWidgetTargetsFOO();
 
-  Point oldPos;
+	Point oldPos;
 
 public:
-  SelectorListener();
-  virtual ~SelectorListener();
+	SelectorListener();
+	virtual ~SelectorListener();
 
-  virtual bool mouseOver     (const Point& inMousePos,               Component *source );
-  virtual bool mouseOut      (const Point& inMousePos,               Component *source );
-  virtual bool mousePressed  (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseReleased (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseDragged  (const Point& inMousePos,               Component *source );
-  virtual bool mouseWheel    (const Point& inMousePos, int inButton, Component *source );
-  virtual bool keyType       (unsigned char inKey,                   Component *source );
+	virtual bool mouseOver(const Point &inMousePos, Component *source);
+	virtual bool mouseOut(const Point &inMousePos, Component *source);
+	virtual bool mousePressed(const Point &inMousePos, int inButton,
+	                          Component *source);
+	virtual bool mouseReleased(const Point &inMousePos, int inButton,
+	                           Component *source);
+	virtual bool mouseDragged(const Point &inMousePos, Component *source);
+	virtual bool mouseWheel(const Point &inMousePos, int inButton,
+	                        Component *source);
+	virtual bool keyType(unsigned char inKey, Component *source);
 
-  std::vector<float> ageDists;
-  std::vector<float> muscleSizeDists;
-  std::vector<float> breastDists;
-  std::vector<float> shapeDists;
+	std::vector<float> ageDists;
+	std::vector<float> muscleSizeDists;
+	std::vector<float> breastDists;
+	std::vector<float> shapeDists;
 };
 
-#endif //SELECTORLISTENER_H
+#endif // SELECTORLISTENER_H

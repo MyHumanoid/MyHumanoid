@@ -29,15 +29,13 @@
 
 using namespace Animorph;
 
-SkinVertex::SkinVertex (int _skinVertex, float _originalDist, const std::vector<int> &tokens)
-  : skinVertex(_skinVertex),
-    linkedMuscles(tokens),
-    linkedMusclesSet(),
-    originalDist(_originalDist)
-    //oldCenteroid()
-  {
-    linkedMusclesSet.insert(tokens.begin(), tokens.end());
-  }
-
-
-
+SkinVertex::SkinVertex(int _skinVertex, float _originalDist,
+                       const std::vector<int> &tokens)
+    : skinVertex(_skinVertex)
+    , linkedMuscles(tokens)
+    , linkedMusclesSet()
+    , originalDist(_originalDist)
+// oldCenteroid()
+{
+	linkedMusclesSet.insert(tokens.begin(), tokens.end());
+}

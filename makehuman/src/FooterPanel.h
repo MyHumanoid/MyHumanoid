@@ -29,29 +29,29 @@
 #define FOOTERPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <gui/Panel.h>
-#include <gui/Image.h>
 #include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
 
 using namespace mhgui;
 
 class FooterPanel : public Panel
 {
 private:
-  Image *footer;
+	Image *footer;
 
 public:
-           FooterPanel (const int winHeight);
-  virtual ~FooterPanel ();
+	FooterPanel(const int winHeight);
+	virtual ~FooterPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-    FooterPanel             (const FooterPanel&);
-    FooterPanel& operator = (const FooterPanel&);
+	FooterPanel(const FooterPanel &);
+	FooterPanel &operator=(const FooterPanel &);
 };
 
 #endif // FOOTERPANEL_H

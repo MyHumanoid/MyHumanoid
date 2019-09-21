@@ -31,7 +31,7 @@
 #define TARGETSLIDERLISTENER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include <gui/AbstractListener.h>
@@ -45,16 +45,19 @@ using namespace mhgui;
 class TargetSliderListener : public AbstractListener
 {
 public:
-  TargetSliderListener();
-  virtual ~TargetSliderListener();
+	TargetSliderListener();
+	virtual ~TargetSliderListener();
 
-  virtual bool mouseOver     (const Point& inMousePos,               Component *source );
-  virtual bool mouseOut      (const Point& inMousePos,               Component *source );
-  virtual bool mousePressed  (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseReleased (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseDragged  (const Point& inMousePos,               Component *source );
-  virtual bool mouseWheel    (const Point& inMousePos, int inButton, Component *source );
-  virtual bool keyType       (unsigned char inKey,                   Component *source );
+	virtual bool mouseOver(const Point &inMousePos, Component *source);
+	virtual bool mouseOut(const Point &inMousePos, Component *source);
+	virtual bool mousePressed(const Point &inMousePos, int inButton,
+	                          Component *source);
+	virtual bool mouseReleased(const Point &inMousePos, int inButton,
+	                           Component *source);
+	virtual bool mouseDragged(const Point &inMousePos, Component *source);
+	virtual bool mouseWheel(const Point &inMousePos, int inButton,
+	                        Component *source);
+	virtual bool keyType(unsigned char inKey, Component *source);
 };
 
-#endif //TARGETSLIDERLISTENER_H
+#endif // TARGETSLIDERLISTENER_H

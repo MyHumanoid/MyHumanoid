@@ -29,12 +29,12 @@
 #define ANIMATION_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
 #include <animorph/Mesh.h>
 #include <animorph/RawMesh.h>
+#include <vector>
 
 #define kTimerCallback 100
 
@@ -45,42 +45,41 @@ using std::vector;
 class Animation
 {
 public:
-  Animation ();
+	Animation();
 
 private:
-  unsigned int interpNumber;
-  unsigned int frameRate;
+	unsigned int interpNumber;
+	unsigned int frameRate;
 
-  vector <RawMesh> frames;
-  vector<RawMesh>::iterator frames_it;
+	vector<RawMesh> frames;
+	vector<RawMesh>::iterator frames_it;
 
-  bool loaded;
-  bool started;
+	bool loaded;
+	bool started;
 
-  void addFrame(BodySettings &bs, const string &frame_name, Mesh *mesh);
-  void interpolate(BodySettings &prev, BodySettings &next);
+	void addFrame(BodySettings &bs, const string &frame_name, Mesh *mesh);
+	void interpolate(BodySettings &prev, BodySettings &next);
 
 public:
+	void setInterpNumber(const unsigned int inNumber) { interpNumber = inNumber; }
+	unsigned int getInterpNumber() { return interpNumber; }
 
-  void setInterpNumber(const unsigned int inNumber) {interpNumber = inNumber;}
-  unsigned int getInterpNumber() {return interpNumber;}
+	unsigned int getFrameRate() const { return frameRate; }
+	void setFrameRate(const unsigned int inRate) { frameRate = inRate; }
 
-  unsigned int getFrameRate() const {return frameRate;}
-  void setFrameRate(const unsigned int inRate) {frameRate = inRate;}
+	bool load(const string &path);
 
-  bool load(const string& path);
+	void nextFrame();
 
-  void nextFrame();
+	bool isLoaded() const { return loaded; }
+	void setLoaded(bool inLoaded) { loaded = inLoaded; }
 
-  bool isLoaded() const {return loaded;}
-  void setLoaded(bool inLoaded) {loaded = inLoaded;}
+	bool isStarted() const { return started; }
+	void setStarted(bool inStarted) { started = inStarted; }
 
-  bool isStarted() const {return started;}
-  void setStarted(bool inStarted) {started = inStarted;}
+	RawMesh &getMesh() { return *frames_it; }
 
-  RawMesh& getMesh() {return *frames_it;}
-
-  void reset();
+	void reset();
 };
 
 #endif // ANIMATION_H

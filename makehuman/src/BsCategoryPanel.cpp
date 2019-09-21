@@ -30,100 +30,94 @@
 
 #include <algorithm>
 
-#include <gui/Window.h>
-#include <gui/Rect.h>
-#include <gui/Image.h>
-#include <gui/Tooltip.h>
 #include "Global.h"
-
+#include <gui/Image.h>
+#include <gui/Rect.h>
+#include <gui/Tooltip.h>
+#include <gui/Window.h>
 
 using namespace std;
 using namespace Animorph;
 
-BsCategoryPanel::BsCategoryPanel ()
-    : Panel (kComponentID_BsCategoryPanel, Rect(0,16,192,384))
+BsCategoryPanel::BsCategoryPanel()
+    : Panel(kComponentID_BsCategoryPanel, Rect(0, 16, 192, 384))
 {
-
 }
 
-BsCategoryPanel::~BsCategoryPanel ()
+BsCategoryPanel::~BsCategoryPanel()
 {
-  for_each (imageVector.begin (), imageVector.end (), deleteFunctor <Image*> ());
+	for_each(imageVector.begin(), imageVector.end(), deleteFunctor<Image *>());
 }
 
-
-void BsCategoryPanel::createWidgets ()
+void BsCategoryPanel::createWidgets()
 {
-  Window &mainWindow = Window::instance ();
+	Window &mainWindow = Window::instance();
 
-  Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
-  assert(tooltipPanel);
+	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
+	assert(tooltipPanel);
 
-  const Color color_red (1.0, 0.0, 0.0);
-  const Point kTooltipPos(70, 12);
-  const float alpha = 1.0;
-  Image *cat;
-  bool ret;
+	const Color color_red(1.0, 0.0, 0.0);
+	const Point kTooltipPos(70, 12);
+	const float alpha = 1.0;
+	Image *cat;
+	bool ret;
 
-  // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
-   for (int i = 0;i<17;i++){
-    std::ostringstream out, out2, out3;
-    out  << "ui/characters" << i+1 << ".png";
-    out2 << (i + 1);
-    out3 << "characters" << i+1  <<"";
+	for (int i = 0; i < 17; i++) {
+		std::ostringstream out, out2, out3;
+		out << "ui/characters" << i + 1 << ".png";
+		out2 << (i + 1);
+		out3 << "characters" << i + 1 << "";
 
-    cat = new Image(table_id[i],
-                   searchPixmapFile (out.str().c_str()),
-                   Rect (0,0,64,64));
-    cat->setListener(&selectionListener);
-    cat->setTooltip(Tooltip("Characters Library " + out2.str(), kTooltipPos, color_red, tooltipPanel));
-    cat->setAlpha (alpha);
-    ret = checkEnabled(out3.str().c_str());
-    cat->setEnabled(ret);
-    cat->setActive(ret);
-    imageVector.push_back (cat);
-    addWidget(cat);
+		cat = new Image(table_id[i], searchPixmapFile(out.str().c_str()),
+		                Rect(0, 0, 64, 64));
+		cat->setListener(&selectionListener);
+		cat->setTooltip(Tooltip("Characters Library " + out2.str(), kTooltipPos,
+		                        color_red, tooltipPanel));
+		cat->setAlpha(alpha);
+		ret = checkEnabled(out3.str().c_str());
+		cat->setEnabled(ret);
+		cat->setActive(ret);
+		imageVector.push_back(cat);
+		addWidget(cat);
+	}
+	// -------------------------------------------------------------------------
 
-  }
-  // -------------------------------------------------------------------------
-
-  cat = new Image(kComponentID_BsCategoryPanel_MyBS,
-                   searchPixmapFile ("ui/mycharacters.png"),
-                   Rect (0,0,64,64));
-  cat->setListener(&selectionListener);
-  cat->setTooltip(Tooltip("My Characters Library", kTooltipPos, color_red, tooltipPanel));
-  cat->setAlpha (alpha);
-  imageVector.push_back (cat);
-  addWidget(cat);
+	cat = new Image(kComponentID_BsCategoryPanel_MyBS,
+	                searchPixmapFile("ui/mycharacters.png"), Rect(0, 0, 64, 64));
+	cat->setListener(&selectionListener);
+	cat->setTooltip(
+	    Tooltip("My Characters Library", kTooltipPos, color_red, tooltipPanel));
+	cat->setAlpha(alpha);
+	imageVector.push_back(cat);
+	addWidget(cat);
 }
-
 
 bool BsCategoryPanel::checkEnabled(string category)
 {
-  Global &global = Global::instance ();
+	Global &global = Global::instance();
 
-  Mesh *mesh = global.getMesh ();
-  assert (mesh);
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
 
-  CharactersMap &charactersmap = mesh->getCharactersMapRef ();
+	CharactersMap &charactersmap = mesh->getCharactersMapRef();
 
-  for (CharactersMap::const_iterator charactersmap_it = charactersmap.begin ();
-      charactersmap_it != charactersmap.end ();
-      charactersmap_it++){
+	for (CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
+	     charactersmap_it != charactersmap.end(); charactersmap_it++) {
 
-    const string &character_name((*charactersmap_it).first);
+		const string &character_name((*charactersmap_it).first);
 
-    string::size_type loc = character_name.find ("/", 0 );
-    if (loc == string::npos)
-     continue;
-    else{
-      string sub = character_name.substr (0, loc);
+		string::size_type loc = character_name.find("/", 0);
+		if (loc == string::npos)
+			continue;
+		else {
+			string sub = character_name.substr(0, loc);
 
-      if (sub == category){
-        return true;
-      }
-    }
-  }
-  return false;
+			if (sub == category) {
+				return true;
+			}
+		}
+	}
+	return false;
 }

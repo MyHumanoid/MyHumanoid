@@ -16,30 +16,30 @@
  *  along with this program; if not, write to the Free Software Foun-
  *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
  *  USA
- *  
+ *
  *  File   : PoseTargetPanel.h
  *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
  *  App    : makehuman
  *
  *  For individual developers look into the AUTHORS file.
- *  
+ *
  */
 
 #ifndef POSETARGETPANEL_H
 #define POSETARGETPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
+#include "ImageListener.h"
+#include "PoseTargetSliderListener.h"
+#include "TargetPanel.h"
+#include "TargetSlider.h"
+#include "util.h"
 #include <algorithm>
 #include <gui/Panel.h>
-#include "PoseTargetSliderListener.h"
-#include "TargetSlider.h"
-#include "TargetPanel.h"
-#include "ImageListener.h"
-#include "util.h"
+#include <vector>
 
 using std::string;
 using std::vector;
@@ -47,24 +47,24 @@ using std::vector;
 class PoseTargetPanel : public Panel
 {
 private: // intentionally not implemented
-  PoseTargetPanel             (const PoseTargetPanel&);
-  PoseTargetPanel& operator = (const PoseTargetPanel&);
+	PoseTargetPanel(const PoseTargetPanel &);
+	PoseTargetPanel &operator=(const PoseTargetPanel &);
 
-  PoseTargetSliderListener   imgSliderListener;
-  ImageListener              imgListener;
-  string                     category;
-  Image                      *close_image;
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <TargetSlider*> targetVector;
+	PoseTargetSliderListener imgSliderListener;
+	ImageListener imgListener;
+	string category;
+	Image *close_image;
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<TargetSlider *> targetVector;
 
 public:
-  PoseTargetPanel (const string& category, const Rect& rect);
-  virtual ~PoseTargetPanel ();
+	PoseTargetPanel(const string &category, const Rect &rect);
+	virtual ~PoseTargetPanel();
 
-  void createWidgets ();
-  const string& getCategory() const {return category;}
-  void resetTargetValues(const string currentTargetName = "") ;
+	void createWidgets();
+	const string &getCategory() const { return category; }
+	void resetTargetValues(const string currentTargetName = "");
 };
 
 #endif // POSETARGETPANEL_H

@@ -27,63 +27,51 @@
 
 #include "gui/Widget.h"
 #include "gui/AbstractListener.h"
-#include "gui/Tooltip.h"
 #include "gui/GLUTWrapper.h"
+#include "gui/Tooltip.h"
 
 #include <iostream>
 
 using namespace std;
 
-namespace mhgui {
+namespace mhgui
+{
 
-Widget::Widget (uint32_t          inId,
-                const Rect&       inGeometry)
-    : Component  (inId, inGeometry),
-    parentPanel(NULL),
-    tooltip    (NULL)
+Widget::Widget(uint32_t inId, const Rect &inGeometry)
+    : Component(inId, inGeometry)
+    , parentPanel(NULL)
+    , tooltip(NULL)
 {
 }
 
 Widget::~Widget()
 {
-  if (parentPanel)
-    parentPanel->removeWidget (this);
+	if (parentPanel)
+		parentPanel->removeWidget(this);
 
-  delete tooltip;
+	delete tooltip;
 }
 
-void Widget::setTooltip (const Tooltip& inTooltip)
+void Widget::setTooltip(const Tooltip &inTooltip)
 {
-  delete tooltip;
-  tooltip = new Tooltip(inTooltip);
+	delete tooltip;
+	tooltip = new Tooltip(inTooltip);
 }
 
-void Widget::draw()
-{
-}
+void Widget::draw() {}
 
-void Widget::drawOverlay()
-{
-}
+void Widget::drawOverlay() {}
 
 void Widget::draw_wrapper()
 {
-  if (isVisible() && tooltip && isLastMouseOver())
-  {
-    tooltip->draw();
-  }
-  draw();
+	if (isVisible() && tooltip && isLastMouseOver()) {
+		tooltip->draw();
+	}
+	draw();
 }
 
-void Widget::show ()
-{
-  setVisible(true);
-}
+void Widget::show() { setVisible(true); }
 
-void Widget::hide ()
-{
-  setVisible(false);
-}
+void Widget::hide() { setVisible(false); }
 
 } // namespace mhgui
-

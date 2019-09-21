@@ -29,69 +29,70 @@
 #define SIZE_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include <stdint.h>
 
-namespace mhgui {
+namespace mhgui
+{
 
 /// Represents a size of width and height
 class Size
 {
 public:
-     Size (int32_t inWidth, int32_t inHeight);
-     Size (const Size& inSize);
+	Size(int32_t inWidth, int32_t inHeight);
+	Size(const Size &inSize);
 
-    ~Size () {}
+	~Size() {}
 
-    Size& operator= (const Size& inRHS);
+	Size &operator=(const Size &inRHS);
 
-    bool operator== (const Size& inSize) const;
+	bool operator==(const Size &inSize) const;
 
-    bool isEmpty() const { return ((mWidth == 0) && (mHeight == 0));}
+	bool isEmpty() const { return ((mWidth == 0) && (mHeight == 0)); }
 
-    int32_t getWidth ()  const {return mWidth;}
-    int32_t getHeight() const {return mHeight;}
+	int32_t getWidth() const { return mWidth; }
+	int32_t getHeight() const { return mHeight; }
 
-    void resizeBy(const Size& inSize);
+	void resizeBy(const Size &inSize);
 
 private:
-    int32_t    mWidth, mHeight;
+	int32_t mWidth, mHeight;
 
 }; // class Size
 
 inline Size::Size(int32_t inWidth, int32_t inHeight)
-: mWidth (inWidth),
-  mHeight(inHeight)
+    : mWidth(inWidth)
+    , mHeight(inHeight)
 {
 }
 
-inline Size::Size(const Size& inSize)
-: mWidth (inSize.mWidth),
-  mHeight(inSize.mHeight)
+inline Size::Size(const Size &inSize)
+    : mWidth(inSize.mWidth)
+    , mHeight(inSize.mHeight)
 {
 }
 
-inline Size& Size::operator= (const Size& inRHS)
+inline Size &Size::operator=(const Size &inRHS)
 {
-    mWidth  = inRHS.mWidth;
-    mHeight = inRHS.mHeight;
-    return *this;
+	mWidth = inRHS.mWidth;
+	mHeight = inRHS.mHeight;
+	return *this;
 }
 
-inline bool Size::operator== (const Size& inSize) const
+inline bool Size::operator==(const Size &inSize) const
 {
-    if (this == &inSize)  // The same object?
-        return true;
+	if (this == &inSize) // The same object?
+		return true;
 
-    return (mWidth  == inSize.mWidth &&
-            mHeight == inSize.mHeight);
+	return (mWidth == inSize.mWidth && mHeight == inSize.mHeight);
 }
 
-inline void Size::resizeBy(const Size& inSize)
+inline void Size::resizeBy(const Size &inSize)
 {
-    mWidth += inSize.mWidth; mHeight += inSize.mHeight;
+	mWidth += inSize.mWidth;
+	mHeight += inSize.mHeight;
 }
 
 } // namespace mhgui

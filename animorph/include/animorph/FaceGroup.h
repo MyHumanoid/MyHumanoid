@@ -28,27 +28,28 @@
 #ifndef FACEGROUP_H
 #define FACEGROUP_H 1
 
-#include <map>
-#include <ios>
 #include "Face.h"
 #include "FaceVector.h"
 #include "FileWriter.h"
 #include "util.h"
+#include <ios>
+#include <map>
 
-namespace Animorph {
-
-typedef std::vector <int> FGroupData;
-typedef std::map <int, int> VertexData;
-
-struct FGroup
+namespace Animorph
 {
-  bool visible;
-  /// A vector of ints
-  FGroupData facesIndexes;
-  FGroupData facesIndexes_subd; ///subdivision
+
+typedef std::vector<int> FGroupData;
+typedef std::map<int, int> VertexData;
+
+struct FGroup {
+	bool visible;
+	/// A vector of ints
+	FGroupData facesIndexes;
+	FGroupData facesIndexes_subd; /// subdivision
 };
 
-/*! \brief A map of FaceGroup identifiers (part names) via associated vertex group numbers to vertex indices
+/*! \brief A map of FaceGroup identifiers (part names) via associated vertex
+group numbers to vertex indices
 
 Can be loaded from and saved to a file.
 
@@ -58,28 +59,34 @@ The format of FaceGroup file:
 <int> <int> ...
 \endverbatim
 */
-class FaceGroup : public std::map <std::string, FGroup>
+class FaceGroup : public std::map<std::string, FGroup>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
-  void createStreamVisibilities (std::ostringstream &out_stream);
-  void fromStreamVisibilities (std::ifstream &in_stream);
+	void fromStream(std::ifstream &in_stream);
+	void createStreamVisibilities(std::ostringstream &out_stream);
+	void fromStreamVisibilities(std::ifstream &in_stream);
 
-  bool loaded;
-  /// Maps FaceGroup identifiers via vertex group numbers to vertex indices
-  mutable std::map <std::string, VertexData> vertexes;
+	bool loaded;
+	/// Maps FaceGroup identifiers via vertex group numbers to vertex indices
+	mutable std::map<std::string, VertexData> vertexes;
 
 public:
-  FaceGroup() : loaded(false), vertexes() {};
-  bool load (const std::string& filename);
-  bool saveVisibilities (const std::string& filename, std::ios_base::openmode mode = std::ios::app);
-  bool loadVisibilities (const std::string& filename);
-  void toggleVisible(const std::string& name);
-  /// Extracts our vertex indices from a given FaceVector
-  void calcVertexes (const FaceVector &facevector);
-  const VertexData &getPartVertexesRef(const std::string &part) const {return vertexes[part];}
+	FaceGroup()
+	    : loaded(false)
+	    , vertexes(){};
+	bool load(const std::string &filename);
+	bool saveVisibilities(const std::string &filename,
+	                      std::ios_base::openmode mode = std::ios::app);
+	bool loadVisibilities(const std::string &filename);
+	void toggleVisible(const std::string &name);
+	/// Extracts our vertex indices from a given FaceVector
+	void calcVertexes(const FaceVector &facevector);
+	const VertexData &getPartVertexesRef(const std::string &part) const
+	{
+		return vertexes[part];
+	}
 };
 
-}
+} // namespace Animorph
 
-#endif //FACEGROUP_H
+#endif // FACEGROUP_H

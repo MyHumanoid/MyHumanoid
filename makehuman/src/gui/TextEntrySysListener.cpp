@@ -27,101 +27,101 @@
 
 #include "gui/TextEntrySysListener.h"
 #include "gui/CGUtilities.h"
-#include "gui/TextEntry.h"
 #include "gui/GLUTWrapper.h"
+#include "gui/TextEntry.h"
 
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 #include <iostream>
 
 using namespace Animorph;
 using namespace std;
 
-namespace mhgui {
+namespace mhgui
+{
 
 TextEntrySysListener::TextEntrySysListener()
     : AbstractListener()
 {
 }
 
-TextEntrySysListener::~TextEntrySysListener()
+TextEntrySysListener::~TextEntrySysListener() {}
+
+bool TextEntrySysListener::mouseOver(const Point &inMousePos, Component *source)
 {
+	cgutils::redisplay();
+
+	return false;
 }
 
-bool TextEntrySysListener::mouseOver (const Point& inMousePos, Component *source)
+bool TextEntrySysListener::mouseOut(const Point &inMousePos, Component *source)
 {
-  cgutils::redisplay();
+	cgutils::redisplay();
 
-  return false;
+	return false;
 }
 
-bool TextEntrySysListener::mouseOut (const Point& inMousePos, Component *source)
+bool TextEntrySysListener::mouseDragged(const Point &inMousePos,
+                                        Component *source)
 {
-  cgutils::redisplay();
-
-  return false;
+	return false;
 }
 
-bool TextEntrySysListener::mouseDragged (const Point& inMousePos, Component *source)
+bool TextEntrySysListener::mouseWheel(const Point &inMousePos, int inButton,
+                                      Component *source)
 {
-  return false;
+	return false;
 }
 
-bool TextEntrySysListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source)
+bool TextEntrySysListener::mousePressed(const Point &inMousePos, int button,
+                                        Component *source)
 {
-  return false;
+	TextEntry *textSource = dynamic_cast<TextEntry *>(source); // req. RTTI!
+	assert(textSource); // Check if this is really an TextEntry object?
+
+	textSource->setActive(true);
+	textSource->setClickConsumed(false);
+
+	return false;
 }
 
-bool TextEntrySysListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool TextEntrySysListener::mouseReleased(const Point &inMousePos, int button,
+                                         Component *source)
 {
-  TextEntry *textSource = dynamic_cast<TextEntry *>(source); // req. RTTI!
-  assert(textSource); // Check if this is really an TextEntry object?
+	TextEntry *textSource = dynamic_cast<TextEntry *>(source); // req. RTTI!
+	assert(textSource); // Check if this is really an TextEntry object?
 
-  textSource->setActive(true);
-  textSource->setClickConsumed(false);
+	textSource->setActive(true);
+	textSource->setClickConsumed(false);
 
-  return false;
+	return false;
 }
 
-bool TextEntrySysListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool TextEntrySysListener::keyType(unsigned char key, Component *source)
 {
-  TextEntry *textSource = dynamic_cast<TextEntry *>(source); // req. RTTI!
-  assert(textSource); // Check if this is really an TextEntry object?
+	TextEntry *textSource = dynamic_cast<TextEntry *>(source); // req. RTTI!
+	assert(textSource); // Check if this is really an TextEntry object?
+	// cerr << (int)key << endl;
 
-  textSource->setActive(true);
-  textSource->setClickConsumed(false);
+	switch (key) {
+	case 127:
+		cerr << "delete forward -> not yet implemented" << endl;
+		return true;
+		break;
+	case '\b':
+		textSource->removeChar();
+		return true;
+		break;
+	default:
+		// don't react on return
+		if (key != 13) {
+			textSource->addChar(key);
+		}
+		return true;
+		break;
+	}
 
-  return false;
-}
-
-bool TextEntrySysListener::keyType (unsigned char key, Component *source)
-{
-  TextEntry *textSource = dynamic_cast<TextEntry *>(source); // req. RTTI!
-  assert(textSource); // Check if this is really an TextEntry object?
-  //cerr << (int)key << endl;
-
-  switch(key)
-  {
-  case 127:
-    cerr << "delete forward -> not yet implemented" << endl;
-    return true;
-    break;
-  case '\b':
-    textSource->removeChar ();
-    return true;
-    break;
-  default:
-    // don't react on return
-    if (key != 13)
-    {
-      textSource->addChar (key);
-    }
-    return true;
-    break;
-  }
-
-  return false;
+	return false;
 }
 
 } // namespace mhgui
-

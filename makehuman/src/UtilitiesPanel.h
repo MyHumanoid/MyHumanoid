@@ -29,41 +29,41 @@
 #define UTILITIESPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <gui/Panel.h>
-#include <gui/ImageSlider.h>
-#include <gui/Image.h>
-#include "util.h"
 #include "ImageListener.h"
-#include "UtilitiesSliderListener.h"
 #include "TargetSlider.h"
+#include "UtilitiesSliderListener.h"
+#include "util.h"
+#include <gui/Image.h>
+#include <gui/ImageSlider.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::vector;
 
 class UtilitiesPanel : public Panel
 {
 public:
-  UtilitiesPanel ();
-  virtual ~UtilitiesPanel ();
+	UtilitiesPanel();
+	virtual ~UtilitiesPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
-  //void resetTargetValues(const string currentTarget = "");
+	// void resetTargetValues(const string currentTarget = "");
 
 private: // intentionally not implemented
-  UtilitiesPanel             (const UtilitiesPanel&);
-  UtilitiesPanel& operator = (const UtilitiesPanel&);
+	UtilitiesPanel(const UtilitiesPanel &);
+	UtilitiesPanel &operator=(const UtilitiesPanel &);
 
 private:
-  ImageListener imgListener;
-  UtilitiesSliderListener utilitiesSliderListener;
-  vector <Image*> imageVector;
-  vector <TargetSlider*> targetVector;
-  Image *img;
-  TargetSlider *target_slider;
+	ImageListener imgListener;
+	UtilitiesSliderListener utilitiesSliderListener;
+	vector<Image *> imageVector;
+	vector<TargetSlider *> targetVector;
+	Image *img;
+	TargetSlider *target_slider;
 };
 
 #endif // UTILITIESPANEL_H

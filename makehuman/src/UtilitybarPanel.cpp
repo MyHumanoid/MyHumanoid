@@ -30,110 +30,115 @@
 
 #include <algorithm>
 
-#include <gui/Window.h>
 #include <gui/Rect.h>
 #include <gui/Tooltip.h>
+#include <gui/Window.h>
 //#include "Global.h"
 
 using namespace std;
 using namespace Animorph;
 
-UtilitybarPanel::UtilitybarPanel ()
-    : Panel (kComponentID_UtilitybarPanel, Rect(0,0,192,16))
+UtilitybarPanel::UtilitybarPanel()
+    : Panel(kComponentID_UtilitybarPanel, Rect(0, 0, 192, 16))
 {
 }
 
-UtilitybarPanel::~UtilitybarPanel ()
+UtilitybarPanel::~UtilitybarPanel()
 {
-  for_each (imageVector.begin (), imageVector.end (), deleteFunctor <Image*> ());
+	for_each(imageVector.begin(), imageVector.end(), deleteFunctor<Image *>());
 }
 
-void UtilitybarPanel::createWidgets ()
+void UtilitybarPanel::createWidgets()
 {
-  Window &mainWindow = Window::instance ();
-  Panel *tooltipPanel = mainWindow.getPanel (kComponentID_TooltipPanel);
-  assert(tooltipPanel);
+	Window &mainWindow = Window::instance();
+	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
+	assert(tooltipPanel);
 
-  const Color color_red (1.0, 0.0, 0.0);
-  float alpha = 1.0;
-  const Point kTooltipPos(70, 12);
+	const Color color_red(1.0, 0.0, 0.0);
+	float alpha = 1.0;
+	const Point kTooltipPos(70, 12);
 
-  // -------------------------------------------------------------------------
-  Image *utilitybar = new Image(kComponentID_ImageUtilitybar_Quit,
-                                searchPixmapFile ("ui/utilitybar_01.png"),
-                                Rect(0,0,16,16));
+	// -------------------------------------------------------------------------
+	Image *utilitybar =
+	    new Image(kComponentID_ImageUtilitybar_Quit,
+	              searchPixmapFile("ui/utilitybar_01.png"), Rect(0, 0, 16, 16));
 
-  utilitybar->setListener(&imgListener1);
-  utilitybar->setTooltip(Tooltip("QUIT MakeHuman", kTooltipPos, color_red, tooltipPanel));
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
+	utilitybar->setListener(&imgListener1);
+	utilitybar->setTooltip(
+	    Tooltip("QUIT MakeHuman", kTooltipPos, color_red, tooltipPanel));
+	utilitybar->setAlpha(alpha);
+	imageVector.push_back(utilitybar);
+	addWidget(utilitybar);
 
-  // -------------------------------------------------------------------------
-  utilitybar = new Image(kComponentID_ImageUtilitybar_Grid,
-                         searchPixmapFile ("ui/utilitybar_02.png"),
-                         Rect(0,0,16,16));
-  utilitybar->setListener(&imgListener1);
-  utilitybar->setTooltip(Tooltip("Grid ON/OFF", kTooltipPos, color_red, tooltipPanel));
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
+	// -------------------------------------------------------------------------
+	utilitybar =
+	    new Image(kComponentID_ImageUtilitybar_Grid,
+	              searchPixmapFile("ui/utilitybar_02.png"), Rect(0, 0, 16, 16));
+	utilitybar->setListener(&imgListener1);
+	utilitybar->setTooltip(
+	    Tooltip("Grid ON/OFF", kTooltipPos, color_red, tooltipPanel));
+	utilitybar->setAlpha(alpha);
+	imageVector.push_back(utilitybar);
+	addWidget(utilitybar);
 
-  // -------------------------------------------------------------------------
-/*  utilitybar= new Image(kComponentID_ImageUtilitybar_RenderPreview,
-                        searchPixmapFile ("ui/utilitybar_04.png"),
-                        Rect(0,0,16,16));
-  utilitybar->setListener(&imgListener1);
-  utilitybar->setTooltip(Tooltip("Rendering preview", kTooltipPos, color_red, tooltipPanel));
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
-*/
-  // -------------------------------------------------------------------------
-  utilitybar = new Image(kComponentID_ImageUtilitybar_Subsurfaces,
-                         searchPixmapFile ("ui/utilitybar_06.png"),
-                         Rect(0,0,16,16));
-  utilitybar->setListener(&imgListener1);
-  utilitybar->setTooltip(Tooltip("Subsurfaces ON/OFF", kTooltipPos, color_red, tooltipPanel));
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
+	// -------------------------------------------------------------------------
+	/*  utilitybar= new Image(kComponentID_ImageUtilitybar_RenderPreview,
+	                        searchPixmapFile ("ui/utilitybar_04.png"),
+	                        Rect(0,0,16,16));
+	  utilitybar->setListener(&imgListener1);
+	  utilitybar->setTooltip(Tooltip("Rendering preview", kTooltipPos, color_red,
+	  tooltipPanel)); utilitybar->setAlpha (alpha); imageVector.push_back
+	  (utilitybar); addWidget (utilitybar);
+	*/
+	// -------------------------------------------------------------------------
+	utilitybar =
+	    new Image(kComponentID_ImageUtilitybar_Subsurfaces,
+	              searchPixmapFile("ui/utilitybar_06.png"), Rect(0, 0, 16, 16));
+	utilitybar->setListener(&imgListener1);
+	utilitybar->setTooltip(
+	    Tooltip("Subsurfaces ON/OFF", kTooltipPos, color_red, tooltipPanel));
+	utilitybar->setAlpha(alpha);
+	imageVector.push_back(utilitybar);
+	addWidget(utilitybar);
 
-  // -------------------------------------------------------------------------
-  utilitybar = new Image(kComponentID_ImageUtilitybar_QuotedBox,
-                         searchPixmapFile ("ui/utilitybar_07.png"),
-                         Rect(0,0,16,16));
-  utilitybar->setListener(&imgListener1);
-  utilitybar->setTooltip(Tooltip("Quoted box ON/OFF", kTooltipPos, color_red, tooltipPanel));
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
+	// -------------------------------------------------------------------------
+	utilitybar =
+	    new Image(kComponentID_ImageUtilitybar_QuotedBox,
+	              searchPixmapFile("ui/utilitybar_07.png"), Rect(0, 0, 16, 16));
+	utilitybar->setListener(&imgListener1);
+	utilitybar->setTooltip(
+	    Tooltip("Quoted box ON/OFF", kTooltipPos, color_red, tooltipPanel));
+	utilitybar->setAlpha(alpha);
+	imageVector.push_back(utilitybar);
+	addWidget(utilitybar);
 
-  // -------------------------------------------------------------------------
-  utilitybar = new Image(kComponentID_ImageUtilitybar_MeshTexture,
-                         searchPixmapFile ("ui/utilitybar_08.png"),
-                         Rect(0,0,16,16));
-  utilitybar->setListener(&imgListener1);
-  utilitybar->setTooltip(Tooltip("Texture ON/OFF", kTooltipPos, color_red, tooltipPanel));
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
+	// -------------------------------------------------------------------------
+	utilitybar =
+	    new Image(kComponentID_ImageUtilitybar_MeshTexture,
+	              searchPixmapFile("ui/utilitybar_08.png"), Rect(0, 0, 16, 16));
+	utilitybar->setListener(&imgListener1);
+	utilitybar->setTooltip(
+	    Tooltip("Texture ON/OFF", kTooltipPos, color_red, tooltipPanel));
+	utilitybar->setAlpha(alpha);
+	imageVector.push_back(utilitybar);
+	addWidget(utilitybar);
 
-  // -------------------------------------------------------------------------
-  utilitybar = new Image(kComponentID_ImageUtilitybar_About,
-                         searchPixmapFile ("ui/utilitybar_05.png"),
-                         Rect(0,0,16,16));
-  utilitybar->setListener(&imgListener1);
-  utilitybar->setTooltip(Tooltip("About MakeHuman", kTooltipPos, color_red, tooltipPanel));
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
+	// -------------------------------------------------------------------------
+	utilitybar =
+	    new Image(kComponentID_ImageUtilitybar_About,
+	              searchPixmapFile("ui/utilitybar_05.png"), Rect(0, 0, 16, 16));
+	utilitybar->setListener(&imgListener1);
+	utilitybar->setTooltip(
+	    Tooltip("About MakeHuman", kTooltipPos, color_red, tooltipPanel));
+	utilitybar->setAlpha(alpha);
+	imageVector.push_back(utilitybar);
+	addWidget(utilitybar);
 
-  // -------------------------------------------------------------------------
-  utilitybar = new Image(kComponentID_ImageUtilitybar_Frames_01,
-                         searchPixmapFile ("ui/frames_01.png"),
-                         Rect(0,0,96,16)); //w = 1024 - 32x17
-  utilitybar->setAlpha (alpha);
-  imageVector.push_back (utilitybar);
-  addWidget (utilitybar);
+	// -------------------------------------------------------------------------
+	utilitybar = new Image(kComponentID_ImageUtilitybar_Frames_01,
+	                       searchPixmapFile("ui/frames_01.png"),
+	                       Rect(0, 0, 96, 16)); // w = 1024 - 32x17
+	utilitybar->setAlpha(alpha);
+	imageVector.push_back(utilitybar);
+	addWidget(utilitybar);
 }

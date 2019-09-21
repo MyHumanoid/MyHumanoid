@@ -30,19 +30,20 @@
 #define EDGESTRIP_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <iostream>
-#include <fstream>
 #include "FileReader.h"
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 #define MAX_LINE 350000
 
-namespace Animorph {
+namespace Animorph
+{
 
-typedef std::vector <int> StripData;
+typedef std::vector<int> StripData;
 
 /*! \brief A vector of ints, loadable from a file
 
@@ -54,21 +55,21 @@ The format of EdgeStrips files:
 \endverbatim
 
 */
-class EdgeStrip : public std::vector <StripData>
+class EdgeStrip : public std::vector<StripData>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  /// Load the Strip data from a file
-  /*!
-   * \param filename the file to load
-   * \return true if file is found
-   * \return false if file isn't found
-   */
-  bool load (const std::string& filename);
+	/// Load the Strip data from a file
+	/*!
+	 * \param filename the file to load
+	 * \return true if file is found
+	 * \return false if file isn't found
+	 */
+	bool load(const std::string &filename);
 };
 
-}
+} // namespace Animorph
 
-#endif	// EDGESTRIP_H
+#endif // EDGESTRIP_H

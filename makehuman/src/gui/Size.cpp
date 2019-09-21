@@ -27,6 +27,7 @@
 
 #include "gui/Size.h"
 
-namespace mhgui {
+namespace mhgui
+{
 
 } // namespace mhgui

@@ -29,7 +29,7 @@
 #define IMAGESLIDER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include "Image.h"
@@ -38,7 +38,8 @@
 using std::cerr;
 using std::endl;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Rect;
 class ImageSliderSysListener;
@@ -47,41 +48,41 @@ class ImageSliderSysListener;
 class ImageSlider : public Image
 {
 protected:
-  float minValue;
-  float maxValue;
-  float sliderValue;
-  float valueStep;
-  int   oldMouseX;
-  int   overlayMultiplier;
-  ImageSliderSysListener *imageSliderSysListener;
+	float minValue;
+	float maxValue;
+	float sliderValue;
+	float valueStep;
+	int oldMouseX;
+	int overlayMultiplier;
+	ImageSliderSysListener *imageSliderSysListener;
 
 public:
-  /*!
-  * @param inGeometry the font takes currently 10 pixel. So choose height
-  *        10 pixel larger than you like your image.
-  */
-  ImageSlider (uint32_t      inImageID,
-               const std::string& inSliderImageFilename,
-               const Rect&   inGeometry,
-               float         inMinValue,
-               float         inMaxValue);
+	/*!
+	 * @param inGeometry the font takes currently 10 pixel. So choose height
+	 *        10 pixel larger than you like your image.
+	 */
+	ImageSlider(uint32_t inImageID, const std::string &inSliderImageFilename,
+	            const Rect &inGeometry, float inMinValue, float inMaxValue);
 
-  ~ImageSlider();
+	~ImageSlider();
 
-  float getSliderValue ();
-  void setSliderValue (float newValue);
-  void draw ();
-  void drawOverlay ();
-  void decreaseValue (int n);
-  void increaseValue (int n);
-  void setOldMouseX (int mouseX);
-  int getOldMouseX ();
-  float getMinValue () {return minValue;}
-  float getMaxValue () {return maxValue;}
-  void setMinValue (float value) {minValue = value;}
-  void setMaxValue (float value) {maxValue = value;}
-  void setOverlayMultiplier (int value) {overlayMultiplier = (value > 0 ? value : 1);}
-  void setStep (float inValueStep) {valueStep = inValueStep;}
+	float getSliderValue();
+	void setSliderValue(float newValue);
+	void draw();
+	void drawOverlay();
+	void decreaseValue(int n);
+	void increaseValue(int n);
+	void setOldMouseX(int mouseX);
+	int getOldMouseX();
+	float getMinValue() { return minValue; }
+	float getMaxValue() { return maxValue; }
+	void setMinValue(float value) { minValue = value; }
+	void setMaxValue(float value) { maxValue = value; }
+	void setOverlayMultiplier(int value)
+	{
+		overlayMultiplier = (value > 0 ? value : 1);
+	}
+	void setStep(float inValueStep) { valueStep = inValueStep; }
 };
 
 } // namespace mhgui

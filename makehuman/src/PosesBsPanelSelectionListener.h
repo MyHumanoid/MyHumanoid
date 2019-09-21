@@ -29,7 +29,7 @@
 #define POSESBSPANELSELECTIONLISTENER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include <gui/AbstractListener.h>
@@ -40,16 +40,19 @@ using namespace mhgui;
 class PosesBsPanelSelectionListener : public AbstractListener
 {
 public:
-  PosesBsPanelSelectionListener();
-  virtual ~PosesBsPanelSelectionListener();
+	PosesBsPanelSelectionListener();
+	virtual ~PosesBsPanelSelectionListener();
 
-  virtual bool mouseOver     (const Point& inMousePos,               Component *source );
-  virtual bool mouseOut      (const Point& inMousePos,               Component *source );
-  virtual bool mousePressed  (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseReleased (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseDragged  (const Point& inMousePos,               Component *source );
-  virtual bool mouseWheel    (const Point& inMousePos, int inButton, Component *source );
-  virtual bool keyType       (unsigned char inKey,                   Component *source );
+	virtual bool mouseOver(const Point &inMousePos, Component *source);
+	virtual bool mouseOut(const Point &inMousePos, Component *source);
+	virtual bool mousePressed(const Point &inMousePos, int inButton,
+	                          Component *source);
+	virtual bool mouseReleased(const Point &inMousePos, int inButton,
+	                           Component *source);
+	virtual bool mouseDragged(const Point &inMousePos, Component *source);
+	virtual bool mouseWheel(const Point &inMousePos, int inButton,
+	                        Component *source);
+	virtual bool keyType(unsigned char inKey, Component *source);
 };
 
-#endif //POSESBSPANELSELECTIONLISTENER_H
+#endif // POSESBSPANELSELECTIONLISTENER_H

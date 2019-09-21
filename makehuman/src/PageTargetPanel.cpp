@@ -29,39 +29,36 @@
 #include "ComponentID.h"
 #include "Global.h"
 
-#include <gui/Window.h>
-#include <gui/Rect.h>
-#include <gui/ImageSlider.h>
-#include <gui/Tooltip.h>
 #include "Global.h"
+#include <gui/ImageSlider.h>
+#include <gui/Rect.h>
+#include <gui/Tooltip.h>
+#include <gui/Window.h>
 
 using namespace std;
 using namespace Animorph;
 
 #include "ComponentID.h"
 
-
-PageTargetPanel::PageTargetPanel (const string& category, const Rect& rect)
-    : Panel (kComponentID_TargetPanel, rect),
-    category (category)
+PageTargetPanel::PageTargetPanel(const string &category, const Rect &rect)
+    : Panel(kComponentID_TargetPanel, rect)
+    , category(category)
 {
-  setRowSpacing(3);
+	setRowSpacing(3);
 }
 
-
-PageTargetPanel::~PageTargetPanel ()
+PageTargetPanel::~PageTargetPanel()
 {
-  for_each (targetVector.begin (), targetVector.end (), deleteFunctor <TargetSlider*> ());
+	for_each(targetVector.begin(), targetVector.end(),
+	         deleteFunctor<TargetSlider *>());
 }
-void PageTargetPanel::resetTargetValues(const string currentTargetName )
+void PageTargetPanel::resetTargetValues(const string currentTargetName)
 {
-  for (vector <TargetSlider*>::const_iterator targetvector_it = targetVector.begin ();
-         targetvector_it != targetVector.end ();
-         targetvector_it++)
-  {
-    if((*targetvector_it)->getTargetName() != currentTargetName)
-    {
-      (*targetvector_it)->setSliderValue(0);
-    }
-  }
+	for (vector<TargetSlider *>::const_iterator targetvector_it =
+	         targetVector.begin();
+	     targetvector_it != targetVector.end(); targetvector_it++) {
+		if ((*targetvector_it)->getTargetName() != currentTargetName) {
+			(*targetvector_it)->setSliderValue(0);
+		}
+	}
 }

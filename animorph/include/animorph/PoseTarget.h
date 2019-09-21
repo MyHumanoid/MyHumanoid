@@ -29,26 +29,28 @@
 #define POSETARGET_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include "util.h"
+#include "DirectoryList.h"
 #include "FileReader.h"
 #include "PoseRotation.h"
 #include "PoseTranslation.h"
-#include "DirectoryList.h"
+#include "util.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <vector>
 
-namespace Animorph {
+namespace Animorph
+{
 
 typedef std::set<int> UsedVertex;
 typedef std::list<PoseTranslation> PoseTranslationVector;
 typedef std::list<PoseRotation> PoseRotationVector;
 
-/*! \brief Represents the final position and deformation of the body parts attached to a joint
+/*! \brief Represents the final position and deformation of the body parts
+ * attached to a joint
  *
  * The base mesh is linearly transformed to a state inbetween the base position
  * and the final position by applying a set of translations and rotations.
@@ -60,70 +62,82 @@ typedef std::list<PoseRotation> PoseRotationVector;
 class PoseTarget
 {
 private:
-  // normally these vectors contain only one element
-  /// Translations to be applied on Mesh::doPose()
-  PoseTranslationVector positiveTranslations;
-  /// Translations to be applied on Mesh::doPose() with morph_value < 0
-  PoseTranslationVector negativeTranslations;
-  /// Rotations to be applied on Mesh::doPose()
-  PoseRotationVector positiveRotations;
-  /// Rotations to be applied on Mesh::doPose() with morph_value < 0
-  PoseRotationVector negativeRotations;
+	// normally these vectors contain only one element
+	/// Translations to be applied on Mesh::doPose()
+	PoseTranslationVector positiveTranslations;
+	/// Translations to be applied on Mesh::doPose() with morph_value < 0
+	PoseTranslationVector negativeTranslations;
+	/// Rotations to be applied on Mesh::doPose()
+	PoseRotationVector positiveRotations;
+	/// Rotations to be applied on Mesh::doPose() with morph_value < 0
+	PoseRotationVector negativeRotations;
 
-  const string targetName;
-  /// flags whether wehave special transformations for Mesh::doPose() with morph_value < 0
-  bool negative;
-  bool positive;
-  /// flag for calcNormalizations()
-  bool normalizationInited;
-  const string fullPath;
-  UsedVertex  modVertex;
-  float minAngle;
-  float maxAngle;
+	const string targetName;
+	/// flags whether wehave special transformations for Mesh::doPose() with
+	/// morph_value < 0
+	bool negative;
+	bool positive;
+	/// flag for calcNormalizations()
+	bool normalizationInited;
+	const string fullPath;
+	UsedVertex modVertex;
+	float minAngle;
+	float maxAngle;
 
-  /// Initializes the center of all rotations with the controid of their centerVertexNumbers
-  void calcRotationsCenteroids(const VertexVector& vertexvector, PoseRotationVector &rotations);
-  void calcTranslationsFormFactors(const VertexVector& vertexvector, PoseTranslationVector &translations);
-
+	/// Initializes the center of all rotations with the controid of their
+	/// centerVertexNumbers
+	void calcRotationsCenteroids(const VertexVector &vertexvector,
+	                             PoseRotationVector &rotations);
+	void calcTranslationsFormFactors(const VertexVector &vertexvector,
+	                                 PoseTranslationVector &translations);
 
 public:
-  PoseTarget (const string *inTargetName, const string *inFullPath)
-  : positiveTranslations(),
-    negativeTranslations(),
-    positiveRotations(),
-    negativeRotations(),
-    targetName(*inTargetName),
-    negative(false),
-    positive(false),
-    normalizationInited(false),
-    fullPath(*inFullPath),
-    modVertex(),
-    minAngle(0.0f),
-    maxAngle(0.0f)
-  {  }
+	PoseTarget(const string *inTargetName, const string *inFullPath)
+	    : positiveTranslations()
+	    , negativeTranslations()
+	    , positiveRotations()
+	    , negativeRotations()
+	    , targetName(*inTargetName)
+	    , negative(false)
+	    , positive(false)
+	    , normalizationInited(false)
+	    , fullPath(*inFullPath)
+	    , modVertex()
+	    , minAngle(0.0f)
+	    , maxAngle(0.0f)
+	{
+	}
 
-  /// Initializes the center of all rotations with the controid of their centerVertexNumbers
-  void calcRotationsCenteroids(const VertexVector& vertexvector);
-  void calcTranslationsFormFactors(const VertexVector& vertexvector);
-  const Vector3f getFirstRotationCenteroid();
+	/// Initializes the center of all rotations with the controid of their
+	/// centerVertexNumbers
+	void calcRotationsCenteroids(const VertexVector &vertexvector);
+	void calcTranslationsFormFactors(const VertexVector &vertexvector);
+	const Vector3f getFirstRotationCenteroid();
 
-  /// Determines, whether normalizations of the rotations or translations are required
-  void calcNormalizations();
-  bool hasNegative() const {return negative;}
-  bool hasPositive() const {return positive;}
-  PoseTranslationVector &getPositiveTranslations () {return positiveTranslations;}
-  PoseTranslationVector &getNegativeTranslations () {return negativeTranslations;}
-  PoseRotationVector    &getPositiveRotations () {return positiveRotations;}
-  PoseRotationVector    &getNegativeRotations () {return negativeRotations;}
+	/// Determines, whether normalizations of the rotations or translations are
+	/// required
+	void calcNormalizations();
+	bool hasNegative() const { return negative; }
+	bool hasPositive() const { return positive; }
+	PoseTranslationVector &getPositiveTranslations()
+	{
+		return positiveTranslations;
+	}
+	PoseTranslationVector &getNegativeTranslations()
+	{
+		return negativeTranslations;
+	}
+	PoseRotationVector &getPositiveRotations() { return positiveRotations; }
+	PoseRotationVector &getNegativeRotations() { return negativeRotations; }
 
-  UsedVertex &getModVertex () {return modVertex;}
-  //void showCenters();
-  const float getMinAngle() const {return minAngle;}
-  const float getMaxAngle() const {return maxAngle;}
+	UsedVertex &getModVertex() { return modVertex; }
+	// void showCenters();
+	const float getMinAngle() const { return minAngle; }
+	const float getMaxAngle() const { return maxAngle; }
 
-  bool load();
+	bool load();
 };
 
-}
+} // namespace Animorph
 
-#endif	// POSETARGET_H
+#endif // POSETARGET_H

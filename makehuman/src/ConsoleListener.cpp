@@ -25,397 +25,306 @@
  *
  */
 
-#include <animorph/ObjExporter.h>
-#include <animorph/ColladaExporter.h>
-#include <animorph/BodySettings.h>
-#include <gui/Console.h>
-#include <gui/CGUtilities.h>
-#include <gui/Window.h>
-#include <gui/Component.h>
-#include <gui/GLUTWrapper.h>
-#include <stdio.h>
-#include <iostream>
-#include <assert.h>
-#include "util.h"
-#include "ConsoleCommands.h"
 #include "ConsoleListener.h"
-#include "TargetPanel.h"
-#include "ComponentID.h"
-#include "Global.h"
-#include "util.h"
-#include "FileTools.h"
 #include "CharacterSettingPanel.h"
+#include "ComponentID.h"
+#include "ConsoleCommands.h"
+#include "FileTools.h"
+#include "Global.h"
+#include "TargetPanel.h"
+#include "util.h"
+#include <animorph/BodySettings.h>
+#include <animorph/ColladaExporter.h>
+#include <animorph/ObjExporter.h>
+#include <assert.h>
+#include <gui/CGUtilities.h>
+#include <gui/Component.h>
+#include <gui/Console.h>
+#include <gui/GLUTWrapper.h>
+#include <gui/Window.h>
+#include <iostream>
+#include <stdio.h>
 
 using namespace std;
 using namespace mhgui;
 
 ConsoleListener::ConsoleListener()
-: AbstractListener()
+    : AbstractListener()
 {
 }
 
-ConsoleListener::~ConsoleListener()
+ConsoleListener::~ConsoleListener() {}
+
+bool ConsoleListener::mouseOver(const Point &inMousePos, Component *source)
 {
+	return true;
 }
 
-bool ConsoleListener::mouseOver (const Point& inMousePos, Component *source)
+bool ConsoleListener::mouseOut(const Point &inMousePos, Component *source)
 {
-  return true;
+	return true;
 }
 
-bool ConsoleListener::mouseOut (const Point& inMousePos, Component *source)
+bool ConsoleListener::mouseDragged(const Point &inMousePos, Component *source)
 {
-  return true;
+	return true;
 }
 
-bool ConsoleListener::mouseDragged (const Point& inMousePos, Component *source)
+bool ConsoleListener::mousePressed(const Point &inMousePos, int button,
+                                   Component *source)
 {
-  return true;
+	return true;
 }
 
-bool ConsoleListener::mousePressed (const Point& inMousePos, int button, Component *source)
+bool ConsoleListener::mouseWheel(const Point &inMousePos, int inButton,
+                                 Component *source)
 {
-  return true;
+	return false;
 }
 
-bool ConsoleListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool ConsoleListener::mouseReleased(const Point &inMousePos, int button,
+                                    Component *source)
 {
-  return false;
+	return true;
 }
 
-bool ConsoleListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool ConsoleListener::keyType(unsigned char key, Component *source)
 {
-  return true;
+	Console *console = dynamic_cast<Console *>(source); // req. RTTI!
+	assert(console); // Check if this is really a Console object?
+
+	if (console->acceptUserInput()) {
+		switch (toupper(key)) {
+		case '\r':
+			parseCommand(*console);
+			break;
+		case '\b':
+			console->removeUserText();
+			break;
+		case '\t':
+			console->addUserText(' ');
+			console->addUserText(' ');
+			console->addUserText(' ');
+			break;
+		case 27:
+			console->close();
+			break;
+		default:
+			console->addUserText(key);
+			// std::cout << console->getSize().getWidth() << std::endl;
+		}
+	} else {
+		if (toupper(key) == 27) {
+			if (!Global::instance().isRendering()) {
+				console->close();
+			}
+		} else if (toupper(key) == '\r' && console->isInError()) {
+			console->retryCommand();
+		}
+	}
+	return true;
 }
 
-bool ConsoleListener::keyType (unsigned char key, Component *source)
+void ConsoleListener::parseCommand(Console &console)
 {
-  Console *console = dynamic_cast<Console *>(source); // req. RTTI!
-  assert(console); // Check if this is really a Console object?
+	int i;
+	string cmd;
+	string arg;
+	const string &line = console.getUserText();
 
-  if(console->acceptUserInput())
-  {
-    switch (toupper(key))
-    {
-      case '\r':
-        parseCommand(*console);
-        break;
-      case '\b':
-        console->removeUserText();
-        break;
-      case '\t':
-        console->addUserText(' ');
-        console->addUserText(' ');
-        console->addUserText(' ');
-        break;
-      case 27:
-        console->close();
-        break;
-      default:
-        console->addUserText(key);
-        //std::cout << console->getSize().getWidth() << std::endl;
-    }
-  }
-  else
-  {
-    if(toupper(key) == 27)
-    {
-      if(!Global::instance().isRendering())
-      {
-        console->close();
-      }
-    }
-    else if(toupper(key) == '\r' && console->isInError())
-    {
-      console->retryCommand();
-    }
-  }
-  return true;
-}
+	Global &global = Global::instance();
 
-void ConsoleListener::parseCommand(Console& console)
-{
-  int i;
-  string cmd;
-  string arg;
-  const string& line = console.getUserText();
+	if (console.getCommand() == kConsoleCommand_Exit) {
+		ExportConfigurationXML();
+		exit(0);
+	}
 
-  Global &global = Global::instance ();
+	if (!line.empty()) {
+		if (console.getStatus() == Console::PROMPT) {
+			i = line.find_first_of(' ');
+			if (i == -1) {
+				cmd = line;
+				arg = "";
+			} else {
+				cmd = line.substr(0, i);
+				arg = line.substr(i + 1, line.length() - i);
+			}
+			console.setCommand(cmd);
+		} else if (console.getStatus() == Console::INPUT) {
+			cmd = console.getCommand();
+			arg = line;
+		}
 
-  if(console.getCommand() == kConsoleCommand_Exit)
-  {
-    ExportConfigurationXML();
-    exit(0);
-  }
+		if (cmd == kConsoleCommand_Load_Background) {
+			if (arg.size() == 0) {
+				console.inputMode(kConsoleMessage_Load_Background,
+				                  getMyBackgroundsPath());
+			} else {
+				loadWindowBackground(console, arg);
+			}
+		} else if (cmd == kConsoleCommand_Load_AqsisPath) {
+			if (arg.size() == 0) {
+				console.inputMode(kConsoleCommand_Load_AqsisPath,
+				                  GetDefaultAqsisPath());
+			} else {
+				loadAqsisPath(console, arg);
+			}
+		} else if (cmd == kConsoleCommand_Load_PixiePath) {
+			if (arg.size() == 0) {
+				console.inputMode(kConsoleCommand_Load_PixiePath,
+				                  GetDefaultPixiePath());
+			} else {
+				loadPixiePath(console, arg);
+			}
+		} else if (cmd == kConsoleCommand_Load_Bodysettings) {
+			if (global.getAppMode() == BODY_DETAILS ||
+			    global.getAppMode() == CHARACTER_SETTING ||
+			    global.getAppMode() == CLOTHES) {
+				if (arg.size() == 0) {
+					console.inputMode(kConsoleMessage_Load_Bodysettings,
+					                  getMyBodysettingsPath());
+				} else {
+					loadBodySettings(console, arg);
+				}
+			} else {
+				console.printMessage(kConsoleMessage_WrongMode_BodyDetails);
+			}
+		} else if (cmd == kConsoleCommand_Load_Poses) {
+			if (global.getAppMode() == POSES) {
+				if (arg.size() == 0) {
+					console.inputMode(kConsoleMessage_Load_Poses, getMyPosesPath());
+				} else {
+					loadPoses(console, arg);
+				}
+			} else {
+				console.printMessage(kConsoleMessage_WrongMode_Poses);
+			}
+		} else if (cmd == kConsoleCommand_Save_Bodysettings) {
+			if (global.getAppMode() == BODY_DETAILS ||
+			    global.getAppMode() == CHARACTER_SETTING ||
+			    global.getAppMode() == CLOTHES) {
+				if (arg.size() == 0) {
+					console.inputMode(kConsoleMessage_Save_Bodysettings,
+					                  getMyBodysettingsPath());
+				} else {
+					saveBodySettings(console, arg);
+				}
+			} else {
+				console.printMessage(kConsoleMessage_WrongMode_BodyDetails);
+			}
+		} else if (cmd == kConsoleCommand_Save_Poses) {
+			if (global.getAppMode() == POSES) {
+				if (arg.size() == 0) {
+					console.inputMode(kConsoleMessage_Save_Poses, getMyPosesPath());
+				} else {
+					savePoses(console, arg);
+				}
+			} else {
+				console.printMessage(kConsoleMessage_WrongMode_Poses);
+			}
+		} else if (cmd == kConsoleCommand_Save_Autozoom) {
+			if (arg.size() == 0) {
+				Window &mainWindow(Window::instance());
+				TargetPanel *targetPanel = dynamic_cast<TargetPanel *>(
+				    mainWindow.getPanel(kComponentID_TargetPanel));
+				string target = targetPanel->getCategory();
+				std::string pathAutozoom_data =
+				    searchDataDir("targets") + "/" + target + "/" + target + ".camera";
+				console.inputMode(kConsoleMessage_Save_Autozoom, pathAutozoom_data);
+			} else {
+				saveAutozoom(console, arg);
+			}
+		} else if (cmd == kConsoleCommand_Export_Object) {
+			if (arg.size() == 0) {
+				console.inputMode(kConsoleMessage_Export_Object, getMyObjPath());
+			} else {
+				exportBodySettings(console, arg);
+			}
+		} else if (cmd == kConsoleCommand_Export_Full_Object) {
+			if (arg.size() == 0) {
+				console.inputMode(kConsoleMessage_Export_Object, getMyObjPath());
+			} else {
+				exportBodySettings(console, arg, true);
+			}
+		} else if (cmd == kConsoleCommand_Export_Collada) {
+			if (arg.size() == 0) {
+				console.inputMode(kConsoleMessage_Export_Collada, getMyColladaPath());
+			} else {
+				exportCollada(console, arg);
+			}
+		} else if (cmd == kConsoleCommand_Set_Parameter) {
+			if (arg.size() == 0) {
 
-  if(!line.empty())
-  {
-    if(console.getStatus() == Console::PROMPT)
-    {
-      i = line.find_first_of(' ');
-      if(i == -1)
-      {
-        cmd = line;
-        arg = "";
-      }
-      else
-      {
-        cmd = line.substr(0, i);
-        arg = line.substr(i + 1, line.length() - i);
-      }
-      console.setCommand(cmd);
-    }
-    else if(console.getStatus() == Console::INPUT)
-    {
-      cmd = console.getCommand();
-      arg = line;
-    }
+			} else {
+				parseSetParameter(console, arg);
+			}
+		} else if (cmd == kConsoleCommand_Create_WeightsMatrix) {
 
-    if(cmd == kConsoleCommand_Load_Background)
-    {
-      if(arg.size() == 0)
-      {
-        console.inputMode(kConsoleMessage_Load_Background, getMyBackgroundsPath());
-      }
-      else
-      {
-        loadWindowBackground(console, arg);
-      }
-    }else if(cmd == kConsoleCommand_Load_AqsisPath)
-    {
-      if(arg.size() == 0)
-      {
-        console.inputMode(kConsoleCommand_Load_AqsisPath, GetDefaultAqsisPath());
-      }
-      else
-      {
-        loadAqsisPath(console, arg);
-      }
-    } else if(cmd == kConsoleCommand_Load_PixiePath)
-    {
-      if(arg.size() == 0)
-      {
-        console.inputMode(kConsoleCommand_Load_PixiePath, GetDefaultPixiePath());
-      }
-      else
-      {
-        loadPixiePath(console, arg);
-      }
-    } else if(cmd == kConsoleCommand_Load_Bodysettings)
-    {
-      if(global.getAppMode() == BODY_DETAILS ||
-             global.getAppMode() == CHARACTER_SETTING ||
-             global.getAppMode() == CLOTHES)
-      {
-        if(arg.size() == 0)
-        {
-          console.inputMode(kConsoleMessage_Load_Bodysettings, getMyBodysettingsPath());
-        }
-        else
-        {
-          loadBodySettings(console, arg);
-        }
-      }
-      else
-      {
-        console.printMessage(kConsoleMessage_WrongMode_BodyDetails);
-      }
-    }
-    else if(cmd == kConsoleCommand_Load_Poses)
-    {
-      if(global.getAppMode() == POSES)
-      {
-        if(arg.size() == 0)
-        {
-          console.inputMode(kConsoleMessage_Load_Poses, getMyPosesPath());
-        }
-        else
-        {
-          loadPoses(console, arg);
-        }
-      }
-      else
-      {
-        console.printMessage(kConsoleMessage_WrongMode_Poses);
-      }
-    }
-    else if(cmd == kConsoleCommand_Save_Bodysettings)
-    {
-      if(global.getAppMode() == BODY_DETAILS ||
-             global.getAppMode() == CHARACTER_SETTING ||
-             global.getAppMode() == CLOTHES)
-      {
-        if(arg.size() == 0)
-        {
-          console.inputMode(kConsoleMessage_Save_Bodysettings, getMyBodysettingsPath());
-        }
-        else
-        {
-          saveBodySettings(console, arg);
-        }
-      }
-      else
-      {
-        console.printMessage(kConsoleMessage_WrongMode_BodyDetails);
-      }
-    }
-    else if(cmd == kConsoleCommand_Save_Poses)
-    {
-      if(global.getAppMode() == POSES)
-      {
-        if(arg.size() == 0)
-        {
-          console.inputMode(kConsoleMessage_Save_Poses, getMyPosesPath());
-        }
-        else
-        {
-          savePoses(console, arg);
-        }
-      }
-      else
-      {
-        console.printMessage(kConsoleMessage_WrongMode_Poses);
-      }
-    }
-    else if(cmd == kConsoleCommand_Save_Autozoom)
-    {
-	    if(arg.size() == 0)
-	    {
-		    Window& mainWindow(Window::instance());
-		    TargetPanel* targetPanel = dynamic_cast<TargetPanel*>(mainWindow.getPanel (kComponentID_TargetPanel));
-		    string target = targetPanel->getCategory();
-		    std::string pathAutozoom_data = searchDataDir ("targets") + "/" + target + "/" + target + ".camera";
-		    console.inputMode(kConsoleMessage_Save_Autozoom, pathAutozoom_data);
-	    }
-	    else
-	    {
-		    saveAutozoom(console, arg);
-	    }
-    }
-    else if(cmd == kConsoleCommand_Export_Object)
-    {
-      if(arg.size() == 0)
-      {
-        console.inputMode(kConsoleMessage_Export_Object, getMyObjPath());
-      }
-      else
-      {
-        exportBodySettings(console, arg);
-      }
-    }
-    else if(cmd == kConsoleCommand_Export_Full_Object)
-    {
-      if(arg.size() == 0)
-      {
-        console.inputMode(kConsoleMessage_Export_Object, getMyObjPath());
-      }
-      else
-      {
-        exportBodySettings(console, arg, true);
-      }
-    }
-    else if(cmd == kConsoleCommand_Export_Collada)
-    {
-      if(arg.size() == 0)
-      {
-        console.inputMode(kConsoleMessage_Export_Collada, getMyColladaPath());
-      }
-      else
-      {
-        exportCollada(console, arg);
-      }
-    }
-    else if(cmd == kConsoleCommand_Set_Parameter)
-    {
-      if(arg.size() == 0)
-      {
+			if (arg.size() == 0) {
+				CreateWeightsFile();
 
-      }
-      else
-      {
-        parseSetParameter(console, arg);
-      }
-    }else if(cmd == kConsoleCommand_Create_WeightsMatrix){
-
-      if(arg.size() == 0)
-      {
-         CreateWeightsFile();
-
-      }
-      else
-      {
-
-      }
-    }
+			} else {
+			}
+		}
 #ifdef _ANIMATIONS
-    else if(cmd == kConsoleCommand_Load_Animations)
-    {
-      if(global.getAppMode() == ANIMATIONS)
-      {
-        if(arg.size() == 0)
-        {
-          console.inputMode(kConsoleMessage_Load_Animations, getMyPosesPath());
-        }
-        else
-        {
-          loadAnimation(console, arg);
-        }
-      }
-      else
-      {
-        console.printMessage(kConsoleMessage_WrongMode_Animations);
-      }
-    }
+		else if (cmd == kConsoleCommand_Load_Animations) {
+			if (global.getAppMode() == ANIMATIONS) {
+				if (arg.size() == 0) {
+					console.inputMode(kConsoleMessage_Load_Animations, getMyPosesPath());
+				} else {
+					loadAnimation(console, arg);
+				}
+			} else {
+				console.printMessage(kConsoleMessage_WrongMode_Animations);
+			}
+		}
 #endif
-/*
-    else if(cmd == kConsoleCommand_Save_Animations)
-    {
-      if(global.getAppMode() == ANIMATIONS)
-      {
-        if(arg.size() == 0)
-        {
-          console.inputMode(kConsoleMessage_Save_Animations, getMyPosesPath());
-        }
-        else
-        {
-          saveAnimation(console, arg);
-        }
-      }
-      else
-      {
-        console.printMessage(kConsoleMessage_WrongMode_Animations);
-      }
-    }
-*/
-    else
-    {
-      commandNotFound(console);
-    }
-  }
+		/*
+		    else if(cmd == kConsoleCommand_Save_Animations)
+		    {
+		      if(global.getAppMode() == ANIMATIONS)
+		      {
+		        if(arg.size() == 0)
+		        {
+		          console.inputMode(kConsoleMessage_Save_Animations,
+		   getMyPosesPath());
+		        }
+		        else
+		        {
+		          saveAnimation(console, arg);
+		        }
+		      }
+		      else
+		      {
+		        console.printMessage(kConsoleMessage_WrongMode_Animations);
+		      }
+		    }
+		*/
+		else {
+			commandNotFound(console);
+		}
+	}
 }
 
-void ConsoleListener::commandNotFound(Console& console)
+void ConsoleListener::commandNotFound(Console &console)
 {
-  console.setMessage(kConsoleMessage_Unknown_Command);
-  console.setStatus(Console::MESSAGE);
+	console.setMessage(kConsoleMessage_Unknown_Command);
+	console.setStatus(Console::MESSAGE);
 }
 
-void ConsoleListener::loadAnimation(Console& console, const string& path)
+void ConsoleListener::loadAnimation(Console &console, const string &path)
 {
-  Global &global = Global::instance ();
-  Animation *animation = global.getAnimation();
-  assert (animation);
+	Global &global = Global::instance();
+	Animation *animation = global.getAnimation();
+	assert(animation);
 
-  bool state = animation->load(path);
-  if(state)
-  {
-    console.printMessage(kConsoleMessage_Load_Animations_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Dir_Load_Error);
-    console.setError(true);
-  }
+	bool state = animation->load(path);
+	if (state) {
+		console.printMessage(kConsoleMessage_Load_Animations_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Dir_Load_Error);
+		console.setError(true);
+	}
 }
 /*
 void ConsoleListener::startStopAnimation(Console& console)
@@ -455,333 +364,298 @@ void ConsoleListener::saveAnimation(Console& console, const string& path)
 }
 */
 
-void ConsoleListener::loadWindowBackground(Console& console, const string& filename)
+void ConsoleListener::loadWindowBackground(Console &console,
+                                           const string &filename)
 {
-  Window& mainWindow(Window::instance());
-  if(mainWindow.loadPNG (filename))
-  {
-    mainWindow.show();
-    console.printMessage(kConsoleMessage_Load_Background_Success);
-  }
-  else
-  {
-    mainWindow.loadPNG (searchPixmapFile ("ui/background.png"));
-    console.printMessage(kConsoleMessage_Load_Error);
-    console.setError(true);
-  }
+	Window &mainWindow(Window::instance());
+	if (mainWindow.loadPNG(filename)) {
+		mainWindow.show();
+		console.printMessage(kConsoleMessage_Load_Background_Success);
+	} else {
+		mainWindow.loadPNG(searchPixmapFile("ui/background.png"));
+		console.printMessage(kConsoleMessage_Load_Error);
+		console.setError(true);
+	}
 }
 
-void ConsoleListener::loadBodySettings(Console& console, const string& filename)
+void ConsoleListener::loadBodySettings(Console &console, const string &filename)
 {
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-  assert (mesh);
-  Window &mainWindow = Window::instance ();
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	Window &mainWindow = Window::instance();
 
-  FaceGroup   &clothesgroup  (mesh->getClothesGroupRef ());
+	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
 
-  BodySettings bodyset;
-  bool state = bodyset.load (filename);
-  if(state)
-  {
-    state = clothesgroup.loadVisibilities (filename);
-  }
+	BodySettings bodyset;
+	bool state = bodyset.load(filename);
+	if (state) {
+		state = clothesgroup.loadVisibilities(filename);
+	}
 
-  if(state)
-  {
-    global.resetFuzzyValues();
-    state = loadSelectorsPositions(filename);
+	if (state) {
+		global.resetFuzzyValues();
+		state = loadSelectorsPositions(filename);
 
-    CharacterSettingPanel *tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(kComponentID_CharacterSettingPanel);
-    if(tmpPanel != NULL)
-    {
-      tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Age);
-      tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
-      tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_MuscleSize);
-      tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
-    }
-  }
+		CharacterSettingPanel *tmpPanel =
+		    (CharacterSettingPanel *)mainWindow.getPanel(
+		        kComponentID_CharacterSettingPanel);
+		if (tmpPanel != NULL) {
+			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Age);
+			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
+			tmpPanel->calcSelectorValues(
+			    kComponentID_CharacterSettingPanel_MuscleSize);
+			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
+		}
+	}
 
-  if (state)
-  {
-    mesh->doMorph (bodyset);
-    mesh->calcNormals();
-    if(global.getSubdivision())
-    {
-      mesh->calcSubsurf();
-    }
-    console.printMessage(kConsoleMessage_Load_Bodysettings_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Load_Error);
-    console.setError(true);
-  }
+	if (state) {
+		mesh->doMorph(bodyset);
+		mesh->calcNormals();
+		if (global.getSubdivision()) {
+			mesh->calcSubsurf();
+		}
+		console.printMessage(kConsoleMessage_Load_Bodysettings_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Load_Error);
+		console.setError(true);
+	}
 }
 
-void ConsoleListener::loadPoses(Console& console, const string& filename)
+void ConsoleListener::loadPoses(Console &console, const string &filename)
 {
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-  assert (mesh);
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
 
-  BodySettings poses;
-  bool state = poses.load (filename);
+	BodySettings poses;
+	bool state = poses.load(filename);
 
-  if (state)
-  {
-    mesh->doPose (poses);
-    if(global.getSubdivision())
-    {
-      mesh->calcSubsurf();
-    }
-    console.printMessage(kConsoleMessage_Load_Poses_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Load_Error);
-    console.setError(true);
-  }
+	if (state) {
+		mesh->doPose(poses);
+		if (global.getSubdivision()) {
+			mesh->calcSubsurf();
+		}
+		console.printMessage(kConsoleMessage_Load_Poses_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Load_Error);
+		console.setError(true);
+	}
 }
 
-void ConsoleListener:: loadAqsisPath(Console& console, const string& path)
+void ConsoleListener::loadAqsisPath(Console &console, const string &path)
 {
-  int ret;
-  if( (ret = SetAqsisBasePath(path + "/")) >= 0){
-    saveRenderingPaths(path + "/",AQSIS);
-    console.printMessage(kConsoleMessage_OK);
+	int ret;
+	if ((ret = SetAqsisBasePath(path + "/")) >= 0) {
+		saveRenderingPaths(path + "/", AQSIS);
+		console.printMessage(kConsoleMessage_OK);
 
-    ExportConfigurationXML();
-  }else{
-    switch(ret){
-      case -1:
-        console.printMessage(kConsoleMessage_InvalidPath);
-        break;
-      case -2:
-        console.printMessage(kConsoleMessage_WrongPath);
-        break;
-      default:
-        break;
-    }
-  }
-
+		ExportConfigurationXML();
+	} else {
+		switch (ret) {
+		case -1:
+			console.printMessage(kConsoleMessage_InvalidPath);
+			break;
+		case -2:
+			console.printMessage(kConsoleMessage_WrongPath);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
-void ConsoleListener::loadPixiePath(Console& console, const string& path)
+void ConsoleListener::loadPixiePath(Console &console, const string &path)
 {
-  int ret;
-  if( (ret = SetPixieBasePath(path + "/") ) >= 0){
-    saveRenderingPaths(path + "/",PIXIE);
-    console.printMessage(kConsoleMessage_OK);
+	int ret;
+	if ((ret = SetPixieBasePath(path + "/")) >= 0) {
+		saveRenderingPaths(path + "/", PIXIE);
+		console.printMessage(kConsoleMessage_OK);
 
-    ExportConfigurationXML();
-  }else{
-    switch(ret){
-      case -1:
-        console.printMessage(kConsoleMessage_InvalidPath);
-        break;
-      case -2:
-        console.printMessage(kConsoleMessage_WrongPath);
-        break;
-      default:
-        break;
-    }
-  }
-
+		ExportConfigurationXML();
+	} else {
+		switch (ret) {
+		case -1:
+			console.printMessage(kConsoleMessage_InvalidPath);
+			break;
+		case -2:
+			console.printMessage(kConsoleMessage_WrongPath);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
-void ConsoleListener::parseSetParameter(Console& console, const string& path)
+void ConsoleListener::parseSetParameter(Console &console, const string &path)
 {
-  int ret;
+	int ret;
 
-  if( (ret = ParseParameter(path))<0){
-    switch(ret){
-      case -3:
-        console.printMessage(kConsoleMessage_InvalidPath);
-        break;
-      default:
-        console.printMessage(kConsoleMessage_Parameter_NG);
-        break;
-    }
+	if ((ret = ParseParameter(path)) < 0) {
+		switch (ret) {
+		case -3:
+			console.printMessage(kConsoleMessage_InvalidPath);
+			break;
+		default:
+			console.printMessage(kConsoleMessage_Parameter_NG);
+			break;
+		}
 
-  }else{
-    ExportConfigurationXML();
-    console.printMessage(kConsoleMessage_Parameter_OK);
-  }
-
+	} else {
+		ExportConfigurationXML();
+		console.printMessage(kConsoleMessage_Parameter_OK);
+	}
 }
 
-
-void ConsoleListener::saveBodySettings(Console& console, const string& filename)
+void ConsoleListener::saveBodySettings(Console &console, const string &filename)
 {
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-  assert (mesh);
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
 
-  BodySettings bodyset = mesh->getBodySettings ();
-  FaceGroup   &clothesgroup  (mesh->getClothesGroupRef ());
+	BodySettings bodyset = mesh->getBodySettings();
+	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
 
-  bool state = bodyset.save (filename);
+	bool state = bodyset.save(filename);
 
-  if(state)
-  {
-    state = clothesgroup.saveVisibilities (filename);
-  }
+	if (state) {
+		state = clothesgroup.saveVisibilities(filename);
+	}
 
-  if(state)
-  {
-    state = saveSelectorsPositions (filename);
-  }
+	if (state) {
+		state = saveSelectorsPositions(filename);
+	}
 
-  if (state)
-  {
-    console.printMessage(kConsoleMessage_Save_Bodysettings_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Save_Error);
-    console.setError(true);
-  }
+	if (state) {
+		console.printMessage(kConsoleMessage_Save_Bodysettings_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Save_Error);
+		console.setError(true);
+	}
 }
 
-void ConsoleListener::savePoses(Console& console, const string& filename)
+void ConsoleListener::savePoses(Console &console, const string &filename)
 {
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-  assert (mesh);
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
 
-  BodySettings poses = mesh->getPoses ();
+	BodySettings poses = mesh->getPoses();
 
-  bool state = poses.save (filename);
+	bool state = poses.save(filename);
 
-  if (state)
-  {
-    console.printMessage(kConsoleMessage_Save_Poses_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Save_Error);
-    console.setError(true);
-  }
+	if (state) {
+		console.printMessage(kConsoleMessage_Save_Poses_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Save_Error);
+		console.setError(true);
+	}
 }
 
-void ConsoleListener::saveAutozoom(Console& console, const string& filename)
+void ConsoleListener::saveAutozoom(Console &console, const string &filename)
 {
-	Global &global = Global::instance ();
-	Autozoom *autozoom = global.getAutozoom ();
-	Camera *camera = global.getCamera ();
-	assert (autozoom);
+	Global &global = Global::instance();
+	Autozoom *autozoom = global.getAutozoom();
+	Camera *camera = global.getCamera();
+	assert(autozoom);
 
-  bool state = autozoom->save (filename,*camera);
+	bool state = autozoom->save(filename, *camera);
 
-  if (state)
-  {
-	  console.printMessage(kConsoleMessage_Save_Autozoom_Success);
-  }
-  else
-  {
-	  console.printMessage(kConsoleMessage_Save_Error);
-  }
+	if (state) {
+		console.printMessage(kConsoleMessage_Save_Autozoom_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Save_Error);
+	}
 }
 
-void ConsoleListener::exportBodySettings(Console& console, string& filename, bool full)
+void ConsoleListener::exportBodySettings(Console &console, string &filename,
+                                         bool full)
 {
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-  assert (mesh);
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
 
-  ObjExporter obj_export (*mesh);
+	ObjExporter obj_export(*mesh);
 
-  if( filename.substr( filename.size () - 1, 1) != PATH_SEPARATOR)
-  {
-    filename.append(PATH_SEPARATOR);
-  }
+	if (filename.substr(filename.size() - 1, 1) != PATH_SEPARATOR) {
+		filename.append(PATH_SEPARATOR);
+	}
 
 #if defined(_WIN32)
-  createDirWhenNotExists(filename);
+	createDirWhenNotExists(filename);
 #else
-/* This piece of code has been tested on Mac OS X only!
- * On OS X the body settings (and all user specific settings as well) will be
- * are supposed to be saved to the Users Document folder in a directory named
- * makehuman.
- *
- * Since this directory does not exists the first time so we'll need to create
- * one.
- */
+	/* This piece of code has been tested on Mac OS X only!
+	 * On OS X the body settings (and all user specific settings as well) will be
+	 * are supposed to be saved to the Users Document folder in a directory named
+	 * makehuman.
+	 *
+	 * Since this directory does not exists the first time so we'll need to create
+	 * one.
+	 */
 
-  // First create a directory at the given location if it does not exists
+	// First create a directory at the given location if it does not exists
 
-  string path(FileTools::getFilePath(filename));
-  if (!FileTools::fileExists(path))
-  {
-    bool rc = FileTools::makeDirHier(path);
-    assert(rc == true);
-  }
+	string path(FileTools::getFilePath(filename));
+	if (!FileTools::fileExists(path)) {
+		bool rc = FileTools::makeDirHier(path);
+		assert(rc == true);
+	}
 #endif // MAC OS X specific code
 
-  bool state = obj_export.exportFile (filename, full);
+	bool state = obj_export.exportFile(filename, full);
 
-  if (state)
-  {
-    console.printMessage(kConsoleMessage_Export_Object_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Save_Error);
-    console.setError(true);
-  }
+	if (state) {
+		console.printMessage(kConsoleMessage_Export_Object_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Save_Error);
+		console.setError(true);
+	}
 }
 
-void ConsoleListener::exportCollada(Console& console, string& filename)
+void ConsoleListener::exportCollada(Console &console, string &filename)
 {
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-  assert (mesh);
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
 
-  ColladaExporter collada_export (*mesh);
+	ColladaExporter collada_export(*mesh);
 
-  if( filename.substr( filename.size () - 1, 1) != PATH_SEPARATOR)
-  {
-    filename.append(PATH_SEPARATOR);
-  }
+	if (filename.substr(filename.size() - 1, 1) != PATH_SEPARATOR) {
+		filename.append(PATH_SEPARATOR);
+	}
 
 #if defined(_WIN32)
-  createDirWhenNotExists(filename);
+	createDirWhenNotExists(filename);
 #else
-/* This piece of code has been tested on Mac OS X only!
- * On OS X the body settings (and all user specific settings as well) will be
- * are supposed to be saved to the Users Document folder in a directory named
- * makehuman.
- *
- * Since this directory does not exists the first time so we'll need to create
- * one.
- */
+	/* This piece of code has been tested on Mac OS X only!
+	 * On OS X the body settings (and all user specific settings as well) will be
+	 * are supposed to be saved to the Users Document folder in a directory named
+	 * makehuman.
+	 *
+	 * Since this directory does not exists the first time so we'll need to create
+	 * one.
+	 */
 
-  // First create a directory at the given location if it does not exists
+	// First create a directory at the given location if it does not exists
 
-  string path(FileTools::getFilePath(filename));
-  if (!FileTools::fileExists(path))
-  {
-    bool rc = FileTools::makeDirHier(path);
-    assert(rc == true);
-  }
+	string path(FileTools::getFilePath(filename));
+	if (!FileTools::fileExists(path)) {
+		bool rc = FileTools::makeDirHier(path);
+		assert(rc == true);
+	}
 #endif // MAC OS X specific code
 
-  bool expMode = true;
+	bool expMode = true;
 
-  if(global.getExpMode() == WITHOUT_CONTROLLER)
-    expMode = false;
+	if (global.getExpMode() == WITHOUT_CONTROLLER)
+		expMode = false;
 
-  bool state = collada_export.exportFile (filename,expMode);
+	bool state = collada_export.exportFile(filename, expMode);
 
-  if (state)
-  {
-    console.printMessage(kConsoleMessage_Export_Collada_Success);
-  }
-  else
-  {
-    console.printMessage(kConsoleMessage_Save_Error);
-    console.setError(true);
-  }
-
+	if (state) {
+		console.printMessage(kConsoleMessage_Export_Collada_Success);
+	} else {
+		console.printMessage(kConsoleMessage_Save_Error);
+		console.setError(true);
+	}
 }

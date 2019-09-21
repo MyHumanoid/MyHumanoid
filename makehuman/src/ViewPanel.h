@@ -29,29 +29,29 @@
 #define VIEWPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
-#include <gui/Panel.h>
-#include <gui/Image.h>
 #include "ImageListener.h"
 #include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
+#include <iostream>
 
 class ViewPanel : public Panel
 {
 public:
-  ViewPanel (const int winHeight);
-  virtual ~ViewPanel ();
+	ViewPanel(const int winHeight);
+	virtual ~ViewPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  ViewPanel             (const ViewPanel&);
-  ViewPanel& operator = (const ViewPanel&);
+	ViewPanel(const ViewPanel &);
+	ViewPanel &operator=(const ViewPanel &);
 
-  Image *view1;
-  Image *view2;
+	Image *view1;
+	Image *view2;
 };
 
 #endif // VIEWPANEL_H

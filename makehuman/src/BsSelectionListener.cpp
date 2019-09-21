@@ -27,19 +27,19 @@
 
 #include <animorph/Mesh.h>
 
-#include <gui/Image.h>
 #include <gui/CGUtilities.h>
-#include <gui/Window.h>
 #include <gui/Component.h>
 #include <gui/GLUTWrapper.h>
+#include <gui/Image.h>
+#include <gui/Window.h>
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "BsCategoryPanel.h"
+#include "BsPanel.h"
 #include "BsSelectionListener.h"
 #include "ComponentID.h"
-#include "BsPanel.h"
 #include "Global.h"
 
 using namespace Animorph;
@@ -50,148 +50,133 @@ BsSelectionListener::BsSelectionListener()
 {
 }
 
-BsSelectionListener::~BsSelectionListener()
+BsSelectionListener::~BsSelectionListener() {}
+
+bool BsSelectionListener::mouseOver(const Point &inMousePos, Component *source)
 {
+	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
+
+	imgSource->setOverlayRectangle(Color(1, 0, 0, 0.5));
+
+	return false;
 }
 
-bool BsSelectionListener::mouseOver (const Point& inMousePos, Component *source)
+bool BsSelectionListener::mouseOut(const Point &inMousePos, Component *source)
 {
-  Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
+	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
 
-  imgSource->setOverlayRectangle (Color (1,0,0,0.5));
+	imgSource->setOverlayRectangle(false);
 
-  return false;
+	return false;
 }
 
-bool BsSelectionListener::mouseOut (const Point& inMousePos, Component *source)
+bool BsSelectionListener::mouseDragged(const Point &inMousePos,
+                                       Component *source)
 {
-  Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
-
-  imgSource->setOverlayRectangle (false);
-
-  return false;
+	return true;
 }
 
-bool BsSelectionListener::mouseDragged (const Point& inMousePos, Component *source)
+bool BsSelectionListener::mouseWheel(const Point &inMousePos, int inButton,
+                                     Component *source)
 {
-  return true;
+	return false;
 }
 
-bool BsSelectionListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool BsSelectionListener::mousePressed(const Point &inMousePos, int button,
+                                       Component *source)
 {
-  return false;
+	if (button == GLUT_LEFT_BUTTON) {
+		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+		assert(imgSource); // Check if this is really an Image object?
+		imgSource->setOverlayRectangle(Color(1, 1, 1, 0.5));
+
+		return true;
+	}
+	return false;
 }
 
-bool BsSelectionListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool BsSelectionListener::mouseReleased(const Point &inMousePos, int button,
+                                        Component *source)
 {
-  if (button == GLUT_LEFT_BUTTON)
-  {
-    Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-    assert(imgSource); // Check if this is really an Image object?
-    imgSource->setOverlayRectangle(Color (1,1,1,0.5));
+	std::ostringstream out_stream;
+	if (button == GLUT_LEFT_BUTTON) {
+		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+		assert(imgSource); // Check if this is really an Image object?
 
-    return true;
-  }
-  return false;
+		imgSource->setOverlayRectangle(false);
+
+		if (!imgSource->getAbsoluteRect().isHitBy(inMousePos))
+			return false;
+
+		string character;
+
+		if (imgSource->getID() == kComponentID_BsCategoryPanel_MyBS) {
+			character = "lib";
+
+			Global &global = Global::instance();
+			Mesh *mesh = global.getMesh();
+			CharactersMap &charactersmap = mesh->getCharactersMapRef();
+			list<string> toErase;
+
+			for (CharactersMap::const_iterator charactersmap_it =
+			         charactersmap.begin();
+			     charactersmap_it != charactersmap.end(); charactersmap_it++) {
+				const string &character_name((*charactersmap_it).first);
+
+				string::size_type loc = character_name.find("/", 0);
+				if (loc == string::npos) {
+					continue;
+				} else {
+					string sub = character_name.substr(0, loc);
+
+					if (sub == character) {
+						toErase.push_back(character_name);
+					}
+				}
+			}
+
+			for (list<string>::const_iterator toErase_it = toErase.begin();
+			     toErase_it != toErase.end(); toErase_it++) {
+				charactersmap.erase(*toErase_it);
+			}
+
+			mesh->loadCharactersFactory(getMyBodysettingsBasePath());
+		} else {
+			for (int i = 0; i < 17; i++) {
+				if (imgSource->getID() == table_id[i]) {
+					out_stream << i + 1;
+					character = "characters" + out_stream.str();
+				}
+			}
+		}
+
+		if (!character.empty()) {
+			Window &mainWindow = Window::instance();
+			BsPanel *bsPanel = dynamic_cast<BsPanel *>(
+			    mainWindow.getPanel(kComponentID_TargetPanel));
+
+			if ((bsPanel == NULL) || (bsPanel->getCategory() != character)) {
+				mainWindow.removePanel(bsPanel);
+				delete bsPanel;
+
+				int x = mainWindow.getSize().getWidth() - 210;
+				bsPanel = new BsPanel(character, Rect(x, 40, 210, 517));
+				mainWindow.addPanel(bsPanel);
+				bsPanel->createWidgets();
+			}
+			bsPanel->show();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	return false;
 }
 
-bool BsSelectionListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool BsSelectionListener::keyType(unsigned char key, Component *source)
 {
-  std::ostringstream out_stream;
-  if(button == GLUT_LEFT_BUTTON)
-  {
-    Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-    assert(imgSource); // Check if this is really an Image object?
-
-    imgSource->setOverlayRectangle(false);
-
-    if(!imgSource->getAbsoluteRect().isHitBy(inMousePos))
-      return false;
-
-    string character;
-
-    if(imgSource->getID () == kComponentID_BsCategoryPanel_MyBS)
-    {
-      character = "lib";
-
-      Global &global = Global::instance ();
-      Mesh *mesh = global.getMesh ();
-      CharactersMap &charactersmap = mesh->getCharactersMapRef ();
-      list <string> toErase;
-
-      for (CharactersMap::const_iterator charactersmap_it = charactersmap.begin ();
-          charactersmap_it != charactersmap.end ();
-          charactersmap_it++)
-      {
-        const string &character_name((*charactersmap_it).first);
-
-        string::size_type loc = character_name.find ("/", 0 );
-        if (loc == string::npos)
-        {
-          continue;
-        }
-        else
-        {
-          string sub = character_name.substr (0, loc);
-
-          if (sub == character)
-          {
-            toErase.push_back(character_name);
-          }
-        }
-      }
-
-      for (list<string>::const_iterator toErase_it = toErase.begin ();
-          toErase_it != toErase.end ();
-          toErase_it++)
-      {
-        charactersmap.erase(*toErase_it);
-      }
-
-      mesh->loadCharactersFactory(getMyBodysettingsBasePath());
-    }
-    else
-    {
-      for(int i = 0; i < 17; i++)
-      {
-        if(imgSource->getID () == table_id[i])
-        {
-          out_stream << i + 1;
-          character = "characters" + out_stream.str();
-        }
-      }
-    }
-
-    if(!character.empty())
-    {
-      Window &mainWindow = Window::instance ();
-      BsPanel* bsPanel = dynamic_cast<BsPanel*>(mainWindow.getPanel (kComponentID_TargetPanel));
-
-      if ((bsPanel == NULL) || (bsPanel->getCategory() != character))
-      {
-        mainWindow.removePanel(bsPanel);
-        delete bsPanel;
-
-        int x = mainWindow.getSize().getWidth() - 210;
-        bsPanel = new BsPanel (character, Rect(x,40,210,517));
-        mainWindow.addPanel (bsPanel);
-        bsPanel->createWidgets ();
-      }
-      bsPanel->show();
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  return false;
-}
-
-bool BsSelectionListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }

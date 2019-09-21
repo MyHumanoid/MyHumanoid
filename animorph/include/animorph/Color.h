@@ -30,10 +30,11 @@
 #define COLOR_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a colour
 
@@ -43,66 +44,88 @@ namespace Animorph {
 class Color
 {
 private:
-  float r, g, b, a;
+	float r, g, b, a;
 
 public:
-  /// constructor initalizes Color with 1.0,1.0,1.0
-  Color () : r (1.0), g (1.0), b (1.0), a (1.0) {}
+	/// constructor initalizes Color with 1.0,1.0,1.0
+	Color()
+	    : r(1.0)
+	    , g(1.0)
+	    , b(1.0)
+	    , a(1.0)
+	{
+	}
 
-  // constructor initializes Color with rgb values and alpha = 1.0
-  Color (float r, float g, float b, float a=1.0) : r (r), g (g), b(b), a (a) {}
+	// constructor initializes Color with rgb values and alpha = 1.0
+	Color(float r, float g, float b, float a = 1.0)
+	    : r(r)
+	    , g(g)
+	    , b(b)
+	    , a(a)
+	{
+	}
 
-  Color (const Color& inColor);
+	Color(const Color &inColor);
 
-  ~Color (){}
+	~Color() {}
 
-  Color& operator=(const Color& inRHS);
+	Color &operator=(const Color &inRHS);
 
-  /// \param r red component of a color
-  void red (float r) {this->r = r;}
+	/// \param r red component of a color
+	void red(float r) { this->r = r; }
 
-  /// \param g green component of a color
-  void green (float g) {this->g = g;}
+	/// \param g green component of a color
+	void green(float g) { this->g = g; }
 
-  /// \param b blue component a color
-  void blue (float b) {this->b = b;}
+	/// \param b blue component a color
+	void blue(float b) { this->b = b; }
 
-  /// \param a alpha component a color
-  void alpha (float a) {this->a = a;}
+	/// \param a alpha component a color
+	void alpha(float a) { this->a = a; }
 
-  /*!
-   * \param r red component of a color
-   * \param g green component of a color
-   * \param b blue component a color
-   * \param a alpha component a color
-   */
-  void rgba (float r, float g, float b, float a)
-  {this->r = r; this->g = g; this->b = b; this->a = a;}
+	/*!
+	 * \param r red component of a color
+	 * \param g green component of a color
+	 * \param b blue component a color
+	 * \param a alpha component a color
+	 */
+	void rgba(float r, float g, float b, float a)
+	{
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = a;
+	}
 
-  /*!
-   * \param r red component of a color
-   * \param g green component of a color
-   * \param b blue component a color
-   * <br><br>the alpha component is set to 1.0
-   */
-  void rgb (float r, float g, float b)
-  {this->r = r; this->g = g; this->b = b; this->a = 1.0;}
+	/*!
+	 * \param r red component of a color
+	 * \param g green component of a color
+	 * \param b blue component a color
+	 * <br><br>the alpha component is set to 1.0
+	 */
+	void rgb(float r, float g, float b)
+	{
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = 1.0;
+	}
 
-  /// \return red component of a color
-  float red (void) const {return r;}
+	/// \return red component of a color
+	float red(void) const { return r; }
 
-  /// \return green component of a color
-  float green (void) const {return g;}
+	/// \return green component of a color
+	float green(void) const { return g; }
 
-  /// \return blue component of a color
-  float blue (void) const {return b;}
+	/// \return blue component of a color
+	float blue(void) const { return b; }
 
-  /// \return alpha component of a color
-  float alpha (void) const {return a;}
+	/// \return alpha component of a color
+	float alpha(void) const { return a; }
 
-  const float* getAsOpenGLVector() const {return &r;}
+	const float *getAsOpenGLVector() const { return &r; }
 };
 
-}
+} // namespace Animorph
 
-#endif	// COLOR_H
+#endif // COLOR_H

@@ -29,19 +29,19 @@
 #define POSESBSPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <algorithm>
-#include <gui/Panel.h>
-#include <gui/MultiPanel.h>
-#include "TargetSlider.h"
-#include "PosesBsPanelSelectionListener.h"
-#include "ImageListener.h"
-#include "util.h"
-#include "PagePosesBsPanel.h"
 #include "ImageButton.h"
+#include "ImageListener.h"
+#include "PagePosesBsPanel.h"
+#include "PosesBsPanelSelectionListener.h"
+#include "TargetSlider.h"
+#include "util.h"
+#include <algorithm>
+#include <gui/MultiPanel.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::string;
 using std::vector;
@@ -49,24 +49,25 @@ using std::vector;
 class PosesBsPanel : public MultiPanel
 {
 private: // intentionally not implemented
-  PosesBsPanel             (const PosesBsPanel&);
-  PosesBsPanel& operator = (const PosesBsPanel&);
+	PosesBsPanel(const PosesBsPanel &);
+	PosesBsPanel &operator=(const PosesBsPanel &);
 
-  PosesBsPanelSelectionListener imgButtonListener;
-  ImageListener                 imgListener;
-  string                        category;
-  Image                         *close_image;
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <ImageButton*> imageButtonVector;
-  vector <Image*> imageVector;
-  PagePosesBsPanel *newPagePanel();
+	PosesBsPanelSelectionListener imgButtonListener;
+	ImageListener imgListener;
+	string category;
+	Image *close_image;
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<ImageButton *> imageButtonVector;
+	vector<Image *> imageVector;
+	PagePosesBsPanel *newPagePanel();
+
 public:
-  PosesBsPanel (const string& category, const Rect& rect);
-  virtual ~PosesBsPanel ();
+	PosesBsPanel(const string &category, const Rect &rect);
+	virtual ~PosesBsPanel();
 
-  void createWidgets ();
-  const string& getCategory() const {return category;}
+	void createWidgets();
+	const string &getCategory() const { return category; }
 };
 
 #endif // POSESBSPANEL_H

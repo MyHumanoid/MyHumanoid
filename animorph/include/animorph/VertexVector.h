@@ -30,17 +30,18 @@
 #define VERTEXVECTOR_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
-#include <fstream>
-#include "Vertex.h"
-#include "FaceVector.h"
 #include "Face.h"
+#include "FaceVector.h"
 #include "FileReader.h"
+#include "Vertex.h"
+#include <fstream>
+#include <iostream>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Loadable vector of Vertices.
 
@@ -50,45 +51,44 @@ The format of Vertices file:
 ...
 \endverbatim
 */
-class VertexVector : public std::vector <Vertex>
+class VertexVector : public std::vector<Vertex>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
-
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  bool load (const std::string& filename);
+	bool load(const std::string &filename);
 
-  int setCoordinates (std::vector <Vector3f> &vertexvector);
+	int setCoordinates(std::vector<Vector3f> &vertexvector);
 };
 
 /*Subdivision surfaces */
 
-class subdVertexVector : public std::vector <subdVertex>
+class subdVertexVector : public std::vector<subdVertex>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
-
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  bool load (const std::string& filename);
-  void loadFromFaceVector (FaceVector &facevector);
-  void updateFacePoints (VertexVector &vertexvector);
-  void updateEdgePoints (VertexVector &vertexvector, subdVertexVector &facePoints);
+	bool load(const std::string &filename);
+	void loadFromFaceVector(FaceVector &facevector);
+	void updateFacePoints(VertexVector &vertexvector);
+	void updateEdgePoints(VertexVector &vertexvector,
+	                      subdVertexVector &facePoints);
 };
 
-
-class origVertexVector : public std::vector <origVertex>
+class origVertexVector : public std::vector<origVertex>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
-
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  bool load (const std::string& filename);
-  void updateOrigVertexPoints (VertexVector &vertexvector, subdVertexVector &facePoints,  subdVertexVector &edgePoints);
+	bool load(const std::string &filename);
+	void updateOrigVertexPoints(VertexVector &vertexvector,
+	                            subdVertexVector &facePoints,
+	                            subdVertexVector &edgePoints);
 };
 
-}
+} // namespace Animorph
 
-#endif	// VERTEXVECTOR_H
+#endif // VERTEXVECTOR_H

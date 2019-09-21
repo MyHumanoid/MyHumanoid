@@ -29,41 +29,40 @@
 #define PAGEBSPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <algorithm>
-#include <gui/Panel.h>
-#include <gui/MultiPanel.h>
+#include "ImageButton.h"
+#include "ImageListener.h"
 #include "PosesBsPanelSelectionListener.h"
 #include "TargetSlider.h"
-#include "ImageListener.h"
 #include "util.h"
-#include "ImageButton.h"
+#include <algorithm>
+#include <gui/MultiPanel.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::string;
 using std::vector;
 
-
 class PageBsPanel : public Panel
 {
 private: // intentionally not implemented
-  PageBsPanel             (const PageBsPanel&);
-  PageBsPanel& operator = (const PageBsPanel&);
+	PageBsPanel(const PageBsPanel &);
+	PageBsPanel &operator=(const PageBsPanel &);
 
-  ImageListener          imgListener;
-  string                 category;
+	ImageListener imgListener;
+	string category;
 
 public:
-  PageBsPanel (const string& category, const Rect& rect);
-  virtual ~PageBsPanel ();
+	PageBsPanel(const string &category, const Rect &rect);
+	virtual ~PageBsPanel();
 
-  const string& getCategory() const {return category;}
+	const string &getCategory() const { return category; }
 
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <ImageButton*> imageButtonVector;
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<ImageButton *> imageButtonVector;
 };
 
 #endif // PAGEBSPANEL_H

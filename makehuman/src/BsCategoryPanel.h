@@ -29,60 +29,61 @@
 #define BSCATEGORYPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
+#include "BsSelectionListener.h"
+#include "ComponentID.h"
+#include "ImageListener.h"
+#include "TargetSlider.h"
+#include "util.h"
 #include <algorithm>
 #include <gui/Panel.h>
-#include "BsSelectionListener.h"
-#include "TargetSlider.h"
-#include "ImageListener.h"
-#include "util.h"
-#include "ComponentID.h"
+#include <vector>
 
 using std::string;
 using std::vector;
 
- static const uint32_t table_id[17] = {
-  kComponentID_BsCategoryPanel_Category1,
-  kComponentID_BsCategoryPanel_Category2,
-  kComponentID_BsCategoryPanel_Category3,
-  kComponentID_BsCategoryPanel_Category4,
-  kComponentID_BsCategoryPanel_Category5,
-  kComponentID_BsCategoryPanel_Category6,
-  kComponentID_BsCategoryPanel_Category7,
-  kComponentID_BsCategoryPanel_Category8,
-  kComponentID_BsCategoryPanel_Category9,
-  kComponentID_BsCategoryPanel_Category10,
-  kComponentID_BsCategoryPanel_Category11,
-  kComponentID_BsCategoryPanel_Category12,
-  kComponentID_BsCategoryPanel_Category13,
-  kComponentID_BsCategoryPanel_Category14,
-  kComponentID_BsCategoryPanel_Category15,
-  kComponentID_BsCategoryPanel_Category16,
-  kComponentID_BsCategoryPanel_Category17,
+static const uint32_t table_id[17] = {
+    kComponentID_BsCategoryPanel_Category1,
+    kComponentID_BsCategoryPanel_Category2,
+    kComponentID_BsCategoryPanel_Category3,
+    kComponentID_BsCategoryPanel_Category4,
+    kComponentID_BsCategoryPanel_Category5,
+    kComponentID_BsCategoryPanel_Category6,
+    kComponentID_BsCategoryPanel_Category7,
+    kComponentID_BsCategoryPanel_Category8,
+    kComponentID_BsCategoryPanel_Category9,
+    kComponentID_BsCategoryPanel_Category10,
+    kComponentID_BsCategoryPanel_Category11,
+    kComponentID_BsCategoryPanel_Category12,
+    kComponentID_BsCategoryPanel_Category13,
+    kComponentID_BsCategoryPanel_Category14,
+    kComponentID_BsCategoryPanel_Category15,
+    kComponentID_BsCategoryPanel_Category16,
+    kComponentID_BsCategoryPanel_Category17,
 };
 
 class BsCategoryPanel : public Panel
 {
 private: // intentionally not implemented
-  BsCategoryPanel             (const BsCategoryPanel&);
-  BsCategoryPanel& operator = (const BsCategoryPanel&);
+	BsCategoryPanel(const BsCategoryPanel &);
+	BsCategoryPanel &operator=(const BsCategoryPanel &);
 
-  BsSelectionListener          selectionListener;
+	BsSelectionListener selectionListener;
 
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <Image*> imageVector;
-  StringList *str_list;
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<Image *> imageVector;
+	StringList *str_list;
+
 public:
-  BsCategoryPanel ();
-  virtual ~BsCategoryPanel ();
+	BsCategoryPanel();
+	virtual ~BsCategoryPanel();
 
-  void createWidgets ();
-  void resetTargetValues(const string currentTargetName = "");
-  bool checkEnabled(string category);
+	void createWidgets();
+	void resetTargetValues(const string currentTargetName = "");
+	bool checkEnabled(string category);
 };
 
 #endif // BSCATEGORYPANEL_H

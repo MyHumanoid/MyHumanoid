@@ -30,23 +30,23 @@
 #define TARGET_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <set>
-#include "Vector3.h"
 #include "FileReader.h"
 #include "FileWriter.h"
+#include "Vector3.h"
+#include <set>
+#include <vector>
 
-namespace Animorph {
+namespace Animorph
+{
 
 typedef std::vector<int> UnsortedUsedVertex;
 
-struct TargetData
-{
-  int vertex_number;
-  Vector3f morph_vector;
+struct TargetData {
+	int vertex_number;
+	Vector3f morph_vector;
 };
 
 /*! \brief A set of vertices and associated displacements.
@@ -62,33 +62,32 @@ The format of Target files:
 ...
 \endverbatim
 */
-class Target : public std::vector <TargetData>
+class Target : public std::vector<TargetData>
 {
 private:
-  //void fromStream (std::ifstream &in_stream);
-  void createStream (std::ostringstream &out_stream);
-  /// The indices of the vertices from the Target file
-  UnsortedUsedVertex modVertex;
+	// void fromStream (std::ifstream &in_stream);
+	void createStream(std::ostringstream &out_stream);
+	/// The indices of the vertices from the Target file
+	UnsortedUsedVertex modVertex;
 
 public:
+	/*!
+	 * \param filename the file with Target data to load
+	 * \return true if file was found
+	 * \return false if file wasn't found
+	 */
+	bool load(const std::string &filename);
 
-  /*!
-   * \param filename the file with Target data to load
-   * \return true if file was found
-   * \return false if file wasn't found
-   */
-  bool load (const std::string& filename);
+	/*!
+	 * \param filename the file with Target data to save
+	 * \return true if file was found
+	 * \return false if file wasn't found
+	 */
+	bool save(const std::string &filename);
 
-  /*!
-   * \param filename the file with Target data to save
-   * \return true if file was found
-   * \return false if file wasn't found
-   */
-  bool save (const std::string& filename);
-
-  UnsortedUsedVertex &getModVertex () {return modVertex;}
+	UnsortedUsedVertex &getModVertex() { return modVertex; }
 };
 
-}
+} // namespace Animorph
 
-#endif	// TARGET_H
+#endif // TARGET_H

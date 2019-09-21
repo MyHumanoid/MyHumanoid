@@ -25,15 +25,15 @@
  *
  */
 
+#include "PoseTargetSliderListener.h"
+#include "Global.h"
+#include "TargetSlider.h"
 #include <animorph/Mesh.h>
-#include <gui/ImageSlider.h>
+#include <assert.h>
 #include <gui/CGUtilities.h>
 #include <gui/GLUTWrapper.h>
+#include <gui/ImageSlider.h>
 #include <stdio.h>
-#include <assert.h>
-#include "PoseTargetSliderListener.h"
-#include "TargetSlider.h"
-#include "Global.h"
 
 using namespace Animorph;
 using namespace std;
@@ -41,94 +41,94 @@ using namespace std;
 const static float kPoseThreshold = 0.04;
 
 PoseTargetSliderListener::PoseTargetSliderListener()
-: AbstractListener(),
-  lastTargetName()
+    : AbstractListener()
+    , lastTargetName()
 {
 }
 
-PoseTargetSliderListener::~PoseTargetSliderListener()
+PoseTargetSliderListener::~PoseTargetSliderListener() {}
+
+bool PoseTargetSliderListener::mouseOver(const Point &inMousePos,
+                                         Component *source)
 {
+	return false;
 }
 
-bool PoseTargetSliderListener::mouseOver (const Point& inMousePos, Component *source)
+bool PoseTargetSliderListener::mouseOut(const Point &inMousePos,
+                                        Component *source)
 {
-  return false;
+	return false;
 }
 
-bool PoseTargetSliderListener::mouseOut (const Point& inMousePos, Component *source)
+bool PoseTargetSliderListener::mouseWheel(const Point &inMousePos, int inButton,
+                                          Component *source)
 {
-  return false;
+#ifdef GLUT_WHEEL_UP
+	return mouseDragged(inMousePos, source);
+#else
+	return false;
+#endif
 }
 
-bool PoseTargetSliderListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool PoseTargetSliderListener::mouseDragged(const Point &inMousePos,
+                                            Component *source)
 {
-  #ifdef GLUT_WHEEL_UP
-    return mouseDragged(inMousePos, source);
-  #else
-    return false;
-  #endif
+	TargetSlider *imgSliderSource =
+	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really a TargetSlider object?
+
+	if (lastTargetName != imgSliderSource->getTargetName()) {
+		lastTargetName = imgSliderSource->getTargetName();
+		lastTargetValue = imgSliderSource->getSliderValue();
+	} else {
+		if (Global::instance().getSubdivision()) {
+			Global::instance().setLightMesh(true);
+		}
+
+		float diffValue = lastTargetValue - imgSliderSource->getSliderValue();
+		if (diffValue < -kPoseThreshold || diffValue > kPoseThreshold) {
+			lastTargetValue = imgSliderSource->getSliderValue();
+
+			Global &global = Global::instance();
+			Mesh *mesh = global.getMesh();
+			mesh->setPose(imgSliderSource->getTargetName(),
+			              imgSliderSource->getSliderValue());
+		}
+	}
+
+	return true;
 }
 
-bool PoseTargetSliderListener::mouseDragged (const Point& inMousePos, Component *source)
+bool PoseTargetSliderListener::mousePressed(const Point &inMousePos, int button,
+                                            Component *source)
 {
-  TargetSlider *imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
-  assert(imgSliderSource); // Check if this is really a TargetSlider object?
-
-  if(lastTargetName != imgSliderSource->getTargetName())
-  {
-    lastTargetName = imgSliderSource->getTargetName();
-    lastTargetValue = imgSliderSource->getSliderValue ();
-  }
-  else
-  {
-    if(Global::instance().getSubdivision())
-    {
-      Global::instance().setLightMesh(true);
-    }
-
-    float diffValue = lastTargetValue - imgSliderSource->getSliderValue ();
-    if(diffValue < -kPoseThreshold || diffValue > kPoseThreshold)
-    {
-      lastTargetValue = imgSliderSource->getSliderValue ();
-
-      Global &global = Global::instance ();
-      Mesh *mesh = global.getMesh ();
-      mesh->setPose (imgSliderSource->getTargetName (),
-                    imgSliderSource->getSliderValue ());
-    }
-  }
-
-  return true;
+	return false;
 }
 
-bool PoseTargetSliderListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool PoseTargetSliderListener::mouseReleased(const Point &inMousePos,
+                                             int button, Component *source)
 {
-  return false;
+	TargetSlider *imgSliderSource =
+	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really a TargetSlider object?
+
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+
+	mesh->setPose(imgSliderSource->getTargetName(),
+	              imgSliderSource->getSliderValue());
+
+	mesh->calcNormals();
+
+	if (Global::instance().getSubdivision()) {
+		mesh->calcSubsurf();
+		Global::instance().setLightMesh(false);
+	}
+
+	return false;
 }
 
-bool PoseTargetSliderListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool PoseTargetSliderListener::keyType(unsigned char key, Component *source)
 {
-  TargetSlider *imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
-  assert(imgSliderSource); // Check if this is really a TargetSlider object?
-
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-
-  mesh->setPose (imgSliderSource->getTargetName (),
-		 imgSliderSource->getSliderValue ());
-
-  mesh->calcNormals ();
-
-  if(Global::instance().getSubdivision())
-  {
-    mesh->calcSubsurf ();
-    Global::instance().setLightMesh(false);
-  }
-
-  return false;
-}
-
-bool PoseTargetSliderListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }

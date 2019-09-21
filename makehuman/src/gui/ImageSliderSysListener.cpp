@@ -27,11 +27,11 @@
 
 #include "gui/ImageSliderSysListener.h"
 #include "gui/CGUtilities.h"
-#include "gui/ImageSlider.h"
 #include "gui/GLUTWrapper.h"
+#include "gui/ImageSlider.h"
 
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 #include <iostream>
 
 #define SNAP_VALUE 5
@@ -39,133 +39,130 @@
 using namespace Animorph;
 using namespace std;
 
-namespace mhgui {
+namespace mhgui
+{
 
 ImageSliderSysListener::ImageSliderSysListener()
     : AbstractListener()
 {
 }
 
-ImageSliderSysListener::~ImageSliderSysListener()
+ImageSliderSysListener::~ImageSliderSysListener() {}
+
+bool ImageSliderSysListener::mouseOver(const Point &inMousePos,
+                                       Component *source)
 {
+	cgutils::redisplay();
+	return false;
 }
 
-bool ImageSliderSysListener::mouseOver (const Point& inMousePos, Component *source)
+bool ImageSliderSysListener::mouseOut(const Point &inMousePos,
+                                      Component *source)
 {
-  cgutils::redisplay();
-  return false;
+	cgutils::redisplay();
+	return false;
 }
 
-bool ImageSliderSysListener::mouseOut (const Point& inMousePos, Component *source)
+bool ImageSliderSysListener::mouseWheel(const Point &inMousePos, int inButton,
+                                        Component *source)
 {
-  cgutils::redisplay();
-  return false;
+#ifdef GLUT_WHEEL_UP
+	ImageSlider *imgSliderSource =
+	    dynamic_cast<ImageSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really an ImageSlider object?
+
+	int mod = mhgui::getKeyModifiers();
+
+	int value = 1;
+	if (mod == GLUT_ACTIVE_ALT) {
+		value = SNAP_VALUE;
+	}
+
+	if (inButton == GLUT_WHEEL_UP) {
+		imgSliderSource->increaseValue(value);
+		cgutils::redisplay();
+		return true;
+	} else if (inButton == GLUT_WHEEL_DOWN) {
+		imgSliderSource->decreaseValue(value);
+		cgutils::redisplay();
+		return true;
+	}
+#endif
+
+	return false;
 }
 
-bool ImageSliderSysListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool ImageSliderSysListener::mouseDragged(const Point &inMousePos,
+                                          Component *source)
 {
-  #ifdef GLUT_WHEEL_UP
-    ImageSlider *imgSliderSource = dynamic_cast<ImageSlider *>(source); // req. RTTI!
-    assert(imgSliderSource); // Check if this is really an ImageSlider object?
+	ImageSlider *imgSliderSource =
+	    dynamic_cast<ImageSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really an ImageSlider object?
 
-    int mod = mhgui::getKeyModifiers();
+	int mod = mhgui::getKeyModifiers();
 
-    int value = 1;
-    if(mod == GLUT_ACTIVE_ALT)
-    {
-      value = SNAP_VALUE;
-    }
+	if (inMousePos.getX() > imgSliderSource->getOldMouseX() &&
+	    imgSliderSource->getSliderValue() < imgSliderSource->getMaxValue()) {
+		int value = inMousePos.getX() - imgSliderSource->getOldMouseX();
+		if (mod == GLUT_ACTIVE_ALT) {
+			value *= SNAP_VALUE;
+		}
+		imgSliderSource->increaseValue(value);
+		imgSliderSource->setOldMouseX(inMousePos.getX());
+		cgutils::redisplay();
+	} else if (inMousePos.getX() < imgSliderSource->getOldMouseX() &&
+	           imgSliderSource->getSliderValue() >
+	               imgSliderSource->getMinValue()) {
+		int value = imgSliderSource->getOldMouseX() - inMousePos.getX();
+		if (mod == GLUT_ACTIVE_ALT) {
+			value *= SNAP_VALUE;
+		}
+		imgSliderSource->decreaseValue(value);
+		imgSliderSource->setOldMouseX(inMousePos.getX());
+		cgutils::redisplay();
+	}
 
-    if (inButton == GLUT_WHEEL_UP)
-    {
-      imgSliderSource->increaseValue(value);
-      cgutils::redisplay();
-      return true;
-    }
-    else if (inButton == GLUT_WHEEL_DOWN)
-    {
-      imgSliderSource->decreaseValue(value);
-      cgutils::redisplay();
-      return true;
-    }
-  #endif
-
-  return false;
+	return true;
 }
 
-bool ImageSliderSysListener::mouseDragged (const Point& inMousePos, Component *source)
+bool ImageSliderSysListener::mousePressed(const Point &inMousePos, int button,
+                                          Component *source)
 {
-  ImageSlider *imgSliderSource = dynamic_cast<ImageSlider *>(source); // req. RTTI!
-  assert(imgSliderSource); // Check if this is really an ImageSlider object?
-
-  int mod = mhgui::getKeyModifiers();
-
-  if(inMousePos.getX() > imgSliderSource->getOldMouseX() && imgSliderSource->getSliderValue() < imgSliderSource->getMaxValue())
-  {
-    int value = inMousePos.getX() - imgSliderSource->getOldMouseX();
-    if(mod == GLUT_ACTIVE_ALT)
-    {
-      value *= SNAP_VALUE;
-    }
-    imgSliderSource->increaseValue(value);
-    imgSliderSource->setOldMouseX(inMousePos.getX());
-    cgutils::redisplay();
-  }
-  else if(inMousePos.getX() < imgSliderSource->getOldMouseX() && imgSliderSource->getSliderValue() > imgSliderSource->getMinValue())
-  {
-    int value = imgSliderSource->getOldMouseX() - inMousePos.getX();
-    if(mod == GLUT_ACTIVE_ALT)
-    {
-      value *= SNAP_VALUE;
-    }
-    imgSliderSource->decreaseValue(value);
-    imgSliderSource->setOldMouseX(inMousePos.getX());
-    cgutils::redisplay();
-  }
-
-  return true;
+	ImageSlider *imgSliderSource =
+	    dynamic_cast<ImageSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really an ImageSlider object?
+	imgSliderSource->setActive(true);
+	imgSliderSource->setOldMouseX(inMousePos.getX());
+	return true;
 }
 
-bool ImageSliderSysListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool ImageSliderSysListener::mouseReleased(const Point &inMousePos, int button,
+                                           Component *source)
 {
-    ImageSlider *imgSliderSource = dynamic_cast<ImageSlider *>(source); // req. RTTI!
-    assert(imgSliderSource); // Check if this is really an ImageSlider object?
-    imgSliderSource->setActive (true);
-    imgSliderSource->setOldMouseX (inMousePos.getX());
-    return true;
+	ImageSlider *imgSliderSource =
+	    dynamic_cast<ImageSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really an ImageSlider object?
+
+	if (button == GLUT_LEFT_BUTTON) {
+		if (imgSliderSource->isActive()) {
+			imgSliderSource->setActive(false);
+			imgSliderSource->setOldMouseX(0);
+			return true;
+		}
+	} else if (button == GLUT_RIGHT_BUTTON) {
+		if (imgSliderSource->isActive()) {
+			imgSliderSource->setActive(false);
+			imgSliderSource->setSliderValue(0);
+			imgSliderSource->setOldMouseX(0);
+			return true;
+		}
+	}
+	return false;
 }
 
-bool ImageSliderSysListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool ImageSliderSysListener::keyType(unsigned char key, Component *source)
 {
-  ImageSlider *imgSliderSource = dynamic_cast<ImageSlider *>(source); // req. RTTI!
-  assert(imgSliderSource); // Check if this is really an ImageSlider object?
-
-  if(button == GLUT_LEFT_BUTTON)
-  {
-    if(imgSliderSource->isActive ())
-    {
-      imgSliderSource->setActive( false);
-      imgSliderSource->setOldMouseX (0);
-      return true;
-    }
-  }
-  else if(button == GLUT_RIGHT_BUTTON)
-  {
-    if(imgSliderSource->isActive ())
-    {
-      imgSliderSource->setActive( false);
-      imgSliderSource->setSliderValue(0);
-      imgSliderSource->setOldMouseX (0);
-      return true;
-    }
-  }
-  return false;
-}
-
-bool ImageSliderSysListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }
 
 } // namespace mhgui
-

@@ -29,29 +29,29 @@
 #define CGUTILITIES_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include <iostream>
 #include <cstdio>
+#include <iostream>
+#include <string>
 
-#include <animorph/Vector3.h>
-#include <animorph/Matrix.h>
 #include <animorph/Color.h>
+#include <animorph/Matrix.h>
+#include <animorph/Vector3.h>
 
-#include "GLUTWrapper.h"
-#include "Point.h"
-#include "Size.h"
-#include "Rect.h"
-#include "ImageData.h"
 #include "Camera.h"
+#include "GLUTWrapper.h"
+#include "ImageData.h"
+#include "Point.h"
+#include "Rect.h"
+#include "Size.h"
 
 using std::string;
 using namespace Animorph;
 using namespace mhgui;
 
-typedef void* FontType;
+typedef void *FontType;
 
 /** \brief Computer Graphics Utilities
  *
@@ -60,65 +60,72 @@ typedef void* FontType;
  */
 namespace cgutils
 {
-void drawGrid (const Size& inSize, const int xMargin, const int yMargin, const Color& c, const Color& b, int squareSize);
+void drawGrid(const Size &inSize, const int xMargin, const int yMargin,
+              const Color &c, const Color &b, int squareSize);
 
-void drawAxis ();
+void drawAxis();
 
-void reshape (const Size& inSize, const Camera& inCamera);
+void reshape(const Size &inSize, const Camera &inCamera);
 
-void enableOrthographicProjection ();
+void enableOrthographicProjection();
 
-void disableOrthographicProjection ();
+void disableOrthographicProjection();
 
-void drawSquareFillTexture (const Rect& inRect, float alpha, const Texture& inTexture);
-void drawBackgroundSquare  (const Size& inSize, float alpha, const Texture& inTexture);
+void drawSquareFillTexture(const Rect &inRect, float alpha,
+                           const Texture &inTexture);
+void drawBackgroundSquare(const Size &inSize, float alpha,
+                          const Texture &inTexture);
 
-void drawSquareFill (const Rect& inRect, const Color& c);
+void drawSquareFill(const Rect &inRect, const Color &c);
 
-void drawSquare (const Rect& inRect, const Color& c);
+void drawSquare(const Rect &inRect, const Color &c);
 
-void displayStart (const Vector3f& tra, const Vector3f& rot);
+void displayStart(const Vector3f &tra, const Vector3f &rot);
 
-void displayStart (const Matrix& m);
+void displayStart(const Matrix &m);
 
-int  initWindow (const Size& inSize, const char* title, const Vector3f& light0Pos,
-                 const Vector3f& light1Pos, float light0Lum, float light1Lum,
-                 const Color& c);
+int initWindow(const Size &inSize, const char *title, const Vector3f &light0Pos,
+               const Vector3f &light1Pos, float light0Lum, float light1Lum,
+               const Color &c);
 
 void destroyWindow(int inWindowId);
 
-void drawString (const Point& inPoint, FontType font, const string& str, const Color& c);
+void drawString(const Point &inPoint, FontType font, const string &str,
+                const Color &c);
 
-void drawMultiLineString (Point& inPoint, FontType font, const string& str, const Color& c, const int32_t lineWidth, const int lineOffset);
+void drawMultiLineString(Point &inPoint, FontType font, const string &str,
+                         const Color &c, const int32_t lineWidth,
+                         const int lineOffset);
 
-void drawString3D (const Vector3f& pos, FontType font, const string& str, const Color& c);
+void drawString3D(const Vector3f &pos, FontType font, const string &str,
+                  const Color &c);
 
-void redisplay ();
+void redisplay();
 
-void swapBuffers ();
+void swapBuffers();
 
-void mainLoop ();
+void mainLoop();
 
-void enableBlend ();
+void enableBlend();
 
-void disableBlend ();
+void disableBlend();
 
 void enableLineSmoothing();
 
 void disableLineSmoothing();
 
-void enableScissor (const Rect& box);
+void enableScissor(const Rect &box);
 
-void disableScissor ();
+void disableScissor();
 
-int getFontWidth (FontType font);
+int getFontWidth(FontType font);
 
-int getFontLength (FontType font, const string& str);
+int getFontLength(FontType font, const string &str);
 
-void mhWireCube (const float twoxyz[6]);
+void mhWireCube(const float twoxyz[6]);
 
-void drawLine2D (const Point& start, const Point& end, const Color& c);
+void drawLine2D(const Point &start, const Point &end, const Color &c);
 
-}
+} // namespace cgutils
 
-#endif //CGUTILITIES_H
+#endif // CGUTILITIES_H

@@ -28,10 +28,10 @@
 #include "BottomPanel.h"
 #include "ComponentID.h"
 
-#include <gui/Window.h>
-#include <gui/Rect.h>
 #include <gui/Image.h>
+#include <gui/Rect.h>
 #include <gui/Tooltip.h>
+#include <gui/Window.h>
 
 using namespace std;
 using namespace Animorph;
@@ -39,39 +39,36 @@ using namespace mhgui;
 
 #include "ComponentID.h"
 
-BottomPanel::BottomPanel ()
-    : Panel (kComponentID_BottomPanel, Rect(0,472,192,32))
+BottomPanel::BottomPanel()
+    : Panel(kComponentID_BottomPanel, Rect(0, 472, 192, 32))
 {
 }
 
-BottomPanel::~BottomPanel ()
+BottomPanel::~BottomPanel()
 {
-  delete frame1;
-  delete frame2;
-  delete frame3;
+	delete frame1;
+	delete frame2;
+	delete frame3;
 }
 
-void BottomPanel::createWidgets ()
+void BottomPanel::createWidgets()
 {
-  const float alpha = 0.8;
+	const float alpha = 0.8;
 
-  frame1 = new Image(kComponentID_Dummy,
-                    searchPixmapFile ("ui/frames_01.png"),
-                    Rect(0,0,96,16));
-  frame1->setAlpha (alpha);
-  addWidget (frame1);
+	frame1 = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_01.png"),
+	                   Rect(0, 0, 96, 16));
+	frame1->setAlpha(alpha);
+	addWidget(frame1);
 
-  // --------------------------------------------------------------------------
-  frame2 = new Image(kComponentID_Dummy,
-                    searchPixmapFile ("ui/frames_07.png"),
-                    Rect(0,0,32,32));
-  frame2->setAlpha (alpha);
-  addWidget (frame2);
+	// --------------------------------------------------------------------------
+	frame2 = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_07.png"),
+	                   Rect(0, 0, 32, 32));
+	frame2->setAlpha(alpha);
+	addWidget(frame2);
 
-  // --------------------------------------------------------------------------
-  frame3 = new Image(kComponentID_Dummy,
-                    searchPixmapFile ("ui/frames_01.png"),
-                    Rect(0,0,64,32));
-  frame3->setAlpha (alpha);
-  addWidget (frame3);
+	// --------------------------------------------------------------------------
+	frame3 = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_01.png"),
+	                   Rect(0, 0, 64, 32));
+	frame3->setAlpha(alpha);
+	addWidget(frame3);
 }

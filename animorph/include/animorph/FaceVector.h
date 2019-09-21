@@ -30,15 +30,16 @@
 #define FACEVECTOR_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
-#include <fstream>
 #include "Face.h"
 #include "FileReader.h"
+#include <fstream>
+#include <iostream>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a vector of faces.
 
@@ -55,30 +56,30 @@ The format of Face colors file:
 ...
 \endverbatim
 */
-class FaceVector : public std::vector <Face>
+class FaceVector : public std::vector<Face>
 {
 private:
-  void fromGeometryStream (std::ifstream &in_stream);
-  void fromColorsStream (std::ifstream &in_stream);
+	void fromGeometryStream(std::ifstream &in_stream);
+	void fromColorsStream(std::ifstream &in_stream);
 
 public:
-  /// load the Face data from a file
-  /*!
-   * \param filename the file to load
-   * \return true if file is found
-   * \return false if file isn't found
-   */
-  bool loadGeometry (const std::string& filename);
+	/// load the Face data from a file
+	/*!
+	 * \param filename the file to load
+	 * \return true if file is found
+	 * \return false if file isn't found
+	 */
+	bool loadGeometry(const std::string &filename);
 
-  /// load the Face Color data from a file
-  /*!
-   * \param filename the file to load
-   * \return true if file was found
-   * \return false if file wasn't found
-   */
-  bool loadColors (const std::string& filename);
+	/// load the Face Color data from a file
+	/*!
+	 * \param filename the file to load
+	 * \return true if file was found
+	 * \return false if file wasn't found
+	 */
+	bool loadColors(const std::string &filename);
 };
 
-}
+} // namespace Animorph
 
-#endif	// FACEVECTOR_H
+#endif // FACEVECTOR_H

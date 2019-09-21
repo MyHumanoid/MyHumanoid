@@ -25,17 +25,17 @@
  *
  */
 
-#include <gui/ImageSlider.h>
-#include <gui/CGUtilities.h>
-#include <gui/GLUTWrapper.h>
 #include "UtilitiesSliderListener.h"
+#include "BsPanel.h"
+#include "ComponentID.h"
+#include "Global.h"
 #include "TargetSlider.h"
 #include <animorph/Mesh.h>
-#include "Global.h"
-#include <stdio.h>
 #include <assert.h>
-#include "ComponentID.h"
-#include "BsPanel.h"
+#include <gui/CGUtilities.h>
+#include <gui/GLUTWrapper.h>
+#include <gui/ImageSlider.h>
+#include <stdio.h>
 
 using namespace Animorph;
 using namespace std;
@@ -43,62 +43,66 @@ using namespace std;
 const static float kPoseThreshold = 0.04;
 
 UtilitiesSliderListener::UtilitiesSliderListener()
-: AbstractListener(),
-  lastTargetName()
+    : AbstractListener()
+    , lastTargetName()
 {
 }
 
-UtilitiesSliderListener::~UtilitiesSliderListener()
+UtilitiesSliderListener::~UtilitiesSliderListener() {}
+
+bool UtilitiesSliderListener::mouseOver(const Point &inMousePos,
+                                        Component *source)
 {
+	return false;
 }
 
-bool UtilitiesSliderListener::mouseOver (const Point& inMousePos, Component *source)
+bool UtilitiesSliderListener::mouseOut(const Point &inMousePos,
+                                       Component *source)
 {
-  return false;
+	return false;
 }
 
-bool UtilitiesSliderListener::mouseOut (const Point& inMousePos, Component *source)
+bool UtilitiesSliderListener::mouseWheel(const Point &inMousePos, int inButton,
+                                         Component *source)
 {
-  return false;
+	return true;
 }
 
-bool UtilitiesSliderListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool UtilitiesSliderListener::mouseDragged(const Point &inMousePos,
+                                           Component *source)
 {
-  return true;
+	TargetSlider *imgSliderSource =
+	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really a TargetSlider object?
+
+	Global &global = Global::instance();
+	Animation *animation = global.getAnimation();
+
+	if (imgSliderSource->getID() == kComponentID_UtilitiesPanel_Interpolations) {
+		animation->setInterpNumber(
+		    (unsigned int)(imgSliderSource->getSliderValue()));
+	} else if (imgSliderSource->getID() ==
+	           kComponentID_UtilitiesPanel_FrameRate) {
+		animation->setFrameRate((unsigned int)(imgSliderSource->getSliderValue()));
+	}
+
+	return true;
 }
 
-bool UtilitiesSliderListener::mouseDragged (const Point& inMousePos, Component *source)
+bool UtilitiesSliderListener::mousePressed(const Point &inMousePos, int button,
+                                           Component *source)
 {
-  TargetSlider *imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
-  assert(imgSliderSource); // Check if this is really a TargetSlider object?
-
-  Global &global = Global::instance ();
-  Animation *animation = global.getAnimation ();
-
-  if(imgSliderSource->getID() == kComponentID_UtilitiesPanel_Interpolations)
-  {
-    animation->setInterpNumber((unsigned int)(imgSliderSource->getSliderValue ()));
-  }
-  else if(imgSliderSource->getID() == kComponentID_UtilitiesPanel_FrameRate)
-  {
-    animation->setFrameRate((unsigned int)(imgSliderSource->getSliderValue ()));
-  }
-
-  return true;
+	return false;
 }
 
-bool UtilitiesSliderListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool UtilitiesSliderListener::mouseReleased(const Point &inMousePos, int button,
+                                            Component *source)
 {
-  return false;
+
+	return false;
 }
 
-bool UtilitiesSliderListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool UtilitiesSliderListener::keyType(unsigned char key, Component *source)
 {
-
-  return false;
-}
-
-bool UtilitiesSliderListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }

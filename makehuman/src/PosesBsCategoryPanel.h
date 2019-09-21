@@ -29,60 +29,60 @@
 #define POSESBSCATEGORYPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <algorithm>
-#include <gui/Panel.h>
+#include "ComponentID.h"
+#include "ImageListener.h"
 #include "PosesBsSelectionListener.h"
 #include "TargetSlider.h"
-#include "ImageListener.h"
 #include "util.h"
-#include "ComponentID.h"
+#include <algorithm>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::string;
 using std::vector;
 
- static const uint32_t poses_bs_cat_table_id[17] = {
-  kComponentID_PosesBsCategoryPanel_Category1,
-  kComponentID_PosesBsCategoryPanel_Category2,
-  kComponentID_PosesBsCategoryPanel_Category3,
-  kComponentID_PosesBsCategoryPanel_Category4,
-  kComponentID_PosesBsCategoryPanel_Category5,
-  kComponentID_PosesBsCategoryPanel_Category6,
-  kComponentID_PosesBsCategoryPanel_Category7,
-  kComponentID_PosesBsCategoryPanel_Category8,
-  kComponentID_PosesBsCategoryPanel_Category9,
-  kComponentID_PosesBsCategoryPanel_Category10,
-  kComponentID_PosesBsCategoryPanel_Category11,
-  kComponentID_PosesBsCategoryPanel_Category12,
-  kComponentID_PosesBsCategoryPanel_Category13,
-  kComponentID_PosesBsCategoryPanel_Category14,
-  kComponentID_PosesBsCategoryPanel_Category15,
-  kComponentID_PosesBsCategoryPanel_Category16,
-  kComponentID_PosesBsCategoryPanel_Category17
-};
+static const uint32_t poses_bs_cat_table_id[17] = {
+    kComponentID_PosesBsCategoryPanel_Category1,
+    kComponentID_PosesBsCategoryPanel_Category2,
+    kComponentID_PosesBsCategoryPanel_Category3,
+    kComponentID_PosesBsCategoryPanel_Category4,
+    kComponentID_PosesBsCategoryPanel_Category5,
+    kComponentID_PosesBsCategoryPanel_Category6,
+    kComponentID_PosesBsCategoryPanel_Category7,
+    kComponentID_PosesBsCategoryPanel_Category8,
+    kComponentID_PosesBsCategoryPanel_Category9,
+    kComponentID_PosesBsCategoryPanel_Category10,
+    kComponentID_PosesBsCategoryPanel_Category11,
+    kComponentID_PosesBsCategoryPanel_Category12,
+    kComponentID_PosesBsCategoryPanel_Category13,
+    kComponentID_PosesBsCategoryPanel_Category14,
+    kComponentID_PosesBsCategoryPanel_Category15,
+    kComponentID_PosesBsCategoryPanel_Category16,
+    kComponentID_PosesBsCategoryPanel_Category17};
 
 class PosesBsCategoryPanel : public Panel
 {
 private: // intentionally not implemented
-  PosesBsCategoryPanel             (const PosesBsCategoryPanel&);
-  PosesBsCategoryPanel& operator = (const PosesBsCategoryPanel&);
+	PosesBsCategoryPanel(const PosesBsCategoryPanel &);
+	PosesBsCategoryPanel &operator=(const PosesBsCategoryPanel &);
 
-  PosesBsSelectionListener          selectionListener;
+	PosesBsSelectionListener selectionListener;
 
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <Image*> imageVector;
-  StringList *str_list;
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<Image *> imageVector;
+	StringList *str_list;
+
 public:
-  PosesBsCategoryPanel ();
-  virtual ~PosesBsCategoryPanel ();
+	PosesBsCategoryPanel();
+	virtual ~PosesBsCategoryPanel();
 
-  void createWidgets ();
-  void resetTargetValues(const string currentTargetName = "");
-  bool checkEnabled(string category);
+	void createWidgets();
+	void resetTargetValues(const string currentTargetName = "");
+	bool checkEnabled(string category);
 };
 
 #endif // POSESBSCATEGORYPANEL_H

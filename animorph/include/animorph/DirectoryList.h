@@ -30,99 +30,98 @@
 #define DIRECTORYLIST_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <sys/types.h>
 #include <dirent.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <string>
 #include <list>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-using std::string;
 using std::list;
+using std::string;
 
-typedef list <string> StringList;
+typedef list<string> StringList;
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a subset of files in a directory hierarchy
 
 To use this class:
 
 -# instantiate it
--# set its parameters with setRootPath(), setRecursive(), setFileFilter() and setFileType()
+-# set its parameters with setRootPath(), setRecursive(), setFileFilter() and
+setFileType()
 -# access the list of matching files with getDirectoryList()
 
  */
 class DirectoryList
 {
 private:
-  /// recursive function to read directory list
-  void readDirRecursive (const string& dir_str);
-  bool hasFileFilterEnding (const string& file) const;
+	/// recursive function to read directory list
+	void readDirRecursive(const string &dir_str);
+	bool hasFileFilterEnding(const string &file) const;
 
-  StringList file_list;
-  string file_filter;
-  string path;
-  int recursive_level;
-  int recursive_counter;
-  int file_type;
+	StringList file_list;
+	string file_filter;
+	string path;
+	int recursive_level;
+	int recursive_counter;
+	int file_type;
 
 public:
-  DirectoryList ();
+	DirectoryList();
 
-  enum
-  {
-    NO_LIMIT = -1,   /*!< read directories recursive without limit */
-    NO_RECURSIVE = 0 /*!< read only the base directory without recursion */
-  };
+	enum {
+		NO_LIMIT = -1,   /*!< read directories recursive without limit */
+		NO_RECURSIVE = 0 /*!< read only the base directory without recursion */
+	};
 
-  enum FileType
-  {
-    REGULAR_FILE, /*!< only regular files */
-    DIRECTORY     /*!< only directories */
-  };
+	enum FileType {
+		REGULAR_FILE, /*!< only regular files */
+		DIRECTORY     /*!< only directories */
+	};
 
-  /// set a pattern of files to pay attention
-  /*!
-   *
-   * \param file_filter Only files with this ending are paid attention. If a
-   *                    dot is in the extension, it need to be included.
-   *			(e.g. ".target")
-   */
-  void setFileFilter (const string& file_filter);
+	/// set a pattern of files to pay attention
+	/*!
+	 *
+	 * \param file_filter Only files with this ending are paid attention. If a
+	 *                    dot is in the extension, it need to be included.
+	 *			(e.g. ".target")
+	 */
+	void setFileFilter(const string &file_filter);
 
-  /// set the root path where to start file listing
-  /*!
-   * \param path the root path
-   */
-  void setRootPath (const string& path);
+	/// set the root path where to start file listing
+	/*!
+	 * \param path the root path
+	 */
+	void setRootPath(const string &path);
 
-  /// set the recursive level
-  /*!
-   * \param recursive_level The number of maximim recursive directories to
-   *			    search for files. Set to NO_LIMIT if the directory
-   * 			    should be read without recursive limit. And set to
-   *                        NO_RECURSIVE if only the files in the root
-   *			    directory should be listed.
-   */
-  void setRecursive (int recursive_level);
+	/// set the recursive level
+	/*!
+	 * \param recursive_level The number of maximim recursive directories to
+	 *			    search for files. Set to NO_LIMIT if the directory
+	 * 			    should be read without recursive limit. And set to
+	 *                        NO_RECURSIVE if only the files in the root
+	 *			    directory should be listed.
+	 */
+	void setRecursive(int recursive_level);
 
-  /*!
-   * \return the complete list of all matching files
-   */
-  const StringList& getDirectoryList ();
+	/*!
+	 * \return the complete list of all matching files
+	 */
+	const StringList &getDirectoryList();
 
-  /// set the file types of interest (default: REGULAR_FILE)
-  /*!
-   * \param file_type the file type
-   */
-  void setFileType (FileType file_type);
+	/// set the file types of interest (default: REGULAR_FILE)
+	/*!
+	 * \param file_type the file type
+	 */
+	void setFileType(FileType file_type);
 };
 
-}
+} // namespace Animorph
 
-#endif	// DIRECTORYLIST_H
+#endif // DIRECTORYLIST_H

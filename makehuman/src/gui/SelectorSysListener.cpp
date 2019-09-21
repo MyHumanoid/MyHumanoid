@@ -27,86 +27,89 @@
 
 #include "gui/SelectorSysListener.h"
 #include "gui/CGUtilities.h"
-#include "gui/Selector.h"
 #include "gui/GLUTWrapper.h"
+#include "gui/Selector.h"
 
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 #include <iostream>
 
 using namespace Animorph;
 using namespace std;
 
-namespace mhgui {
+namespace mhgui
+{
 
 SelectorSysListener::SelectorSysListener()
     : AbstractListener()
 {
 }
 
-SelectorSysListener::~SelectorSysListener()
+SelectorSysListener::~SelectorSysListener() {}
+
+bool SelectorSysListener::mouseOver(const Point &inMousePos, Component *source)
 {
+	cgutils::redisplay();
+
+	return false;
 }
 
-bool SelectorSysListener::mouseOver (const Point& inMousePos, Component *source)
+bool SelectorSysListener::mouseOut(const Point &inMousePos, Component *source)
 {
-  cgutils::redisplay();
+	cgutils::redisplay();
 
-  return false;
+	return false;
 }
 
-bool SelectorSysListener::mouseOut (const Point& inMousePos, Component *source)
+bool SelectorSysListener::mouseDragged(const Point &inMousePos,
+                                       Component *source)
 {
-  cgutils::redisplay();
+	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
 
-  return false;
+	selectorSource->setCursorPosFromMousePoint(inMousePos);
+
+	cgutils::redisplay();
+
+	return true;
 }
 
-bool SelectorSysListener::mouseDragged (const Point& inMousePos, Component *source)
+bool SelectorSysListener::mouseWheel(const Point &inMousePos, int inButton,
+                                     Component *source)
 {
-  Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-  assert(selectorSource); // Check if this is really an Image object?
-
-  selectorSource->setCursorPosFromMousePoint(inMousePos);
-
-  cgutils::redisplay();
-
-  return true;
+	return false;
 }
 
-bool SelectorSysListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool SelectorSysListener::mousePressed(const Point &inMousePos, int button,
+                                       Component *source)
 {
-  return false;
+	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
+
+	selectorSource->setCursorPosFromMousePoint(inMousePos);
+
+	selectorSource->setActive(true);
+	selectorSource->setClickConsumed(false);
+
+	cgutils::redisplay();
+
+	return true;
 }
 
-bool SelectorSysListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool SelectorSysListener::mouseReleased(const Point &inMousePos, int button,
+                                        Component *source)
 {
-  Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-  assert(selectorSource); // Check if this is really an Image object?
+	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
 
-  selectorSource->setCursorPosFromMousePoint(inMousePos);
+	selectorSource->setActive(false);
+	selectorSource->setClickConsumed(false);
 
-  selectorSource->setActive(true);
-  selectorSource->setClickConsumed(false);
-
-  cgutils::redisplay();
-
-  return true;
+	return false;
 }
 
-bool SelectorSysListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool SelectorSysListener::keyType(unsigned char key, Component *source)
 {
-  Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-  assert(selectorSource); // Check if this is really an Image object?
-
-  selectorSource->setActive(false);
-  selectorSource->setClickConsumed(false);
-
-  return false;
-}
-
-bool SelectorSysListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }
 } // namespace mhgui

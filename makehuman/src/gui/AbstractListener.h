@@ -29,30 +29,34 @@
 #define ABSTRACTLISTENER 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 /*! \brief Classes to build the GUI of MakeHuman.
  */
-namespace mhgui {
+namespace mhgui
+{
 
 class Point;
 class Component;
 
 /// Abstract callback interface for mouse and keyboard events
-class AbstractListener {
+class AbstractListener
+{
 public:
+	AbstractListener() {}
+	virtual ~AbstractListener() {}
 
-           AbstractListener() {}
-  virtual ~AbstractListener() {}
-
-  virtual bool mouseOver     (const Point& inMousePos,               Component *source ) = 0;
-  virtual bool mouseOut      (const Point& inMousePos,               Component *source ) = 0;
-  virtual bool mousePressed  (const Point& inMousePos, int inButton, Component *source ) = 0;
-  virtual bool mouseReleased (const Point& inMousePos, int inButton, Component *source ) = 0;
-  virtual bool mouseDragged  (const Point& inMousePos,               Component *source ) = 0;
-  virtual bool mouseWheel    (const Point& inMousePos, int inButton, Component *source ) = 0;
-  virtual bool keyType       (unsigned char inKey,                   Component *source ) = 0;
+	virtual bool mouseOver(const Point &inMousePos, Component *source) = 0;
+	virtual bool mouseOut(const Point &inMousePos, Component *source) = 0;
+	virtual bool mousePressed(const Point &inMousePos, int inButton,
+	                          Component *source) = 0;
+	virtual bool mouseReleased(const Point &inMousePos, int inButton,
+	                           Component *source) = 0;
+	virtual bool mouseDragged(const Point &inMousePos, Component *source) = 0;
+	virtual bool mouseWheel(const Point &inMousePos, int inButton,
+	                        Component *source) = 0;
+	virtual bool keyType(unsigned char inKey, Component *source) = 0;
 };
 
 } // namespace mhgui

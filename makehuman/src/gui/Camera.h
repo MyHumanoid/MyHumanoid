@@ -29,30 +29,30 @@
 #define CAMERA_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <cmath>
-#include <map>
+#include "GLUTWrapper.h"
+#include <animorph/FileWriter.h>
 #include <animorph/Matrix.h>
 #include <animorph/Vector2.h>
 #include <animorph/Vector3.h>
-#include <animorph/FileWriter.h>
-#include <animorph/util.h>
 #include <animorph/VertexVector.h>
-#include "GLUTWrapper.h"
+#include <animorph/util.h>
+#include <cmath>
+#include <map>
 
 using Animorph::Matrix;
 using Animorph::Vector2f;
 using Animorph::Vector3f;
 using Animorph::VertexVector;
 
-namespace mhgui {
-
-typedef std::vector <int> Reference_Verts;
-
-struct AutozoomData
+namespace mhgui
 {
+
+typedef std::vector<int> Reference_Verts;
+
+struct AutozoomData {
 	Vector3f pos_camera;
 	Vector2f xyRot_camera;
 	Reference_Verts vertsIndexes;
@@ -65,74 +65,76 @@ struct AutozoomData
 class Camera
 {
 private:
-  Vector2f last_mouse_pos;
-  Vector3f last_pos_camera;
-  int width;
-  int height;
-  float angle;
-  Vector3f axis ;
+	Vector2f last_mouse_pos;
+	Vector3f last_pos_camera;
+	int width;
+	int height;
+	float angle;
+	Vector3f axis;
 
-  Matrix cam_pos;
-  Matrix cam_center;
+	Matrix cam_pos;
+	Matrix cam_center;
 
-  bool mode;
+	bool mode;
 
-  // Ugly Test code following - just for test purposes!
-  Vector3f  mCameraPos;
-  float     mAngleX;
-  float     mAngleY;
-  float     mAngleZ;
-  Vector3f startVector;
-  Vector3f endVector;
-  float startAngleX;
-  float endAngleX;
-  float startAngleY;
-  float endAngleY;
-  float timeForMorph;
-  int   step;
+	// Ugly Test code following - just for test purposes!
+	Vector3f mCameraPos;
+	float mAngleX;
+	float mAngleY;
+	float mAngleZ;
+	Vector3f startVector;
+	Vector3f endVector;
+	float startAngleX;
+	float endAngleX;
+	float startAngleY;
+	float endAngleY;
+	float timeForMorph;
+	int step;
 
 public:
-  /// construct a Camera that manages the world Matrix
-  Camera ();
-  Camera (const Camera& inRHS);
-  Camera& operator=(const Camera& inRHS);
+	/// construct a Camera that manages the world Matrix
+	Camera();
+	Camera(const Camera &inRHS);
+	Camera &operator=(const Camera &inRHS);
 
-  void reshape (int width, int height);
-  void rotate (float theta, Animorph::RotateAxis axis);
-  void mouseRotateStart (int x, int y);
-  void rotateMouse (int x, int y);
-  void moveMouse (int x, int y);
-  void move (float x, float y, float z);
-  void resetRotation();
-  void resetPosition();
+	void reshape(int width, int height);
+	void rotate(float theta, Animorph::RotateAxis axis);
+	void mouseRotateStart(int x, int y);
+	void rotateMouse(int x, int y);
+	void moveMouse(int x, int y);
+	void move(float x, float y, float z);
+	void resetRotation();
+	void resetPosition();
 
-  void applyMatrix ();
+	void applyMatrix();
 
-  const Vector3f& getPosition() const {return mCameraPos;}
-  float           getAngleX()    const {return mAngleX;}
-  float           getAngleY()    const {return mAngleY;}
-  float           getAngleZ()    const {return mAngleZ;}
-  bool 		  isPerspective() const {return mode;}
-  void setPerspective (bool m);
+	const Vector3f &getPosition() const { return mCameraPos; }
+	float getAngleX() const { return mAngleX; }
+	float getAngleY() const { return mAngleY; }
+	float getAngleZ() const { return mAngleZ; }
+	bool isPerspective() const { return mode; }
+	void setPerspective(bool m);
 
-  int   	steps();
-  float 	getYForX(float x);
-  void 		calcForStepAnimate(float inX);
-  bool 	timerTrigger();
+	int steps();
+	float getYForX(float x);
+	void calcForStepAnimate(float inX);
+	bool timerTrigger();
 
-  void 		moveCameraAnimated(const std::string& filename, AutozoomData data,const VertexVector &vertexvector);
+	void moveCameraAnimated(const std::string &filename, AutozoomData data,
+	                        const VertexVector &vertexvector);
 };
 
-class Autozoom : public std::map <std::string, AutozoomData>
+class Autozoom : public std::map<std::string, AutozoomData>
 {
 private:
-	void fromStream (std::ifstream &in_stream,const std::string& filename);
-	void createStream (std::ostringstream &out_stream,const std::string& filename,const Camera &camera);
-public:
-	bool lazyLoadData (const std::string& filename);
-	bool save (const std::string& filename,const Camera &camera);
-	AutozoomData getAutozoomData (const std::string& filename);
+	void fromStream(std::ifstream &in_stream, const std::string &filename);
+	void createStream(std::ostringstream &out_stream, const std::string &filename,
+	                  const Camera &camera);
 
+public:
+	bool lazyLoadData(const std::string &filename);
+	bool save(const std::string &filename, const Camera &camera);
+	AutozoomData getAutozoomData(const std::string &filename);
 };
 
 } // namespace mhgui

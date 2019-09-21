@@ -29,43 +29,41 @@
 #define PAGEPOSESBSPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <algorithm>
-#include <gui/Panel.h>
-#include <gui/MultiPanel.h>
-#include "TargetSliderListener.h"
-#include "TargetSlider.h"
-#include "ImageListener.h"
 #include "ImageButton.h"
+#include "ImageListener.h"
+#include "TargetSlider.h"
+#include "TargetSliderListener.h"
 #include "util.h"
+#include <algorithm>
+#include <gui/MultiPanel.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::string;
 using std::vector;
 
-
 class PagePosesBsPanel : public Panel
 {
 private: // intentionally not implemented
-  PagePosesBsPanel             (const PagePosesBsPanel&);
-  PagePosesBsPanel& operator = (const PagePosesBsPanel&);
+	PagePosesBsPanel(const PagePosesBsPanel &);
+	PagePosesBsPanel &operator=(const PagePosesBsPanel &);
 
-  //TargetSliderListener   imgSliderListener;
-  ImageListener          imgListener;
-  string                 category;
-
+	// TargetSliderListener   imgSliderListener;
+	ImageListener imgListener;
+	string category;
 
 public:
-  PagePosesBsPanel (const string& category, const Rect& rect);
-  virtual ~PagePosesBsPanel ();
+	PagePosesBsPanel(const string &category, const Rect &rect);
+	virtual ~PagePosesBsPanel();
 
-  const string& getCategory() const {return category;}
+	const string &getCategory() const { return category; }
 
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <ImageButton*> imageButtonVector;
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<ImageButton *> imageButtonVector;
 };
 
 #endif // PAGEPOSESBSPANEL_H

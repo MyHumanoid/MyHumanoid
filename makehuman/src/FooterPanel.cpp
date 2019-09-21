@@ -26,36 +26,32 @@
  */
 
 #include "FooterPanel.h"
-#include "ImageListener.h"
 #include "ComponentID.h"
+#include "ImageListener.h"
 
-#include "gui/Window.h"
-#include "gui/Rect.h"
 #include "gui/Image.h"
+#include "gui/Rect.h"
 #include "gui/Tooltip.h"
+#include "gui/Window.h"
 
 using namespace std;
 using namespace Animorph;
 using namespace mhgui;
 
-FooterPanel::FooterPanel (const int winHeight)
-    : Panel (kComponentID_FooterPanel, Rect(400,winHeight - 16,900,16))
+FooterPanel::FooterPanel(const int winHeight)
+    : Panel(kComponentID_FooterPanel, Rect(400, winHeight - 16, 900, 16))
 {
-  setBottomAnchor (true);
+	setBottomAnchor(true);
 }
 
-FooterPanel::~FooterPanel ()
-{
-  delete footer;
-}
+FooterPanel::~FooterPanel() { delete footer; }
 
-void FooterPanel::createWidgets ()
+void FooterPanel::createWidgets()
 {
-  const float alpha = 0.8;
+	const float alpha = 0.8;
 
-  footer = new Image(kComponentID_ImageFooterPanel_Frames_01,
-                     searchPixmapFile ("ui/frames_01.png"),
-                     Rect(0,0,900,16));
-  footer->setAlpha (alpha);
-  addWidget (footer);
+	footer = new Image(kComponentID_ImageFooterPanel_Frames_01,
+	                   searchPixmapFile("ui/frames_01.png"), Rect(0, 0, 900, 16));
+	footer->setAlpha(alpha);
+	addWidget(footer);
 }

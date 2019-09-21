@@ -33,7 +33,7 @@
 #define IMAGELISTENER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include "Global.h"
@@ -46,37 +46,40 @@ using namespace mhgui;
 class ImageListener : public AbstractListener
 {
 private:
-  void showPoses();
-  void showBodyDetails();
-  void showCharacterSetting();
-  void showClothes();
-  void showUtilities();
-  void showBsCategory();
-  void showPosesBsCategory();
+	void showPoses();
+	void showBodyDetails();
+	void showCharacterSetting();
+	void showClothes();
+	void showUtilities();
+	void showBsCategory();
+	void showPosesBsCategory();
 
-  void hideBodyDetails();
-  void hidePoses();
-  void hideCharacterSetting();
-  void hideClothes();
-  void hideUtilities();
-  void hideBsCategory();
-  void hidePosesBsCategory();
-  void hidePanels(const Modes newMode);
+	void hideBodyDetails();
+	void hidePoses();
+	void hideCharacterSetting();
+	void hideClothes();
+	void hideUtilities();
+	void hideBsCategory();
+	void hidePosesBsCategory();
+	void hidePanels(const Modes newMode);
 
-  void ResetMeshMorph(Global &global);
-  void ResetMeshPose(Global &global);
+	void ResetMeshMorph(Global &global);
+	void ResetMeshPose(Global &global);
 
 public:
-  ImageListener();
-  virtual ~ImageListener();
+	ImageListener();
+	virtual ~ImageListener();
 
-  virtual bool mouseOver     (const Point& inMousePos,               Component *source );
-  virtual bool mouseOut      (const Point& inMousePos,               Component *source );
-  virtual bool mousePressed  (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseReleased (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseDragged  (const Point& inMousePos,               Component *source );
-  virtual bool mouseWheel    (const Point& inMousePos, int inButton, Component *source );
-  virtual bool keyType       (unsigned char inKey,                   Component *source );
+	virtual bool mouseOver(const Point &inMousePos, Component *source);
+	virtual bool mouseOut(const Point &inMousePos, Component *source);
+	virtual bool mousePressed(const Point &inMousePos, int inButton,
+	                          Component *source);
+	virtual bool mouseReleased(const Point &inMousePos, int inButton,
+	                           Component *source);
+	virtual bool mouseDragged(const Point &inMousePos, Component *source);
+	virtual bool mouseWheel(const Point &inMousePos, int inButton,
+	                        Component *source);
+	virtual bool keyType(unsigned char inKey, Component *source);
 };
 
 #endif

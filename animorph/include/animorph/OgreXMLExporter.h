@@ -29,54 +29,55 @@
 #define OGREXMLEXPORTER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
-#include "xmlParser.h"
-#include <iostream>
-#include <fstream>
-#include "Mesh.h"
 #include "Matrix.h"
+#include "Mesh.h"
 #include "util.h"
+#include "xmlParser.h"
+#include <fstream>
+#include <iostream>
 
 using std::ostringstream;
 using std::string;
 
-
-namespace Animorph {
+namespace Animorph
+{
 
 class OgreXMLExporter
 {
 protected:
-  Mesh &mesh;
-  Matrix tm;
+	Mesh &mesh;
+	Matrix tm;
 
-  void InsertASubmeshNode(XMLNode *xNodeSubmeshes,XMLNode *xNodeSubmesh, int index_material);
-  void CreateLibraryMaterialsNode(struct XMLNode *xNode_library_materials,XMLNode *xNode_library_effects);
-  void CreatePolygons(XMLNode *xNode_mesh ,string name);
+	void InsertASubmeshNode(XMLNode *xNodeSubmeshes, XMLNode *xNodeSubmesh,
+	                        int index_material);
+	void CreateLibraryMaterialsNode(struct XMLNode *xNode_library_materials,
+	                                XMLNode *xNode_library_effects);
+	void CreatePolygons(XMLNode *xNode_mesh, string name);
 
 public:
-   /*!
-   * \param _mesh construct ColladaExporter from a Mesh object
-   */
-  OgreXMLExporter (Animorph::Mesh &_mesh) : mesh (_mesh)
-  {
-    tm.identity ();
-  }
+	/*!
+	 * \param _mesh construct ColladaExporter from a Mesh object
+	 */
+	OgreXMLExporter(Animorph::Mesh &_mesh)
+	    : mesh(_mesh)
+	{
+		tm.identity();
+	}
 
-  /*!
-   * \param tm the Matrix which transformates the Mesh before exporting
-   */
-  void setTransformationMatrix (Matrix &tm) {this->tm = tm;}
+	/*!
+	 * \param tm the Matrix which transformates the Mesh before exporting
+	 */
+	void setTransformationMatrix(Matrix &tm) { this->tm = tm; }
 
-  /// export the Mesh and MTL file in the same file .mesh.xml
-  /*!
-   * \param filename the file to save
-   * \return true if file is saved
-   * \return false if file couldn't be saved
-  */
-  bool exportFile (const string& filename);
-
-
+	/// export the Mesh and MTL file in the same file .mesh.xml
+	/*!
+	 * \param filename the file to save
+	 * \return true if file is saved
+	 * \return false if file couldn't be saved
+	 */
+	bool exportFile(const string &filename);
 };
-}
+} // namespace Animorph
 #endif

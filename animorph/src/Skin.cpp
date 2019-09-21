@@ -30,66 +30,65 @@
 using namespace std;
 using namespace Animorph;
 
-bool Skin::load (const std::string& filename)
+bool Skin::load(const std::string &filename)
 {
-  char str[MAX_LINE_BUFFER];
-  vector<int> tokens;
-  bool rc = true;
-  int ret = 0;
-  int skinVertex;
+	char str[MAX_LINE_BUFFER];
+	vector<int> tokens;
+	bool rc = true;
+	int ret = 0;
+	int skinVertex;
 
-  clear ();
+	clear();
 
-  FILE *fd = fopen (filename.c_str (), "r");
+	FILE *fd = fopen(filename.c_str(), "r");
 
-  if (fd == NULL)
-    return false;
+	if (fd == NULL)
+		return false;
 
-  // get the current locale
-  char *locale = ::setlocale (LC_NUMERIC, NULL);
+	// get the current locale
+	char *locale = ::setlocale(LC_NUMERIC, NULL);
 
-  // set it to "C"-Style ( the . (dot) means the decimal marker for floats)
-  ::setlocale (LC_NUMERIC, "C");
+	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
+	::setlocale(LC_NUMERIC, "C");
 
-  //Skin &skin(*this);
+	// Skin &skin(*this);
 
-  for(;;)
-  {
-    ret = fscanf(fd, "%i,%s", &skinVertex, str);
+	for (;;) {
+		ret = fscanf(fd, "%i,%s", &skinVertex, str);
 
-    if (ret == EOF) // end of file reached?
-        break;
+		if (ret == EOF) // end of file reached?
+			break;
 
-    if(ret != 2 && (ret != 0))
-    {
-      cerr << "Illegal line while reading skin info '" << filename << "'!" << endl;
-      clear ();
-      rc = false; // mark the error
-      break;
-    }
+		if (ret != 2 && (ret != 0)) {
+			cerr << "Illegal line while reading skin info '" << filename << "'!"
+			     << endl;
+			clear();
+			rc = false; // mark the error
+			break;
+		}
 
-    string values(str);
-    stringTokeni(values, ", ", tokens);
+		string values(str);
+		stringTokeni(values, ", ", tokens);
 
-    if(tokens.empty())
-    {
-      cerr << "Illegal line while reading skin info '" << filename << "'!" << endl;
-      clear ();
-      rc = false; // mark the error
-      break;
-      rc = false;
-      break;
-    }
+		if (tokens.empty()) {
+			cerr << "Illegal line while reading skin info '" << filename << "'!"
+			     << endl;
+			clear();
+			rc = false; // mark the error
+			break;
+			rc = false;
+			break;
+		}
 
-    SkinVertex tmpSkinVertex(skinVertex, 0.0f, tokens);
-    push_back(tmpSkinVertex);
-    tokens.clear();
-  }
+		SkinVertex tmpSkinVertex(skinVertex, 0.0f, tokens);
+		push_back(tmpSkinVertex);
+		tokens.clear();
+	}
 
-  // reset locale after file was written
-  ::setlocale (LC_NUMERIC, locale);
+	// reset locale after file was written
+	::setlocale(LC_NUMERIC, locale);
 
-  fclose (fd);
+	fclose(fd);
 
-  return rc;
+	return rc;
 }

@@ -26,8 +26,8 @@
  */
 
 #include "gui/Label.h"
-#include "gui/Tooltip.h"
 #include "gui/GLUTWrapper.h"
+#include "gui/Tooltip.h"
 
 #include <iostream>
 
@@ -36,80 +36,67 @@ using namespace std;
 using std::cerr;
 using std::endl;
 
-namespace mhgui {
+namespace mhgui
+{
 
-//constructor
-Label::Label (uint32_t      inId,
-              const Rect&   inGeometry)
-    : Widget(inId, inGeometry),
-    backColor (1, 1, 1, 1),
-    textColor (0, 0, 0, 1),
-    font (GLUT_BITMAP_HELVETICA_12)
+// constructor
+Label::Label(uint32_t inId, const Rect &inGeometry)
+    : Widget(inId, inGeometry)
+    , backColor(1, 1, 1, 1)
+    , textColor(0, 0, 0, 1)
+    , font(GLUT_BITMAP_HELVETICA_12)
 {
 }
 
-Label::~Label()
+Label::~Label() {}
+
+void Label::show() { setVisible(true); }
+
+void Label::hide() { setVisible(false); }
+
+void Label::drawOverlay() {}
+
+void Label::setText(const string &text)
 {
+	this->text = text;
+
+	if (autosize)
+		calcAutoSize();
 }
 
-void Label::show ()
+void Label::setAutoSize(bool autosize)
 {
-  setVisible(true);
+	this->autosize = autosize;
+
+	if (autosize)
+		calcAutoSize();
 }
 
-void Label::hide ()
+void Label::calcAutoSize()
 {
-  setVisible(false);
+	Size newSize(cgutils::getFontLength(font, text), cgutils::getFontWidth(font));
+
+	setSize(newSize);
 }
 
-void Label::drawOverlay()
+// draw function
+void Label::draw()
 {
-}
+	if (isVisible()) {
+		cgutils::enableBlend();
 
-void Label::setText (const string& text)
-{
-  this->text = text;
+		// cgutils::enableScissor (getAbsoluteRect ());
 
-  if (autosize)
-    calcAutoSize ();
-}
+		Point pos_rel(0, cgutils::getFontWidth(font));
+		Point pos(getAbsolutePosition());
+		pos.moveBy(pos_rel);
 
-void Label::setAutoSize (bool autosize)
-{
-  this->autosize = autosize;
+		cgutils::drawString(pos, font, text, textColor);
 
-  if (autosize)
-    calcAutoSize ();
-}
+		// cgutils::disableScissor ();
 
-void Label::calcAutoSize ()
-{
-  Size newSize (cgutils::getFontLength (font, text),
-                cgutils::getFontWidth (font));
-
-  setSize (newSize);
-}
-
-//draw function
-void Label::draw ()
-{
-  if (isVisible())
-  {
-    cgutils::enableBlend ();
-
-    //cgutils::enableScissor (getAbsoluteRect ());
-
-    Point pos_rel (0, cgutils::getFontWidth (font));
-    Point pos (getAbsolutePosition());
-    pos.moveBy (pos_rel);
-
-    cgutils::drawString (pos, font, text, textColor);
-
-    //cgutils::disableScissor ();
-
-    cgutils::disableBlend ();
-  }
+		cgutils::disableBlend();
+	}
 }
 
 } // namespace mhgui
-

@@ -29,31 +29,31 @@
 #define POSEROTATION_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 
-#include <sstream>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <sstream>
 
-#include "util.h"
 #include "FileReader.h"
 #include "Matrix.h"
+#include "util.h"
 
-using std::string;
 using std::set;
+using std::string;
 using std::vector;
 
-namespace Animorph {
-
-struct PoseTargetData
+namespace Animorph
 {
-  int   vertex_number;
-  float rotation;
+
+struct PoseTargetData {
+	int vertex_number;
+	float rotation;
 };
 
 typedef vector<int> UnsortedUsedVertex;
@@ -88,67 +88,68 @@ Further lines are ignored.
 The filenames of these files end in ".rot.info".
 
 */
-class PoseRotation : public vector <PoseTargetData>
+class PoseRotation : public vector<PoseTargetData>
 {
 private:
-  /// Used to calculate center
-  vector<int> centerVertexNumbers;
-  /// Will be used as parameter for Matrix::setRoation()
-  RotateAxis  axis;
-  /// Set of all indices in the ".rot" file
-  UnsortedUsedVertex  modVertex;
-  /// Currently unused
-  bool hasCenter;
-  /// Minimum angle in radians
-  float minAngle;
-  /// Maximum angle in radians
-  float maxAngle;
-  /// will be set to true by PoseTarget::calcNormalizations() if our (min|max)Angle != PoseTarget::(min|max)Angle
-  bool normalize;
-  //string inFilename;
-  /* \brief "Category"? Currently always "00"
-   * First two characters of the filename, eg . "00" for "00_Z_LIMB_SPINE1.rot"
-   */
-  string cat;
+	/// Used to calculate center
+	vector<int> centerVertexNumbers;
+	/// Will be used as parameter for Matrix::setRoation()
+	RotateAxis axis;
+	/// Set of all indices in the ".rot" file
+	UnsortedUsedVertex modVertex;
+	/// Currently unused
+	bool hasCenter;
+	/// Minimum angle in radians
+	float minAngle;
+	/// Maximum angle in radians
+	float maxAngle;
+	/// will be set to true by PoseTarget::calcNormalizations() if our
+	/// (min|max)Angle != PoseTarget::(min|max)Angle
+	bool normalize;
+	// string inFilename;
+	/* \brief "Category"? Currently always "00"
+	 * First two characters of the filename, eg . "00" for "00_Z_LIMB_SPINE1.rot"
+	 */
+	string cat;
 
-  /* \brief Centroid of centerVertexNumbers
-   * Is initialized by PoseTarget::calcRotationsCenteroids()
-   */
-  Vector3f center;
-  ///Limb rotation Type
-  bool mbLimb;
+	/* \brief Centroid of centerVertexNumbers
+	 * Is initialized by PoseTarget::calcRotationsCenteroids()
+	 */
+	Vector3f center;
+	/// Limb rotation Type
+	bool mbLimb;
+
 public:
-  PoseRotation();
-  /*!
-   * \param filename the file with PoseTarget data to load
-   * \return true if file is found
-   * \return false if file isn't found
-   */
-  bool load (const string& filename);
+	PoseRotation();
+	/*!
+	 * \param filename the file with PoseTarget data to load
+	 * \return true if file is found
+	 * \return false if file isn't found
+	 */
+	bool load(const string &filename);
 
-  const vector<int> &getCenterVertexNumbers () {return centerVertexNumbers;}
-  UnsortedUsedVertex &getModVertex () {return modVertex;}
-  const Vector3f &getCenter() const {return center;}
-  void setCenter(const Vector3f& c) {center = c;}
+	const vector<int> &getCenterVertexNumbers() { return centerVertexNumbers; }
+	UnsortedUsedVertex &getModVertex() { return modVertex; }
+	const Vector3f &getCenter() const { return center; }
+	void setCenter(const Vector3f &c) { center = c; }
 
-  const RotateAxis& getAxis () const {return axis;}
-  const bool getHasCenter() const {return hasCenter;}
-  void setHasCenter(bool c) {hasCenter = c;}
+	const RotateAxis &getAxis() const { return axis; }
+	const bool getHasCenter() const { return hasCenter; }
+	void setHasCenter(bool c) { hasCenter = c; }
 
-  const float getMinAngle() const {return minAngle;}
-  const float getMaxAngle() const {return maxAngle;}
-  const bool getNormalize() const {return normalize;}
-  void setNormalize(bool inNormalize) {normalize = inNormalize;}
+	const float getMinAngle() const { return minAngle; }
+	const float getMaxAngle() const { return maxAngle; }
+	const bool getNormalize() const { return normalize; }
+	void setNormalize(bool inNormalize) { normalize = inNormalize; }
 
-  //const string &getFilename() const {return inFilename;}
-  const string &getCat() const {return cat;}
-  void setCat(string inCat) {cat = inCat;}
+	// const string &getFilename() const {return inFilename;}
+	const string &getCat() const { return cat; }
+	void setCat(string inCat) { cat = inCat; }
 
-  void setLimb(bool limb) { mbLimb = limb;}
-  bool getLimb(){return mbLimb;}
+	void setLimb(bool limb) { mbLimb = limb; }
+	bool getLimb() { return mbLimb; }
 };
 
-}
+} // namespace Animorph
 
-#endif	// POSEROTATION_H
-
+#endif // POSEROTATION_H

@@ -31,49 +31,54 @@
 #define CONSOLELISTENER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
 #include <gui/AbstractListener.h>
 #include <gui/Point.h>
+#include <iostream>
 
 class mhgui::Component;
 
 class ConsoleListener : public AbstractListener
 {
 protected:
-  void loadWindowBackground(Console& console, const string& filename);
-  void loadBodySettings(Console& console, const string& filename);
-  void loadPoses(Console& console, const string& filename);
-  void loadAqsisPath(Console& console, const string& path);
-  void loadPixiePath(Console& console, const string& path);
-  void parseSetParameter(Console& console, const string& path);
-  void saveBodySettings(Console& console, const string& filename);
-  void savePoses(Console& console, const string& filename);
-  void saveAutozoom(Console& console, const string& filename);
-  void exportBodySettings(Console& console, string& filename, bool full = false);
-  void exportCollada(Console& console, string& filename);
+	void loadWindowBackground(Console &console, const string &filename);
+	void loadBodySettings(Console &console, const string &filename);
+	void loadPoses(Console &console, const string &filename);
+	void loadAqsisPath(Console &console, const string &path);
+	void loadPixiePath(Console &console, const string &path);
+	void parseSetParameter(Console &console, const string &path);
+	void saveBodySettings(Console &console, const string &filename);
+	void savePoses(Console &console, const string &filename);
+	void saveAutozoom(Console &console, const string &filename);
+	void exportBodySettings(Console &console, string &filename,
+	                        bool full = false);
+	void exportCollada(Console &console, string &filename);
 
-  void loadAnimation(Console& console, const string& path);
-  //void saveAnimation(Console& console, const string& path);
-  //bool loadSelectorsPositions(const std::string& filename);
-  //bool saveSelectorsPositions(const std::string& filename, std::ios_base::openmode mode = std::ios::app);
+	void loadAnimation(Console &console, const string &path);
+	// void saveAnimation(Console& console, const string& path);
+	// bool loadSelectorsPositions(const std::string& filename);
+	// bool saveSelectorsPositions(const std::string& filename,
+	// std::ios_base::openmode mode = std::ios::app);
 
 public:
-           ConsoleListener();
-  virtual ~ConsoleListener();
+	ConsoleListener();
+	virtual ~ConsoleListener();
 
-  void parseCommand (Console& console);
-  void commandNotFound (Console& console);
+	void parseCommand(Console &console);
+	void commandNotFound(Console &console);
 
-  virtual bool mouseOver            (const Point& inMousePos,               Component *source );
-  virtual bool mouseOut             (const Point& inMousePos,               Component *source );
-  virtual bool mousePressed         (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseReleased        (const Point& inMousePos, int inButton, Component *source );
-  virtual bool mouseDragged         (const Point& inMousePos,               Component *source );
-  virtual bool mouseWheel           (const Point& inMousePos, int inButton, Component *source );
-  virtual bool keyType              (unsigned char inKey,                   Component *source );
+	virtual bool mouseOver(const Point &inMousePos, Component *source);
+	virtual bool mouseOut(const Point &inMousePos, Component *source);
+	virtual bool mousePressed(const Point &inMousePos, int inButton,
+	                          Component *source);
+	virtual bool mouseReleased(const Point &inMousePos, int inButton,
+	                           Component *source);
+	virtual bool mouseDragged(const Point &inMousePos, Component *source);
+	virtual bool mouseWheel(const Point &inMousePos, int inButton,
+	                        Component *source);
+	virtual bool keyType(unsigned char inKey, Component *source);
 };
 
 #endif

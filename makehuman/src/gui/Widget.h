@@ -29,49 +29,51 @@
 #define WIDGET_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include "Component.h"
 #include "Panel.h"
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Tooltip;
 
 class Widget : public Component
 {
 public:
-  Widget (uint32_t inId, const Rect& inGeometry);
+	Widget(uint32_t inId, const Rect &inGeometry);
 
-  virtual ~Widget ();
+	virtual ~Widget();
 
-  virtual void draw() = 0;
-  virtual void drawOverlay() = 0;
-  virtual void show () = 0;
-  virtual void hide () = 0;
+	virtual void draw() = 0;
+	virtual void drawOverlay() = 0;
+	virtual void show() = 0;
+	virtual void hide() = 0;
 
-  Panel* getParentPanel () const {return parentPanel;}
-  void   setTooltip     (const Tooltip& inTooltip);
+	Panel *getParentPanel() const { return parentPanel; }
+	void setTooltip(const Tooltip &inTooltip);
 
 private: // intentionally not implemented
-  Widget             (const Widget&);
-  Widget& operator = (const Widget&);
+	Widget(const Widget &);
+	Widget &operator=(const Widget &);
 
 private:
-  Panel       *parentPanel;
-  Tooltip     *tooltip;
+	Panel *parentPanel;
+	Tooltip *tooltip;
 
-  // Special Draw method which will be called from panel ONLY!
-  // This call takes care to paint the tooltip and call draw()
-  // afterwards
-  void draw_wrapper();
+	// Special Draw method which will be called from panel ONLY!
+	// This call takes care to paint the tooltip and call draw()
+	// afterwards
+	void draw_wrapper();
 
-  // TODO: do we really need this, I think friend isn't very good design
-  friend class Panel; // grant panel access to the private members & methods
-  friend class MultiPanel; // grant multipanel access to the private members & methods
+	// TODO: do we really need this, I think friend isn't very good design
+	friend class Panel; // grant panel access to the private members & methods
+	friend class MultiPanel; // grant multipanel access to the private members &
+	                         // methods
 };
 
 } // namespace mhgui
 
-#endif //WIDGET_H
+#endif // WIDGET_H

@@ -30,60 +30,64 @@
 #define FACE_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <list>
-#include <assert.h>
-#include "Vector3.h"
-#include "Vector2.h"
-#include "Vertex.h"
 #include "Color.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vertex.h"
+#include <assert.h>
+#include <list>
+#include <vector>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a quad or triangle and its properties
  */
 class Face
 {
 private:
-  int vertices[4];
-  int size;
-  int material_index;
+	int vertices[4];
+	int size;
+	int material_index;
 
 public:
-  /// the normal vector of this face
-  Vector3f no;
+	/// the normal vector of this face
+	Vector3f no;
 
-  /// construct a quad
-  Face (int v0, int v1, int v2, int v3);
+	/// construct a quad
+	Face(int v0, int v1, int v2, int v3);
 
-  /// construct a triangle
-  Face (int v0, int v1, int v2);
+	/// construct a triangle
+	Face(int v0, int v1, int v2);
 
-  /*!
-   * \return index of the material in MaterialVector
-   */
-  int getMaterialIndex () const {return material_index;}
+	/*!
+	 * \return index of the material in MaterialVector
+	 */
+	int getMaterialIndex() const { return material_index; }
 
-  /*!
-   * \param material_index index of the material in MaterialVector
-   */
-  void setMaterialIndex (int material_index) {this->material_index = material_index;}
+	/*!
+	 * \param material_index index of the material in MaterialVector
+	 */
+	void setMaterialIndex(int material_index)
+	{
+		this->material_index = material_index;
+	}
 
-  /*!
-   * \return a vector with all vertex numbers for this face
-   */
-  size_t getSize() const {return size;}
+	/*!
+	 * \return a vector with all vertex numbers for this face
+	 */
+	size_t getSize() const { return size; }
 
-  size_t getVertexAtIndex(int inIndex) const
-    {   assert(inIndex<size);
-        return vertices[inIndex];}
-
-
+	size_t getVertexAtIndex(int inIndex) const
+	{
+		assert(inIndex < size);
+		return vertices[inIndex];
+	}
 };
 
-}
+} // namespace Animorph
 
-#endif	// FACE_H
+#endif // FACE_H

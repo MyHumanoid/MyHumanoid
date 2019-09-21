@@ -29,20 +29,21 @@
 #define IMAGE_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include "animorph/Color.h"
-#include "Widget.h"
 #include "Panel.h"
 #include "Texture.h"
+#include "Widget.h"
+#include "animorph/Color.h"
+#include <string>
 
 using Animorph::Color;
 
 using std::string;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Tooltip;
 class ImageSysListener;
@@ -55,68 +56,70 @@ class ImageSysListener;
 /* ========================================================================== */
 class Image : public Widget
 {
-  //Textures
+	// Textures
 private:
-  string            imageFilename;
+	string imageFilename;
 
-  string            imageFilenameOver;
+	string imageFilenameOver;
 
-  string            imageFilenameDisabled;
-  Texture           textureDisabled;
-  Texture           texture;
-  Texture           textureOver;
+	string imageFilenameDisabled;
+	Texture textureDisabled;
+	Texture texture;
+	Texture textureOver;
 
-  bool              textureIsInited; // used by lazyLoadTexture
-  bool              textureOverIsInited;
-  bool              textureDisabledIsInited;
+	bool textureIsInited; // used by lazyLoadTexture
+	bool textureOverIsInited;
+	bool textureDisabledIsInited;
 
-  ImageSysListener *imageSysListener;
-  float             alpha;
-  Color overlay;
-  bool overlayEffect;
+	ImageSysListener *imageSysListener;
+	float alpha;
+	Color overlay;
+	bool overlayEffect;
 
-  bool enabled;
-  bool kill_mouse_drag;
-  // intentionally not implemented
-  Image           (const Image&);
-  Image& operator=(const Image&);
+	bool enabled;
+	bool kill_mouse_drag;
+	// intentionally not implemented
+	Image(const Image &);
+	Image &operator=(const Image &);
 
 public:
-  Image (uint32_t inId, const string& inFilename, const Rect& inGeometry);
-  virtual ~Image();
+	Image(uint32_t inId, const string &inFilename, const Rect &inGeometry);
+	virtual ~Image();
 
-  void  setAlpha (float);
-  float getAlpha() const {return alpha;}
+	void setAlpha(float);
+	float getAlpha() const { return alpha; }
 
-  void setEnabled(bool inEnabled) {enabled = inEnabled;}
-  bool isEnabled() {return enabled;}
+	void setEnabled(bool inEnabled) { enabled = inEnabled; }
+	bool isEnabled() { return enabled; }
 
-  void setKillMouseDrag(bool kill){kill_mouse_drag = kill;}
-  /*!
-   * Set the Color for the overlay rectangle. The overlay is enabled at this time.
-   * @param c The color for the overlay. Transparency is set by the alpha component.
-   */
-  void setOverlayRectangle (const Color& c);
-  void setOverlayRectangle (bool overlayEffect);
+	void setKillMouseDrag(bool kill) { kill_mouse_drag = kill; }
+	/*!
+	 * Set the Color for the overlay rectangle. The overlay is enabled at this
+	 * time.
+	 * @param c The color for the overlay. Transparency is set by the alpha
+	 * component.
+	 */
+	void setOverlayRectangle(const Color &c);
+	void setOverlayRectangle(bool overlayEffect);
 
-  void setOverlayTexture(const string& inFilename);
-  void setDisabledTexture(const string& inFilename);
+	void setOverlayTexture(const string &inFilename);
+	void setDisabledTexture(const string &inFilename);
 
-  const Texture& getTextures (); //return the textureID
-  const Texture& getTexturesOver (); //return the textureID
+	const Texture &getTextures();     // return the textureID
+	const Texture &getTexturesOver(); // return the textureID
 
-  virtual void show ();
-  virtual void hide ();
-  virtual void draw ();
-  virtual void drawOverlay ();
+	virtual void show();
+	virtual void hide();
+	virtual void draw();
+	virtual void drawOverlay();
 
-  bool isMouseDragged (const Point& inMousePos);
-  bool isMouseClick (const Point& inMousePos, int button, int state);
+	bool isMouseDragged(const Point &inMousePos);
+	bool isMouseClick(const Point &inMousePos, int button, int state);
 
 protected:
-  bool lazyLoadTexture (bool over = false);
+	bool lazyLoadTexture(bool over = false);
 };
 
 } // namespace mhgui
 
-#endif //IMAGE_H
+#endif // IMAGE_H

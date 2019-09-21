@@ -35,354 +35,294 @@ using namespace std;
 using namespace Animorph;
 using namespace mhgui;
 
-namespace mhgui {
+namespace mhgui
+{
 
-//constructor
-Console::Console (uint32_t consoleID)
-  : Widget(consoleID, Rect(0, 0, 1, 1)),
-    texture(),
-    backgroundColor(0.0, 0.0, 0.0, 0.8), // set background transparency with alpha component of this variable
-    foregroundColor(1.0, 1.0, 1.0),
-    cmdForegroundColor(0.0, 1.0, 1.0),
-    splashForegroundColor(1.0, 1.0, 0.0),
-    command(),
-    commandLine(),
-    inputMessage(),
-    message(),
-    userText(),
-    commandPrompt(">> "),
-    commandPromptLength(30),
-    image_loaded(),
-    userTextMaxLength(255),
-    status(0),
-    inError(false),
-    cursorPos (0, 20),
-    textFont(GLUT_BITMAP_HELVETICA_18)
+// constructor
+Console::Console(uint32_t consoleID)
+    : Widget(consoleID, Rect(0, 0, 1, 1))
+    , texture()
+    , backgroundColor(0.0, 0.0, 0.0, 0.8)
+    , // set background transparency with alpha component of this variable
+    foregroundColor(1.0, 1.0, 1.0)
+    , cmdForegroundColor(0.0, 1.0, 1.0)
+    , splashForegroundColor(1.0, 1.0, 0.0)
+    , command()
+    , commandLine()
+    , inputMessage()
+    , message()
+    , userText()
+    , commandPrompt(">> ")
+    , commandPromptLength(30)
+    , image_loaded()
+    , userTextMaxLength(255)
+    , status(0)
+    , inError(false)
+    , cursorPos(0, 20)
+    , textFont(GLUT_BITMAP_HELVETICA_18)
 {
 }
 
-void Console::setCommandPrompt (const string& inCommandPrompt)
+void Console::setCommandPrompt(const string &inCommandPrompt)
 {
-  commandPrompt = inCommandPrompt;
-  commandPromptLength = glutBitmapLength(textFont, (const unsigned char*)(commandPrompt.c_str()));
+	commandPrompt = inCommandPrompt;
+	commandPromptLength = glutBitmapLength(
+	    textFont, (const unsigned char *)(commandPrompt.c_str()));
 }
 
-void Console::setCommand(const string& text)
+void Console::setCommand(const string &text) { command = text; }
+
+void Console::setCommandLine(const string &text) { commandLine = text; }
+
+void Console::setInputMessage(const string &text) { inputMessage = text; }
+
+void Console::setMessage(const string &text) { message = text; }
+
+void Console::addUserText(const char text)
 {
-  command = text;
+	if (userText.size() < userTextMaxLength)
+		userText += text;
 }
 
-void Console::setCommandLine(const string& text)
+void Console::removeUserText()
 {
-  commandLine = text;
+	if (userText.size())
+		userText.erase(userText.size() - 1);
 }
 
-void Console::setInputMessage(const string& text)
-{
-  inputMessage = text;
-}
+void Console::setUserText(const string &text) { userText = text; }
 
-void Console::setMessage(const string& text)
-{
-  message = text;
-}
+const string Console::getUserText() const { return userText; }
 
-void Console::addUserText (const char text)
-{
-  if (userText.size () < userTextMaxLength)
-    userText += text;
-}
-
-void Console::removeUserText ()
-{
-  if (userText.size ())
-    userText.erase (userText.size () - 1);
-}
-
-void Console::setUserText (const string& text)
-{
-  userText = text;
-}
-
-const string Console::getUserText () const
-{
-  return userText;
-}
-
-const string Console::getCommand () const
-{
-  return command;
-}
+const string Console::getCommand() const { return command; }
 
 void Console::setStatus(unsigned int inStatus)
 {
-  if(status == PROMPT && inStatus != PROMPT)
-  {
-    commandLine = getUserText();
-    setUserText("");
-  }
-  status = inStatus;
+	if (status == PROMPT && inStatus != PROMPT) {
+		commandLine = getUserText();
+		setUserText("");
+	}
+	status = inStatus;
 }
 
-const unsigned int Console::getStatus () const
+const unsigned int Console::getStatus() const { return status; }
+
+void Console::setUserTextMaxLength(unsigned int len)
 {
-  return status;
+	userTextMaxLength = len;
 }
 
-void Console::setUserTextMaxLength (unsigned int len)
+void Console::open()
 {
-  userTextMaxLength = len;
-}
-
-void Console::open ()
-{
-  if(!isActive())
-  {
-    clear();
-    setActive(true);
-    cgutils::redisplay();
-  }
+	if (!isActive()) {
+		clear();
+		setActive(true);
+		cgutils::redisplay();
+	}
 }
 
 void Console::clear()
 {
-  setUserText("");
-  setCommand("");
-  setCommandLine("");
-  setInputMessage("");
-  setMessage("");
-  setUserText("");
-  setStatus(PROMPT);
-  inError = false;
+	setUserText("");
+	setCommand("");
+	setCommandLine("");
+	setInputMessage("");
+	setMessage("");
+	setUserText("");
+	setStatus(PROMPT);
+	inError = false;
 }
 
 bool Console::acceptUserInput()
 {
-  return (status == INPUT || status == PROMPT) ? true : false;
+	return (status == INPUT || status == PROMPT) ? true : false;
 }
 
-void Console::openWithCommand(const string& inCmd, const string& inMessage, const string& defUserText)
+void Console::openWithCommand(const string &inCmd, const string &inMessage,
+                              const string &defUserText)
 {
-  if(!isActive())
-  {
-    clear();
-    setStatus(INPUT);
-    setCommand(inCmd);
-    setCommandLine(inCmd);
-    setInputMessage(inMessage);
-    setUserText(defUserText);
-    setActive(true);
-    cgutils::redisplay();
-  }
+	if (!isActive()) {
+		clear();
+		setStatus(INPUT);
+		setCommand(inCmd);
+		setCommandLine(inCmd);
+		setInputMessage(inMessage);
+		setUserText(defUserText);
+		setActive(true);
+		cgutils::redisplay();
+	}
 }
 
 void Console::retryCommand()
 {
-    setStatus(INPUT);
-    cgutils::redisplay();
+	setStatus(INPUT);
+	cgutils::redisplay();
 }
 
-void Console::printMessage(const string& msg)
+void Console::printMessage(const string &msg)
 {
-  setMessage(msg);
-  setStatus(getStatus() == INPUT ? INPUT_MESSAGE : MESSAGE);
+	setMessage(msg);
+	setStatus(getStatus() == INPUT ? INPUT_MESSAGE : MESSAGE);
 }
 
-void Console::close ()
+void Console::close()
 {
-  if(isActive())
-  {
-    setActive(false);
-    cgutils::redisplay();
-  }
+	if (isActive()) {
+		setActive(false);
+		cgutils::redisplay();
+	}
 }
 
 // background color setter
-void Console::setBackgroundColor (Animorph::Color c)
-{
-  backgroundColor = c;
-}
+void Console::setBackgroundColor(Animorph::Color c) { backgroundColor = c; }
 
 // foreground color setter
-void Console::setForegroundColor (Animorph::Color c)
-{
-  foregroundColor = c;
-}
+void Console::setForegroundColor(Animorph::Color c) { foregroundColor = c; }
 
 // command foreground color setter
-void Console::setCmdForegroundColor (Animorph::Color c)
+void Console::setCmdForegroundColor(Animorph::Color c)
 {
-  cmdForegroundColor = c;
+	cmdForegroundColor = c;
 }
 
 // splash foreground color setter
-void Console::setSplashForegroundColor (Animorph::Color c)
+void Console::setSplashForegroundColor(Animorph::Color c)
 {
-  splashForegroundColor = c;
+	splashForegroundColor = c;
 }
 
-
-void Console::loadPNG (const string& filename)
+void Console::loadPNG(const string &filename)
 {
-  if (filename.empty())
-    return;
+	if (filename.empty())
+		return;
 
-  image_loaded = true;
-  //cout << "load: " << filename << endl;
+	image_loaded = true;
+	// cout << "load: " << filename << endl;
 
-  // read the PNG file using pngLoad
-  // raw data from PNG file is in image buffer
+	// read the PNG file using pngLoad
+	// raw data from PNG file is in image buffer
 
-  if (texture.load(filename) == false)
-  {
-    cerr << "(pngLoad) %s FAILED" << filename << endl;
-  }
+	if (texture.load(filename) == false) {
+		cerr << "(pngLoad) %s FAILED" << filename << endl;
+	}
 }
 
-bool Console::isMouseDragged (const Point& inMousePos)
+bool Console::isMouseDragged(const Point &inMousePos) { return false; }
+
+// Check if mouse over, and use the listener mouseover function
+bool Console::isMouseOver(const Point &inMousePos) { return false; }
+
+// Check if mouse click, and use the listener mousepressed or mousereleased
+// function
+bool Console::isMouseClick(const Point &inMousePos, int button, int state)
 {
-  return false;
+	return false;
 }
 
-//Check if mouse over, and use the listener mouseover function
-bool Console::isMouseOver (const Point& inMousePos)
+void Console::show() { setVisible(true); }
+
+void Console::hide() { setVisible(false); }
+
+const Texture &Console::getTextures() { return texture; };
+
+void Console::drawOverlay() {}
+
+void Console::addSplashLine(const string &line)
 {
-  return false;
+	if (splashLines.size() >= MAX_SPLASH_LINES) {
+		cerr << "splahs lines limit (" << MAX_SPLASH_LINES << ") exceeded" << endl;
+	} else {
+		splashLines.push_back(line);
+	}
 }
 
-//Check if mouse click, and use the listener mousepressed or mousereleased function
-bool Console::isMouseClick (const Point& inMousePos, int button, int state)
+void Console::inputMode(const string &inputMessage, const string &defaultText)
 {
-  return false;
+	setStatus(Console::INPUT);
+	setInputMessage(inputMessage);
+	setUserText(defaultText);
 }
 
-void Console::show ()
-{
-  setVisible(true);
-}
-
-void Console::hide ()
-{
-  setVisible(false);
-}
-
-const Texture& Console::getTextures ()
-{
-  return texture;
-};
-
-void Console::drawOverlay ()
-{
-
-}
-
-void Console::addSplashLine(const string& line)
-{
-  if(splashLines.size() >= MAX_SPLASH_LINES)
-  {
-    cerr << "splahs lines limit (" << MAX_SPLASH_LINES << ") exceeded" << endl;
-  }
-  else
-  {
-    splashLines.push_back(line);
-  }
-}
-
-void Console::inputMode(const string& inputMessage, const string& defaultText)
-{
-  setStatus(Console::INPUT);
-  setInputMessage(inputMessage);
-  setUserText(defaultText);
-}
-
-void Console::clearSplash()
-{
-  splashLines.clear();
-}
+void Console::clearSplash() { splashLines.clear(); }
 
 void Console::drawSplashInfo()
 {
-  for (list<string>::const_iterator sl_it = splashLines.begin ();
-         sl_it != splashLines.end ();
-         sl_it++)
-  {
-    cgutils::drawString (cursorPos, textFont, *sl_it, splashForegroundColor);
-    cursorPos.moveBy(Point(0, LINE_SPACE));
-  }
+	for (list<string>::const_iterator sl_it = splashLines.begin();
+	     sl_it != splashLines.end(); sl_it++) {
+		cgutils::drawString(cursorPos, textFont, *sl_it, splashForegroundColor);
+		cursorPos.moveBy(Point(0, LINE_SPACE));
+	}
 }
 
 void Console::drawPrompt()
 {
-  cgutils::drawString(cursorPos, textFont, commandPrompt, cmdForegroundColor);
-  cursorPos.moveBy(Point(commandPromptLength, 0));
+	cgutils::drawString(cursorPos, textFont, commandPrompt, cmdForegroundColor);
+	cursorPos.moveBy(Point(commandPromptLength, 0));
 
-  cgutils::drawMultiLineString(cursorPos, textFont, userText, foregroundColor, getSize().getWidth() - commandPromptLength, LINE_SPACE);
-  cursorPos.moveBy(Point(-commandPromptLength, LINE_SPACE));
+	cgutils::drawMultiLineString(cursorPos, textFont, userText, foregroundColor,
+	                             getSize().getWidth() - commandPromptLength,
+	                             LINE_SPACE);
+	cursorPos.moveBy(Point(-commandPromptLength, LINE_SPACE));
 }
 
 void Console::drawCommandLine()
 {
-  cgutils::drawString(cursorPos, textFont, commandPrompt, cmdForegroundColor);
-  cursorPos.moveBy(Point(commandPromptLength, 0));
-  cgutils::drawString(cursorPos, textFont, commandLine, foregroundColor);
-  cursorPos.moveBy(Point(-commandPromptLength, LINE_SPACE));
+	cgutils::drawString(cursorPos, textFont, commandPrompt, cmdForegroundColor);
+	cursorPos.moveBy(Point(commandPromptLength, 0));
+	cgutils::drawString(cursorPos, textFont, commandLine, foregroundColor);
+	cursorPos.moveBy(Point(-commandPromptLength, LINE_SPACE));
 }
 
 void Console::drawInputMessage()
 {
-  cgutils::drawString(cursorPos, textFont, inputMessage, cmdForegroundColor);
-  cursorPos.moveBy(Point(0, LINE_SPACE));
+	cgutils::drawString(cursorPos, textFont, inputMessage, cmdForegroundColor);
+	cursorPos.moveBy(Point(0, LINE_SPACE));
 }
 
 void Console::drawMessage()
 {
-  cgutils::drawString(cursorPos, textFont, message, cmdForegroundColor);
-  cursorPos.moveBy(Point(0, LINE_SPACE));
+	cgutils::drawString(cursorPos, textFont, message, cmdForegroundColor);
+	cursorPos.moveBy(Point(0, LINE_SPACE));
 }
 
-//draw function
-void Console::draw ()
+// draw function
+void Console::draw()
 {
-  if (isVisible())
-  {
-    cursorPos = Point(0, 20);
+	if (isVisible()) {
+		cursorPos = Point(0, 20);
 
-    cgutils::enableBlend ();
-    if (image_loaded != 0)
-    {
-      cgutils::drawSquareFillTexture (getRect(), backgroundColor.alpha (), texture);
-    }
-    else
-    {
-      cgutils::drawSquareFill (getRect(), backgroundColor);
-    }
-    cgutils::disableBlend ();
+		cgutils::enableBlend();
+		if (image_loaded != 0) {
+			cgutils::drawSquareFillTexture(getRect(), backgroundColor.alpha(),
+			                               texture);
+		} else {
+			cgutils::drawSquareFill(getRect(), backgroundColor);
+		}
+		cgutils::disableBlend();
 
-    drawSplashInfo();
+		drawSplashInfo();
 
-    switch(status)
-    {
-      case PROMPT:
-           drawPrompt();
-           break;
-      case INPUT:
-           drawCommandLine();
-           drawInputMessage();
-           drawPrompt();
-           break;
-      case MESSAGE:
-           drawCommandLine();
-           drawMessage();
-           break;
-      case INPUT_MESSAGE:
-           drawCommandLine();
-           drawInputMessage();
-           drawPrompt();
-           drawMessage();
-           break;
-    }
-  }
+		switch (status) {
+		case PROMPT:
+			drawPrompt();
+			break;
+		case INPUT:
+			drawCommandLine();
+			drawInputMessage();
+			drawPrompt();
+			break;
+		case MESSAGE:
+			drawCommandLine();
+			drawMessage();
+			break;
+		case INPUT_MESSAGE:
+			drawCommandLine();
+			drawInputMessage();
+			drawPrompt();
+			drawMessage();
+			break;
+		}
+	}
 }
 
 } // namespace mhgui
-

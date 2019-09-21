@@ -25,136 +25,123 @@
  *
  */
 
-#include "gui/Rect.h"
 #include "gui/ImageSlider.h"
 #include "gui/CGUtilities.h"
+#include "gui/Rect.h"
 
-#include "gui/ImageSliderSysListener.h"
 #include "gui/GLUTWrapper.h"
+#include "gui/ImageSliderSysListener.h"
 
 #include <iostream>
 
 using namespace std;
 using namespace Animorph;
 
-namespace mhgui {
-
-ImageSlider::ImageSlider (uint32_t      inImageID,
-                          const std::string& inSliderImageFilename,
-                          const Rect&   inGeometry,
-                          float         inMinValue,
-                          float         inMaxValue)
-    : Image (inImageID, inSliderImageFilename, inGeometry),
-    minValue((inMinValue < inMaxValue) ? inMinValue : 0.0),
-    maxValue((inMinValue < inMaxValue) ? inMaxValue : 1.0),
-    sliderValue(minValue),
-    valueStep(0.01),
-    oldMouseX(0),
-    overlayMultiplier(2),
-    imageSliderSysListener(new ImageSliderSysListener())
+namespace mhgui
 {
-  setSysListener(imageSliderSysListener);
+
+ImageSlider::ImageSlider(uint32_t inImageID,
+                         const std::string &inSliderImageFilename,
+                         const Rect &inGeometry, float inMinValue,
+                         float inMaxValue)
+    : Image(inImageID, inSliderImageFilename, inGeometry)
+    , minValue((inMinValue < inMaxValue) ? inMinValue : 0.0)
+    , maxValue((inMinValue < inMaxValue) ? inMaxValue : 1.0)
+    , sliderValue(minValue)
+    , valueStep(0.01)
+    , oldMouseX(0)
+    , overlayMultiplier(2)
+    , imageSliderSysListener(new ImageSliderSysListener())
+{
+	setSysListener(imageSliderSysListener);
 }
 
-ImageSlider::~ImageSlider()
+ImageSlider::~ImageSlider() { delete imageSliderSysListener; }
+
+void ImageSlider::draw()
 {
-  delete imageSliderSysListener;
+	if (isVisible()) {
+		char sValue[8];
+		int valueLength;
+		Color c;
+
+		snprintf(sValue, sizeof(sValue), "%1.2f", sliderValue);
+		valueLength = cgutils::getFontLength(GLUT_BITMAP_HELVETICA_10, sValue);
+
+		cgutils::enableBlend();
+
+		Rect rect(getAbsoluteRect());
+		rect.resizeBy(Size(0, -10));
+
+		if (lazyLoadTexture()) {
+			cgutils::drawSquareFillTexture(rect, getAlpha(), getTextures());
+		}
+
+		cgutils::disableBlend();
+
+		if (sliderValue == 0) {
+			c.rgb(1, 1, 1);
+		} else {
+			c.rgb(1, 0, 0);
+		}
+
+		Point textPos(getAbsolutePosition().getX() +
+		                  (getSize().getWidth() - valueLength) / 2,
+		              getAbsolutePosition().getY() + getSize().getHeight());
+
+		cgutils::drawString(textPos, GLUT_BITMAP_HELVETICA_10, sValue, c);
+	}
 }
 
-void ImageSlider::draw ()
+void ImageSlider::drawOverlay()
 {
-  if (isVisible())
-  {
-    char sValue[8];
-    int valueLength;
-    Color c;
+	if (isVisible()) {
+		cgutils::enableBlend();
+		if (isLastMouseOver()) {
+			Rect rect(getAbsolutePosition().getX() -
+			              ((overlayMultiplier - 1) * getSize().getWidth()) / 2,
+			          getAbsolutePosition().getY() -
+			              ((overlayMultiplier - 1) * (getSize().getHeight() - 10)),
+			          getSize().getWidth() * overlayMultiplier,
+			          (getSize().getHeight() - 10) * overlayMultiplier);
 
-    snprintf(sValue, sizeof(sValue), "%1.2f",sliderValue);
-    valueLength = cgutils::getFontLength(GLUT_BITMAP_HELVETICA_10, sValue);
+			// TODO: do background color configurable!
+			cgutils::drawSquareFill(rect, Color(0.0, 0.3, 0.8, 0.5));
 
-    cgutils::enableBlend ();
-
-    Rect rect(getAbsoluteRect());
-    rect.resizeBy(Size(0, -10));
-
-    if (lazyLoadTexture())
-    {
-      cgutils::drawSquareFillTexture (rect, getAlpha(), getTextures());
-    }
-
-    cgutils::disableBlend ();
-
-    if (sliderValue == 0)
-    {
-      c.rgb (1, 1, 1);
-    }
-    else
-    {
-      c.rgb (1, 0, 0);
-    }
-
-    Point textPos(getAbsolutePosition().getX() + (getSize().getWidth() - valueLength) / 2,
-                  getAbsolutePosition().getY() + getSize().getHeight());
-
-    cgutils::drawString (textPos, GLUT_BITMAP_HELVETICA_10, sValue, c);
-  }
+			if (lazyLoadTexture(true)) {
+				cgutils::drawSquareFillTexture(rect, getAlpha(), getTexturesOver());
+			}
+		}
+		cgutils::disableBlend();
+	}
 }
 
-void ImageSlider::drawOverlay ()
+float ImageSlider::getSliderValue() { return sliderValue; }
+
+void ImageSlider::setSliderValue(float newValue)
 {
-  if (isVisible())
-  {
-    cgutils::enableBlend ();
-    if (isLastMouseOver())
-    {
-      Rect rect(getAbsolutePosition().getX() - ((overlayMultiplier - 1) * getSize().getWidth()) / 2,
-                getAbsolutePosition().getY() - ((overlayMultiplier - 1) * (getSize().getHeight() - 10)),
-                getSize().getWidth() * overlayMultiplier,
-                (getSize().getHeight() - 10) * overlayMultiplier);
-
-      // TODO: do background color configurable!
-      cgutils::drawSquareFill (rect, Color (0.0, 0.3, 0.8, 0.5));
-
-      if (lazyLoadTexture(true))
-      {
-        cgutils::drawSquareFillTexture (rect, getAlpha(), getTexturesOver());
-      }
-    }
-    cgutils::disableBlend ();
-  }
+	if (newValue < valueStep && newValue > -valueStep)
+		newValue = 0;
+	if (newValue < minValue)
+		sliderValue = minValue;
+	else if (newValue > maxValue)
+		sliderValue = maxValue;
+	else
+		sliderValue = newValue;
 }
 
-float ImageSlider::getSliderValue ()
+void ImageSlider::setOldMouseX(int mouseX) { oldMouseX = mouseX; }
+
+int ImageSlider::getOldMouseX() { return oldMouseX; }
+
+void ImageSlider::decreaseValue(int n)
 {
-  return sliderValue;
+	setSliderValue(sliderValue - (n * valueStep));
 }
 
-void ImageSlider::setSliderValue (float newValue)
+void ImageSlider::increaseValue(int n)
 {
-  if(newValue < valueStep && newValue > -valueStep) newValue = 0;
-  if(newValue < minValue) sliderValue = minValue;
-  else if(newValue > maxValue) sliderValue = maxValue;
-  else sliderValue = newValue;
-}
-
-void ImageSlider::setOldMouseX (int mouseX)
-{
-  oldMouseX = mouseX;
-}
-
-int ImageSlider::getOldMouseX ()
-{
-  return oldMouseX;
-}
-
-void ImageSlider::decreaseValue (int n)
-{
-  setSliderValue(sliderValue - (n * valueStep));
-}
-
-void ImageSlider::increaseValue (int n)
-{
-  setSliderValue(sliderValue + (n * valueStep));
+	setSliderValue(sliderValue + (n * valueStep));
 }
 
 } // namespace mhgui

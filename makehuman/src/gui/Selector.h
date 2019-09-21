@@ -29,23 +29,24 @@
 #define SELECTOR_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include "animorph/Color.h"
 #include "Point.h"
-#include "Widget.h"
 #include "Texture.h"
+#include "Widget.h"
+#include "animorph/Color.h"
+#include <string>
 
 #define CURSOR_SIZE 6
-#define HALF_CURSOR_SIZE CURSOR_SIZE/2
+#define HALF_CURSOR_SIZE CURSOR_SIZE / 2
 
 using Animorph::Color;
 
 using std::string;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Tooltip;
 class SelectorSysListener;
@@ -56,91 +57,90 @@ class SelectorSysListener;
 /* ========================================================================== */
 class Selector : public Widget
 {
-  //Textures
+	// Textures
 public:
-  Texture           texture;
-  Texture           textureDisabled;
+	Texture texture;
+	Texture textureDisabled;
 
-  string            imageFilename;
-  string            imageFilenameDisabled;
+	string imageFilename;
+	string imageFilenameDisabled;
 
-  bool              textureIsInited; // used by lazyLoadTexture
-  bool              textureDisabledIsInited;
+	bool textureIsInited; // used by lazyLoadTexture
+	bool textureDisabledIsInited;
 
-  bool              textureCursorIsInited;
+	bool textureCursorIsInited;
 
-  SelectorSysListener *selectorSysListener;
-  float             alpha;
+	SelectorSysListener *selectorSysListener;
+	float alpha;
 
-  bool enabled;
-  bool showLines;
+	bool enabled;
+	bool showLines;
 
-  Point cursorPos;
+	Point cursorPos;
 
-  int rows;
-  int cols;
+	int rows;
+	int cols;
 
-  float maxValue;
-  float cellRatio;
+	float maxValue;
+	float cellRatio;
 
-  vector<Point> points; // from left-bottom point to right-up point
-  vector<string> labels; // from left-bottom point to right-up point
+	vector<Point> points;  // from left-bottom point to right-up point
+	vector<string> labels; // from left-bottom point to right-up point
 
-  Color linesColor;
-  Color backgroundColor;
-  Color cursorColor;
+	Color linesColor;
+	Color backgroundColor;
+	Color cursorColor;
 
-  Texture cursorTexture;
-  string  cursorFilename;
+	Texture cursorTexture;
+	string cursorFilename;
 
-  // intentionally not implemented
-  Selector           (const Selector&);
-  Selector& operator=(const Selector&);
+	// intentionally not implemented
+	Selector(const Selector &);
+	Selector &operator=(const Selector &);
 
 public:
-  Selector (uint32_t inId, const string& inFilename, const Rect& inGeometry);
-  virtual ~Selector();
+	Selector(uint32_t inId, const string &inFilename, const Rect &inGeometry);
+	virtual ~Selector();
 
-  void  setAlpha (float);
-  float getAlpha() const {return alpha;}
+	void setAlpha(float);
+	float getAlpha() const { return alpha; }
 
-  void setEnabled(bool inEnabled) {enabled = inEnabled;}
-  bool isEnabled() {return enabled;}
+	void setEnabled(bool inEnabled) { enabled = inEnabled; }
+	bool isEnabled() { return enabled; }
 
-  void setShowLines(bool inShowLines) {showLines = inShowLines;}
+	void setShowLines(bool inShowLines) { showLines = inShowLines; }
 
-  void setCursorPos(const Point &inCursorPos) {cursorPos = inCursorPos;}
-  const Point &getCursorPos() const {return cursorPos;}
+	void setCursorPos(const Point &inCursorPos) { cursorPos = inCursorPos; }
+	const Point &getCursorPos() const { return cursorPos; }
 
-  void setCursorPosFromMousePoint (const Point &inMousePoint);
+	void setCursorPosFromMousePoint(const Point &inMousePoint);
 
-  vector<float> getDists ();
-  void setDisabledTexture(const string& inFilename);
+	vector<float> getDists();
+	void setDisabledTexture(const string &inFilename);
 
-  const Texture& getTextures (); //return the textureID
+	const Texture &getTextures(); // return the textureID
 
-  void setPoints (int inRows, int inCols);
+	void setPoints(int inRows, int inCols);
 
-  void setCursorColor (const Color &inColor) {cursorColor = inColor;}
-  void setBackgroundColor (const Color &inColor) {backgroundColor = inColor;}
-  void setLinesColor (const Color &inColor) {linesColor = inColor;}
-  void setCursorTexture (const string& inFilename);
-  void setLabels (const vector<string>& inLabels) {labels = inLabels;}
-  vector<string> getLabels () {return labels;}
+	void setCursorColor(const Color &inColor) { cursorColor = inColor; }
+	void setBackgroundColor(const Color &inColor) { backgroundColor = inColor; }
+	void setLinesColor(const Color &inColor) { linesColor = inColor; }
+	void setCursorTexture(const string &inFilename);
+	void setLabels(const vector<string> &inLabels) { labels = inLabels; }
+	vector<string> getLabels() { return labels; }
 
+	const Texture &getCursorTextures(); // return the cursor textureID
 
-  const Texture& getCursorTextures (); //return the cursor textureID
-
-  virtual void show ();
-  virtual void hide ();
-  virtual void draw ();
-  virtual void drawOverlay ();
+	virtual void show();
+	virtual void hide();
+	virtual void draw();
+	virtual void drawOverlay();
 
 protected:
-  bool lazyLoadTexture ();
-  bool lazyLoadCursorTexture();
+	bool lazyLoadTexture();
+	bool lazyLoadCursorTexture();
 };
 
 } // namespace mhgui
 
-#endif //SELECTOR_H
+#endif // SELECTOR_H

@@ -29,39 +29,37 @@
 #define TARGETSLIDER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
 #include <gui/ImageSlider.h>
+#include <iostream>
 
-using std::string;
 using std::cerr;
 using std::endl;
+using std::string;
 
 using namespace mhgui;
 
 class TargetSlider : public ImageSlider
 {
 private:
-  string targetName;
+	string targetName;
 
 public:
-  TargetSlider (uint32_t      inImageID,
-               const string& inSliderImageFilename,
-	             const string& inTargetName,
-               const Rect&   inGeometry,
-               float         inMinValue,
-               float         inMaxValue) :
-  ImageSlider (inImageID, inSliderImageFilename,
-               inGeometry, inMinValue, inMaxValue),
-  targetName (inTargetName)
-  {}
+	TargetSlider(uint32_t inImageID, const string &inSliderImageFilename,
+	             const string &inTargetName, const Rect &inGeometry,
+	             float inMinValue, float inMaxValue)
+	    : ImageSlider(inImageID, inSliderImageFilename, inGeometry, inMinValue,
+	                  inMaxValue)
+	    , targetName(inTargetName)
+	{
+	}
 
-  virtual ~TargetSlider () {}
+	virtual ~TargetSlider() {}
 
-  void setTargetName (const string& name) {targetName = name;}
-  string getTargetName () {return targetName;}
+	void setTargetName(const string &name) { targetName = name; }
+	string getTargetName() { return targetName; }
 };
 
 #endif // TARGETSLIDER_H

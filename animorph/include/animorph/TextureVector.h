@@ -30,35 +30,36 @@
 #define TEXTUREVECTOR_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
-#include <iostream>
 #include <fstream>
-#include <vector>
+#include <iostream>
 #include <string>
+#include <vector>
 
 #include "FileReader.h"
 #include "Vector2.h"
 
+using std::ifstream;
 using std::string;
 using std::vector;
-using std::ifstream;
 
-namespace Animorph {
+namespace Animorph
+{
 
-typedef std::vector <Vector2f> TextureFace;
+typedef std::vector<Vector2f> TextureFace;
 
 /*! \brief Loadble vector of TextureFace
  */
-class TextureVector : public vector <TextureFace>
+class TextureVector : public vector<TextureFace>
 {
 private:
-  void fromUVStream (ifstream &in_stream);
+	void fromUVStream(ifstream &in_stream);
 
 public:
-  bool load (const string& filename);
+	bool load(const string &filename);
 };
 
-}
+} // namespace Animorph
 
-#endif	// TEXTUREVECTOR_H
+#endif // TEXTUREVECTOR_H

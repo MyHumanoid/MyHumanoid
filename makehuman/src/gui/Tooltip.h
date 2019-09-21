@@ -29,17 +29,18 @@
 #define TOOLTIP_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include <animorph/Color.h>
 #include "Point.h"
+#include <animorph/Color.h>
+#include <string>
 
-using std::string;
 using Animorph::Color;
+using std::string;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class Panel;
 
@@ -51,28 +52,25 @@ class Tooltip
 {
 
 public:
-     Tooltip(const string&  inTooltipString,
-             const Point&   inPos,
-             const Color&   inColor,
-             const Panel   *inAnchor = NULL);
+	Tooltip(const string &inTooltipString, const Point &inPos,
+	        const Color &inColor, const Panel *inAnchor = NULL);
 
-     Tooltip(const string&  inTooltipString,
-             const Point&   inPos,
-             const Panel   *inAnchor = NULL);
+	Tooltip(const string &inTooltipString, const Point &inPos,
+	        const Panel *inAnchor = NULL);
 
-     Tooltip(const Tooltip&  inTooltip);
+	Tooltip(const Tooltip &inTooltip);
 
-    ~Tooltip() {}
+	~Tooltip() {}
 
-     Tooltip& operator=(const Tooltip&  inTooltip);
+	Tooltip &operator=(const Tooltip &inTooltip);
 
-    void draw() const;
+	void draw() const;
 
 private:
-    string       label;
-    Point        pos;
-    Color        color;
-    const Panel *anchorPanel;
+	string label;
+	Point pos;
+	Color color;
+	const Panel *anchorPanel;
 }; // class Tooltip
 
 } // namespace mhgui

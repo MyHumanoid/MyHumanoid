@@ -28,64 +28,64 @@
 #ifndef MULTIPANEL_H
 #define MULTIPANEL_H 1
 
-#include "Panel.h"
 #include "Image.h"
+#include "Panel.h"
 
-#include <list>
-#include <cassert>
-#include <animorph/Color.h>
 #include "Window.h"
+#include <animorph/Color.h>
+#include <cassert>
+#include <list>
 
 using std::vector;
 
-namespace mhgui {
+namespace mhgui
+{
 
 class MultiPanel : public Panel
 {
 protected:
-  vector <Panel*> panelList;
-  Window  *parentWindow;
-  int numPages;
-  Image  *nextPage;
-  Image  *prevPage;
-  void checkControlsVisibility();
+	vector<Panel *> panelList;
+	Window *parentWindow;
+	int numPages;
+	Image *nextPage;
+	Image *prevPage;
+	void checkControlsVisibility();
 
 public:
-  MultiPanel (uint32_t    inMultiPanelId,
-              const Rect& inGeometry);
-  virtual ~MultiPanel ();
+	MultiPanel(uint32_t inMultiPanelId, const Rect &inGeometry);
+	virtual ~MultiPanel();
 
-  virtual void draw ();
+	virtual void draw();
 
-  bool addPanel    (Panel *p);
-  void removePanel (Panel *p);
+	bool addPanel(Panel *p);
+	void removePanel(Panel *p);
 
-  bool hasNextPage();
-  bool hasPrevPage();
+	bool hasNextPage();
+	bool hasPrevPage();
 
-  void pageNext();
-  void pageBack();
+	void pageNext();
+	void pageBack();
 
-  typedef vector<Panel*>::iterator PanelIterator;
+	typedef vector<Panel *>::iterator PanelIterator;
 
-  PanelIterator begin() {return panelList.begin();}
-  PanelIterator end()   {return panelList.end();}
+	PanelIterator begin() { return panelList.begin(); }
+	PanelIterator end() { return panelList.end(); }
 
-  virtual bool isMouseOverWidgets (const Point& inMousePos);
-  virtual bool isMouseClickWidgets   (const Point& inMousePos, int button, int state);
-  virtual bool isMouseDraggedWidgets (const Point& inMousePos);
-  virtual bool isKeyTypeWidgets      (unsigned char key);
+	virtual bool isMouseOverWidgets(const Point &inMousePos);
+	virtual bool isMouseClickWidgets(const Point &inMousePos, int button,
+	                                 int state);
+	virtual bool isMouseDraggedWidgets(const Point &inMousePos);
+	virtual bool isKeyTypeWidgets(unsigned char key);
 
-  virtual void calcWidgetPosition ();
+	virtual void calcWidgetPosition();
 
 private: // intentionally not implemeted
-  MultiPanel(const MultiPanel&);
-  MultiPanel& operator=(const MultiPanel&);
+	MultiPanel(const MultiPanel &);
+	MultiPanel &operator=(const MultiPanel &);
 
-  int currentPage;
-
+	int currentPage;
 };
 
 } // namespace mhgui
 
-#endif //MULTIPANEL_H
+#endif // MULTIPANEL_H

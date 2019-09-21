@@ -30,63 +30,57 @@
 #define UTIL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include <sstream>
-#include <iomanip>
-#include <vector>
-#include <iostream>
 #include "Vector3.h"
 #include "Vertex.h"
 #include "VertexVector.h"
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 /// some system specific defines
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-#  define PATH_SEPARATOR string("\\")
+#define PATH_SEPARATOR string("\\")
 #else
-#  define PATH_SEPARATOR string("/")
+#define PATH_SEPARATOR string("/")
 #endif
 
 using std::string;
 using std::vector;
 
-namespace Animorph {
-
-enum RotateAxis
+namespace Animorph
 {
-  X_AXIS,
-  Y_AXIS,
-  Z_AXIS
-};
+
+enum RotateAxis { X_AXIS, Y_AXIS, Z_AXIS };
 
 // delete all following 'characters' in 'str'
-void UtilStringDelFollow (std::string &str, const std::string &characters);
+void UtilStringDelFollow(std::string &str, const std::string &characters);
 
 // delete all leading 'characters' in 'str'
-void UtilStringDelLead (std::string &str, const std::string &characters);
+void UtilStringDelLead(std::string &str, const std::string &characters);
 
 // delete all surrounding 'characters' in 'str'
-void UtilStringDelSurround (std::string &str, const std::string &characters);
+void UtilStringDelSurround(std::string &str, const std::string &characters);
 
 // some functions that are very usefull for writing files
-bool hasFileEnding (const std::string &filename, const std::string &ending);
-std::string cutFileEnding (std::string filename, const std::string &ending = "");
+bool hasFileEnding(const std::string &filename, const std::string &ending);
+std::string cutFileEnding(std::string filename, const std::string &ending = "");
 
 // some generic template functions for delete algorithms
-template <typename T>
-void delete_one (T *t)
+template <typename T> void delete_one(T *t)
 {
-  delete t;
-  t = NULL;
+	delete t;
+	t = NULL;
 }
 
-template <typename T>
-void delete_array (T *t)
+template <typename T> void delete_array(T *t)
 {
-  delete [] t;
-  t = NULL;
+	delete[] t;
+	t = NULL;
 }
 
 // '<<' operator for vector class
@@ -106,90 +100,81 @@ std::ostream &operator << (std::ostream &s, std::vector<T> iv)
 }*/
 
 /// print Vector on std::cout
-template <typename T>
-void printVector (std::vector<T> iv)
+template <typename T> void printVector(std::vector<T> iv)
 {
-  std::cout << "[";
-  for (unsigned i = 0; i < iv.size (); i++)
-  {
-    std::cout << iv[i];
-    if (i < iv.size ()-1)
-      std::cout << ",";
-  }
-  std::cout << "]" << std::endl;
+	std::cout << "[";
+	for (unsigned i = 0; i < iv.size(); i++) {
+		std::cout << iv[i];
+		if (i < iv.size() - 1)
+			std::cout << ",";
+	}
+	std::cout << "]" << std::endl;
 }
 
 /// create std::string from any number
-template <typename T>
-std::string toString (const T &thing, int w = 0, int p = 0)
+template <typename T> std::string toString(const T &thing, int w = 0, int p = 0)
 {
-  std::ostringstream os;
-  os << std::setw(w) << std::setprecision(p) << thing;
-  return os.str();
-
+	std::ostringstream os;
+	os << std::setw(w) << std::setprecision(p) << thing;
+	return os.str();
 }
 
 /// line - to extract tokens from
 /// seperator - token separator characters
 /// result - sequential string container
 template <typename T>
-void StringToken (const std::string& line, const std::string &separator, T& result)
+void StringToken(const std::string &line, const std::string &separator,
+                 T &result)
 {
-  std::string::size_type start = line.find_first_not_of(separator);
-  if (std::string::npos == start) return;  // nothing found
+	std::string::size_type start = line.find_first_not_of(separator);
+	if (std::string::npos == start)
+		return; // nothing found
 
-  do
-  {
-    std::string::size_type end = line.find_first_of(separator,start);
-    if (std::string::npos == end)
-    {
-      result.push_back(line.substr(start));
-      start = std::string::npos;       // finish loop
-    }
-    else
-    {
-      result.push_back(line.substr(start, end - start));
-      start = line.find_first_not_of(separator, end);
-    }
-  } while (std::string::npos != start);
-
+	do {
+		std::string::size_type end = line.find_first_of(separator, start);
+		if (std::string::npos == end) {
+			result.push_back(line.substr(start));
+			start = std::string::npos; // finish loop
+		} else {
+			result.push_back(line.substr(start, end - start));
+			start = line.find_first_not_of(separator, end);
+		}
+	} while (std::string::npos != start);
 }
-
 
 template <typename T>
-void stringTokeni(const string& line, const std::string& separator, T& result)
+void stringTokeni(const string &line, const std::string &separator, T &result)
 {
-  std::string::size_type start = line.find_first_not_of(separator);
-  if (std::string::npos == start) return;  // nothing found
+	std::string::size_type start = line.find_first_not_of(separator);
+	if (std::string::npos == start)
+		return; // nothing found
 
-  do
-  {
-    std::string::size_type end = line.find_first_of(separator,start);
-    if (std::string::npos == end)
-    {
-      result.push_back(std::atoi(line.substr(start).c_str()));
-      start = std::string::npos;       // finish loop
-    }
-    else
-    {
-      result.push_back(std::atoi(line.substr(start, end - start).c_str()));
-      start = line.find_first_not_of(separator, end);
-    }
-  } while (std::string::npos != start);
+	do {
+		std::string::size_type end = line.find_first_of(separator, start);
+		if (std::string::npos == end) {
+			result.push_back(std::atoi(line.substr(start).c_str()));
+			start = std::string::npos; // finish loop
+		} else {
+			result.push_back(std::atoi(line.substr(start, end - start).c_str()));
+			start = line.find_first_not_of(separator, end);
+		}
+	} while (std::string::npos != start);
 }
 
-int replaceString (const string& match, const string& replace, string& str, unsigned int maxReplace = 0);
+int replaceString(const string &match, const string &replace, string &str,
+                  unsigned int maxReplace = 0);
 
 /*! \brief Returns the location of the center of gravity
  * \param vertexNumbers a vector of indices into vertexvector
- * \param vertexvector a vector of vertices, from which only the ones indicated by vertexNumbers are used
- * \return location of the center of gravity
+ * \param vertexvector a vector of vertices, from which only the ones indicated
+ * by vertexNumbers are used \return location of the center of gravity
  */
-Vector3f calcCenteroid(const vector<int>& vertexNumbers, const VertexVector& vertexvector);
+Vector3f calcCenteroid(const vector<int> &vertexNumbers,
+                       const VertexVector &vertexvector);
 
-Vector3f calcAverageNormalLength(const vector<int> vertexNumbers, const VertexVector& vertexvector);
+Vector3f calcAverageNormalLength(const vector<int> vertexNumbers,
+                                 const VertexVector &vertexvector);
 
-} // end namespace
+} // namespace Animorph
 
-
-#endif	// UTIL_H
+#endif // UTIL_H

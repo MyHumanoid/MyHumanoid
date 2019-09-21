@@ -30,251 +30,238 @@
 #include "Global.h"
 #include <gui/Selector.h>
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 
 using namespace Animorph;
 using namespace std;
 
 SelectorListener::SelectorListener()
-    : AbstractListener(),
-      ageLabels(),
-      muscleSizeLabels(),
-      breastLabels(),
-      shapeLabels(),
-      oldPos(0, 0)
+    : AbstractListener()
+    , ageLabels()
+    , muscleSizeLabels()
+    , breastLabels()
+    , shapeLabels()
+    , oldPos(0, 0)
 {
-  ageLabels.push_back("female_10");
-  ageLabels.push_back("female_30");
-  ageLabels.push_back("female_50");
-  ageLabels.push_back("female_70");
-  ageLabels.push_back("female_90");
-  ageLabels.push_back("male_10");
-  ageLabels.push_back("male_30");
-  ageLabels.push_back("male_50");
-  ageLabels.push_back("male_70");
-  ageLabels.push_back("male_90");
+	ageLabels.push_back("female_10");
+	ageLabels.push_back("female_30");
+	ageLabels.push_back("female_50");
+	ageLabels.push_back("female_70");
+	ageLabels.push_back("female_90");
+	ageLabels.push_back("male_10");
+	ageLabels.push_back("male_30");
+	ageLabels.push_back("male_50");
+	ageLabels.push_back("male_70");
+	ageLabels.push_back("male_90");
 
-  muscleSizeLabels.push_back("skinny_nomuscle");
-  muscleSizeLabels.push_back("big_nomuscle");
-  muscleSizeLabels.push_back("skinny_muscle");
-  muscleSizeLabels.push_back("big_muscle");
+	muscleSizeLabels.push_back("skinny_nomuscle");
+	muscleSizeLabels.push_back("big_nomuscle");
+	muscleSizeLabels.push_back("skinny_muscle");
+	muscleSizeLabels.push_back("big_muscle");
 
-  breastLabels.push_back("cone_little");
-  breastLabels.push_back("cone_big");
-  breastLabels.push_back("sphere_little");
-  breastLabels.push_back("sphere_big");
+	breastLabels.push_back("cone_little");
+	breastLabels.push_back("cone_big");
+	breastLabels.push_back("sphere_little");
+	breastLabels.push_back("sphere_big");
 
-  shapeLabels.push_back("brevilinear_vshape");
-  shapeLabels.push_back("brevilinear_peershape");
-  shapeLabels.push_back("longilinear_vshape");
-  shapeLabels.push_back("longilinear_peershape");
+	shapeLabels.push_back("brevilinear_vshape");
+	shapeLabels.push_back("brevilinear_peershape");
+	shapeLabels.push_back("longilinear_vshape");
+	shapeLabels.push_back("longilinear_peershape");
 }
 
-SelectorListener::~SelectorListener()
+SelectorListener::~SelectorListener() {}
+
+bool SelectorListener::mouseOver(const Point &inMousePos, Component *source)
 {
+	return false;
 }
 
-bool SelectorListener::mouseOver (const Point& inMousePos, Component *source)
+bool SelectorListener::mouseOut(const Point &inMousePos, Component *source)
 {
-  return false;
+	return false;
 }
 
-bool SelectorListener::mouseOut (const Point& inMousePos, Component *source)
+bool SelectorListener::mouseDragged(const Point &inMousePos, Component *source)
 {
-  return false;
+	int xDist = abs(oldPos.getX() - inMousePos.getX());
+	int yDist = abs(oldPos.getY() - inMousePos.getY());
+
+	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
+
+	if (Global::instance().getSubdivision()) {
+		Global::instance().setLightMesh(true);
+	}
+
+	Global::instance().setFuzzyValue(selectorSource->getID(), inMousePos);
+
+	if (xDist > 3 || yDist > 3) {
+		oldPos = inMousePos;
+		calcWidgetTargets(*selectorSource);
+
+		if (Global::instance().getSubdivision()) {
+			Mesh *mesh = Global::instance().getMesh();
+			mesh->calcSubsurf();
+		}
+	}
+
+	return true;
 }
 
-bool SelectorListener::mouseDragged (const Point& inMousePos, Component *source)
+bool SelectorListener::mouseWheel(const Point &inMousePos, int inButton,
+                                  Component *source)
 {
-  int xDist = abs(oldPos.getX() - inMousePos.getX());
-  int yDist = abs(oldPos.getY() - inMousePos.getY());
-
-  Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-  assert(selectorSource); // Check if this is really an Image object?
-
-  if(Global::instance().getSubdivision())
-  {
-    Global::instance().setLightMesh(true);
-  }
-
-  Global::instance().setFuzzyValue(selectorSource->getID(), inMousePos);
-
-  if(xDist > 3 || yDist > 3)
-  {
-    oldPos = inMousePos;
-    calcWidgetTargets(*selectorSource);
-
-    if(Global::instance().getSubdivision())
-    {
-      Mesh *mesh = Global::instance().getMesh ();
-      mesh->calcSubsurf();
-    }
-  }
-
-  return true;
+	return false;
 }
 
-bool SelectorListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool SelectorListener::mousePressed(const Point &inMousePos, int button,
+                                    Component *source)
 {
-  return false;
+	return true;
 }
 
-bool SelectorListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool SelectorListener::mouseReleased(const Point &inMousePos, int button,
+                                     Component *source)
 {
-  return true;
+	oldPos = inMousePos;
+
+	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
+
+	Global::instance().setFuzzyValue(selectorSource->getID(), inMousePos);
+	calcWidgetTargets(*selectorSource);
+
+	Mesh *mesh = Global::instance().getMesh();
+	mesh->calcNormals();
+
+	if (Global::instance().getSubdivision()) {
+		mesh->calcSubsurf();
+		Global::instance().setLightMesh(false);
+	}
+
+	return true;
 }
 
-bool SelectorListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool SelectorListener::keyType(unsigned char key, Component *source)
 {
-  oldPos = inMousePos;
-
-  Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-  assert(selectorSource); // Check if this is really an Image object?
-
-  Global::instance().setFuzzyValue(selectorSource->getID(), inMousePos);
-  calcWidgetTargets(*selectorSource);
-
-  Mesh *mesh = Global::instance().getMesh ();
-  mesh->calcNormals();
-
-  if(Global::instance().getSubdivision())
-  {
-    mesh->calcSubsurf();
-    Global::instance().setLightMesh(false);
-  }
-
-  return true;
+	return false;
 }
 
-bool SelectorListener::keyType (unsigned char key, Component *source)
+void SelectorListener::calcWidgetTargets(Selector &selectorSource)
 {
-  return false;
-}
 
-void SelectorListener::calcWidgetTargets(Selector &selectorSource) {
-	
-	switch(selectorSource.getID())
-	{
+	switch (selectorSource.getID()) {
 	case kComponentID_CharacterSettingPanel_Age:
 		ageDists = selectorSource.getDists();
 		break;
-		
+
 	case kComponentID_CharacterSettingPanel_MuscleSize:
 		muscleSizeDists = selectorSource.getDists();
 		break;
-		
+
 	case kComponentID_CharacterSettingPanel_Breast:
 		breastDists = selectorSource.getDists();
 		break;
-		
+
 	case kComponentID_CharacterSettingPanel_Shape:
 		shapeDists = selectorSource.getDists();
 		break;
 	}
-	
+
 	calcWidgetTargetsFOO();
 }
 
 void SelectorListener::calcWidgetTargetsFOO()
 {
-  unsigned int i = 0;
-  unsigned int j = 0;
-  unsigned int k = 0;
+	unsigned int i = 0;
+	unsigned int j = 0;
+	unsigned int k = 0;
 
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
 
-//std::cout << "--------------------------" << std::endl;
-  vector<float>::const_iterator di_end = ageDists.end();
-  for(vector<float>::const_iterator di_it = ageDists.begin();
-      di_it != di_end;
-      di_it++)
-  {
-    if(i < ageLabels.size())
-    {
-      string tmpTargetName("ages/" + ageLabels[i++] + ".target");
+	// std::cout << "--------------------------" << std::endl;
+	vector<float>::const_iterator di_end = ageDists.end();
+	for (vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end;
+	     di_it++) {
+		if (i < ageLabels.size()) {
+			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
 
-      //if((*di_it) > 0)
-      //{
-      //  std::cout << tmpTargetName << " " << (*di_it) << std::endl;
-      //}
+			// if((*di_it) > 0)
+			//{
+			//  std::cout << tmpTargetName << " " << (*di_it) << std::endl;
+			//}
 
-      mesh->doMorph (tmpTargetName, (*di_it));
-    }
-  }
+			mesh->doMorph(tmpTargetName, (*di_it));
+		}
+	}
 
-  vector<float>::const_iterator ms_end = muscleSizeDists.end();
-  vector<float>::const_iterator br_end = breastDists.end();
+	vector<float>::const_iterator ms_end = muscleSizeDists.end();
+	vector<float>::const_iterator br_end = breastDists.end();
 
-  for(vector<float>::const_iterator ms_it = muscleSizeDists.begin();
-      ms_it != ms_end;
-      ms_it++)
-  {
-    i = 0;
-    for(vector<float>::const_iterator di_it = ageDists.begin();
-        di_it != di_end;
-        di_it++)
-    {
-      if(j < muscleSizeLabels.size() && i < ageLabels.size())
-      {
-        string tmpTargetName("muscleSize/" + ageLabels[i] + "_" + muscleSizeLabels[j] + ".target");
-        float tmpTargetValue = (*di_it) * (*ms_it);
+	for (vector<float>::const_iterator ms_it = muscleSizeDists.begin();
+	     ms_it != ms_end; ms_it++) {
+		i = 0;
+		for (vector<float>::const_iterator di_it = ageDists.begin();
+		     di_it != di_end; di_it++) {
+			if (j < muscleSizeLabels.size() && i < ageLabels.size()) {
+				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
+				                     muscleSizeLabels[j] + ".target");
+				float tmpTargetValue = (*di_it) * (*ms_it);
 
-        //if(tmpTargetValue > 0)
-        //{
-        //  std::cout << tmpTargetName << " " << (*di_it) << " " << (*ms_it) << " " << tmpTargetValue << std::endl;
-        //}
+				// if(tmpTargetValue > 0)
+				//{
+				//  std::cout << tmpTargetName << " " << (*di_it) << " " << (*ms_it) <<
+				//  " " << tmpTargetValue << std::endl;
+				//}
 
-        mesh->doMorph (tmpTargetName, tmpTargetValue);
+				mesh->doMorph(tmpTargetName, tmpTargetValue);
 
-        // breast widget
+				// breast widget
 
-        k = 0;
-        if( i <= 4)
-        {
-          for(vector<float>::const_iterator br_it = breastDists.begin();
-              br_it != br_end;
-              br_it++)
-          {
-            if( k < breastLabels.size())
-            {
-              string tmpTargetName("breast/" + ageLabels[i] + "_" + muscleSizeLabels[j] + "_" + breastLabels[k] + ".target");
-              float tmpTargetValue = (*di_it) * (*ms_it) * (*br_it);
+				k = 0;
+				if (i <= 4) {
+					for (vector<float>::const_iterator br_it = breastDists.begin();
+					     br_it != br_end; br_it++) {
+						if (k < breastLabels.size()) {
+							string tmpTargetName("breast/" + ageLabels[i] + "_" +
+							                     muscleSizeLabels[j] + "_" + breastLabels[k] +
+							                     ".target");
+							float tmpTargetValue = (*di_it) * (*ms_it) * (*br_it);
 
-              //if(tmpTargetValue > 0)
-              //{
-              //  std::cout << tmpTargetName << " " << tmpTargetValue << std::endl;
-              //}
+							// if(tmpTargetValue > 0)
+							//{
+							//  std::cout << tmpTargetName << " " << tmpTargetValue <<
+							//  std::endl;
+							//}
 
-              mesh->doMorph (tmpTargetName, tmpTargetValue);
-            }
-          k++;
-          }
-        }
-      }
-      i++;
-    }
-    j++;
-  }
+							mesh->doMorph(tmpTargetName, tmpTargetValue);
+						}
+						k++;
+					}
+				}
+			}
+			i++;
+		}
+		j++;
+	}
 
-  i = 0;
-  vector<float>::const_iterator sh_end = shapeDists.end();
-  for(vector<float>::const_iterator sh_it = shapeDists.begin();
-      sh_it != sh_end;
-      sh_it++)
-  {
-    if(i < shapeLabels.size())
-    {
-      string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
+	i = 0;
+	vector<float>::const_iterator sh_end = shapeDists.end();
+	for (vector<float>::const_iterator sh_it = shapeDists.begin();
+	     sh_it != sh_end; sh_it++) {
+		if (i < shapeLabels.size()) {
+			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
 
-      //if((*di_it) > 0)
-      //{
-      //  std::cout << tmpTargetName << " " << (*sh_it) << std::endl;
-      //}
+			// if((*di_it) > 0)
+			//{
+			//  std::cout << tmpTargetName << " " << (*sh_it) << std::endl;
+			//}
 
-      mesh->doMorph (tmpTargetName, (*sh_it));
-    }
-  }
-//std::cout << "--------------------------" << std::endl;
+			mesh->doMorph(tmpTargetName, (*sh_it));
+		}
+	}
+	// std::cout << "--------------------------" << std::endl;
 }

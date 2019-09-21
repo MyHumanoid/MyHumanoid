@@ -16,45 +16,45 @@
  *  along with this program; if not, write to the Free Software Foun-
  *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
  *  USA
- *  
+ *
  *  File   : BodyPanel.h
  *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
  *  App    : makehuman
  *
  *  For individual developers look into the AUTHORS file.
- *   
+ *
  */
 
 #ifndef BODYPANEL_H
 #define BODYPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <gui/Panel.h>
-#include <gui/Image.h>
-#include "util.h"
 #include "TargetSelectionListener.h"
+#include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::vector;
 
 class BodyPanel : public Panel
 {
 public:
-  BodyPanel ();
-  virtual ~BodyPanel ();
+	BodyPanel();
+	virtual ~BodyPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  BodyPanel             (const BodyPanel&);
-  BodyPanel& operator = (const BodyPanel&);
+	BodyPanel(const BodyPanel &);
+	BodyPanel &operator=(const BodyPanel &);
 
 private:
-  TargetSelectionListener imgListener;
-  vector <Image*> imageVector;
+	TargetSelectionListener imgListener;
+	vector<Image *> imageVector;
 };
 
 #endif // BODYPANEL_H

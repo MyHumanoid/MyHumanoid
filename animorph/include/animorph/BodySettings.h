@@ -30,17 +30,18 @@
 #define BODYSETTINGS_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <iostream>
-#include <fstream>
-#include <map>
-#include <vector>
 #include "FileReader.h"
 #include "FileWriter.h"
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <vector>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief A map of names and associated values
 
@@ -52,32 +53,32 @@ The format of BodySettings file:
 ...
 \endverbatim
 */
-class BodySettings : public std::map <std::string, float>
+class BodySettings : public std::map<std::string, float>
 {
 private:
-  void createStream (std::ostringstream &out_stream);
-  void fromStream (std::ifstream &in_stream);
+	void createStream(std::ostringstream &out_stream);
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  /// load a BodySetting
-  /*!
-   * \param filename the file with BodySettings data to load
-   * \return true if file is found
-   * \return false if file isn't found
-   */
-  bool load (const std::string& filename);
+	/// load a BodySetting
+	/*!
+	 * \param filename the file with BodySettings data to load
+	 * \return true if file is found
+	 * \return false if file isn't found
+	 */
+	bool load(const std::string &filename);
 
-  /// save a BodySetting
-  /*!
-   * \param filename the file to save
-   * \return true if file is saved
-   * \return false if file couldn't be saved
-   */
-  bool save (const std::string& filename);
+	/// save a BodySetting
+	/*!
+	 * \param filename the file to save
+	 * \return true if file is saved
+	 * \return false if file couldn't be saved
+	 */
+	bool save(const std::string &filename);
 
-  std::vector<string> cursorPositions;
+	std::vector<string> cursorPositions;
 };
 
-}
+} // namespace Animorph
 
-#endif	// BODYSETTINGS_H
+#endif // BODYSETTINGS_H

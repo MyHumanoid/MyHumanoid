@@ -26,53 +26,52 @@
  */
 
 #include "TooltipPanel.h"
-#include "ImageListener.h"
 #include "ComponentID.h"
+#include "ImageListener.h"
 
-#include <gui/Window.h>
 #include <gui/Rect.h>
 #include <gui/Tooltip.h>
+#include <gui/Window.h>
 
 using namespace std;
 using namespace Animorph;
 
-TooltipPanel::TooltipPanel (const int winHeight)
-: Panel (kComponentID_TooltipPanel, Rect(400,winHeight - 36,64,16)),
-  tooltip     (NULL),
-  tooltipLabel(NULL)
+TooltipPanel::TooltipPanel(const int winHeight)
+    : Panel(kComponentID_TooltipPanel, Rect(400, winHeight - 36, 64, 16))
+    , tooltip(NULL)
+    , tooltipLabel(NULL)
 {
-  setBottomAnchor (true);
+	setBottomAnchor(true);
 }
 
-TooltipPanel::~TooltipPanel ()
+TooltipPanel::~TooltipPanel()
 {
-  delete tooltip;
-  delete tooltipLabel;
+	delete tooltip;
+	delete tooltipLabel;
 }
 
-void TooltipPanel::createWidgets ()
+void TooltipPanel::createWidgets()
 {
-  // -------------------------------------------------------------------------
-  tooltipLabel = new Image(kComponentID_Dummy,
-                           searchPixmapFile ("ui/tooltips_label_1.png"),
-                           Rect(0,0,16,16));
-  addWidget (tooltipLabel);
+	// -------------------------------------------------------------------------
+	tooltipLabel =
+	    new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_1.png"),
+	              Rect(0, 0, 16, 16));
+	addWidget(tooltipLabel);
 
-  // -------------------------------------------------------------------------
-  tooltipLabel = new Image(kComponentID_Dummy,
-                           searchPixmapFile ("ui/tooltips_label_2.png"),
-                           Rect(0,0,16,16));
-  addWidget (tooltipLabel);
+	// -------------------------------------------------------------------------
+	tooltipLabel =
+	    new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_2.png"),
+	              Rect(0, 0, 16, 16));
+	addWidget(tooltipLabel);
 
-  // -------------------------------------------------------------------------
-  tooltipLabel = new Image(kComponentID_Dummy,
-                           searchPixmapFile ("ui/tooltips_label_3.png"),
-                           Rect(0,0,16,16));
-  addWidget (tooltipLabel);
+	// -------------------------------------------------------------------------
+	tooltipLabel =
+	    new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_3.png"),
+	              Rect(0, 0, 16, 16));
+	addWidget(tooltipLabel);
 
-  // -------------------------------------------------------------------------
-  tooltip = new Image(kComponentID_Dummy,
-                      searchPixmapFile ("ui/tooltips.png"),
-                      Rect(0,0,16,16));
-  addWidget (tooltip);
+	// -------------------------------------------------------------------------
+	tooltip = new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips.png"),
+	                    Rect(0, 0, 16, 16));
+	addWidget(tooltip);
 }

@@ -29,18 +29,18 @@
 #define TARGETPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <algorithm>
-#include <gui/Panel.h>
-#include <gui/MultiPanel.h>
-#include "TargetSliderListener.h"
-#include "TargetSlider.h"
 #include "ImageListener.h"
-#include "util.h"
 #include "PageTargetPanel.h"
+#include "TargetSlider.h"
+#include "TargetSliderListener.h"
+#include "util.h"
+#include <algorithm>
+#include <gui/MultiPanel.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::string;
 using std::vector;
@@ -50,26 +50,26 @@ static const string applied_target_list = "#nobody_use_such_a_targetdir&%$§";
 class TargetPanel : public MultiPanel
 {
 private: // intentionally not implemented
-  TargetPanel             (const TargetPanel&);
-  TargetPanel& operator = (const TargetPanel&);
+	TargetPanel(const TargetPanel &);
+	TargetPanel &operator=(const TargetPanel &);
 
-  TargetSliderListener   imgSliderListener;
-  ImageListener          imgListener;
-  string                 category;
+	TargetSliderListener imgSliderListener;
+	ImageListener imgListener;
+	string category;
 
-  // use local memory managment currently
-  // TODO: implement managed widgets
-  vector <TargetSlider*> targetVector;
-  vector <Image*> imageVector;
-  PageTargetPanel *newPagePanel();
+	// use local memory managment currently
+	// TODO: implement managed widgets
+	vector<TargetSlider *> targetVector;
+	vector<Image *> imageVector;
+	PageTargetPanel *newPagePanel();
 
 public:
-  TargetPanel (const string& category, const Rect& rect);
-  virtual ~TargetPanel ();
+	TargetPanel(const string &category, const Rect &rect);
+	virtual ~TargetPanel();
 
-  void createWidgets ();
-  const string& getCategory() const {return category;}
-  void resetTargetValues(const string currentTargetName = "");
+	void createWidgets();
+	const string &getCategory() const { return category; }
+	void resetTargetValues(const string currentTargetName = "");
 };
 
 #endif // TARGETPANEL_H

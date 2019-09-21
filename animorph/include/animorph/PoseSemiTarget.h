@@ -28,31 +28,31 @@
 #define POSESEMITARGET_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 
-#include <sstream>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <sstream>
 
-#include "util.h"
 #include "FileReader.h"
 #include "Matrix.h"
+#include "util.h"
 
-using std::string;
 using std::set;
+using std::string;
 using std::vector;
 
-namespace Animorph {
-
-struct PoseTargetData
+namespace Animorph
 {
-  int   vertex_number;
-  float rotation;
+
+struct PoseTargetData {
+	int vertex_number;
+	float rotation;
 };
 
 typedef set<int> UsedVertex;
@@ -69,38 +69,37 @@ The format of PoseSemiTarget info file:
 [X,Y,Z]
 \endverbatim
 */
-class PoseSemiTarget : public vector <PoseTargetData>
+class PoseSemiTarget : public vector<PoseTargetData>
 {
 private:
-  vector<int> centerVertexNumbers;
-  RotateAxis  axis;
-  UsedVertex  modVertex;
+	vector<int> centerVertexNumbers;
+	RotateAxis axis;
+	UsedVertex modVertex;
 
-  bool hasCenter;
-  Vector3f center;
-  void stringTokenize(const string& str, vector<int>& tokens);
+	bool hasCenter;
+	Vector3f center;
+	void stringTokenize(const string &str, vector<int> &tokens);
 
 public:
-  PoseSemiTarget();
-  /*!
-   * \param filename the file with PoseTarget data to load
-   * \return true if file is found
-   * \return false if file isn't found
-   */
-  bool load (const string& filename);
+	PoseSemiTarget();
+	/*!
+	 * \param filename the file with PoseTarget data to load
+	 * \return true if file is found
+	 * \return false if file isn't found
+	 */
+	bool load(const string &filename);
 
-  const vector<int> &getCenterVertexNumbers () {return centerVertexNumbers;}
-  UsedVertex &getModVertex () {return modVertex;}
-  const RotateAxis& getAxis () const {return axis;}
+	const vector<int> &getCenterVertexNumbers() { return centerVertexNumbers; }
+	UsedVertex &getModVertex() { return modVertex; }
+	const RotateAxis &getAxis() const { return axis; }
 
-  bool getHasCenter() const {return hasCenter;}
-  void setHasCenter(bool c) {hasCenter = c;}
+	bool getHasCenter() const { return hasCenter; }
+	void setHasCenter(bool c) { hasCenter = c; }
 
-  const Vector3f &getCenter() const {return center;}
-  void setCenter(const Vector3f& c) {center = c;}
+	const Vector3f &getCenter() const { return center; }
+	void setCenter(const Vector3f &c) { center = c; }
 };
 
-}
+} // namespace Animorph
 
-#endif	// POSESEMITARGET_H
-
+#endif // POSESEMITARGET_H

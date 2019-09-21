@@ -28,17 +28,17 @@
 #include <animorph/Mesh.h>
 
 #include <gui/CGUtilities.h>
-#include <gui/Window.h>
 #include <gui/Component.h>
 #include <gui/GLUTWrapper.h>
+#include <gui/Window.h>
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "BsCategoryPanel.h"
+#include "BsPanel.h"
 #include "BsPanelSelectionListener.h"
 #include "ComponentID.h"
-#include "BsPanel.h"
 #include "Global.h"
 #include "ImageButton.h"
 
@@ -50,86 +50,87 @@ BsPanelSelectionListener::BsPanelSelectionListener()
 {
 }
 
-BsPanelSelectionListener::~BsPanelSelectionListener()
+BsPanelSelectionListener::~BsPanelSelectionListener() {}
+
+bool BsPanelSelectionListener::mouseOver(const Point &inMousePos,
+                                         Component *source)
 {
+	ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
+
+	imgSource->setOverlayRectangle(Color(1, 0, 0, 0.5));
+
+	return false;
 }
 
-bool BsPanelSelectionListener::mouseOver (const Point& inMousePos, Component *source)
+bool BsPanelSelectionListener::mouseOut(const Point &inMousePos,
+                                        Component *source)
 {
-  ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
+	ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
 
-  imgSource->setOverlayRectangle (Color (1,0,0,0.5));
+	imgSource->setOverlayRectangle(false);
 
-  return false;
+	return false;
 }
 
-bool BsPanelSelectionListener::mouseOut (const Point& inMousePos, Component *source)
+bool BsPanelSelectionListener::mouseDragged(const Point &inMousePos,
+                                            Component *source)
 {
-  ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
-
-  imgSource->setOverlayRectangle (false);
-
-  return false;
+	return true;
 }
 
-bool BsPanelSelectionListener::mouseDragged (const Point& inMousePos, Component *source)
+bool BsPanelSelectionListener::mouseWheel(const Point &inMousePos, int inButton,
+                                          Component *source)
 {
-  return true;
+	return false;
 }
 
-bool BsPanelSelectionListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool BsPanelSelectionListener::mousePressed(const Point &inMousePos, int button,
+                                            Component *source)
 {
-  return false;
+	if (button == GLUT_LEFT_BUTTON) {
+		ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
+		assert(imgSource); // Check if this is really an Image object?
+		imgSource->setOverlayRectangle(Color(1, 1, 1, 0.5));
+
+		return true;
+	}
+	return false;
 }
 
-bool BsPanelSelectionListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool BsPanelSelectionListener::mouseReleased(const Point &inMousePos,
+                                             int button, Component *source)
 {
-  if (button == GLUT_LEFT_BUTTON)
-  {
-    ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
-    assert(imgSource); // Check if this is really an Image object?
-    imgSource->setOverlayRectangle(Color (1,1,1,0.5));
+	std::ostringstream out_stream;
+	if (button == GLUT_LEFT_BUTTON) {
+		ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
+		assert(imgSource); // Check if this is really an Image object?
 
-    return true;
-  }
-  return false;
+		imgSource->setOverlayRectangle(false);
+
+		if (!imgSource->getAbsoluteRect().isHitBy(inMousePos))
+			return false;
+
+		Global &global = Global::instance();
+		Mesh *mesh = global.getMesh();
+
+		CharactersMap &charactersmap = mesh->getCharactersMapRef();
+		mesh->doMorph(charactersmap[imgSource->infoCommand], 1.0, true);
+		mesh->calcNormals();
+
+		if (global.getSubdivision()) {
+			mesh->calcSubsurf();
+		}
+
+		loadSelectorsPositions(
+		    charactersmap[imgSource->infoCommand].cursorPositions);
+	}
+
+	return false;
 }
 
-bool BsPanelSelectionListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool BsPanelSelectionListener::keyType(unsigned char key, Component *source)
 {
-  std::ostringstream out_stream;
-  if(button == GLUT_LEFT_BUTTON)
-  {
-    ImageButton *imgSource = dynamic_cast<ImageButton *>(source); // req. RTTI!
-    assert(imgSource); // Check if this is really an Image object?
-
-    imgSource->setOverlayRectangle(false);
-
-    if(!imgSource->getAbsoluteRect().isHitBy(inMousePos))
-      return false;
-
-    Global &global = Global::instance ();
-    Mesh *mesh = global.getMesh ();
-
-    CharactersMap &charactersmap = mesh->getCharactersMapRef ();
-    mesh->doMorph (charactersmap[imgSource->infoCommand],
-                   1.0, true);
-    mesh->calcNormals ();
-
-    if(global.getSubdivision())
-    {
-      mesh->calcSubsurf();
-    }
-
-    loadSelectorsPositions(charactersmap[imgSource->infoCommand].cursorPositions);
-  }
-
-  return false;
-}
-
-bool BsPanelSelectionListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }

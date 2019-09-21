@@ -30,48 +30,52 @@
 #define FILEWRITER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <sstream>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <sstream>
 
-using std::string;
 using std::ofstream;
+using std::string;
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Wrapper for ofstream using C locale
  */
 class FileWriter : public ofstream
 {
 private:
-  char *locale;
+	char *locale;
 
-// Intentionally declared as private because not implemented yet
+	// Intentionally declared as private because not implemented yet
 private:
-   FileWriter           (const FileWriter&);
-   FileWriter& operator=(const FileWriter&);
+	FileWriter(const FileWriter &);
+	FileWriter &operator=(const FileWriter &);
 
 public:
-  FileWriter () : locale(NULL) {}
+	FileWriter()
+	    : locale(NULL)
+	{
+	}
 
-  /// destructor closes the file
-  virtual ~FileWriter () {close ();}
+	/// destructor closes the file
+	virtual ~FileWriter() { close(); }
 
-  /*!
-  * \param filename the file to open for writing
-  * \param mode Used as parameter for ofstream::open()
-  * \return 0 if the file could be opened.
-  */
-  virtual int open (const string& filename, std::ios_base::openmode mode = std::ios_base::out);
+	/*!
+	 * \param filename the file to open for writing
+	 * \param mode Used as parameter for ofstream::open()
+	 * \return 0 if the file could be opened.
+	 */
+	virtual int open(const string &filename,
+	                 std::ios_base::openmode mode = std::ios_base::out);
 
-  /// closes the currently opened file
-  virtual void close ();
-
+	/// closes the currently opened file
+	virtual void close();
 };
 
-}
+} // namespace Animorph
 
 #endif // FILEWRITER_H

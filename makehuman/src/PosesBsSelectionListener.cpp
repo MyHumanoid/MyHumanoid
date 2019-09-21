@@ -27,20 +27,20 @@
 
 #include <animorph/Mesh.h>
 
-#include <gui/Image.h>
 #include <gui/CGUtilities.h>
-#include <gui/Window.h>
 #include <gui/Component.h>
 #include <gui/GLUTWrapper.h>
+#include <gui/Image.h>
+#include <gui/Window.h>
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 
-#include "PosesBsSelectionListener.h"
 #include "ComponentID.h"
-#include "PosesBsPanel.h"
 #include "Global.h"
 #include "PosesBsCategoryPanel.h"
+#include "PosesBsPanel.h"
+#include "PosesBsSelectionListener.h"
 
 using namespace Animorph;
 using namespace std;
@@ -50,149 +50,134 @@ PosesBsSelectionListener::PosesBsSelectionListener()
 {
 }
 
-PosesBsSelectionListener::~PosesBsSelectionListener()
+PosesBsSelectionListener::~PosesBsSelectionListener() {}
+
+bool PosesBsSelectionListener::mouseOver(const Point &inMousePos,
+                                         Component *source)
 {
+	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
+
+	imgSource->setOverlayRectangle(Color(1, 0, 0, 0.5));
+
+	return false;
 }
 
-bool PosesBsSelectionListener::mouseOver (const Point& inMousePos, Component *source)
+bool PosesBsSelectionListener::mouseOut(const Point &inMousePos,
+                                        Component *source)
 {
-  Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
+	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	assert(imgSource); // Check if this is really an Image object?
 
-  imgSource->setOverlayRectangle (Color (1,0,0,0.5));
+	imgSource->setOverlayRectangle(false);
 
-  return false;
+	return false;
 }
 
-bool PosesBsSelectionListener::mouseOut (const Point& inMousePos, Component *source)
+bool PosesBsSelectionListener::mouseDragged(const Point &inMousePos,
+                                            Component *source)
 {
-  Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-  assert(imgSource); // Check if this is really an Image object?
-
-  imgSource->setOverlayRectangle (false);
-
-  return false;
+	return true;
 }
 
-bool PosesBsSelectionListener::mouseDragged (const Point& inMousePos, Component *source)
+bool PosesBsSelectionListener::mouseWheel(const Point &inMousePos, int inButton,
+                                          Component *source)
 {
-  return true;
+	return false;
 }
 
-bool PosesBsSelectionListener::mouseWheel    (const Point& inMousePos, int inButton, Component *source )
+bool PosesBsSelectionListener::mousePressed(const Point &inMousePos, int button,
+                                            Component *source)
 {
-  return false;
+	if (button == GLUT_LEFT_BUTTON) {
+		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+		assert(imgSource); // Check if this is really an Image object?
+		imgSource->setOverlayRectangle(Color(1, 1, 1, 0.5));
+
+		return true;
+	}
+	return false;
 }
 
-bool PosesBsSelectionListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool PosesBsSelectionListener::mouseReleased(const Point &inMousePos,
+                                             int button, Component *source)
 {
-  if (button == GLUT_LEFT_BUTTON)
-  {
-    Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-    assert(imgSource); // Check if this is really an Image object?
-    imgSource->setOverlayRectangle(Color (1,1,1,0.5));
+	std::ostringstream out_stream;
 
-    return true;
-  }
-  return false;
+	if (button == GLUT_LEFT_BUTTON) {
+		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+		assert(imgSource); // Check if this is really an Image object?
+
+		imgSource->setOverlayRectangle(false);
+
+		if (!imgSource->getAbsoluteRect().isHitBy(inMousePos))
+			return false;
+
+		string character;
+
+		if (imgSource->getID() == kComponentID_BsCategoryPanel_MyBS) {
+			character = "lib";
+
+			Global &global = Global::instance();
+			Mesh *mesh = global.getMesh();
+			CharactersMap &charactersmap = mesh->getCharactersMapRef();
+			list<string> toErase;
+
+			for (CharactersMap::const_iterator charactersmap_it =
+			         charactersmap.begin();
+			     charactersmap_it != charactersmap.end(); charactersmap_it++) {
+				const string &character_name((*charactersmap_it).first);
+				string::size_type loc = character_name.find("/", 0);
+				if (loc == string::npos) {
+					continue;
+				} else {
+					string sub = character_name.substr(0, loc);
+
+					if (sub == character) {
+						toErase.push_back(character_name);
+					}
+				}
+			}
+
+			for (list<string>::const_iterator toErase_it = toErase.begin();
+			     toErase_it != toErase.end(); toErase_it++) {
+				charactersmap.erase(*toErase_it);
+			}
+
+			mesh->loadCharactersFactory(getMyPosesBasePath());
+		} else {
+			for (int i = 0; i < 17; i++) {
+				if (imgSource->getID() == poses_bs_cat_table_id[i]) {
+					out_stream << i + 1;
+					character = "poses" + out_stream.str();
+				}
+			}
+		}
+
+		if (!character.empty()) {
+			Window &mainWindow = Window::instance();
+			Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
+			mainWindow.removePanel(p);
+			delete p;
+
+			PosesBsPanel *posesBsPanel;
+
+			int x = mainWindow.getSize().getWidth() - 210;
+			posesBsPanel = new PosesBsPanel(character, Rect(x, 40, 210, 517));
+			mainWindow.addPanel(posesBsPanel);
+			posesBsPanel->createWidgets();
+			posesBsPanel->show_all();
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	return false;
 }
 
-
-
-bool PosesBsSelectionListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool PosesBsSelectionListener::keyType(unsigned char key, Component *source)
 {
-  std::ostringstream out_stream;
-
-  if(button == GLUT_LEFT_BUTTON)
-  {
-    Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
-    assert(imgSource); // Check if this is really an Image object?
-
-    imgSource->setOverlayRectangle(false);
-
-    if(!imgSource->getAbsoluteRect().isHitBy(inMousePos))
-      return false;
-
-    string character;
-
-    if(imgSource->getID () == kComponentID_BsCategoryPanel_MyBS)
-    {
-      character = "lib";
-
-      Global &global = Global::instance ();
-      Mesh *mesh = global.getMesh ();
-      CharactersMap &charactersmap = mesh->getCharactersMapRef ();
-      list <string> toErase;
-
-      for (CharactersMap::const_iterator charactersmap_it = charactersmap.begin ();
-          charactersmap_it != charactersmap.end ();
-          charactersmap_it++)
-      {
-        const string &character_name((*charactersmap_it).first);
-        string::size_type loc = character_name.find ("/", 0 );
-        if (loc == string::npos)
-        {
-          continue;
-        }
-        else
-        {
-          string sub = character_name.substr (0, loc);
-
-          if (sub == character)
-          {
-            toErase.push_back(character_name);
-          }
-        }
-      }
-
-      for (list<string>::const_iterator toErase_it = toErase.begin ();
-          toErase_it != toErase.end ();
-          toErase_it++)
-      {
-        charactersmap.erase(*toErase_it);
-      }
-
-      mesh->loadCharactersFactory(getMyPosesBasePath());
-    }
-    else
-    {
-      for(int i = 0; i < 17; i++)
-      {
-        if(imgSource->getID () == poses_bs_cat_table_id[i])
-        {
-          out_stream << i + 1;
-          character = "poses" + out_stream.str();
-        }
-      }
-    }
-
-    if(!character.empty())
-    {
-      Window &mainWindow = Window::instance ();
-      Panel *p = mainWindow.getPanel (kComponentID_TargetPanel);
-      mainWindow.removePanel(p);
-      delete p;
-
-      PosesBsPanel *posesBsPanel;
-
-      int x = mainWindow.getSize().getWidth() - 210;
-      posesBsPanel = new PosesBsPanel (character, Rect(x,40,210,517));
-      mainWindow.addPanel (posesBsPanel);
-      posesBsPanel->createWidgets ();
-      posesBsPanel->show_all();
-
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  return false;
-}
-
-bool PosesBsSelectionListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }

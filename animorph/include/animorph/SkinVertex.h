@@ -29,18 +29,19 @@
 #define SKINVERTEX_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
 #include <set>
+#include <vector>
 
 #include "Vector3.h"
 
-using std::vector;
 using std::set;
+using std::vector;
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents skin properties of a vertex.
 
@@ -50,26 +51,29 @@ The vertex is identified by its index.
 class SkinVertex
 {
 private:
-  int skinVertex;
-  vector<int> linkedMuscles;
-  set<int> linkedMusclesSet;
-  float originalDist;
-  //Vector3f oldCenteroid;
+	int skinVertex;
+	vector<int> linkedMuscles;
+	set<int> linkedMusclesSet;
+	float originalDist;
+	// Vector3f oldCenteroid;
 
 public:
-  SkinVertex (int _skinVertex, float _originalDist, const vector<int> &tokens);
+	SkinVertex(int _skinVertex, float _originalDist, const vector<int> &tokens);
 
-  vector<int> &getLinkedMuscles    () {return linkedMuscles;}
-  set<int>    &getLinkedMusclesSet () {return linkedMusclesSet;}
-  float       getOriginalDist      () {return originalDist;}
-  int         getSkinVertex        () {return skinVertex;}
+	vector<int> &getLinkedMuscles() { return linkedMuscles; }
+	set<int> &getLinkedMusclesSet() { return linkedMusclesSet; }
+	float getOriginalDist() { return originalDist; }
+	int getSkinVertex() { return skinVertex; }
 
-  void setOriginalDist(const float inOriginalDist) {originalDist = inOriginalDist;}
-  //Vector3f &getOldCenteroid () {return oldCenteroid;}
-  //void setOldCenteroid (const Vector3f &inCenteroid) {oldCenteroid = inCenteroid;}
+	void setOriginalDist(const float inOriginalDist)
+	{
+		originalDist = inOriginalDist;
+	}
+	// Vector3f &getOldCenteroid () {return oldCenteroid;}
+	// void setOldCenteroid (const Vector3f &inCenteroid) {oldCenteroid =
+	// inCenteroid;}
 };
 
-}
+} // namespace Animorph
 
-
-#endif	// SKINVERTEX_H
+#endif // SKINVERTEX_H

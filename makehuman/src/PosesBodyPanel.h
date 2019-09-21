@@ -16,45 +16,45 @@
  *  along with this program; if not, write to the Free Software Foun-
  *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
  *  USA
- *  
+ *
  *  File   : PosesBodyPanel.h
  *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
  *  App    : makehuman
  *
  *  For individual developers look into the AUTHORS file.
- *   
+ *
  */
 
 #ifndef POSESBODYPANEL_H
 #define POSESBODYPANEL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <vector>
-#include <gui/Panel.h>
-#include <gui/Image.h>
-#include "util.h"
 #include "PoseTargetSelectionListener.h"
+#include "util.h"
+#include <gui/Image.h>
+#include <gui/Panel.h>
+#include <vector>
 
 using std::vector;
 
 class PosesBodyPanel : public Panel
 {
 public:
-  PosesBodyPanel ();
-  virtual ~PosesBodyPanel ();
+	PosesBodyPanel();
+	virtual ~PosesBodyPanel();
 
-  void createWidgets ();
+	void createWidgets();
 
 private: // intentionally not implemented
-  PosesBodyPanel             (const PosesBodyPanel&);
-  PosesBodyPanel& operator = (const PosesBodyPanel&);
+	PosesBodyPanel(const PosesBodyPanel &);
+	PosesBodyPanel &operator=(const PosesBodyPanel &);
 
 private:
-  PoseTargetSelectionListener imgListener;
-  vector <Image*> imageVector;
+	PoseTargetSelectionListener imgListener;
+	vector<Image *> imageVector;
 };
 
 #endif // POSESBODYPANEL_H

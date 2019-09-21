@@ -30,47 +30,50 @@
 #define FILEREADER_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <sstream>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <sstream>
 
 /// define the maximum length of an input line
 #define MAX_LINE_BUFFER 1024
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Wrapper for ifstream using C locale
  */
 class FileReader : public std::ifstream
 {
 private:
-  char *locale;
+	char *locale;
 
-// Intentionally declared as private because not implemented yet
+	// Intentionally declared as private because not implemented yet
 private:
-   FileReader           (const FileReader&);
-   FileReader& operator=(const FileReader&);
+	FileReader(const FileReader &);
+	FileReader &operator=(const FileReader &);
 
 public:
-  FileReader () : locale (NULL) {}
+	FileReader()
+	    : locale(NULL)
+	{
+	}
 
-  /// destructor closes the file
-  virtual ~FileReader () {close ();}
+	/// destructor closes the file
+	virtual ~FileReader() { close(); }
 
-  /*!
-  * \param filename the file to open for reading
-  * \return 0 if the file could be opened.
-  */
-  virtual int open (const std::string& filename);
+	/*!
+	 * \param filename the file to open for reading
+	 * \return 0 if the file could be opened.
+	 */
+	virtual int open(const std::string &filename);
 
-  /// closes the currently opened file
-  virtual void close ();
-
+	/// closes the currently opened file
+	virtual void close();
 };
 
-}
+} // namespace Animorph
 
 #endif // FILEREADER_H

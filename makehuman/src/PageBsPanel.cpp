@@ -29,27 +29,25 @@
 #include "ComponentID.h"
 #include "Global.h"
 
-#include <gui/Window.h>
-#include <gui/Rect.h>
-#include <gui/ImageSlider.h>
-#include <gui/Tooltip.h>
 #include "Global.h"
+#include <gui/ImageSlider.h>
+#include <gui/Rect.h>
+#include <gui/Tooltip.h>
+#include <gui/Window.h>
 
 using namespace std;
 using namespace Animorph;
 
 #include "ComponentID.h"
 
-
-PageBsPanel::PageBsPanel (const string& category, const Rect& rect)
-    : Panel (kComponentID_TargetPanel, rect),
-    category (category)
+PageBsPanel::PageBsPanel(const string &category, const Rect &rect)
+    : Panel(kComponentID_TargetPanel, rect)
+    , category(category)
 {
-
 }
 
-PageBsPanel::~PageBsPanel ()
+PageBsPanel::~PageBsPanel()
 {
-  for_each (imageButtonVector.begin (), imageButtonVector.end (), deleteFunctor <ImageButton*> ());
+	for_each(imageButtonVector.begin(), imageButtonVector.end(),
+	         deleteFunctor<ImageButton *>());
 }
-

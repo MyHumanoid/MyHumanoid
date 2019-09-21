@@ -8,126 +8,122 @@ using namespace std;
 using namespace Animorph;
 
 PoseSemiTarget::PoseSemiTarget()
-: modVertex(),
-  hasCenter(false)
-{                         
+    : modVertex()
+    , hasCenter(false)
+{
 }
 
-bool PoseSemiTarget::load (const std::string& filename)
+bool PoseSemiTarget::load(const std::string &filename)
 {
-  char str[MAX_LINE_BUFFER];  
-  char tmp[MAX_LINE_BUFFER];
-  char ax;
-  char sign;
-   
-  clear ();  
+	char str[MAX_LINE_BUFFER];
+	char tmp[MAX_LINE_BUFFER];
+	char ax;
+	char sign;
 
-  PoseSemiTarget &target(*this);       
-  
-  int ret = 0;
-  bool rc = true; // assume "success" by default 
- 
-  // info file
-  FILE *fd = fopen ((filename+".info").c_str(), "r");
+	clear();
 
-  if (fd == NULL)
-    return false;
+	PoseSemiTarget &target(*this);
 
-  fgets(str, MAX_LINE_BUFFER,fd);
+	int ret = 0;
+	bool rc = true; // assume "success" by default
 
-  if (str == NULL) // end of file reached?
-      return false;
+	// info file
+	FILE *fd = fopen((filename + ".info").c_str(), "r");
 
-  fgets(tmp, MAX_LINE_BUFFER,fd);
-  ret = sscanf (tmp, "%c", &ax);
+	if (fd == NULL)
+		return false;
 
-  if (ret == EOF) // end of file reached?
-      return false;      
+	fgets(str, MAX_LINE_BUFFER, fd);
 
-  fgets(tmp, MAX_LINE_BUFFER,fd);
-  ret = sscanf (tmp, "%c", &sign);
+	if (str == NULL) // end of file reached?
+		return false;
 
-  if (ret == EOF) // end of file reached?
-      return false;
-      
-  fclose(fd); 
- 
-  fd = fopen (filename.c_str (), "r");
- 
-  if (fd == NULL)
-    return false;
+	fgets(tmp, MAX_LINE_BUFFER, fd);
+	ret = sscanf(tmp, "%c", &ax);
 
-  // get the current locale
-  char *locale = ::setlocale (LC_NUMERIC, NULL);
+	if (ret == EOF) // end of file reached?
+		return false;
 
-  // set it to "C"-Style ( the . (dot) means the decimal marker for floats) 
-  ::setlocale (LC_NUMERIC, "C");            
+	fgets(tmp, MAX_LINE_BUFFER, fd);
+	ret = sscanf(tmp, "%c", &sign);
 
-  for(;;)
-  {
-    PoseTargetData td;
+	if (ret == EOF) // end of file reached?
+		return false;
 
-    ret = fscanf (fd, "%d,%f", &td.vertex_number, &td.rotation);
+	fclose(fd);
 
-    if (ret == EOF) // end of file reached?
-        break;
+	fd = fopen(filename.c_str(), "r");
 
-    if ((ret != 2) && (ret != 0))
-    {    
-      std::cerr << "Illegal line while reading target '" << filename << "'!" << std::endl;
-      clear ();
-      rc = false; // mark the error
-      break;
-    }
+	if (fd == NULL)
+		return false;
 
-    modVertex.insert(td.vertex_number); 
-    if(sign == '-') 
-    {
-      td.rotation *= -1;           
-    }
-    target.push_back (td);   
-  }
+	// get the current locale
+	char *locale = ::setlocale(LC_NUMERIC, NULL);
 
-  fclose (fd);
+	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
+	::setlocale(LC_NUMERIC, "C");
 
-  string vertexNumber(str);
-  stringTokenize(vertexNumber, centerVertexNumbers);
+	for (;;) {
+		PoseTargetData td;
 
-  switch(ax)
-  {
-    case 'X': 
-         axis = X_AXIS;
-         break;
-    case 'Y':
-         axis = Y_AXIS;
-         break;
-    case 'Z':          
-         axis = Z_AXIS;
-         break;
-  }
-  
-  // reset locale after file was written
-  ::setlocale (LC_NUMERIC, locale);  
-  
-  return rc;  
+		ret = fscanf(fd, "%d,%f", &td.vertex_number, &td.rotation);
+
+		if (ret == EOF) // end of file reached?
+			break;
+
+		if ((ret != 2) && (ret != 0)) {
+			std::cerr << "Illegal line while reading target '" << filename << "'!"
+			          << std::endl;
+			clear();
+			rc = false; // mark the error
+			break;
+		}
+
+		modVertex.insert(td.vertex_number);
+		if (sign == '-') {
+			td.rotation *= -1;
+		}
+		target.push_back(td);
+	}
+
+	fclose(fd);
+
+	string vertexNumber(str);
+	stringTokenize(vertexNumber, centerVertexNumbers);
+
+	switch (ax) {
+	case 'X':
+		axis = X_AXIS;
+		break;
+	case 'Y':
+		axis = Y_AXIS;
+		break;
+	case 'Z':
+		axis = Z_AXIS;
+		break;
+	}
+
+	// reset locale after file was written
+	::setlocale(LC_NUMERIC, locale);
+
+	return rc;
 }
 
-void PoseSemiTarget::stringTokenize(const string& str, vector<int>& tokens)
+void PoseSemiTarget::stringTokenize(const string &str, vector<int> &tokens)
 {
-  const string& delimiters = ", ";
-  
-  // Skip delimiters at beginning.
-  string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-  // Find first "non-delimiter".
-  string::size_type pos     = str.find_first_of(delimiters, lastPos);
+	const string &delimiters = ", ";
 
-  while (string::npos != pos || string::npos != lastPos)
-  {
-    // Found a token, add it to the vector.
-    tokens.push_back(std::atoi(str.substr(lastPos, pos - lastPos).c_str()));
-    // Skip delimiters.  Note the "not_of"
-    lastPos = str.find_first_not_of(delimiters, pos);
-    // Find next "non-delimiter"
-    pos = str.find_first_of(delimiters, lastPos);
-  }
+	// Skip delimiters at beginning.
+	string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+	// Find first "non-delimiter".
+	string::size_type pos = str.find_first_of(delimiters, lastPos);
+
+	while (string::npos != pos || string::npos != lastPos) {
+		// Found a token, add it to the vector.
+		tokens.push_back(std::atoi(str.substr(lastPos, pos - lastPos).c_str()));
+		// Skip delimiters.  Note the "not_of"
+		lastPos = str.find_first_not_of(delimiters, pos);
+		// Find next "non-delimiter"
+		pos = str.find_first_of(delimiters, lastPos);
+	}
 }

@@ -27,6 +27,7 @@
 
 #include "gui/Point.h"
 
-namespace mhgui {
+namespace mhgui
+{
 
 } // namespace mhgui

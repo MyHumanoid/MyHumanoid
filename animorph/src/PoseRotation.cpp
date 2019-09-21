@@ -8,109 +8,109 @@ using namespace std;
 using namespace Animorph;
 
 PoseRotation::PoseRotation()
-: modVertex(),
-  hasCenter(false),
-  //mainRotation(false),
-  minAngle(0.0f),
-  maxAngle(0.0f),
-  normalize(false),
-  //inFilename(),
-  cat()
+    : modVertex()
+    , hasCenter(false)
+    ,
+    // mainRotation(false),
+    minAngle(0.0f)
+    , maxAngle(0.0f)
+    , normalize(false)
+    ,
+    // inFilename(),
+    cat()
 {
 }
 
-bool PoseRotation::load (const std::string& filename)
+bool PoseRotation::load(const std::string &filename)
 {
-  char str[MAX_LINE_BUFFER];
-  char tmp[MAX_LINE_BUFFER];
-  char ax;
-  //char sign;
+	char str[MAX_LINE_BUFFER];
+	char tmp[MAX_LINE_BUFFER];
+	char ax;
+	// char sign;
 
-  clear ();
+	clear();
 
-  PoseRotation &target(*this);
+	PoseRotation &target(*this);
 
-  int ret = 0;
-  bool rc = true; // assume "success" by default
+	int ret = 0;
+	bool rc = true; // assume "success" by default
 
-  // info file
-  FILE *fd = fopen ((filename+".info").c_str(), "r");
+	// info file
+	FILE *fd = fopen((filename + ".info").c_str(), "r");
 
-  if (fd == NULL)
-    return false;
+	if (fd == NULL)
+		return false;
 
-  fgets(str, MAX_LINE_BUFFER,fd);
+	fgets(str, MAX_LINE_BUFFER, fd);
 
-  if (str == NULL) // end of file reached?
-      return false;
+	if (str == NULL) // end of file reached?
+		return false;
 
-  fgets(tmp, MAX_LINE_BUFFER,fd);
-  ret = sscanf (tmp, "%c", &ax);
+	fgets(tmp, MAX_LINE_BUFFER, fd);
+	ret = sscanf(tmp, "%c", &ax);
 
-  if (ret == EOF) // end of file reached?
-      return false;
+	if (ret == EOF) // end of file reached?
+		return false;
 
-  fgets(tmp, MAX_LINE_BUFFER,fd);
-  ret = sscanf (tmp, "%f,%f", &minAngle, &maxAngle);
+	fgets(tmp, MAX_LINE_BUFFER, fd);
+	ret = sscanf(tmp, "%f,%f", &minAngle, &maxAngle);
 
-  if (ret == EOF) // end of file reached?
-    return false;
+	if (ret == EOF) // end of file reached?
+		return false;
 
-  fclose(fd);
+	fclose(fd);
 
-  fd = fopen (filename.c_str (), "r");
+	fd = fopen(filename.c_str(), "r");
 
-  if (fd == NULL)
-    return false;
+	if (fd == NULL)
+		return false;
 
-  // get the current locale
-  char *locale = ::setlocale (LC_NUMERIC, NULL);
+	// get the current locale
+	char *locale = ::setlocale(LC_NUMERIC, NULL);
 
-  // set it to "C"-Style ( the . (dot) means the decimal marker for floats)
-  ::setlocale (LC_NUMERIC, "C");
+	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
+	::setlocale(LC_NUMERIC, "C");
 
-  for(;;)
-  {
-    PoseTargetData td;
+	for (;;) {
+		PoseTargetData td;
 
-    ret = fscanf (fd, "%d,%f", &td.vertex_number, &td.rotation);
+		ret = fscanf(fd, "%d,%f", &td.vertex_number, &td.rotation);
 
-    if (ret == EOF) // end of file reached?
-        break;
+		if (ret == EOF) // end of file reached?
+			break;
 
-    if ((ret != 2) && (ret != 0))
-    {
-      std::cerr << "Illegal line while reading target '" << filename << "'!" << std::endl;
-      clear ();
-      rc = false; // mark the error
-      break;
-    }
+		if ((ret != 2) && (ret != 0)) {
+			std::cerr << "Illegal line while reading target '" << filename << "'!"
+			          << std::endl;
+			clear();
+			rc = false; // mark the error
+			break;
+		}
 
-    modVertex.push_back(td.vertex_number);
+		modVertex.push_back(td.vertex_number);
 
-    target.push_back (td);
-  }
+		target.push_back(td);
+	}
 
-  fclose (fd);
+	fclose(fd);
 
-  string vertexNumber(str);
-  stringTokeni (vertexNumber, ", ", centerVertexNumbers);
+	string vertexNumber(str);
+	stringTokeni(vertexNumber, ", ", centerVertexNumbers);
 
-  switch(ax)
-  {
-    case 'X':
-         axis = X_AXIS;
-         break;
-    case 'Y':
-         axis = Y_AXIS;
-         break;
-    case 'Z':
-         axis = Z_AXIS;
-         break;
-  }
+	switch (ax) {
+	case 'X':
+		axis = X_AXIS;
+		break;
+	case 'Y':
+		axis = Y_AXIS;
+		break;
+	case 'Z':
+		axis = Z_AXIS;
+		break;
+	}
 
-  // reset locale after file was written
-  ::setlocale (LC_NUMERIC, locale);
+	// reset locale after file was written
+	::setlocale(LC_NUMERIC, locale);
 
-  return rc;
+	return rc;
 }

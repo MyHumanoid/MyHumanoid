@@ -30,39 +30,49 @@
 #define QUATERNION_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <cmath>
 #include "Euler.h"
-#include "Vector3.h"
 #include "MathUtil.h"
+#include "Vector3.h"
+#include <cmath>
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents a quaternion
  */
 class Quaternion
 {
 public:
-  float w, x, y, z;
+	float w, x, y, z;
 
-  enum RotateAxis
-  {
-    X_AXIS,
-    Y_AXIS,
-    Z_AXIS
-  };
+	enum RotateAxis { X_AXIS, Y_AXIS, Z_AXIS };
 
-  Quaternion () : w (1.0), x (0.0), y (0.0), z (0.0) {}
-  Quaternion (float w, float x, float y, float z) : w (w), x (x), y (y), z (z) {};
+	Quaternion()
+	    : w(1.0)
+	    , x(0.0)
+	    , y(0.0)
+	    , z(0.0)
+	{
+	}
+	Quaternion(float w, float x, float y, float z)
+	    : w(w)
+	    , x(x)
+	    , y(y)
+	    , z(z){};
 
-  void identity () {w = 1.0; x = y = z = 0.0;}
-  void conjugate ();
+	void identity()
+	{
+		w = 1.0;
+		x = y = z = 0.0;
+	}
+	void conjugate();
 
-  /// as PI
-  void setRotation (float theta, RotateAxis axis);
-  void fromEuler (Euler &e);
+	/// as PI
+	void setRotation(float theta, RotateAxis axis);
+	void fromEuler(Euler &e);
 };
 
 /**************************************/
@@ -70,11 +80,11 @@ public:
 /**************************************/
 
 /// Quaternion multiplication (cross product)
-Quaternion operator * (const Quaternion &q1, const Quaternion &q2);
+Quaternion operator*(const Quaternion &q1, const Quaternion &q2);
 
 // << operator for output
-std::ostream &operator << (std::ostream &s, const Quaternion &q);
+std::ostream &operator<<(std::ostream &s, const Quaternion &q);
 
-}
+} // namespace Animorph
 
-#endif  // QUATERNION_H
+#endif // QUATERNION_H

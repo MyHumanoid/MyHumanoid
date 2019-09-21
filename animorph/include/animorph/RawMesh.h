@@ -29,91 +29,100 @@
 #define RAWMESH_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include "FaceGroup.h"
 #include "VertexVector.h"
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief A Mesh that is not poseable or morphable anymore
  */
 class RawMesh
 {
 private:
-  FaceVector        facevector;
-  VertexVector      vertexvector;
-  FaceGroup         bodyfaces;
-  FaceGroup         clothesgroup;
-  //FaceGroup         facegroup;
+	FaceVector facevector;
+	VertexVector vertexvector;
+	FaceGroup bodyfaces;
+	FaceGroup clothesgroup;
+	// FaceGroup         facegroup;
 
-  string name;
-
-public:
-   RawMesh();
-  ~RawMesh();
+	string name;
 
 public:
-  /**** get Pointer API ****/
-  /*************************/
+	RawMesh();
+	~RawMesh();
 
-  /*!
-   * \return a pointer to the morphed VertexVector of this Mesh
-   */
-  VertexVector *getVertexVectorPtr () {return &vertexvector;}
+public:
+	/**** get Pointer API ****/
+	/*************************/
 
-  /*!
-   * \return a pointer to the FaceVector of this Mesh
-   */
-  FaceVector *getFaceVectorPtr () {return &facevector;}
+	/*!
+	 * \return a pointer to the morphed VertexVector of this Mesh
+	 */
+	VertexVector *getVertexVectorPtr() { return &vertexvector; }
 
-  /**** get Reference API ****/
-  /***************************/
+	/*!
+	 * \return a pointer to the FaceVector of this Mesh
+	 */
+	FaceVector *getFaceVectorPtr() { return &facevector; }
 
-  /*!
-   * \return a reference to the morphed VertexVector of this Mesh
-   */
-  VertexVector &getVertexVectorRef () {return vertexvector;}
+	/**** get Reference API ****/
+	/***************************/
 
-  /*!
-   * \return a reference to the FaceVector of this Mesh
-   */
-  FaceVector &getFaceVectorRef () {return facevector;}
+	/*!
+	 * \return a reference to the morphed VertexVector of this Mesh
+	 */
+	VertexVector &getVertexVectorRef() { return vertexvector; }
 
-  /*!
-   * \return a reference to the BodyFaces of the Mesh
-   */
-  FaceGroup &getBodyFacesRef () {return bodyfaces;}
+	/*!
+	 * \return a reference to the FaceVector of this Mesh
+	 */
+	FaceVector &getFaceVectorRef() { return facevector; }
 
-  /*!
-   * \return a reference to the FaceGroup of the Mesh
-   */
-  //FaceGroup &getFaceGroupRef () {return facegroup;}
+	/*!
+	 * \return a reference to the BodyFaces of the Mesh
+	 */
+	FaceGroup &getBodyFacesRef() { return bodyfaces; }
 
-  /*!
-   * \return a reference to the ClothesGroup of the Mesh
-   */
-  FaceGroup &getClothesGroupRef () {return clothesgroup;}
+	/*!
+	 * \return a reference to the FaceGroup of the Mesh
+	 */
+	// FaceGroup &getFaceGroupRef () {return facegroup;}
 
-  /**** set Reference API ****/
-  /***************************/
+	/*!
+	 * \return a reference to the ClothesGroup of the Mesh
+	 */
+	FaceGroup &getClothesGroupRef() { return clothesgroup; }
 
-  void setVertexVector(const VertexVector& inVertexVector) {vertexvector = inVertexVector;}
+	/**** set Reference API ****/
+	/***************************/
 
-  void setFaceVector(const FaceVector& inFaceVector) {facevector = inFaceVector;}
+	void setVertexVector(const VertexVector &inVertexVector)
+	{
+		vertexvector = inVertexVector;
+	}
 
-  void setBodyFaces(const FaceGroup& inBodyFaces) {bodyfaces = inBodyFaces;}
+	void setFaceVector(const FaceVector &inFaceVector)
+	{
+		facevector = inFaceVector;
+	}
 
-  //void setFaceGroup(const FaceGroup& inFaceGroup) {facegroup = inFaceGroup;}
+	void setBodyFaces(const FaceGroup &inBodyFaces) { bodyfaces = inBodyFaces; }
 
-  void setClothesGroup(const FaceGroup& inClothesGroup) {clothesgroup = inClothesGroup;}
+	// void setFaceGroup(const FaceGroup& inFaceGroup) {facegroup = inFaceGroup;}
 
-  void setName(const string &inName) {name = inName;}
-  const string& getName() {return name;}
+	void setClothesGroup(const FaceGroup &inClothesGroup)
+	{
+		clothesgroup = inClothesGroup;
+	}
 
+	void setName(const string &inName) { name = inName; }
+	const string &getName() { return name; }
 };
 
-}
+} // namespace Animorph
 
-#endif	// RAWMESH_H
+#endif // RAWMESH_H

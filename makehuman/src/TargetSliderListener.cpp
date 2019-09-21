@@ -27,108 +27,110 @@
 
 #include <animorph/Mesh.h>
 
-#include <gui/ImageSlider.h>
 #include <gui/CGUtilities.h>
 #include <gui/GLUTWrapper.h>
+#include <gui/ImageSlider.h>
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 
-#include "TargetSliderListener.h"
-#include "TargetSlider.h"
 #include "Global.h"
+#include "TargetSlider.h"
+#include "TargetSliderListener.h"
 
 using namespace Animorph;
 using namespace std;
 
 TargetSliderListener::TargetSliderListener()
-: AbstractListener()
+    : AbstractListener()
 {
 }
 
-TargetSliderListener::~TargetSliderListener()
+TargetSliderListener::~TargetSliderListener() {}
+
+bool TargetSliderListener::mouseOver(const Point &inMousePos, Component *source)
 {
+	return false;
 }
 
-bool TargetSliderListener::mouseOver (const Point& inMousePos, Component *source)
+bool TargetSliderListener::mouseWheel(const Point &inMousePos, int inButton,
+                                      Component *source)
 {
-  return false;
+#ifdef GLUT_WHEEL_UP
+	return mouseDragged(inMousePos, source);
+#else
+	return false;
+#endif
 }
 
-bool TargetSliderListener::mouseWheel (const Point& inMousePos, int inButton, Component *source)
+bool TargetSliderListener::mouseOut(const Point &inMousePos, Component *source)
 {
-  #ifdef GLUT_WHEEL_UP
-    return mouseDragged(inMousePos, source);
-  #else
-    return false;
-  #endif
+	// TODO: the mouseOut event is perhaps a little wrong for this.
+	// better is mouseReleased, but this should generate an event also
+	// if released outside the widget (but only for slider!!)
+
+	return false;
 }
 
-bool TargetSliderListener::mouseOut (const Point& inMousePos, Component *source)
+bool TargetSliderListener::mouseDragged(const Point &inMousePos,
+                                        Component *source)
 {
-  // TODO: the mouseOut event is perhaps a little wrong for this.
-  // better is mouseReleased, but this should generate an event also
-  // if released outside the widget (but only for slider!!)
+	TargetSlider *imgSliderSource =
+	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-  return false;
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+
+	if (global.getSubdivision()) {
+		global.setLightMesh(true);
+	}
+
+	mesh->doMorph(imgSliderSource->getTargetName(),
+	              imgSliderSource->getSliderValue());
+
+	/* TODO:
+	 * It's a little slow to calc normals in realtime while morphing.
+	 * A better way is to calc it once after a drag operation ends. This
+	 * needs some changes in listener implementation.
+	 *
+	 * Another solution is to speed up normals calculation in animorph.
+	 * I've some good ideas how to do this...
+	 */
+
+	return true;
 }
 
-bool TargetSliderListener::mouseDragged (const Point& inMousePos, Component *source)
+bool TargetSliderListener::mousePressed(const Point &inMousePos, int button,
+                                        Component *source)
 {
-  TargetSlider *imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
-  assert(imgSliderSource); // Check if this is really a TargetSlider object?
-
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-
-  if(global.getSubdivision())
-  {
-    global.setLightMesh(true);
-  }
-
-  mesh->doMorph (imgSliderSource->getTargetName (),
-		 imgSliderSource->getSliderValue ());
-
-  /* TODO:
-   * It's a little slow to calc normals in realtime while morphing.
-   * A better way is to calc it once after a drag operation ends. This
-   * needs some changes in listener implementation.
-   *
-   * Another solution is to speed up normals calculation in animorph.
-   * I've some good ideas how to do this...
-   */
-
-  return true;
+	return false;
 }
 
-bool TargetSliderListener::mousePressed(const Point& inMousePos, int button, Component *source)
+bool TargetSliderListener::mouseReleased(const Point &inMousePos, int button,
+                                         Component *source)
 {
-  return false;
+	TargetSlider *imgSliderSource =
+	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	assert(imgSliderSource); // Check if this is really a TargetSlider object?
+
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+
+	mesh->doMorph(imgSliderSource->getTargetName(),
+	              imgSliderSource->getSliderValue());
+
+	mesh->calcNormals();
+
+	if (global.getSubdivision()) {
+		mesh->calcSubsurf();
+		global.setLightMesh(false);
+	}
+
+	return false;
 }
 
-bool TargetSliderListener::mouseReleased (const Point& inMousePos, int button, Component *source)
+bool TargetSliderListener::keyType(unsigned char key, Component *source)
 {
-  TargetSlider *imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
-  assert(imgSliderSource); // Check if this is really a TargetSlider object?
-
-  Global &global = Global::instance ();
-  Mesh *mesh = global.getMesh ();
-
-  mesh->doMorph (imgSliderSource->getTargetName (),
-		 imgSliderSource->getSliderValue ());
-
-  mesh->calcNormals ();
-
-  if(global.getSubdivision())
-  {
-    mesh->calcSubsurf();
-    global.setLightMesh(false);
-  }
-
-  return false;
-}
-
-bool TargetSliderListener::keyType (unsigned char key, Component *source)
-{
-  return false;
+	return false;
 }

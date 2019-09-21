@@ -29,17 +29,17 @@
 #define MHUTIL_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
-#include <string>
-#include <vector>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <iostream>
 #include <dirent.h>
 #include <gui/Window.h>
+#include <iostream>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <vector>
 
 #ifndef _WIN32
 #include <pwd.h>
@@ -47,11 +47,11 @@
 
 #ifdef _WIN32
 //#define BUFFER 512
-#include <windows.h>
-#include <shlobj.h>
 #include <io.h>
+#include <shlobj.h>
+#include <windows.h>
 
-typedef HRESULT (*MYPROC) (HWND, int, HANDLE, DWORD, LPTSTR);
+typedef HRESULT (*MYPROC)(HWND, int, HANDLE, DWORD, LPTSTR);
 #else
 #define stricmp strcasecmp
 #endif
@@ -63,70 +63,69 @@ using namespace mhgui;
 
 typedef vector<string> StringVector;
 
-const StringVector getPixmapsAlternatives     (const string& pixmap);
-const StringVector getDataAlternatives        (const string& data);
-const StringVector getBackgroundsAlternatives (const string& data);
-const StringVector getTexturesAlternatives    (const string& texture);
-const StringVector getShadersAlternatives    (const string& shader);
+const StringVector getPixmapsAlternatives(const string &pixmap);
+const StringVector getDataAlternatives(const string &data);
+const StringVector getBackgroundsAlternatives(const string &data);
+const StringVector getTexturesAlternatives(const string &texture);
+const StringVector getShadersAlternatives(const string &shader);
 
-const string searchDataFile       (const string& data_file);
-const string searchPixmapFile     (const string& pixmap_file);
-const string searchBackgroundFile (const string& data_file);
-const string searchTextureFile    (const string& texture_file);
-const string searchShaderFile     (const string& shader_file);
+const string searchDataFile(const string &data_file);
+const string searchPixmapFile(const string &pixmap_file);
+const string searchBackgroundFile(const string &data_file);
+const string searchTextureFile(const string &texture_file);
+const string searchShaderFile(const string &shader_file);
 
-const string searchDataDir   (const string& data_dir);
-const string searchPixmapDir (const string& pixmap_dir);
+const string searchDataDir(const string &data_dir);
+const string searchPixmapDir(const string &pixmap_dir);
 
-const string searchFile (const StringVector &name_vector);
-const string searchDir  (const StringVector &name_vector);
+const string searchFile(const StringVector &name_vector);
+const string searchDir(const StringVector &name_vector);
 
-const string getHomeDir ();
+const string getHomeDir();
 
 const string getUserWorkDir();
-void createDirWhenNotExists(const string& inPath);
+void createDirWhenNotExists(const string &inPath);
 
-const string getMyObjPath             ();
-const string getMyColladaPath         ();
-const string getMyPosesPath           ();
-const string getMyPosesBasePath       ();
-const string getMyBodysettingsPath    ();
+const string getMyObjPath();
+const string getMyColladaPath();
+const string getMyPosesPath();
+const string getMyPosesBasePath();
+const string getMyBodysettingsPath();
 const string getMyBodysettingsBasePath();
-const string getRenderingPath         ();
-const string getTexturesPath          ();
-const string getShadersPath           ();
-const string getMyBackgroundsPath     ();
+const string getRenderingPath();
+const string getTexturesPath();
+const string getShadersPath();
+const string getMyBackgroundsPath();
 
 void createWorkingDirs();
 void loadRenderingPaths();
-void  saveRenderingPaths(string path,int RENDER_TYPE);
+void saveRenderingPaths(string path, int RENDER_TYPE);
 
 void CreateWeightsFile();
-enum RenderType
-{
-  NORMAL,
-  PREVIEW,
-  TOON
-};
-enum render_Prog{
-  AQSIS = 0,
-  PIXIE,
+enum RenderType { NORMAL, PREVIEW, TOON };
+enum render_Prog {
+	AQSIS = 0,
+	PIXIE,
 };
 
-enum multith{
-  NMT = 0,
-  MT,
+enum multith {
+	NMT = 0,
+	MT,
 };
 
-bool callRender(const string& cmd,const string& opt,const string& file_rib, Window &mainWindow);
-bool compileShaders(const string& shader_compiler, Window &mainWindow);
-bool compileTextures(const string& textures_dir, const string& texture_compiler, Window &mainWindow);
+bool callRender(const string &cmd, const string &opt, const string &file_rib,
+                Window &mainWindow);
+bool compileShaders(const string &shader_compiler, Window &mainWindow);
+bool compileTextures(const string &textures_dir, const string &texture_compiler,
+                     Window &mainWindow);
 void rendering(Window &mainWindow, const RenderType type);
 void renderingStep();
-bool ExecuteCommand(int multithreading, const string& command, const string& opt) ;
-bool ExecuteCommand_WFile(int multithreading, const string& command, const string& opt,const string& file);
-///Aqsis
-int SetAqsisBasePath(const string& path);
+bool ExecuteCommand(int multithreading, const string &command,
+                    const string &opt);
+bool ExecuteCommand_WFile(int multithreading, const string &command,
+                          const string &opt, const string &file);
+/// Aqsis
+int SetAqsisBasePath(const string &path);
 
 const string GetDefaultAqsisPath();
 const string GetAqsisBasePath();
@@ -135,8 +134,8 @@ const string GetAqsisRender();
 const string GetAqsisCompiler();
 const string GetAqsisShaderCompiler();
 const string GetAqsisVersion();
-///pixie
-int SetPixieBasePath(const string& path);
+/// pixie
+int SetPixieBasePath(const string &path);
 
 const string GetDefaultPixiePath();
 const string GetPixieBasePath();
@@ -147,23 +146,20 @@ const string GetPixieShaderCompiler();
 const string GetPixieVersion();
 
 int ParseParameter(string cmd);
-int ParseStringRIBParameter(char *param,char *value);
+int ParseStringRIBParameter(char *param, char *value);
 
 void ExportConfigurationXML();
 void ParseConfigurationXML();
 
 void loadDefaultBodySettings();
-bool loadSelectorsPositions(const std::string& filename);
-bool loadSelectorsPositions(const std::vector<string>& strings, const float value = 1.0);
-bool saveSelectorsPositions(const std::string& filename, std::ios_base::openmode mode = std::ios::app);
+bool loadSelectorsPositions(const std::string &filename);
+bool loadSelectorsPositions(const std::vector<string> &strings,
+                            const float value = 1.0);
+bool saveSelectorsPositions(const std::string &filename,
+                            std::ios_base::openmode mode = std::ios::app);
 
-template <class T>
-struct deleteFunctor
-{
-  void operator() (T& t)
-  {
-    delete t;
-  }
+template <class T> struct deleteFunctor {
+	void operator()(T &t) { delete t; }
 };
 int KillProcessList();
 #endif // MHUTIL_H

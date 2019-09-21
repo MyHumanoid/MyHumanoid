@@ -29,27 +29,28 @@
 #define POSETRANSLATION_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 
-#include <sstream>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <sstream>
 
-#include "util.h"
 #include "FileReader.h"
 #include "Matrix.h"
 #include "Target.h"
+#include "util.h"
 
-using std::string;
 using std::set;
+using std::string;
 using std::vector;
 
-namespace Animorph {
+namespace Animorph
+{
 
 /*! \brief Represents the translational data of a PoseTarget
 
@@ -81,56 +82,58 @@ The filenames of these files end in ".target.info".
 class PoseTranslation
 {
 private:
-  Target *target;
-  float originalSize[3];
-  Vector3f formFactor;
-  float minAngle;
-  float maxAngle;
-  /// flag
-  bool normalize;
-  //string inFilename;
-  /// Can be used to influence the order of application of rotations and translations
-  string cat;
+	Target *target;
+	float originalSize[3];
+	Vector3f formFactor;
+	float minAngle;
+	float maxAngle;
+	/// flag
+	bool normalize;
+	// string inFilename;
+	/// Can be used to influence the order of application of rotations and
+	/// translations
+	string cat;
 
-  bool mbLimb;
+	bool mbLimb;
+
 public:
-  PoseTranslation();
-  /*!
-   * \param filename the file with PoseTarget data to load
-   * \return true if file is found
-   * \return false if file isn't found
-   */
-  bool load (const string& filename);
+	PoseTranslation();
+	/*!
+	 * \param filename the file with PoseTarget data to load
+	 * \return true if file is found
+	 * \return false if file isn't found
+	 */
+	bool load(const string &filename);
 
-//  const vector<int> &getCenterVertexNumbers () {return centerVertexNumbers;}
-  UnsortedUsedVertex &getModVertex () {return target->getModVertex();}
-/*
-  const RotateAxis& getAxis () const {return axis;}
+	//  const vector<int> &getCenterVertexNumbers () {return centerVertexNumbers;}
+	UnsortedUsedVertex &getModVertex() { return target->getModVertex(); }
+	/*
+	  const RotateAxis& getAxis () const {return axis;}
 
-  bool getHasCenter() const {return hasCenter;}
-  void setHasCenter(bool c) {hasCenter = c;}
+	  bool getHasCenter() const {return hasCenter;}
+	  void setHasCenter(bool c) {hasCenter = c;}
 
-  const Vector3f &getCenter() const {return center;}
-  void setCenter(const Vector3f& c) {center = c;}
-*/
+	  const Vector3f &getCenter() const {return center;}
+	  void setCenter(const Vector3f& c) {center = c;}
+	*/
 
-  /// The distance between startVertexNumbers and endVertexNumbers, divided by originalSize
-  void calcFormFactor(const VertexVector& vertexvector);
-  Target &getTarget () {return *target;}
-  Vector3f &getFormFactor() {return formFactor;}
-  const float getMinAngle() const {return minAngle;}
-  const float getMaxAngle() const {return maxAngle;}
-  const bool getNormalize() const {return normalize;}
-  void setNormalize(bool inNormalize) {normalize = inNormalize;}
-  //const string &getFilename() const {return inFilename;}
-  const string &getCat() const {return cat;}
-  void setCat(string inCat) {cat = inCat;}
+	/// The distance between startVertexNumbers and endVertexNumbers, divided by
+	/// originalSize
+	void calcFormFactor(const VertexVector &vertexvector);
+	Target &getTarget() { return *target; }
+	Vector3f &getFormFactor() { return formFactor; }
+	const float getMinAngle() const { return minAngle; }
+	const float getMaxAngle() const { return maxAngle; }
+	const bool getNormalize() const { return normalize; }
+	void setNormalize(bool inNormalize) { normalize = inNormalize; }
+	// const string &getFilename() const {return inFilename;}
+	const string &getCat() const { return cat; }
+	void setCat(string inCat) { cat = inCat; }
 
-  void setLimb(bool limb) { mbLimb = limb;}
-  bool getLimb(){return mbLimb;}
+	void setLimb(bool limb) { mbLimb = limb; }
+	bool getLimb() { return mbLimb; }
 };
 
-}
+} // namespace Animorph
 
-#endif	// POSETRANSLATION_H
-
+#endif // POSETRANSLATION_H

@@ -29,7 +29,7 @@
 #define IMAGEBUTTON_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
 #include <gui/Image.h>
@@ -40,12 +40,13 @@ using namespace mhgui;
 class ImageButton : public Image
 {
 public:
-  ImageButton (uint32_t inId, const string& inFilename, const string& inCommand, const Rect& inGeometry) :
-    Image(inId, inFilename, inGeometry),
-    infoCommand(inCommand) {};
-  ~ImageButton () {};
+	ImageButton(uint32_t inId, const string &inFilename, const string &inCommand,
+	            const Rect &inGeometry)
+	    : Image(inId, inFilename, inGeometry)
+	    , infoCommand(inCommand){};
+	~ImageButton(){};
 
-  string infoCommand;
+	string infoCommand;
 };
 
 #endif // IMAGEBUTTON_H

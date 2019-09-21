@@ -30,18 +30,19 @@
 #define VERTEXGROUP_H 1
 
 #ifdef HAVE_CONFIG_H
-  #include <config.h>
+#include <config.h>
 #endif
 
+#include "FileReader.h"
+#include <fstream>
+#include <iostream>
 #include <map>
 #include <string>
-#include <iostream>
-#include <fstream>
-#include "FileReader.h"
 
-namespace Animorph {
+namespace Animorph
+{
 
-typedef std::map <int, float> VGroupData;
+typedef std::map<int, float> VGroupData;
 
 /*! \brief Loadable map from names to a map from ints to floats.
 
@@ -55,15 +56,15 @@ The format of VertexGroup file:
 <vgroup>}
 \endverbatim
 */
-class VertexGroup : public std::map <std::string, VGroupData>
+class VertexGroup : public std::map<std::string, VGroupData>
 {
 private:
-  void fromStream (std::ifstream &in_stream);
+	void fromStream(std::ifstream &in_stream);
 
 public:
-  bool load (const std::string& filename);
+	bool load(const std::string &filename);
 };
 
-}
+} // namespace Animorph
 
-#endif	// VERTEXGROUP_H
+#endif // VERTEXGROUP_H
