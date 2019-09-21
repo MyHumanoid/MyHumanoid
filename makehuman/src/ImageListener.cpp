@@ -468,12 +468,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				else
 					global.setFlatShading(true);
 			} break;
-			case kComponentID_ImageUtilitybar_QuotedBox: {
-				if (global.getQuotedBox())
-					global.setQuotedBox(false);
-				else
-					global.setQuotedBox(true);
-			} break;
 			case kComponentID_ImageUtilitybar_MeshTexture: {
 				if (global.getTexture())
 					global.setTexture(false);

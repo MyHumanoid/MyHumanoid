@@ -73,8 +73,6 @@ static const uint32_t kComponentID_ImageUtilitybar_About =
     FOUR_CHAR_CONST('A', 'b', 'o', 'u');
 static const uint32_t kComponentID_ImageUtilitybar_FlatShading =
     FOUR_CHAR_CONST('F', 'l', 'S', 'h');
-static const uint32_t kComponentID_ImageUtilitybar_QuotedBox =
-    FOUR_CHAR_CONST('Q', 'u', 'B', 'o');
 static const uint32_t kComponentID_ImageUtilitybar_MeshTexture =
     FOUR_CHAR_CONST('M', 's', 'T', 'e');
 static const uint32_t kComponentID_ImageUtilitybar_Frames_01 =

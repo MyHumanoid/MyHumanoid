@@ -71,16 +71,6 @@ void UtilitybarPanel::createWidgets()
 	*/
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	utilitybar =
-	    new Image(kComponentID_ImageUtilitybar_QuotedBox,
-	              searchPixmapFile("ui/utilitybar_07.png"), Rect(0, 0, 16, 16));
-	utilitybar->setListener(&imgListener1);
-	utilitybar->setTooltip(
-	    Tooltip("Quoted box ON/OFF", kTooltipPos, color_red, tooltipPanel));
-	utilitybar->setAlpha(alpha);
-	imageVector.push_back(utilitybar);
-	addWidget(utilitybar);
-
 	// -------------------------------------------------------------------------
 	utilitybar =
 	    new Image(kComponentID_ImageUtilitybar_MeshTexture,

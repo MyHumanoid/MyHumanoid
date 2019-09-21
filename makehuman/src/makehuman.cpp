@@ -178,6 +178,8 @@ void DisplayMainMenu()
 					mesh->calcSubsurf();
 				}
 			}
+			ImGui::Checkbox("Quoted box", &Global::instance().quotedBox);
+			
 			ImGui::Separator();
 			ImGui::EndMenu();
 		}
