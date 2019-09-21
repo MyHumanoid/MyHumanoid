@@ -32,6 +32,9 @@
 #include <config.h>
 #endif
 
+#include <cstdint>
+
+
 // Construct a integer composed from a four char literal.
 // FOUR_CHAR_CONST('D','U','M','Y'); is a substitute of the uint32_t literal
 // 'DUMY'

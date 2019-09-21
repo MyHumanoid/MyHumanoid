@@ -27,9 +27,9 @@
 
 #include <GL/freeglut.h>
 
+#include <imgui.h>
 #include <examples/imgui_impl_glut.h>
 #include <examples/imgui_impl_opengl2.h>
-#include <imgui.h>
 
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"

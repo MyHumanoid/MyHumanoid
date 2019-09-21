@@ -32,12 +32,12 @@
 
 #include <iostream>
 
-#include <GL/freeglut.h>
 #include <GL/gl.h>
+#include <GL/freeglut.h>
 
+#include <imgui.h>
 #include <examples/imgui_impl_glut.h>
 #include <examples/imgui_impl_opengl2.h>
-#include <imgui.h>
 
 // mhh...maybe some of these includes are retundant
 #include <animorph/Mesh.h>

@@ -34,11 +34,17 @@
 #include <config.h>
 #endif
 
-#include <gui/AbstractListener.h>
-#include <gui/Point.h>
 #include <iostream>
 
-class mhgui::Component;
+#include "gui/AbstractListener.h"
+#include "gui/Component.h"
+#include "gui/Console.h"
+#include "gui/Point.h"
+
+using mhgui::AbstractListener;
+using mhgui::Component;
+using mhgui::Console;
+using mhgui::Point;
 
 class ConsoleListener : public AbstractListener
 {
