@@ -192,6 +192,19 @@ void DisplayMainMenu()
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Help")) {
 			ImGui::Checkbox("Performance", &g_displayPerformance);
+			ImGui::Separator();
+			if(ImGui::Button("About")) {
+				SplashPanel *splashScreen =
+				    (SplashPanel *)g_mainWindow->getPanel(kComponentID_SplashPanel);
+				
+				if (splashScreen == NULL) {
+					Global::instance().setDrawGrid(false);
+					splashScreen = new SplashPanel(g_mainWindow->getSize());
+					g_mainWindow->addPanel(splashScreen);
+					splashScreen->createWidgets();
+					splashScreen->show_all();
+				}
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();

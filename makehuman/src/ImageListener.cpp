@@ -471,18 +471,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 			case kComponentID_ImageUtilitybar_RenderPreview: {
 				rendering(mainWindow, PREVIEW);
 			} break;
-			case kComponentID_ImageUtilitybar_About: {
-				SplashPanel *splashScreen =
-				    (SplashPanel *)mainWindow.getPanel(kComponentID_SplashPanel);
-
-				if (splashScreen == NULL) {
-					global.setDrawGrid(false);
-					splashScreen = new SplashPanel(mainWindow.getSize());
-					mainWindow.addPanel(splashScreen);
-					splashScreen->createWidgets();
-					splashScreen->show_all();
-				}
-			} break;
 			case kComponentID_CloseTargetPanel: {
 				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);

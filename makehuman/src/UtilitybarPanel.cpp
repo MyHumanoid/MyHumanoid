@@ -73,16 +73,6 @@ void UtilitybarPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	utilitybar =
-	    new Image(kComponentID_ImageUtilitybar_About,
-	              searchPixmapFile("ui/utilitybar_05.png"), Rect(0, 0, 16, 16));
-	utilitybar->setListener(&imgListener1);
-	utilitybar->setTooltip(
-	    Tooltip("About MakeHuman", kTooltipPos, color_red, tooltipPanel));
-	utilitybar->setAlpha(alpha);
-	imageVector.push_back(utilitybar);
-	addWidget(utilitybar);
-
 	// -------------------------------------------------------------------------
 	utilitybar = new Image(kComponentID_ImageUtilitybar_Frames_01,
 	                       searchPixmapFile("ui/frames_01.png"),
