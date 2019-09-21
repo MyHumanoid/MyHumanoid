@@ -196,8 +196,8 @@ static void ResetParameter();
 // string parameters
 
 typedef struct {
-	char *name;
-	char *proto;
+	const char *name;
+	const char *proto;
 	string value;
 } RIB_PARAM_STRING;
 
