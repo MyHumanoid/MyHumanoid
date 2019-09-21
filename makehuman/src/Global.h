@@ -64,8 +64,8 @@ struct Global
 	    , drawGrid(false)
 	    , flatShading(false)
 	    , quotedBox(false)
-	    , texture(false)
-	    , canTexture(false)
+	    , m_enableTexture(false)
+	    , m_canTexture(false)
 	    , rendering(false)
 	    , subdivision(false)
 	    , lightMesh(false)
@@ -88,8 +88,8 @@ struct Global
 	bool drawGrid;
 	bool flatShading;
 	bool quotedBox;
-	bool texture;
-	bool canTexture;
+	bool m_enableTexture;
+	bool m_canTexture;
 	bool rendering;
 	bool subdivision;
 	bool lightMesh;
@@ -130,11 +130,11 @@ public:
 	void setAppMode(Modes mode) { appMode = mode; }
 	Modes getAppMode() { return appMode; }
 
-	void setTexture(bool texture) { this->texture = texture; }
-	bool getTexture() { return texture; }
+	void setTexture(bool texture) { this->m_enableTexture = texture; }
+	bool getTexture() { return m_enableTexture; }
 
-	void setCanTexture(bool canTexture) { this->canTexture = canTexture; }
-	bool getCanTexture() { return canTexture; }
+	void setCanTexture(bool canTexture) { this->m_canTexture = canTexture; }
+	bool getCanTexture() { return m_canTexture; }
 
 	void setRendering(bool rendering) { this->rendering = rendering; }
 	bool isRendering() { return rendering; }

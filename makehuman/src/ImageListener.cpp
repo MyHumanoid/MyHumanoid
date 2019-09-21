@@ -468,15 +468,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				else
 					global.setFlatShading(true);
 			} break;
-			case kComponentID_ImageUtilitybar_MeshTexture: {
-				if (global.getTexture())
-					global.setTexture(false);
-				else {
-					if (Global::instance().getCanTexture()) {
-						Global::instance().setTexture(true);
-					}
-				}
-			} break;
 			case kComponentID_ImageUtilitybar_RenderPreview: {
 				rendering(mainWindow, PREVIEW);
 			} break;

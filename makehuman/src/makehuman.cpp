@@ -179,6 +179,7 @@ void DisplayMainMenu()
 				}
 			}
 			ImGui::Checkbox("Quoted box", &Global::instance().quotedBox);
+			ImGui::Checkbox("Texture", &Global::instance().m_enableTexture);
 			
 			ImGui::Separator();
 			ImGui::EndMenu();
@@ -1155,7 +1156,7 @@ void renderFace(const Face &face, const MaterialVector &materialvector,
 		::glNormal3fv(vertex.no.getAsOpenGLVector());
 		//    }
 
-		if (Global::instance().getTexture() && !Global::instance().getLightMesh()) {
+		if(Global::instance().m_canTexture && Global::instance().getTexture() && !Global::instance().getLightMesh()) {
 			::glTexCoord2f(uv.x, uv.y);
 		}
 		::glVertex3fv(vertex.co.getAsOpenGLVector());
@@ -1258,7 +1259,7 @@ void renderMesh()
 		}
 	}
 
-	if (Global::instance().getTexture() && !Global::instance().getLightMesh()) {
+	if(Global::instance().m_canTexture && Global::instance().getTexture() && !Global::instance().getLightMesh()) {
 		::glEnable(GL_TEXTURE_2D);
 	}
 
@@ -1270,7 +1271,7 @@ void renderMesh()
 		if ((*facegroup_it).second.visible == false)
 			continue;
 
-		if (Global::instance().getTexture() && !Global::instance().getLightMesh()) {
+		if(Global::instance().m_canTexture && Global::instance().getTexture() && !Global::instance().getLightMesh()) {
 			::glBindTexture(GL_TEXTURE_2D, Global::instance()
 			                                   .getTexture((*facegroup_it).first)
 			                                   ->getTextureIdOfXY(0, 0));
@@ -1301,7 +1302,7 @@ void renderMesh()
 
 	renderClothes();
 
-	if (Global::instance().getTexture() && !Global::instance().getLightMesh()) {
+	if(Global::instance().m_canTexture && Global::instance().m_enableTexture && !Global::instance().getLightMesh()) {
 		::glDisable(GL_TEXTURE_2D);
 	}
 	cgutils::disableBlend();

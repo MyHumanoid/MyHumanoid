@@ -72,16 +72,6 @@ void UtilitybarPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	utilitybar =
-	    new Image(kComponentID_ImageUtilitybar_MeshTexture,
-	              searchPixmapFile("ui/utilitybar_08.png"), Rect(0, 0, 16, 16));
-	utilitybar->setListener(&imgListener1);
-	utilitybar->setTooltip(
-	    Tooltip("Texture ON/OFF", kTooltipPos, color_red, tooltipPanel));
-	utilitybar->setAlpha(alpha);
-	imageVector.push_back(utilitybar);
-	addWidget(utilitybar);
-
 	// -------------------------------------------------------------------------
 	utilitybar =
 	    new Image(kComponentID_ImageUtilitybar_About,
