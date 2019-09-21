@@ -39,7 +39,7 @@ using namespace std;
 using namespace Animorph;
 
 ToolbarPanel::ToolbarPanel()
-    : Panel(kComponentID_ToolbarPanel, Rect(192, 0, 1248, 32))
+    : Panel(kComponentID_ToolbarPanel, Rect(192, 16, 1248, 32))
 {
 }
 

@@ -462,11 +462,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				}
 			} break;
 			// utilitybar buttons
-			case kComponentID_ImageUtilitybar_Quit:
-				// exit (0);
-				mainWindow.getConsole()->openWithCommand(
-				    kConsoleCommand_Exit, kConsoleMessage_ConfirmExit, "");
-				break;
 			case kComponentID_ImageUtilitybar_Grid: {
 				if (global.getDrawGrid())
 					global.setDrawGrid(false);

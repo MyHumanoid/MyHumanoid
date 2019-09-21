@@ -114,10 +114,6 @@ static const string kConsoleMessage_ShaderCompileError =
 static const string kConsoleMessage_RenderError =
     "Rendering error. Press ESC to exit!";
 
-static const string kConsoleMessage_ConfirmExit =
-    "Do you really want to quit? (press ENTER to quit)"; // or press ESC to
-                                                         // return)";
-
 static const string kConsoleMessage_WrongMode_Animations =
     "This command can be executed only in Utilities panel";
 static const string kConsoleMessage_WrongMode_Poses =

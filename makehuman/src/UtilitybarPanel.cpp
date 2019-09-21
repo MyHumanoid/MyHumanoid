@@ -39,7 +39,7 @@ using namespace std;
 using namespace Animorph;
 
 UtilitybarPanel::UtilitybarPanel()
-    : Panel(kComponentID_UtilitybarPanel, Rect(0, 0, 192, 16))
+    : Panel(kComponentID_UtilitybarPanel, Rect(0, 16, 192, 16))
 {
 }
 
@@ -58,18 +58,7 @@ void UtilitybarPanel::createWidgets()
 	float alpha = 1.0;
 	const Point kTooltipPos(70, 12);
 
-	// -------------------------------------------------------------------------
-	Image *utilitybar =
-	    new Image(kComponentID_ImageUtilitybar_Quit,
-	              searchPixmapFile("ui/utilitybar_01.png"), Rect(0, 0, 16, 16));
-
-	utilitybar->setListener(&imgListener1);
-	utilitybar->setTooltip(
-	    Tooltip("QUIT MakeHuman", kTooltipPos, color_red, tooltipPanel));
-	utilitybar->setAlpha(alpha);
-	imageVector.push_back(utilitybar);
-	addWidget(utilitybar);
-
+	Image *utilitybar;
 	// -------------------------------------------------------------------------
 	utilitybar =
 	    new Image(kComponentID_ImageUtilitybar_Grid,

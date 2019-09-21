@@ -39,7 +39,7 @@ using namespace std;
 using namespace Animorph;
 
 CharacterSettingPanel::CharacterSettingPanel()
-    : Panel(kComponentID_CharacterSettingPanel, Rect(0, 16, 192, 580))
+    : Panel(kComponentID_CharacterSettingPanel, Rect(0, 32, 192, 580))
 {
 	setAlignment(VERTICAL);
 }

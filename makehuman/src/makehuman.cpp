@@ -126,17 +126,72 @@ const Color edges_color(0.4, 0.3, 0.3, 0.5);
 // Our state
 static bool show_demo_window = false;
 
-void DisplayPerformance()
-{
-	ImGui::Begin("Performance");
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-	            1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::Checkbox("Demo Window", &show_demo_window);
-	ImGui::End();
+static bool g_userRequestedQuit = false;
+
+static bool g_displayCharacterSettings = false;
+static bool g_displayPerformance = false;
+
+
+void DisplayQuitPopup() {
+	if(ImGui::BeginPopupModal("Quit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Do you really want to quit? (press ENTER to quit)\n");
+		ImGui::Separator();
+		if(ImGui::Button("YES", ImVec2(120, 0))) {
+			g_userRequestedQuit = true;
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if(ImGui::Button("NO", ImVec2(120, 0))) {
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
 }
+
+void DisplayMainMenu()
+{
+	if(ImGui::BeginMainMenuBar()) {
+		if (ImGui::BeginMenu("File")) {
+			if(ImGui::MenuItem("Open", "Ctrl+O")) {
+				
+			}
+			if(ImGui::MenuItem("Save", "Ctrl+S")) {
+				
+			}
+			if(ImGui::MenuItem("Save As..")) {
+				
+			}
+			ImGui::Separator();
+			if(ImGui::Button("Quit...")) {
+				ImGui::OpenPopup("Quit?");
+			}
+			DisplayQuitPopup();
+			ImGui::EndMenu();
+		}
+		if(ImGui::BeginMenu("Edit")) {
+			ImGui::Checkbox("CharacterSettings", &g_displayCharacterSettings);
+			ImGui::Separator();
+			ImGui::EndMenu();
+		}
+		ImGui::Separator();
+		if(ImGui::BeginMenu("Help")) {
+			ImGui::Checkbox("Performance", &g_displayPerformance);
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
+
+
+
 
 void DisplayCharacterSettings()
 {
+	if(!g_displayCharacterSettings) {
+		return;
+	}
+	
 	Global &global = Global::instance();
 
 	static std::array<float, 2> ageAndSex = {0.f, 0.f};
@@ -214,6 +269,28 @@ void DisplayCharacterSettings()
 	ImGui::End();
 }
 
+
+
+void DisplayPerformance()
+{
+	if(!g_displayPerformance) {
+		return;
+	}
+	
+	ImGui::Begin("Performance");
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+	            1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Checkbox("Demo Window", &show_demo_window);
+	ImGui::End();
+}
+
+
+
+
+
+
+
+
 int g_mainWindowPosX;
 int g_mainWindowPosY;
 
@@ -266,8 +343,10 @@ static void display()
 	}
 
 	{
+		DisplayMainMenu();
 		DisplayPerformance();
 		DisplayCharacterSettings();
+		DisplayQuitPopup();
 
 		if (show_demo_window) {
 			ImGui::ShowDemoWindow(&show_demo_window);
@@ -290,6 +369,11 @@ static void display()
 	// TODO this is a hack
 	g_mainWindowPosX = glutGet(GLUT_WINDOW_X);
 	g_mainWindowPosY = glutGet(GLUT_WINDOW_Y);
+	
+	
+	if(g_userRequestedQuit) {
+		glutLeaveMainLoop();
+	}
 };
 
 static void reshape(int w, int h)
@@ -558,18 +642,6 @@ static void mouse(int button, int state, int x, int y)
 	cgutils::redisplay();
 }
 
-static void closeWindow()
-{
-	Window &mainWindow(*g_mainWindow);
-	if (console->isActive()) {
-		console->close();
-	}
-	console->openWithCommand(kConsoleCommand_Exit, kConsoleMessage_ConfirmExit,
-	                         "");
-	// TODO WHY?
-	// mainWindow.mainLoop();
-}
-
 static void activeMotion(int x, int y)
 {
 	if (console->isActive()) {
@@ -818,11 +890,26 @@ int main(int argc, char **argv)
 	mainWindow.setTimerCallback(kTimerCallback, timer, 0);           // Animation
 	mainWindow.setTimerCallback(1000, timerTrigger, 1);              // Autozoom
 	mainWindow.setTimerCallback(kTimerRendering, timerRendering, 0); // Rendering
-	mainWindow.setCloseCallback(closeWindow);
+	mainWindow.setCloseCallback([]()->void{
+		// TODO glut does not let us prevent closing in a sane way
+		// just let it happen for now :/
+		
+//		g_userRequestedQuit = true;
+//		Window &mainWindow(*g_mainWindow);
+//		if (console->isActive()) {
+//			console->close();
+//		}
+//		console->openWithCommand(kConsoleCommand_Exit, kConsoleMessage_ConfirmExit,
+//		                         "");
+		// TODO WHY?
+		// mainWindow.mainLoop();
+	});
 
 	console->show();
 	mainWindow.show();
 
+	//glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+	
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
 	::glPolygonOffset(1.0, 1.0);
