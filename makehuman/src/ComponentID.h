@@ -67,8 +67,6 @@ static const uint32_t kComponentID_UtilitybarPanel =
     FOUR_CHAR_CONST('p', 'a', 'U', 't');
 
 // The Image ID's of the  UtilitybarPanel (kComponentID_UtilitybarPanel)
-static const uint32_t kComponentID_ImageUtilitybar_Grid =
-    FOUR_CHAR_CONST('G', 'r', 'i', 'd');
 static const uint32_t kComponentID_ImageUtilitybar_RenderPreview =
     FOUR_CHAR_CONST('R', 'e', 'P', 'r');
 static const uint32_t kComponentID_ImageUtilitybar_About =

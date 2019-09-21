@@ -462,12 +462,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				}
 			} break;
 			// utilitybar buttons
-			case kComponentID_ImageUtilitybar_Grid: {
-				if (global.getDrawGrid())
-					global.setDrawGrid(false);
-				else
-					global.setDrawGrid(true);
-			} break;
 			case kComponentID_ImageUtilitybar_FlatShading: {
 				if (global.getFlatShading())
 					global.setFlatShading(false);

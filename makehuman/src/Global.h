@@ -54,12 +54,11 @@ enum ExportMode {
 	WITHOUT_CONTROLLER = 0,
 	WITH_CONTROLLER,
 };
-class Global
+
+struct Global
 {
-private:
 	static Global *sSingleGlobal;
 
-	// intentionally not implemented
 	Global()
 	    : mesh(NULL)
 	    , drawGrid(false)
@@ -76,8 +75,8 @@ private:
 	{
 	}
 
-	Global(const Global &);
-	Global &operator=(const Global &);
+	Global(const Global &) = delete;
+	Global &operator=(const Global &) = delete;
 
 	// some global variables
 	Mesh *mesh;

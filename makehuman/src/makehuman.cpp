@@ -169,6 +169,11 @@ void DisplayMainMenu()
 			DisplayQuitPopup();
 			ImGui::EndMenu();
 		}
+		if(ImGui::BeginMenu("View")) {
+			ImGui::Checkbox("Grid", &Global::instance().drawGrid);
+			ImGui::Separator();
+			ImGui::EndMenu();
+		}
 		if(ImGui::BeginMenu("Edit")) {
 			ImGui::Checkbox("CharacterSettings", &g_displayCharacterSettings);
 			ImGui::Separator();

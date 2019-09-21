@@ -60,16 +60,6 @@ void UtilitybarPanel::createWidgets()
 
 	Image *utilitybar;
 	// -------------------------------------------------------------------------
-	utilitybar =
-	    new Image(kComponentID_ImageUtilitybar_Grid,
-	              searchPixmapFile("ui/utilitybar_02.png"), Rect(0, 0, 16, 16));
-	utilitybar->setListener(&imgListener1);
-	utilitybar->setTooltip(
-	    Tooltip("Grid ON/OFF", kTooltipPos, color_red, tooltipPanel));
-	utilitybar->setAlpha(alpha);
-	imageVector.push_back(utilitybar);
-	addWidget(utilitybar);
-
 	// -------------------------------------------------------------------------
 	/*  utilitybar= new Image(kComponentID_ImageUtilitybar_RenderPreview,
 	                        searchPixmapFile ("ui/utilitybar_04.png"),
