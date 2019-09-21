@@ -84,7 +84,7 @@ void displayStart(const Vector3f &tra, const Vector3f &rot);
 
 void displayStart(const Matrix &m);
 
-int initWindow(const Size &inSize, const char *title, const Vector3f &light0Pos,
+int initWindow(const Rect &rect, const char *title, const Vector3f &light0Pos,
                const Vector3f &light1Pos, float light0Lum, float light1Lum,
                const Color &c);
 

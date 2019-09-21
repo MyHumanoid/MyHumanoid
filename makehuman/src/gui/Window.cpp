@@ -89,47 +89,32 @@ int getKeyModifiers()
 
 Window *Window::w_singleton = NULL;
 
-Window *Window::createSingelton(size_t inWidth, size_t inHeight,
-                                const char *inTitle, const Color &inBgColor)
+Window *Window::createSingelton(Rect &rect, const char *inTitle, const Color &inBgColor)
 {
 	if (w_singleton == NULL) {
 		w_singleton =
-		    new mhgui::Window(Size(inWidth, inHeight), inTitle, inBgColor);
+		    new mhgui::Window(rect, inTitle, inBgColor);
 	}
 	return w_singleton;
 }
 
 // Constructor
-Window::Window(const Size &inSize, const char *t, const Color &inColor)
-    : Component(FOUR_CHAR_CONST('M', 'W', 'i', 'n'),
-                Rect(0, 0, inSize.getWidth(), inSize.getHeight()))
-    , title(t)
-    , // The window title bar
-    fullscreen(false)
-    , // full screen no
-    c(inColor)
-    , image_loaded(false)
-    , light0Lum(+1.0)
-    , // light 0 luminosity
-    light1Lum(+1.0)
-    , // light 1 luminosity
-    light0Pos(+1.0, +1.0, +1.0)
-    , // light 0 position
-    light1Pos(-1.0, +1.0, +1.0)
-    , // light 1 position
-
-    texture()
-    ,
-
-    panelList()
-    , panelListChangedCount(0)
-    ,
-
-    inCamera(NULL)
-    , console(NULL)
-    , // console
-    mWindowId(0)
-
+Window::Window(const Rect &rect, const char *t, const Color &inColor)
+	: Component(FOUR_CHAR_CONST('M', 'W', 'i', 'n'), rect)
+	, title(t) //!< The window title bar
+	, fullscreen(false) //!< full screen no
+	, c(inColor)
+	, image_loaded(false)
+	, light0Lum(+1.0) //!< light 0 luminosity
+	, light1Lum(+1.0) //!< light 1 luminosity
+	, light0Pos(+1.0, +1.0, +1.0) //!< light 0 position
+	, light1Pos(-1.0, +1.0, +1.0) //!< light 1 position
+	, texture()
+	, panelList()
+	, panelListChangedCount(0)
+	, inCamera(NULL)
+	, console(NULL)
+	, mWindowId(0)
 {
 }
 
@@ -450,7 +435,7 @@ bool Window::isMouseDraggedPanel(const Point &inMousePos)
 // Init window with some classic openGL commands
 void Window::initWindow()
 {
-	mWindowId = cgutils::initWindow(getSize(), title.c_str(), light0Pos,
+	mWindowId = cgutils::initWindow(getRect(), title.c_str(), light0Pos,
 	                                light1Pos, light0Lum, light1Lum, c);
 }
 

@@ -214,6 +214,9 @@ void DisplayCharacterSettings()
 	ImGui::End();
 }
 
+int g_mainWindowPosX;
+int g_mainWindowPosY;
+
 // Display function
 static void display()
 {
@@ -283,6 +286,10 @@ static void display()
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+	
+	// TODO this is a hack
+	g_mainWindowPosX = glutGet(GLUT_WINDOW_X);
+	g_mainWindowPosY = glutGet(GLUT_WINDOW_Y);
 };
 
 static void reshape(int w, int h)
@@ -586,18 +593,45 @@ static void activeMotion(int x, int y)
 	}
 }
 
+#include <experimental/filesystem>
+#include <json.hpp>
+
+namespace fs = std::experimental::filesystem;
+using json = nlohmann::json;
+
+json g_jsonConfig;
+
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
-
-	int screenWidth = glutGet(GLUT_SCREEN_WIDTH);
-	int screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
-
-	mhgui::Window::createSingelton(screenWidth > 0 ? screenWidth - 10 : 800,
-	                               screenHeight > 0 ? screenHeight - 55 : 600,
+	
+	fs::path configFilePath = "my-humanoid.config.json";
+	
+	if(fs::exists(configFilePath)) {
+		std::ifstream i(configFilePath);
+		i >> g_jsonConfig;
+	} else {
+		g_jsonConfig["mainWindow"]["pos"] = {0, 0};
+		g_jsonConfig["mainWindow"]["size"] = {800, 600};
+	}
+	
+	int mainWinPosX  = g_jsonConfig["mainWindow"]["pos"][0];
+	int mainWinPosY  = g_jsonConfig["mainWindow"]["pos"][1];
+	
+	int mainWinSizeX = g_jsonConfig["mainWindow"]["size"][0];// glutGet(GLUT_SCREEN_WIDTH);
+	int mainWinSizeY = g_jsonConfig["mainWindow"]["size"][1];// glutGet(GLUT_SCREEN_HEIGHT);
+	
+	Rect mainWinRect = Rect(mainWinPosX, mainWinPosY, mainWinSizeX, mainWinSizeY);
+	
+	mhgui::Window::createSingelton(mainWinRect,
 	                               "MakeHuman 0.9.1 RC1", Color(0, 0, 0));
 	Window &mainWindow(Window::instance());
-
+	
+	mainWindow.setPosition(mhgui::Point(
+		mainWinPosX,
+		mainWinPosY
+	));
+	
 	splashMotionCount = 0;
 	createWorkingDirs();
 
@@ -903,7 +937,25 @@ int main(int argc, char **argv)
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplGLUT_Shutdown();
 	ImGui::DestroyContext();
+	
+	{
+		Window &w = Window::instance();
 
+		g_jsonConfig["mainWindow"]["pos"] = {
+			g_mainWindowPosX,
+			g_mainWindowPosY
+		};
+		g_jsonConfig["mainWindow"]["size"] = {
+			w.getSize().getWidth(),
+			w.getSize().getHeight()
+		};
+	}
+	
+	{
+		std::ofstream o(configFilePath);
+		o << std::setw(4) << g_jsonConfig << std::endl;
+	}
+	
 	return 0;
 }
 

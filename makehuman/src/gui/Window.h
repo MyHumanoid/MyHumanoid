@@ -84,7 +84,7 @@ private:
 	int mWindowId; ///< The GLUT Window ID;
 
 	// Constructor is private, because this is a singleton
-	Window(const Size &inSize, const char *t, const Color &c);
+	Window(const Rect &rect, const char *t, const Color &c);
 	virtual ~Window();
 
 	Window &operator=(Window &); // Disallowed
@@ -94,8 +94,7 @@ private:
 	void drawPanels();
 
 public:
-	static Window *createSingelton(size_t inWidth, size_t inHeight,
-	                               const char *inTitle, const Color &inBgColor);
+	static Window *createSingelton(Rect &rect, const char *inTitle, const Color &inBgColor);
 
 	static Window &instance() { return *w_singleton; }
 

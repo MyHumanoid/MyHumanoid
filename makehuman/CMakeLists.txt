@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 set(gui_sources
 	src/gui/AbstractListener.h
@@ -149,8 +149,10 @@ target_include_directories(makehuman PRIVATE src)
 
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
 target_link_libraries(makehuman PRIVATE
+	stdc++fs
 	animorph
 	imgui
+	nlohmann-json
 	${OPENGL_LIBRARIES}
 	${GLUT_LIBRARY}
 	${PNG_LIBRARY}

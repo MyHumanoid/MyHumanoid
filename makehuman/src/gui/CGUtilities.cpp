@@ -335,14 +335,14 @@ void cgutils::reshape(const Size &inSize, const Camera &inCamera)
 }
 
 // Init window with some classic openGL commands
-int cgutils::initWindow(const Size &inSize, const char *title,
+int cgutils::initWindow(const Rect &rect, const char *title,
                         const Vector3f &light0Pos, const Vector3f &light1Pos,
                         float light0Lum, float light1Lum, const Color &c)
 {
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(inSize.getWidth(), inSize.getHeight());
-	glutInitWindowPosition(0, 0);
+	glutInitWindowSize(rect.getWidth(), rect.getHeight());
+	glutInitWindowPosition(rect.getX(), rect.getY());
 	int winID = glutCreateWindow(title);
 
 	// Enables

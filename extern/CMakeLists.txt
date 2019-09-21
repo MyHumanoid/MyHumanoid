@@ -68,3 +68,15 @@ target_include_directories(imgui PRIVATE ${SDL2_INCLUDE_DIR})
 set_property(TARGET imgui PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # done! i think...
+
+
+add_library(nlohmann-json INTERFACE)
+target_sources(nlohmann-json INTERFACE
+	${CMAKE_CURRENT_SOURCE_DIR}/nlohmann-json/json.hpp
+)
+
+target_include_directories(nlohmann-json INTERFACE
+	"${PROJECT_SOURCE_DIR}/nlohmann-json"
+)
+
+
