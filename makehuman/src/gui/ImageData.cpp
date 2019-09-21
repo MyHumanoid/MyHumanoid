@@ -31,55 +31,9 @@
 
 using namespace std;
 
-// On MAC OS X don't use the png lib but CoreGraphics to load images...
-#ifdef __APPLE__
-#   include <ApplicationServices/ApplicationServices.h>
-#   include <CoreFoundation/CoreFoundation.h>
-
-/* Use AltiVec & SSE accelerated code when requested per compiler switches... */
-#   ifdef __VEC__
-#       include <vecLib/vectorOps.h>
-#   endif
-
-#endif
-
-#if defined(__APPLE__)
-    #if !defined(USE_PNGLIB)
-        #define USE_OSX_COREGRAPHICS
-    #else
-        #warning "OS_X Build Warning: You are requested to use the pnglib which is actually not a part of OS X!"
-    #endif
-#endif
-
 using namespace std;
 
 namespace mhgui {
-
-#ifdef USE_OSX_COREGRAPHICS
-
-/* ========================================================================== */
-/** \brief Calculate the parameters of a particular image
- *
- * This structure is for internal use on OSX only.
- */
-/* ========================================================================== */
-struct picture_params_t
-{
-    picture_params_t(size_t inWidth, size_t inHeight, bool inHasAlpha);
-
-    size_t calcMemSize() const {return bytesPerRow * height;}
-
-    size_t width;
-    size_t height;
-    bool   hasAlpha;
-
-    size_t bitsPerComponent;
-    size_t bitsPerPixel;
-    size_t bytesPerRow;
-}; // struct picture_params_t
-
-#endif // USE_OSX_COREGRAPHICS
-
 
 /* ========================================================================== */
 /**

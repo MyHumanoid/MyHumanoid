@@ -189,12 +189,8 @@ void Window::setDisplayCallback (void (*inDisplayCB)(void))
 
 void Window::setCloseCallback (void (*inCloseCB)(void))
 {
-#ifdef __APPLE__
-  // TODO: OSX window close function
-#else
 #ifdef USE_FREEGLUT
   glutCloseFunc (inCloseCB);
-#endif
 #endif
 }
 

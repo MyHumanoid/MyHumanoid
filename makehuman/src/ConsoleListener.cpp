@@ -46,10 +46,6 @@
 #include "FileTools.h"
 #include "CharacterSettingPanel.h"
 
-#ifdef __APPLE__
-  #include "FileTools.h" // Move this out when tested on Linux and WIN32 too!
-#endif
-
 using namespace std;
 using namespace mhgui;
 
