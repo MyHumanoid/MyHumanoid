@@ -35,48 +35,6 @@
 using namespace std;
 using namespace mhgui;
 
-/*! Enable lighting and deep test.*/
-void cgutils::enableLightingDeepTest ()
-{
-  if (!glIsEnabled (GL_LIGHTING))
-  {
-    glEnable (GL_LIGHTING);
-  }
-  if (!glIsEnabled (GL_DEPTH_TEST))
-  {
-    glEnable (GL_DEPTH_TEST);
-  }
-}
-
-int cgutils::getScreenWidth ()
-{
-  return glutGet(GLUT_SCREEN_WIDTH);
-}
-
-int cgutils::getScreenHeight ()
-{
-  return glutGet(GLUT_SCREEN_HEIGHT);
-}
-
-/*! Glut callback. Returns the modifier key state when certain callbacks were generated.*/
-int cgutils::getKeyModifiers()
-{
-  return glutGetModifiers();
-}
-
-/*! Disable lighting and deep test.*/
-void cgutils::disableLightingDeepTest ()
-{
-  if (glIsEnabled (GL_LIGHTING))
-  {
-    glDisable (GL_LIGHTING);
-  }
-  if (glIsEnabled (GL_DEPTH_TEST))
-  {
-    glDisable (GL_DEPTH_TEST);
-  }
-}
-
 void cgutils::drawLine2D (const Point& start, const Point& end, const Color& c)
 {
   glColor4f(c.red (), c.green (), c.blue (), c.alpha ());
@@ -148,7 +106,14 @@ void cgutils::enableOrthographicProjection ()
   GLint &h = viewport[3];
 
   // switch to projection mode
-  disableLightingDeepTest ();
+
+	if(glIsEnabled(GL_LIGHTING)) {
+		glDisable(GL_LIGHTING);
+	}
+	if(glIsEnabled(GL_DEPTH_TEST)) {
+		glDisable(GL_DEPTH_TEST);
+	}
+	
   //glEnable (GL_DEPTH_TEST);
   glMatrixMode (GL_PROJECTION);
   // save projection matrix
@@ -173,15 +138,28 @@ void cgutils::disableOrthographicProjection ()
   glMatrixMode (GL_PROJECTION);
   glPopMatrix ();
   //glDisable (GL_DEPTH_TEST);
-  enableLightingDeepTest ();
+  
+	if(!glIsEnabled(GL_LIGHTING)) {
+		glEnable(GL_LIGHTING);
+	}
+	if(!glIsEnabled(GL_DEPTH_TEST)){
+		glEnable (GL_DEPTH_TEST);
+	}
 }
 
 /*!Draw the XYZ axis.*/
 void cgutils::drawAxis ()
 {
-  float wid = 2.8;
-  char axis[]= "XYZ";
-  disableLightingDeepTest ();
+	float wid = 2.8;
+	char axis[]= "XYZ";
+	
+	if(glIsEnabled(GL_LIGHTING)) {
+		glDisable(GL_LIGHTING);
+	}
+	if(glIsEnabled(GL_DEPTH_TEST)) {
+		glDisable(GL_DEPTH_TEST);
+	}
+  
   glBegin (GL_LINES);
   glColor3f (0.5, 1, 0.5);
   glVertex3f (0, 0, -wid);
@@ -216,7 +194,13 @@ void cgutils::drawAxis ()
   glRotatef (90, 0,0,1);
   glutSolidCone (0.03, 0.1, 8, 4);
   glPopMatrix ();
-  enableLightingDeepTest ();
+  
+	if(!glIsEnabled(GL_LIGHTING)) {
+		glEnable(GL_LIGHTING);
+	}
+	if(!glIsEnabled(GL_DEPTH_TEST)){
+		glEnable (GL_DEPTH_TEST);
+	}
 }
 
 /*!Start  part of display function before draw the scene.*/

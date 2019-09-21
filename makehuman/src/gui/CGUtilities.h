@@ -68,10 +68,6 @@ void drawAxis ();
 
 void reshape (const Size& inSize, const Camera& inCamera);
 
-void enableLightingDeepTest ();
-
-void disableLightingDeepTest ();
-
 void enableOrthographicProjection ();
 
 void disableOrthographicProjection ();
@@ -135,15 +131,10 @@ int getFontWidth (FontType font);
 
 int getFontLength (FontType font, const string& str);
 
-int getKeyModifiers();
-
 void mhWireCube (const float twoxyz[6]);
 
 void drawLine2D (const Point& start, const Point& end, const Color& c);
 
-int getScreenHeight ();
-
-int getScreenWidth ();
 }
 
 #endif //CGUTILITIES_H

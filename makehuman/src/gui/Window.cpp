@@ -69,7 +69,7 @@ static void (*sMouseFuncCB)(int,int,int,int);
 void mouseCallbackWrapper(int inButton, int inState, int inX, int inY)
 {
   // remember the key modifier actually pressed
-  sKeyModifier = cgutils::getKeyModifiers();
+  sKeyModifier = glutGetModifiers();
 
   // If there is any custom MouseFunc callback registered, then call it.
   if (sMouseFuncCB != NULL)

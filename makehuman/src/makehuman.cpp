@@ -631,8 +631,8 @@ int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 
-  int screenWidth = cgutils::getScreenWidth();
-  int screenHeight = cgutils::getScreenHeight();
+  int screenWidth = glutGet(GLUT_SCREEN_WIDTH);
+  int screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
 
   mhgui::Window::createSingelton(screenWidth > 0 ? screenWidth - 10 : 800,
                                  screenHeight > 0 ? screenHeight - 55 : 600,
