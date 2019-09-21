@@ -432,15 +432,10 @@ static void keyboard    (unsigned char key,     int x, int y)
     case '6':
       camera->rotate (-M_PI/12, Y_AXIS);
       break;
-/*
-    // Disabled to toggle between perspective and orthogonal mode, because
-    // Perspective mode causes problems on OS-X OpenGL and MESA...
     case '5':
 	    camera->setPerspective(!camera->isPerspective());
 	    reshape(mainWindow.getSize().getWidth(),mainWindow.getSize().getHeight());
       break;
-*/
-
     case '4':
       camera->rotate (M_PI/12, Y_AXIS);
       break;
