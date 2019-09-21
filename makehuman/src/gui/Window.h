@@ -126,16 +126,10 @@ public:
   bool isKeyTypePanel      (unsigned char key);
 
   void defaultDisplay ();
-  void mainLoop ();
 
   // callbacks setter
   void setDisplayCallback (void (*display)(void));
-  void setReshapeCallback (void (*reshape) (int,int));
-  void setMotionCallback (void (*motion) (int,int));
-  void setKeyboardCallback (void (*keyboard) (unsigned char,int,int));
   void setMouseCallback (void (*mouse) (int,int,int,int));
-  void setPassiveMotionCallback(void (*passiveMotion) (int,int));
-  void setSpecialCallback (void (*inSpecialCB) (int,int,int));
   void setTimerCallback (int inMillis, void (*inTimerCB)(int value), int inId);
   void setCloseCallback (void (*close)(void));
 
@@ -147,6 +141,8 @@ public:
   virtual void show ();
   virtual void hide ();
 };
+
+void mouseCallbackWrapper(int inButton, int inState, int inX, int inY);
 
 } // namespace mhgui
 

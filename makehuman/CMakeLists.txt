@@ -148,7 +148,13 @@ add_executable(makehuman ${gui_sources} ${makehuman_sources})
 target_include_directories(makehuman PRIVATE src)
 
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
-target_link_libraries(makehuman PRIVATE animorph ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${PNG_LIBRARY})
+target_link_libraries(makehuman PRIVATE
+	animorph
+	imgui
+	${OPENGL_LIBRARIES}
+	${GLUT_LIBRARY}
+	${PNG_LIBRARY}
+)
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY pixmaps DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

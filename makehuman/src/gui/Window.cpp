@@ -25,29 +25,21 @@
  *
  */
 
+#include <GL/freeglut.h>
+
+#include <imgui.h>
+#include <examples/imgui_impl_glut.h>
+#include <examples/imgui_impl_opengl2.h>
+
 #include "gui/Size.h"
 #include "gui/Window.h"
 #include "gui/Camera.h"
 #include "gui/CGUtilities.h"
 
-#ifdef __APPLE__
-    #include <GLUT/glut.h>
-#else
-#ifdef USE_FREEGLUT
-  #include <GL/freeglut.h>
-#else
-  #include <GL/glut.h>
-#endif
-#endif
-
 #include <iostream>
 #include "gui/Panel.h"
 #include "gui/Console.h"
 
-
-#ifdef __APPLE__
-void glutMouseFuncOSX(void (*func)(int button, int state, int x, int y));
-#endif
 
 using namespace std;
 using namespace Animorph;
@@ -74,7 +66,7 @@ static void (*sMouseFuncCB)(int,int,int,int);
  * a keyboard modifier is altered! So we are using the mouse callback instead.
  */
 /* ========================================================================== */
-static void mouseCallbackWrapper(int inButton, int inState, int inX, int inY)
+void mouseCallbackWrapper(int inButton, int inState, int inX, int inY)
 {
   // remember the key modifier actually pressed
   sKeyModifier = cgutils::getKeyModifiers();
@@ -189,24 +181,6 @@ Console* Window::getConsole ()
   return console;
 }
 
-void Window::mainLoop ()
-{
-  static bool sMouseCallbackWrapperInstalled = false;
-
-  // Take care that the Mouse Callback wrapper is installed only once
-  if (!sMouseCallbackWrapperInstalled)
-  {
-    // Register the keyboard callback wrapper func
-#if defined(__APPLE__) && defined(__MACH__)
-    ::glutMouseFuncOSX (mouseCallbackWrapper);
-#else
-    ::glutMouseFunc (mouseCallbackWrapper);
-#endif
-    sMouseCallbackWrapperInstalled = true;
-  }
-  glutMainLoop();
-}
-
 //Callback setters
 void Window::setDisplayCallback (void (*inDisplayCB)(void))
 {
@@ -224,34 +198,9 @@ void Window::setCloseCallback (void (*inCloseCB)(void))
 #endif
 }
 
-void Window::setReshapeCallback (void (*inReshapeCB) (int,int))
-{
-  glutReshapeFunc (inReshapeCB);
-}
-
-void Window::setMotionCallback (void (*inMotionCB) (int,int))
-{
-  glutMotionFunc (inMotionCB);
-}
-
-void Window::setKeyboardCallback (void (*inKeyboardCB) (unsigned char,int,int))
-{
-  glutKeyboardFunc (inKeyboardCB);
-}
-
 void Window::setMouseCallback (void (*inMouseCB) (int,int,int,int))
 {
   sMouseFuncCB = inMouseCB;
-}
-
-void Window::setPassiveMotionCallback (void (*inPassiveMotionCB) (int,int))
-{
-  glutPassiveMotionFunc (inPassiveMotionCB);
-}
-
-void Window::setSpecialCallback (void (*inSpecialCB) (int,int,int))
-{
-  glutSpecialFunc(inSpecialCB);
 }
 
 void Window::setTimerCallback (int inMillis, void (*inTimerCB)(int value), int inId)

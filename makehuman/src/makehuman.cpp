@@ -35,6 +35,11 @@
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 
+#include <imgui.h>
+#include <examples/imgui_impl_glut.h>
+#include <examples/imgui_impl_opengl2.h>
+
+
 //mhh...maybe some of these includes are retundant
 #include <time.h>
 #include <gui/Panel.h>
@@ -117,9 +122,82 @@ const Color border_color   (1.0, 0.55, 0.0, 0.8);
 const Color grid_color (0.35, 0.50, 0.30, 0.50);
 const Color edges_color (0.4, 0.3, 0.3, 0.5);
 
+
+
+
+
+
+
+
+// Our state
+static bool show_demo_window = true;
+static bool show_another_window = false;
+static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+void my_display_code()
+{
+	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+	if (show_demo_window)
+		ImGui::ShowDemoWindow(&show_demo_window);
+	
+	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+	{
+		static float f = 0.0f;
+		static int counter = 0;
+		
+		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+		
+		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+		ImGui::Checkbox("Another Window", &show_another_window);
+		
+		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+		ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+		
+		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+			counter++;
+		ImGui::SameLine();
+		ImGui::Text("counter = %d", counter);
+		
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+	
+	// 3. Show another simple window.
+	if (show_another_window)
+	{
+		ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+		ImGui::Text("Hello from another window!");
+		if (ImGui::Button("Close Me"))
+			show_another_window = false;
+		ImGui::End();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Display function
 static void display()
 {
+	// Start the Dear ImGui frame
+	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplGLUT_NewFrame();
+	
   camera->applyMatrix ();
 
   //cgutils::drawAxis ();
@@ -151,29 +229,48 @@ static void display()
   {
     cgutils::drawSquare(Rect(0,0,1,1), border_color);
   }
-
-  cgutils::swapBuffers ();
-
+  
+  //cgutils::swapBuffers();
+  
   // TODO: put this in a own function
-  if (!init)
-  {
-    //mesh->loadTargetsFactory (searchDataDir ("targets"));
-    init = true;
-  }
-
+//  if (!init)
+//  {
+//	  //mesh->loadTargetsFactory (searchDataDir ("targets"));
+//	  init = true;
+//  }
+  
   if(Global::instance().isRendering())
   {
-    waitDisplay = true;
+	  waitDisplay = true;
   }
+
+	{
+
+		
+		my_display_code();
+		
+		// Rendering
+		ImGui::Render();
+		//ImGuiIO& io = ImGui::GetIO();
+		//glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
+		//glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+		//glClear(GL_COLOR_BUFFER_BIT);
+		//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
+		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+		
+		glutSwapBuffers();
+		glutPostRedisplay();
+	}
 };
 
-//Glut callbacks
-static void reshape     (int w, int h)
-{
-  Window &mainWindow(Window::instance());
-  mainWindow.reshape            (Size(w,h), *camera);
-  camera->reshape (w, h);
+
+
+static void reshape(int w, int h) {
+	Window &mainWindow(Window::instance());
+	mainWindow.reshape(Size(w, h), *camera);
+	camera->reshape(w, h);
 }
+
 
 static void timerTrigger(int val)
 {
@@ -467,8 +564,10 @@ static void closeWindow()
     console->close();
   }
   console->openWithCommand(kConsoleCommand_Exit, kConsoleMessage_ConfirmExit, "");
-  mainWindow.mainLoop();
+  // TODO WHY?
+  //mainWindow.mainLoop();
 }
+
 
 static void activeMotion (int x, int y)
 {
@@ -499,17 +598,10 @@ static void activeMotion (int x, int y)
   }
 }
 
-#if defined(__APPLE__) && defined(__MACH__)
-int main_wrapper (int argc, char** argv)
-#else
-int main (int argc, char** argv)
-#endif
+
+int main(int argc, char** argv)
 {
-  // On OS X this is already done!
-#if !(defined(__APPLE__) && defined(__MACH__))
-  //Glut init
-  glutInit (&argc, argv);
-#endif
+	glutInit(&argc, argv);
 
   int screenWidth = cgutils::getScreenWidth();
   int screenHeight = cgutils::getScreenHeight();
@@ -706,34 +798,107 @@ int main (int argc, char** argv)
 
   //Glut callbacks
   mainWindow.setDisplayCallback(display);
-  mainWindow.setReshapeCallback(reshape);
-  mainWindow.setPassiveMotionCallback(motion);
-  mainWindow.setKeyboardCallback(keyboard);
   mainWindow.setMouseCallback(mouse);
-  mainWindow.setMotionCallback(activeMotion);
-  mainWindow.setSpecialCallback(special);
   mainWindow.setTimerCallback(kTimerCallback, timer, 0); // Animation
   mainWindow.setTimerCallback(1000,timerTrigger,1); // Autozoom
   mainWindow.setTimerCallback(kTimerRendering, timerRendering, 0); // Rendering
-#ifdef USE_FREEGLUT
   mainWindow.setCloseCallback(closeWindow);
-#endif
 
   console->show ();
   mainWindow.show ();
 
-#ifdef USE_FREEGLUT
   glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
-#endif
 
   ::glPolygonOffset( 1.0, 1.0 );
 
   loadDefaultBodySettings();
   mesh->calcSubsurf();
 
-  mainWindow.mainLoop();
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+	
+	// Setup Platform/Renderer bindings
+	ImGui_ImplGLUT_Init();
+	
+	{
+		glutReshapeFunc([](int w, int h)->void{
+			ImGuiIO& io = ImGui::GetIO();
+			io.DisplaySize = ImVec2((float)w, (float)h);
+			
+			reshape(w, h);
+		});
+		
+		glutMotionFunc([](int x, int y)->void{
+			ImGuiIO& io = ImGui::GetIO();
+			io.MousePos = ImVec2((float)x, (float)y);
+			
+			activeMotion(x, y);
+		});
+		
+		glutPassiveMotionFunc([](int x, int y)->void{
+			ImGuiIO& io = ImGui::GetIO();
+			io.MousePos = ImVec2((float)x, (float)y);
+			
+			motion(x, y);
+		});
+		
+		glutMouseFunc([](int glut_button, int state, int x, int y)->void{
+			
+			ImGui_ImplGLUT_MouseFunc(glut_button, state, x, y);
+			mouseCallbackWrapper(glut_button, state, x, y);
+		});
+		
+		glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);
+		
+		glutKeyboardFunc([](unsigned char c, int x, int y)->void{
+			ImGui_ImplGLUT_KeyboardFunc(c, x, y);
+			keyboard(c, x, y);
+		});
+		
+		glutKeyboardUpFunc(ImGui_ImplGLUT_KeyboardUpFunc);
+		
+		glutSpecialFunc([](int key, int x, int y)->void{
+			ImGui_ImplGLUT_SpecialFunc(key, x, y);
+			special(key, x, y);
+		});
+		
+		glutSpecialUpFunc(ImGui_ImplGLUT_SpecialUpFunc);
+	}
+	
+	
 
-  // we never reach this point.
+  //ImGui_ImplGLUT_InstallFuncs();
+  ImGui_ImplOpenGL2_Init();
+  
+  // Load Fonts
+  // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
+  // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
+  // - If the file cannot be loaded, the function will return NULL. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
+  // - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
+  // - Read 'misc/fonts/README.txt' for more instructions and details.
+  // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
+  //io.Fonts->AddFontDefault();
+  //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
+  //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
+  //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
+  //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
+  //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
+  //IM_ASSERT(font != NULL);
+  
+  glutMainLoop();
+  
+  // Cleanup
+  ImGui_ImplOpenGL2_Shutdown();
+  ImGui_ImplGLUT_Shutdown();
+  ImGui::DestroyContext();
+  
   return 0;
 }
 
