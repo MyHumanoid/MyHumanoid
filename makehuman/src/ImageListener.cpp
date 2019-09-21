@@ -468,17 +468,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				else
 					global.setFlatShading(true);
 			} break;
-			case kComponentID_ImageUtilitybar_Subsurfaces: {
-				if (global.getSubdivision())
-					global.setSubdivision(false);
-				else {
-					global.setSubdivision(true);
-
-					Mesh *mesh = global.getMesh();
-					assert(mesh);
-					mesh->calcSubsurf();
-				}
-			} break;
 			case kComponentID_ImageUtilitybar_QuotedBox: {
 				if (global.getQuotedBox())
 					global.setQuotedBox(false);

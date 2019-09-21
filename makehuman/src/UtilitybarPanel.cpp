@@ -70,16 +70,6 @@ void UtilitybarPanel::createWidgets()
 	  (utilitybar); addWidget (utilitybar);
 	*/
 	// -------------------------------------------------------------------------
-	utilitybar =
-	    new Image(kComponentID_ImageUtilitybar_Subsurfaces,
-	              searchPixmapFile("ui/utilitybar_06.png"), Rect(0, 0, 16, 16));
-	utilitybar->setListener(&imgListener1);
-	utilitybar->setTooltip(
-	    Tooltip("Subsurfaces ON/OFF", kTooltipPos, color_red, tooltipPanel));
-	utilitybar->setAlpha(alpha);
-	imageVector.push_back(utilitybar);
-	addWidget(utilitybar);
-
 	// -------------------------------------------------------------------------
 	utilitybar =
 	    new Image(kComponentID_ImageUtilitybar_QuotedBox,

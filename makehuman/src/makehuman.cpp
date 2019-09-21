@@ -171,6 +171,13 @@ void DisplayMainMenu()
 		}
 		if(ImGui::BeginMenu("View")) {
 			ImGui::Checkbox("Grid", &Global::instance().drawGrid);
+			if(ImGui::Checkbox("Subsurfaces", &Global::instance().subdivision)) {
+				if(Global::instance().subdivision) {
+					Mesh *mesh = Global::instance().getMesh();
+					assert(mesh);
+					mesh->calcSubsurf();
+				}
+			}
 			ImGui::Separator();
 			ImGui::EndMenu();
 		}
