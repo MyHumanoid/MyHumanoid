@@ -51,6 +51,11 @@ set(gui_sources
 	src/gui/Window.cpp
 )
 
+set(log_sources
+	src/log/log.h
+	src/log/log.cpp
+)
+
 set(makehuman_sources
 	src/Animation.cpp
 	src/Animation.h
@@ -141,7 +146,11 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(PNG REQUIRED)
 
-add_executable(makehuman ${gui_sources} ${makehuman_sources})
+add_executable(makehuman
+	${gui_sources}
+	${log_sources}
+	${makehuman_sources}
+)
 
 target_include_directories(makehuman PRIVATE src)
 

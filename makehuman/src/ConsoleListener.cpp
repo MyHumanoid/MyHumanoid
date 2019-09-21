@@ -199,29 +199,6 @@ void ConsoleListener::parseCommand(Console &console)
 			} else {
 				console.printMessage(kConsoleMessage_WrongMode_Poses);
 			}
-		} else if (cmd == kConsoleCommand_Save_Bodysettings) {
-			if (global.getAppMode() == BODY_DETAILS ||
-			    global.getAppMode() == CHARACTER_SETTING ||
-			    global.getAppMode() == CLOTHES) {
-				if (arg.size() == 0) {
-					console.inputMode(kConsoleMessage_Save_Bodysettings,
-					                  getMyBodysettingsPath());
-				} else {
-					saveBodySettings(console, arg);
-				}
-			} else {
-				console.printMessage(kConsoleMessage_WrongMode_BodyDetails);
-			}
-		} else if (cmd == kConsoleCommand_Save_Poses) {
-			if (global.getAppMode() == POSES) {
-				if (arg.size() == 0) {
-					console.inputMode(kConsoleMessage_Save_Poses, getMyPosesPath());
-				} else {
-					savePoses(console, arg);
-				}
-			} else {
-				console.printMessage(kConsoleMessage_WrongMode_Poses);
-			}
 		} else if (cmd == kConsoleCommand_Save_Autozoom) {
 			if (arg.size() == 0) {
 				Window &mainWindow(*g_mainWindow);
@@ -507,50 +484,9 @@ void ConsoleListener::parseSetParameter(Console &console, const string &path)
 	}
 }
 
-void ConsoleListener::saveBodySettings(Console &console, const string &filename)
-{
-	Global &global = Global::instance();
-	Mesh *mesh = global.getMesh();
-	assert(mesh);
 
-	BodySettings bodyset = mesh->getBodySettings();
-	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
 
-	bool state = bodyset.save(filename);
 
-	if (state) {
-		state = clothesgroup.saveVisibilities(filename);
-	}
-
-	if (state) {
-		state = saveSelectorsPositions(filename);
-	}
-
-	if (state) {
-		console.printMessage(kConsoleMessage_Save_Bodysettings_Success);
-	} else {
-		console.printMessage(kConsoleMessage_Save_Error);
-		console.setError(true);
-	}
-}
-
-void ConsoleListener::savePoses(Console &console, const string &filename)
-{
-	Global &global = Global::instance();
-	Mesh *mesh = global.getMesh();
-	assert(mesh);
-
-	BodySettings poses = mesh->getPoses();
-
-	bool state = poses.save(filename);
-
-	if (state) {
-		console.printMessage(kConsoleMessage_Save_Poses_Success);
-	} else {
-		console.printMessage(kConsoleMessage_Save_Error);
-		console.setError(true);
-	}
-}
 
 void ConsoleListener::saveAutozoom(Console &console, const string &filename)
 {

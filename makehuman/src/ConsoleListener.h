@@ -55,7 +55,6 @@ protected:
 	void loadAqsisPath(Console &console, const string &path);
 	void loadPixiePath(Console &console, const string &path);
 	void parseSetParameter(Console &console, const string &path);
-	void saveBodySettings(Console &console, const string &filename);
 	void savePoses(Console &console, const string &filename);
 	void saveAutozoom(Console &console, const string &filename);
 	void exportBodySettings(Console &console, string &filename,

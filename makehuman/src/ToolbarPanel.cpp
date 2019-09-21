@@ -72,16 +72,6 @@ void ToolbarPanel::createWidgets()
 	addWidget(image);
 
 	// -------------------------------------------------------------------------
-	image =
-	    new Image(kComponentID_ImageToolbarPanel_SaveBodysettings,
-	              searchPixmapFile("ui/toolbar_save.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Save bodysetting", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_ExportWavefrontObj,
 	                  searchPixmapFile("ui/toolbar_exp.png"), Rect(0, 0, 32, 32));

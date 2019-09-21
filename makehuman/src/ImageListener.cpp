@@ -167,22 +167,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					    getMyPosesPath());
 				}
 			} break;
-			case kComponentID_ImageToolbarPanel_SaveBodysettings: {
-				if (global.getAppMode() == BODY_DETAILS ||
-				    global.getAppMode() == CHARACTER_SETTING ||
-				    global.getAppMode() == CLOTHES) {
-					mainWindow.getConsole()->openWithCommand(
-					    kConsoleCommand_Save_Bodysettings,
-					    kConsoleMessage_Save_Bodysettings, getMyBodysettingsPath());
-				} else if (global.getAppMode() == POSES) {
-					mainWindow.getConsole()->openWithCommand(kConsoleCommand_Save_Poses,
-					                                         kConsoleMessage_Save_Poses,
-					                                         getMyPosesPath());
-				} else if (global.getAppMode() == ANIMATIONS) {
-					// mainWindow.getConsole()->openWithCommand(kConsoleCommand_Save_Animations,
-					// kConsoleMessage_Save_Animations, getMyPosesPath());
-				}
-			} break;
 			case kComponentID_ImageToolbarPanel_ExportWavefrontObj:
 				if (global.getAppMode() != ANIMATIONS) {
 					mainWindow.getConsole()->openWithCommand(
@@ -646,10 +630,6 @@ void ImageListener::hideUtilities()
 	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_MorphingList));
 	img->setEnabled(true);
 
-	img =
-	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_SaveBodysettings));
-	img->setEnabled(true);
-
 	img = (Image *)(tp->getWidget(
 	    kComponentID_ImageToolbarPanel_ExportWavefrontObj));
 	img->setEnabled(true);
@@ -770,10 +750,6 @@ void ImageListener::showUtilities()
 
 	Image *img =
 	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_MorphingList));
-	img->setEnabled(false);
-
-	img =
-	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_SaveBodysettings));
 	img->setEnabled(false);
 
 	img = (Image *)(tp->getWidget(

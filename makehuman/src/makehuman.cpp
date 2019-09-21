@@ -54,6 +54,9 @@
 #include <gui/Size.h>
 #include <gui/Widget.h>
 #include <gui/Window.h>
+
+#include "log/log.h"
+
 #include <time.h>
 #ifdef DEBUG
 #include <StopClock/StopClock.h>
@@ -121,6 +124,67 @@ const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
+
+
+
+
+static void saveBodySettings(const string &filename)
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	
+	BodySettings bodyset = mesh->getBodySettings();
+	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
+	
+	bool state = bodyset.save(filename);
+	
+	if (state) {
+		state = clothesgroup.saveVisibilities(filename);
+	}
+	
+	if (state) {
+		state = saveSelectorsPositions(filename);
+	}
+	
+	if (state) {
+		log("BodySettings saved");
+	} else {
+		log_err("Error: couldn't save file.");
+	}
+}
+
+void savePoses(const string &filename)
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	
+	BodySettings poses = mesh->getPoses();
+	
+	bool state = poses.save(filename);
+	
+	if (state) {
+		log("Poses saved");
+	} else {
+		log_err("Save pose failed");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Our state
 static bool show_demo_window = false;
 
@@ -128,7 +192,6 @@ static bool g_userRequestedQuit = false;
 
 static bool g_displayCharacterSettings = false;
 static bool g_displayPerformance = false;
-
 
 void DisplayQuitPopup() {
 	if(ImGui::BeginPopupModal("Quit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -151,10 +214,32 @@ void DisplayMainMenu()
 {
 	if(ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-			if(ImGui::MenuItem("Open", "Ctrl+O")) {
+			if(ImGui::MenuItem("SaveBodysettings")) {
+				auto & global = Global::instance();
 				
+				if (global.getAppMode() == BODY_DETAILS ||
+				    global.getAppMode() == CHARACTER_SETTING ||
+				    global.getAppMode() == CLOTHES) {
+					
+					
+					saveBodySettings("foo-BodySettings");
+					
+//					mainWindow.getConsole()->openWithCommand(
+//					    kConsoleCommand_Save_Bodysettings,
+//					    kConsoleMessage_Save_Bodysettings, getMyBodysettingsPath());
+				} else if (global.getAppMode() == POSES) {
+					
+					savePoses("foo-Poses");
+					
+//					mainWindow.getConsole()->openWithCommand(kConsoleCommand_Save_Poses,
+//					                                         kConsoleMessage_Save_Poses,
+//					                                         getMyPosesPath());
+				} else if (global.getAppMode() == ANIMATIONS) {
+					// mainWindow.getConsole()->openWithCommand(kConsoleCommand_Save_Animations,
+					// kConsoleMessage_Save_Animations, getMyPosesPath());
+				}
 			}
-			if(ImGui::MenuItem("Save", "Ctrl+S")) {
+			if(ImGui::MenuItem("Open", "Ctrl+O")) {
 				
 			}
 			if(ImGui::MenuItem("Save As..")) {

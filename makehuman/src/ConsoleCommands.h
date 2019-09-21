@@ -31,8 +31,6 @@
 static const string kConsoleCommand_Load_Background = "lbg";
 static const string kConsoleCommand_Load_Bodysettings = "lbs";
 static const string kConsoleCommand_Load_Poses = "lps";
-static const string kConsoleCommand_Save_Bodysettings = "sbs";
-static const string kConsoleCommand_Save_Poses = "sps";
 static const string kConsoleCommand_Save_Autozoom = "saz";
 static const string kConsoleCommand_Export_Object = "ewo";
 static const string kConsoleCommand_Export_Full_Object = "efo";
@@ -59,8 +57,6 @@ static const string kConsoleMessage_Load_Bodysettings_Success =
 
 static const string kConsoleMessage_Save_Bodysettings =
     "Save BodySettings file (*.bs)";
-static const string kConsoleMessage_Save_Bodysettings_Success =
-    "BodySettings saved";
 
 static const string kConsoleMessage_Load_Poses = "Load Poses file (*.bs)";
 static const string kConsoleMessage_Load_Poses_Success = "Poses loaded";
@@ -75,7 +71,6 @@ static const string kConsoleMessage_Load_Animations_Success =
     "Animation loaded";
 
 static const string kConsoleMessage_Save_Poses = "Save Poses file (*.bs)";
-static const string kConsoleMessage_Save_Poses_Success = "Poses saved";
 
 // static const string kConsoleMessage_Save_Animations            = "Save
 // animation (select a valid dir)"; static const string
