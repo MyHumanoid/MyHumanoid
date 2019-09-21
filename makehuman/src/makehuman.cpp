@@ -302,8 +302,9 @@ static void reshape(int w, int h) {
 
 static void timerTrigger(int val)
 {
-    bool tmp;
-
+	(void)val;
+	
+	bool tmp;
 	Window &mainWindow(Window::instance());
 
     tmp = camera->timerTrigger();
@@ -347,7 +348,7 @@ static void motion      (int x, int y)
 
 static void timerRendering(int value)
 {
-  Window &mainWindow(Window::instance());
+Window &mainWindow(Window::instance());
 
   if(Global::instance().isRendering() && waitDisplay)
   {
@@ -377,7 +378,7 @@ static void timer (int value)
   mainWindow.setTimerCallback(kTimerCallback, timer, value);
 }
 
-static void special     (int key, int x, int y)
+static void special(int key)
 {
   Window &mainWindow(Window::instance());
   if (!mainWindow.isKeyTypePanel (key))
@@ -401,7 +402,7 @@ static void special     (int key, int x, int y)
   cgutils::redisplay ();
 }
 
-static void keyboard    (unsigned char key,     int x, int y)
+static void keyboard(unsigned char key)
 {
   Window &mainWindow(Window::instance());
   if (!mainWindow.isKeyTypePanel (key))
@@ -893,7 +894,7 @@ int main(int argc, char** argv)
 			
 			ImGuiIO& io = ImGui::GetIO();
 			if(!io.WantCaptureKeyboard) {
-				keyboard(c, x, y);
+				keyboard(c);
 			}
 		});
 		
@@ -904,7 +905,7 @@ int main(int argc, char** argv)
 			
 			ImGuiIO& io = ImGui::GetIO();
 			if(!io.WantCaptureKeyboard) {
-				special(key, x, y);
+				special(key);
 			}
 		});
 		
