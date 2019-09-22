@@ -1327,7 +1327,6 @@ int main(int argc, char **argv)
 	));
 	
 	splashMotionCount = 0;
-	createWorkingDirs();
 
 	tooltipPanel = new TooltipPanel(mainWindow.getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();

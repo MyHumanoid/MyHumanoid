@@ -58,20 +58,11 @@ const string appendFilenameToPath(const string &inPath,
 off_t getFileSize(const string &inFilename);
 bool fileExists(const string &inFilename);
 bool isDirectory(const string &inFilename);
-bool isRegularFile(const string &inFilename);
-bool rmDir(const string &inDirPath, bool inRecursive = false);
 bool makeDir(const string &inDirPath, mode_t inMode = 0744);
 bool makeDirHier(const string &inDirPath, mode_t inMode = 0744);
 
-bool rmFile(const string &inFilename);
-
 mode_t getProtectionFlags(const string &inFilename);
 mode_t getModeFlags(const string &inFilename);
-
-bool copyFile(const string &inSrcFilename, const string &inDstFilename,
-              bool inCreateIntermediateDirs = false);
-bool linkFile(const string &inSrcFilename, const string &inDstFilename,
-              bool inCreateIntermediateDirs = false);
 
 ssize_t readFileIntoBuffer(const string &inFilename, void *outBuffer,
                            size_t readSize);

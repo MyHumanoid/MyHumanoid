@@ -33,101 +33,18 @@
 #include <animorph/util.h>
 #include <gui/CGUtilities.h>
 
-#ifdef _WIN32
-#include <winbase.h>
-#include <windows.h>
-#else
-#include "signal.h"
-#include <sys/wait.h>
-#endif
-
-#ifndef _WIN32
-// Not available on WIN32 'cos still not tested there!
 #include "FileTools.h"
-#endif
 
-#ifdef _WIN32
-extern int errno; // for error return of _spawn
-static const string getEXEDir();
-#endif
-
-#define USE_NEW_PATH 1
-
-// TODO: Need to test the "/" vs. "\" problematic! Targets...
+#include <dirent.h>
+#include <gui/Window.h>
+#include <iostream>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <vector>
 
 using namespace std;
-// using namespace mhgui;
-enum {
-	RUGHE_PARAM = 0,
-
-	LAST_PARAM = 9,
-};
-
-StringList::iterator sl_it, sl_end;
-string used_templates_path;
-// editable RIB paramenters
-// string parameters
-
-enum {
-	RENDPATH_PARAM_STRING = 0,
-	TEXTPATH_PARAM_STRING,
-
-	HEADCOLOR_PARAM_STRING,
-	BODYCOLOR_PARAM_STRING,
-	HEADBUMP_PARAM_STRING,
-	BODYBUMP_PARAM_STRING,
-
-	KM_PARAM_STRING,
-	VEINS_PARAM_STRING,
-	WRINKLES_PARAM_STRING,
-	OILVAL_PARAM_STRING,
-	SSSSCALE_PARAM_STRING,
-	KA_PARAM_STRING,
-	COLORR_PARAM_STRING,
-	COLORG_PARAM_STRING,
-	COLORB_PARAM_STRING,
-	DISPLAYX_PARAM_STRING,
-	DISPLAYY_PARAM_STRING,
-
-	EYESCOL_PARAM_STRING,
-	EYEBCOL_PARAM_STRING,
-	EYELCOL_PARAM_STRING,
-	HEADSPEC_PARAM_STRING,
-	BODYSPEC_PARAM_STRING,
-
-	EYESALPHA_PARAM_STRING,
-	EYEBALPHA_PARAM_STRING,
-	HEADALPHA_PARAM_STRING,
-	BODYALPHA_PARAM_STRING,
-	EYELALPHA_PARAM_STRING,
-	LAST_PARAM_STRING,
-};
-
-//------ end editable parameters section ----------//
-
-string render;
-;
-string options;
-StringList str_list;
-int n_step;
-int current_step;
-
-static vector<int> process;
-
-const string searchTextureFile(const string &texture_file)
-{
-	return searchFile(getTexturesAlternatives(texture_file));
-}
-
-const string searchShaderFile(const string &shader_file)
-{
-	return searchFile(getShadersAlternatives(shader_file));
-}
-
-const string searchBackgroundFile(const string &data_file)
-{
-	return searchFile(getBackgroundsAlternatives(data_file));
-}
 
 const string searchDataFile(const string &data_file)
 {
@@ -163,75 +80,20 @@ const string searchPixmapDir(const string &pixmap_dir)
 	return searchDir(getPixmapsAlternatives(pixmap_dir));
 }
 
-const StringVector getTexturesAlternatives(const string &texture)
-{
-	StringVector name_vector;
-
-	name_vector.push_back(getTexturesPath() + texture);
-
-	return name_vector;
-}
-
-const StringVector getShadersAlternatives(const string &shader)
-{
-	StringVector name_vector;
-
-	name_vector.push_back(getShadersPath() + shader);
-
-	return name_vector;
-}
-
 const StringVector getPixmapsAlternatives(const string &pixmap)
 {
 	StringVector name_vector;
-
 	name_vector.push_back("pixmaps" + PATH_SEPARATOR + pixmap);
 	name_vector.push_back(".." + PATH_SEPARATOR + "pixmaps" + PATH_SEPARATOR +
 	                      pixmap);
-
-#ifdef _WIN32
-	name_vector.push_back(getEXEDir());
-#else
-#ifdef PACKAGE_PIXMAPS_DIR
-	name_vector.push_back(string(PACKAGE_PIXMAPS_DIR) + PATH_SEPARATOR + pixmap);
-#endif
-#endif
 	return name_vector;
 }
 
 const StringVector getDataAlternatives(const string &data)
 {
 	StringVector name_vector;
-
 	name_vector.push_back("data" + PATH_SEPARATOR + data);
 	name_vector.push_back(".." + PATH_SEPARATOR + "data" + PATH_SEPARATOR + data);
-
-#ifdef _WIN32
-	name_vector.push_back(getEXEDir());
-#else
-#ifdef PACKAGE_PIXMAPS_DIR
-	name_vector.push_back(string(PACKAGE_DATA_DIR) + PATH_SEPARATOR + data);
-#endif
-#endif
-	return name_vector;
-}
-
-const StringVector getBackgroundsAlternatives(const string &data)
-{
-	StringVector name_vector;
-
-	name_vector.push_back("backgrounds" + PATH_SEPARATOR + data);
-	name_vector.push_back(".." + PATH_SEPARATOR + "backgrounds" + PATH_SEPARATOR +
-	                      data);
-
-#ifdef _WIN32
-	name_vector.push_back(getEXEDir());
-#else
-#ifdef PACKAGE_BACKGROUNDS_DIR
-	name_vector.push_back(string(PACKAGE_BACKGROUNDS_DIR) + PATH_SEPARATOR +
-	                      data);
-#endif
-#endif
 	return name_vector;
 }
 
@@ -276,91 +138,8 @@ const string searchDir(const StringVector &name_vector)
 	return string();
 }
 
-#ifdef _WIN32
-static const string getEXEDir()
-{
-	char path[PATH_MAX];
-	char *pos;
-
-	GetModuleFileName(NULL, path, sizeof(path));
-	pos = strrchr(path, '\\');
-
-	if (pos)
-		*pos = '\0';
-
-	return path;
-}
-#endif
-
-const string getHomeDir()
-{
-
-#ifndef _WIN32
-	uid_t uid;
-	struct passwd *pass;
-
-	uid = getuid();
-	pass = getpwuid(uid);
-
-	return string(string(pass->pw_dir) + PATH_SEPARATOR);
-#else  // _WIN32
-
-	HINSTANCE hinstLib;
-	MYPROC ProcAdd;
-	BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-	TCHAR szPath[MAX_PATH];
-
-	/* Get a handle to the DLL module. */
-	hinstLib = LoadLibrary("shfolder");
-
-	/* If the handle is valid, try to get the function address. */
-	if (hinstLib != NULL) {
-		ProcAdd = (MYPROC)GetProcAddress(hinstLib, "SHGetFolderPathA");
-
-		/* If the function address is valid, call the function. */
-		if (NULL != ProcAdd) {
-			fRunTimeLinkSuccess = TRUE;
-			ProcAdd(NULL, CSIDL_PERSONAL, /* Test CSIDL_FLAG_CREATE !! */
-			        NULL, 0, szPath);
-		}
-
-		/* Free the DLL module. */
-		fFreeResult = FreeLibrary(hinstLib);
-	}
-
-	/* If unable to call the DLL function, use an alternative. */
-	if (!fRunTimeLinkSuccess) {
-		/* later use getWindir?? or something else as fallback */
-		return string("c:\\");
-	}
-
-	return string(string(szPath) + "\\");
-#endif // _WIN32
-}
-
-/* Return the Users Working directory where the load and save dialog should be
-   point to. On Linux and Window this will be the same as getHomeDir() but
-   on a OS X Box this will point to the Users Desktop because it is not common
-   to store files which are supposed for further processing on the users home
-   dir. */
-const string getUserWorkDir() { return getHomeDir(); }
-
-const string getMyObjPath()
-{
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "myobjs" +
-	              PATH_SEPARATOR);
-}
-
-const string getMyColladaPath()
-{
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "mycollada" +
-	              PATH_SEPARATOR);
-}
-
-const string getMyPosesPath()
-{
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "myposes" +
-	              PATH_SEPARATOR);
+const string getUserWorkDir() {
+	return "./userdata";
 }
 
 const string getMyPosesBasePath()
@@ -369,80 +148,10 @@ const string getMyPosesBasePath()
 	              PATH_SEPARATOR);
 }
 
-const string getMyBodysettingsPath()
-{
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "mybs" +
-	              PATH_SEPARATOR);
-}
-
 const string getMyBodysettingsBasePath()
 {
 	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "mybs" +
 	              PATH_SEPARATOR);
-}
-
-const string getRenderingPath()
-{
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "rendering" +
-	              PATH_SEPARATOR);
-}
-
-const string getTexturesPath()
-{
-	// return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "textures"
-	// + PATH_SEPARATOR);
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "rendering" +
-	              PATH_SEPARATOR);
-}
-
-const string getShadersPath()
-{
-	// return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "shaders" +
-	// PATH_SEPARATOR);
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "rendering" +
-	              PATH_SEPARATOR);
-}
-
-const string getMyBackgroundsPath()
-{
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR +
-	              "mybackgrounds" + PATH_SEPARATOR);
-}
-
-void createDirWhenNotExists(const string &inPath)
-{
-#if defined(_WIN32)
-	DIR *dirHd;
-
-	// Does the given dir still exists?
-	if ((dirHd = opendir(inPath.c_str())) != NULL) {
-		// Yes, then release the handle again and return
-		::closedir(dirHd);
-		return;
-	}
-	::mkdir(inPath.c_str()); // create it otherwise (does not exists)!
-
-// On Linux and OS X specific code benefit from the FileTools
-#else
-	FileTools::makeDirHier(inPath);
-#endif
-}
-
-void createWorkingDirs()
-{
-	createDirWhenNotExists(getUserWorkDir() + "makehuman" + PATH_SEPARATOR);
-	createDirWhenNotExists(getMyObjPath());
-	// createDirWhenNotExists(getMyPosesBasePath());
-	createDirWhenNotExists(getMyPosesPath());
-	createDirWhenNotExists(getMyPosesPath() + "lib");
-	// createDirWhenNotExists(getMyBodysettingsBasePath());
-	createDirWhenNotExists(getMyBodysettingsPath());
-	createDirWhenNotExists(getMyBodysettingsPath() + "lib");
-	createDirWhenNotExists(getRenderingPath());
-	// createDirWhenNotExists(getShadersPath());
-	// createDirWhenNotExists(getTexturesPath());
-	createDirWhenNotExists(getMyBackgroundsPath());
-	createDirWhenNotExists(getMyColladaPath());
 }
 
 bool GetSymmVertexConfig(int *symm_vertex)

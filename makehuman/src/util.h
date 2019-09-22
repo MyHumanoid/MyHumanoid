@@ -24,56 +24,22 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
+#pragma once
 
-#ifndef MHUTIL_H
-#define MHUTIL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <dirent.h>
-#include <gui/Window.h>
 #include <iostream>
 #include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <vector>
-
-#ifndef _WIN32
-#include <pwd.h>
-#endif
-
-#ifdef _WIN32
-//#define BUFFER 512
-#include <io.h>
-#include <shlobj.h>
-#include <windows.h>
-
-typedef HRESULT (*MYPROC)(HWND, int, HANDLE, DWORD, LPTSTR);
-#else
-#define stricmp strcasecmp
-#endif
 
 using std::string;
 using std::vector;
-
-using namespace mhgui;
 
 typedef vector<string> StringVector;
 
 const StringVector getPixmapsAlternatives(const string &pixmap);
 const StringVector getDataAlternatives(const string &data);
-const StringVector getBackgroundsAlternatives(const string &data);
-const StringVector getTexturesAlternatives(const string &texture);
-const StringVector getShadersAlternatives(const string &shader);
 
-const string searchDataFile(const string &data_file);
-const string searchPixmapFile(const string &pixmap_file);
-const string searchBackgroundFile(const string &data_file);
-const string searchTextureFile(const string &texture_file);
-const string searchShaderFile(const string &shader_file);
+const std::string searchDataFile(const string &data_file);
+const std::string searchPixmapFile(const string &pixmap_file);
 
 const string searchDataDir(const string &data_dir);
 const string searchPixmapDir(const string &pixmap_dir);
@@ -83,21 +49,9 @@ const string searchDir(const StringVector &name_vector);
 
 const string getHomeDir();
 
-const string getUserWorkDir();
-void createDirWhenNotExists(const string &inPath);
-
-const string getMyObjPath();
-const string getMyColladaPath();
-const string getMyPosesPath();
 const string getMyPosesBasePath();
-const string getMyBodysettingsPath();
 const string getMyBodysettingsBasePath();
-const string getRenderingPath();
-const string getTexturesPath();
-const string getShadersPath();
-const string getMyBackgroundsPath();
 
-void createWorkingDirs();
 void loadRenderingPaths();
 void saveRenderingPaths(string path, int RENDER_TYPE);
 
@@ -115,4 +69,3 @@ bool saveSelectorsPositions(const std::string &filename,
 template <class T> struct deleteFunctor {
 	void operator()(T &t) { delete t; }
 };
-#endif // MHUTIL_H
