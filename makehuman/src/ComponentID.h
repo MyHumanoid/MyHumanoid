@@ -259,8 +259,6 @@ static const uint32_t kComponentID_ImageToolbarPanel_BodySettings =
     FOUR_CHAR_CONST('B', 'o', 'S', 'e');
 static const uint32_t kComponentID_ImageToolbarPanel_PoseBodySettings =
     FOUR_CHAR_CONST('P', 'B', 'S', 't');
-static const uint32_t kComponentID_ImageToolbarPanel_Reset =
-    FOUR_CHAR_CONST('R', 'e', 's', 't');
 
 // ------------------------------------------------------------------
 // The Target Panel

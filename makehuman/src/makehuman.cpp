@@ -78,6 +78,7 @@
 #include "ConsoleListener.h"
 #include "FooterPanel.h"
 #include "Global.h"
+#include "PoseTargetPanel.h"
 #include "SplashPanel.h"
 #include "TargetPanel.h"
 #include "ToolbarPanel.h"
@@ -362,6 +363,29 @@ static void saveAutozoom(const string &filename)
 
 
 
+static void ResetMeshPose(Global &global)
+{
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	mesh->resetPose();
+	
+	if (global.getSubdivision()) {
+		mesh->calcSubsurf();
+	}
+}
+
+static void ResetMeshMorph(Global &global)
+{
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	mesh->resetMorph();
+	
+	loadDefaultBodySettings();
+	
+	Global::instance().resetFuzzyValues();
+}
+
+
 
 
 
@@ -511,6 +535,47 @@ void DisplayMainMenu()
 		if(ImGui::BeginMenu("Edit")) {
 			ImGui::Checkbox("CharacterSettings", &g_displayCharacterSettings);
 			ImGui::Separator();
+			if(ImGui::MenuItem("Reset Mesh")) {
+				switch (g_global.getAppMode()) {
+					
+				case POSES: {
+					 PoseTargetPanel * pt_p = dynamic_cast<PoseTargetPanel *>(
+					    g_mainWindow->getPanel(kComponentID_TargetPanel));
+					if (pt_p != NULL) {
+						pt_p->resetTargetValues();
+					}
+					ResetMeshPose(g_global);
+					break;
+				}
+				case POSES_BODY_SETTINGS: {
+					ResetMeshPose(g_global);
+					break;
+				}
+				case BODY_DETAILS: {
+					TargetPanel *tg_p = dynamic_cast<TargetPanel *>(
+					    g_mainWindow->getPanel(kComponentID_TargetPanel));
+					if (tg_p != NULL) {
+						tg_p->resetTargetValues();
+					}
+					ResetMeshMorph(g_global);
+					break;
+				}
+				case BODY_SETTINGS:
+					ResetMeshMorph(g_global);
+					break;
+				case CHARACTER_SETTING: {
+					CharacterSettingPanel *cs_p = dynamic_cast<CharacterSettingPanel *>(
+					    g_mainWindow->getPanel(kComponentID_CharacterSettingPanel));
+					if (cs_p != NULL) {
+						cs_p->resetSlidersValues();
+					}
+					ResetMeshMorph(g_global);
+					break;
+				}
+				default:
+					break;
+				}
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();

@@ -213,16 +213,6 @@ void ToolbarPanel::createWidgets()
 	addWidget(image);
 
 	// -------------------------------------------------------------------------
-	image =
-	    new Image(kComponentID_ImageToolbarPanel_Reset,
-	              searchPixmapFile("ui/toolbar_reset.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Reset Mesh", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_06.png"),

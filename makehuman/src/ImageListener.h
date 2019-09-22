@@ -62,9 +62,6 @@ private:
 	void hidePosesBsCategory();
 	void hidePanels(const Modes newMode);
 
-	void ResetMeshMorph(Global &global);
-	void ResetMeshPose(Global &global);
-
 public:
 	ImageListener();
 	virtual ~ImageListener();

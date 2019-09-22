@@ -130,11 +130,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
                                   Component *source)
 {
 
-	BsPanel *bs_p;
-	PosesBsPanel *pb_p;
-	PoseTargetPanel *pt_p;
-	TargetPanel *tg_p;
-	CharacterSettingPanel *cs_p;
 	if (button == GLUT_LEFT_BUTTON) {
 		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 		assert(imgSource); // Check if this is really an Image object?
@@ -349,44 +344,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 				global.setAppMode(ANIMATIONS);
 				showUtilities();
-			} break;
-			case kComponentID_ImageToolbarPanel_Reset: {
-				switch (global.getAppMode()) {
-
-				case POSES:
-					pt_p = dynamic_cast<PoseTargetPanel *>(
-					    mainWindow.getPanel(kComponentID_TargetPanel));
-					if (pt_p != NULL) {
-						pt_p->resetTargetValues();
-					}
-					ResetMeshPose(global);
-					break;
-
-				case POSES_BODY_SETTINGS:
-					ResetMeshPose(global);
-					break;
-				case BODY_DETAILS:
-					tg_p = dynamic_cast<TargetPanel *>(
-					    mainWindow.getPanel(kComponentID_TargetPanel));
-					if (tg_p != NULL) {
-						tg_p->resetTargetValues();
-					}
-					ResetMeshMorph(global);
-					break;
-				case BODY_SETTINGS:
-					ResetMeshMorph(global);
-					break;
-				case CHARACTER_SETTING:
-					cs_p = dynamic_cast<CharacterSettingPanel *>(
-					    mainWindow.getPanel(kComponentID_CharacterSettingPanel));
-					if (cs_p != NULL) {
-						cs_p->resetSlidersValues();
-					}
-					ResetMeshMorph(global);
-					break;
-				default:
-					break;
-				}
 			} break;
 			// utilitybar buttons
 			case kComponentID_ImageUtilitybar_RenderPreview: {
@@ -698,27 +655,4 @@ void ImageListener::showPosesBsCategory()
 	assert(p);
 	p->setPosition(kBottomPosition6);
 	p->createWidgets();
-}
-
-// TODO: remove global parameter
-void ImageListener::ResetMeshMorph(Global &global)
-{
-	Mesh *mesh = global.getMesh();
-	assert(mesh);
-	mesh->resetMorph();
-
-	loadDefaultBodySettings();
-
-	Global::instance().resetFuzzyValues();
-}
-
-void ImageListener::ResetMeshPose(Global &global)
-{
-	Mesh *mesh = global.getMesh();
-	assert(mesh);
-	mesh->resetPose();
-
-	if (global.getSubdivision()) {
-		mesh->calcSubsurf();
-	}
 }
