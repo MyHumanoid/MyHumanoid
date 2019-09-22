@@ -128,17 +128,7 @@ void ToolbarPanel::createWidgets()
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
 	addWidget(image);
-
-	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_06.png"),
-	                  Rect(0, 0, 32, 32));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
-	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_01.png"),
-	                  Rect(0, 0, 768, 16)); // w = 1280 - 32x17
+	
 	
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
