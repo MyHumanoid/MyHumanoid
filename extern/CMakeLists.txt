@@ -79,4 +79,15 @@ target_include_directories(nlohmann-json INTERFACE
 	"${PROJECT_SOURCE_DIR}/nlohmann-json"
 )
 
+add_library(stb_image INTERFACE)
+target_sources(stb_image INTERFACE
+	${CMAKE_CURRENT_SOURCE_DIR}/stb/stb_image.h
+)
+
+target_include_directories(stb_image INTERFACE
+	"${PROJECT_SOURCE_DIR}/stb_image"
+)
+
+
+
 
