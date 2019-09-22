@@ -129,60 +129,6 @@ void ToolbarPanel::createWidgets()
 	imageVector.push_back(image);
 	addWidget(image);
 #endif
-	/*
-	  // -------------------------------------------------------------------------
-	  image = new Image(kComponentID_ImageToolbarPanel_Lights,
-	                    searchPixmapFile ("ui/toolbar_09.png"),
-	                    Rect(0,0,32,32));
-	  image->setListener(&imgListener1);
-	  image->setTooltip(Tooltip("Lights", kTooltipPos, color_red, tooltipPanel));
-	  image->setAlpha (alpha);
-	  imageVector.push_back (image);
-	  addWidget (image);
-
-	  // -------------------------------------------------------------------------
-	  image = new Image(kComponentID_ImageToolbarPanel_Expressions,
-	                    searchPixmapFile ("ui/toolbar_10.png"),
-	                    Rect(0,0,32,32));
-	  image->setListener(&imgListener1);
-	  image->setTooltip(Tooltip("Expressions", kTooltipPos, color_red,
-	  tooltipPanel)); image->setAlpha (alpha); imageVector.push_back (image);
-	  addWidget (image);
-	*/
-	// -------------------------------------------------------------------------
-	/*  image = new Image(kComponentID_ImageToolbarPanel_Asymmetry,
-	                    searchPixmapFile ("ui/toolbar_11.png"),
-	                    Rect(0,0,32,32));
-	  image->setListener(&imgListener1);
-	  image->setTooltip(Tooltip("Asymmetry", kTooltipPos, color_red,
-	  tooltipPanel)); image->setAlpha (alpha); image->setEnabled(false);
-	  imageVector.push_back (image);
-	  addWidget (image);
-
-	  // -------------------------------------------------------------------------
-	  image = new Image(kComponentID_ImageToolbarPanel_Hairs,
-	                    searchPixmapFile ("ui/toolbar_12.png"),
-	                    Rect(0,0,32,32));
-	  image->setListener(&imgListener1);
-	  image->setTooltip(Tooltip("Hairs", kTooltipPos, color_red, tooltipPanel));
-	  image->setAlpha (alpha);
-	  image->setEnabled(false);
-	  imageVector.push_back (image);
-	  addWidget (image);
-	*/
-	/*
-	  // -------------------------------------------------------------------------
-	  image = new Image(kComponentID_ImageToolbarPanel_Materials,
-	                    searchPixmapFile ("ui/toolbar_13.png"),
-	                    Rect(0,0,32,32));
-	  image->setListener(&imgListener1);
-	  image->setTooltip(Tooltip("Materials", kTooltipPos, color_red,
-	  tooltipPanel)); image->setAlpha (alpha); imageVector.push_back (image);
-	  addWidget (image);
-	*/
-	// -------------------------------------------------------------------------
-	// -------------------------------------------------------------------------
-	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_MorphingList,
 	                  searchPixmapFile("ui/toolbar_morph_list.png"),
 	                  Rect(0, 0, 32, 32));
@@ -193,8 +139,6 @@ void ToolbarPanel::createWidgets()
 	imageVector.push_back(image);
 	addWidget(image);
 
-	// -------------------------------------------------------------------------
-	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_06.png"),
 	                  Rect(0, 0, 32, 32));

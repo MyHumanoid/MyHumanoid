@@ -269,23 +269,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				g_global.setAppMode(POSES_BODY_SETTINGS);
 				showPosesBsCategory();
 			} break;
-			/*     case kComponentID_ImageToolbarPanel_Lights:
-
-				     break;
-				   case kComponentID_ImageToolbarPanel_Expressions:
-
-				     break;
-
-				   case kComponentID_ImageToolbarPanel_Asymmetry:
-
-				     break;
-				   case kComponentID_ImageToolbarPanel_Hairs:
-
-				     break;
-				   case kComponentID_ImageToolbarPanel_Materials:
-
-				     break;
-		 */
 			case kComponentID_ImageToolbarPanel_MorphingList: {
 				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);
