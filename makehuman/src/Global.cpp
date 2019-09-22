@@ -26,14 +26,5 @@
  */
 
 #include "Global.h"
-#include <iostream>
 
-Global *Global::sSingleGlobal = NULL;
-
-Global &Global::instance()
-{
-	if (sSingleGlobal == NULL)
-		sSingleGlobal = new Global();
-
-	return *sSingleGlobal;
-}
+Global g_global;

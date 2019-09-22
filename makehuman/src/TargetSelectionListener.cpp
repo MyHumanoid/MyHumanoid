@@ -351,7 +351,7 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 		}
 
 		Window &mainWindow = *g_mainWindow;
-		Global &global = Global::instance();
+		Global &global = g_global;
 
 		if (global.getAppMode() == CLOTHES) {
 			Mesh *mesh = global.getMesh();

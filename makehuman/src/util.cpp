@@ -467,7 +467,7 @@ bool GetSymmVertexConfig(int *symm_vertex)
 }
 int getSymmJoint(int joint)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 
 	Mesh *mesh = global.getMesh();
 
@@ -487,7 +487,7 @@ void CreateWeightsFile()
 	int weight[SK_JOINT_END];
 	int actual_weight[SK_JOINT_END];
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 
 	Mesh *mesh = global.getMesh();
 
@@ -579,7 +579,7 @@ void CreateWeightsFile()
 
 void loadDefaultBodySettings()
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	Window &mainWindow = *g_mainWindow;
@@ -620,7 +620,7 @@ void loadDefaultBodySettings()
 
 bool loadSelectorsPositions(const std::string &filename)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	char buffer[MAX_LINE];
 	char tmp[MAX_LINE];
 	char tmp1[MAX_LINE];
@@ -645,7 +645,7 @@ bool loadSelectorsPositions(const std::string &filename)
 bool loadSelectorsPositions(const std::vector<string> &strings,
                             const float value)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	char buffer[MAX_LINE];
 	char tmp[MAX_LINE];
 	char tmp1[MAX_LINE];
@@ -666,7 +666,7 @@ bool loadSelectorsPositions(const std::vector<string> &strings,
 bool saveSelectorsPositions(const std::string &filename,
                             std::ios_base::openmode mode)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	FileWriter file_writer;
 	file_writer.open(filename, mode);
 

@@ -49,7 +49,7 @@ bool Animation::load(const string &path)
 	BodySettings poses;
 	BodySettings prevPoses;
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 
@@ -136,7 +136,7 @@ void Animation::interpolate(BodySettings &prev, BodySettings &next)
 		}
 	}
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 
@@ -149,7 +149,7 @@ void Animation::addFrame(BodySettings &bs, const string &frame_name, Mesh *mesh)
 {
 	mesh->doPose(bs, true);
 
-	if (Global::instance().getSubdivision()) {
+	if (g_global.getSubdivision()) {
 		mesh->calcSubsurf();
 	}
 

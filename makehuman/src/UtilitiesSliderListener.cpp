@@ -75,7 +75,7 @@ bool UtilitiesSliderListener::mouseDragged(const Point &inMousePos,
 	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Animation *animation = global.getAnimation();
 
 	if (imgSliderSource->getID() == kComponentID_UtilitiesPanel_Interpolations) {

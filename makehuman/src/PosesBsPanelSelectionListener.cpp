@@ -112,7 +112,7 @@ bool PosesBsPanelSelectionListener::mouseReleased(const Point &inMousePos,
 		if (!imgSource->getAbsoluteRect().isHitBy(inMousePos))
 			return false;
 
-		Global &global = Global::instance();
+		Global &global = g_global;
 		Mesh *mesh = global.getMesh();
 
 		CharactersMap &charactersmap = mesh->getCharactersMapRef();

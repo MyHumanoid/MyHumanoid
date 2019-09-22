@@ -81,15 +81,15 @@ bool PoseTargetSliderListener::mouseDragged(const Point &inMousePos,
 		lastTargetName = imgSliderSource->getTargetName();
 		lastTargetValue = imgSliderSource->getSliderValue();
 	} else {
-		if (Global::instance().getSubdivision()) {
-			Global::instance().setLightMesh(true);
+		if (g_global.getSubdivision()) {
+			g_global.setLightMesh(true);
 		}
 
 		float diffValue = lastTargetValue - imgSliderSource->getSliderValue();
 		if (diffValue < -kPoseThreshold || diffValue > kPoseThreshold) {
 			lastTargetValue = imgSliderSource->getSliderValue();
 
-			Global &global = Global::instance();
+			Global &global = g_global;
 			Mesh *mesh = global.getMesh();
 			mesh->setPose(imgSliderSource->getTargetName(),
 			              imgSliderSource->getSliderValue());
@@ -112,7 +112,7 @@ bool PoseTargetSliderListener::mouseReleased(const Point &inMousePos,
 	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 
 	mesh->setPose(imgSliderSource->getTargetName(),
@@ -120,9 +120,9 @@ bool PoseTargetSliderListener::mouseReleased(const Point &inMousePos,
 
 	mesh->calcNormals();
 
-	if (Global::instance().getSubdivision()) {
+	if (g_global.getSubdivision()) {
 		mesh->calcSubsurf();
-		Global::instance().setLightMesh(false);
+		g_global.setLightMesh(false);
 	}
 
 	return false;

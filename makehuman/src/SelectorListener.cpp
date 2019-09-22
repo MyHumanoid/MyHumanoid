@@ -91,18 +91,18 @@ bool SelectorListener::mouseDragged(const Point &inMousePos, Component *source)
 	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
-	if (Global::instance().getSubdivision()) {
-		Global::instance().setLightMesh(true);
+	if (g_global.getSubdivision()) {
+		g_global.setLightMesh(true);
 	}
 
-	Global::instance().setFuzzyValue(selectorSource->getID(), inMousePos);
+	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 
 	if (xDist > 3 || yDist > 3) {
 		oldPos = inMousePos;
 		calcWidgetTargets(*selectorSource);
 
-		if (Global::instance().getSubdivision()) {
-			Mesh *mesh = Global::instance().getMesh();
+		if (g_global.getSubdivision()) {
+			Mesh *mesh = g_global.getMesh();
 			mesh->calcSubsurf();
 		}
 	}
@@ -130,15 +130,15 @@ bool SelectorListener::mouseReleased(const Point &inMousePos, int button,
 	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
-	Global::instance().setFuzzyValue(selectorSource->getID(), inMousePos);
+	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 	calcWidgetTargets(*selectorSource);
 
-	Mesh *mesh = Global::instance().getMesh();
+	Mesh *mesh = g_global.getMesh();
 	mesh->calcNormals();
 
-	if (Global::instance().getSubdivision()) {
+	if (g_global.getSubdivision()) {
 		mesh->calcSubsurf();
-		Global::instance().setLightMesh(false);
+		g_global.setLightMesh(false);
 	}
 
 	return true;
@@ -179,7 +179,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 	unsigned int j = 0;
 	unsigned int k = 0;
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 
 	// std::cout << "--------------------------" << std::endl;

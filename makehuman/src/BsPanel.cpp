@@ -71,7 +71,7 @@ void BsPanel::createWidgets()
 {
 	int numTargetsInPage = 1;
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Window &mainWindow = *g_mainWindow;
 
 	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);

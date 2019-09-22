@@ -254,7 +254,7 @@ static void CreatePoseImageTextures() {
 
 static void saveBodySettings(const string &filename)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	
@@ -280,7 +280,7 @@ static void saveBodySettings(const string &filename)
 
 static void loadBodySettings(const string &filename)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	Window &mainWindow = *g_mainWindow;
@@ -326,7 +326,7 @@ static void loadBodySettings(const string &filename)
 
 static void savePoses(const string &filename)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	
@@ -343,7 +343,7 @@ static void savePoses(const string &filename)
 
 static void loadPoses(const string &filename)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	
@@ -365,8 +365,7 @@ static void loadPoses(const string &filename)
 
 static void saveAnimation(const string& path)
 {
-	Global &global = Global::instance ();
-	Animation *animation = global.getAnimation();
+	Animation *animation = g_global.getAnimation();
 	assert (animation);
 	
 	//bool state = animation->save(path);
@@ -376,7 +375,7 @@ static void saveAnimation(const string& path)
 
 static void loadAnimation(const string &path)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Animation *animation = global.getAnimation();
 	assert(animation);
 	
@@ -392,7 +391,7 @@ static void loadAnimation(const string &path)
 
 static void exportBodySettings(string &directory, bool full)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	
@@ -415,7 +414,7 @@ static void exportBodySettings(string &directory, bool full)
 
 static void exportCollada(string &filename)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	
@@ -452,7 +451,7 @@ static void loadWindowBackground(const string &filename)
 
 static void saveAutozoom(const string &filename)
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Autozoom *autozoom = global.getAutozoom();
 	Camera *camera = global.getCamera();
 	assert(autozoom);
@@ -487,7 +486,7 @@ static void ResetMeshMorph(Global &global)
 	
 	loadDefaultBodySettings();
 	
-	Global::instance().resetFuzzyValues();
+	g_global.resetFuzzyValues();
 }
 
 // ================================================================================================
@@ -495,7 +494,7 @@ static void ResetMeshMorph(Global &global)
 
 
 void doMorphFromGui(std::string morphTarget, float value) {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	
 	mesh->doMorph(morphTarget, value);
@@ -513,18 +512,18 @@ void doMorphFromGui(std::string morphTarget, float value) {
 
 void doPoseFromGui(std::string targetName, float value) {
 	
-	if (Global::instance().getSubdivision()) {
-		Global::instance().setLightMesh(true);
+	if (g_global.getSubdivision()) {
+		g_global.setLightMesh(true);
 	}
 	
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	mesh->setPose(targetName, value);
 }
 
 void startStopAnimation()
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Animation *animation = global.getAnimation();
 	assert (animation);
 	
@@ -539,7 +538,7 @@ void startStopAnimation()
 
 void DisplayMorphApplied()
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	
@@ -597,7 +596,7 @@ void DisplayMorphApplied()
 
 void DisplayPoseRotationsApplied()
 {
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 	assert(mesh);
 	
@@ -684,12 +683,10 @@ void DisplayQuitPopup() {
 
 void DisplayMainMenu()
 {
-	auto & g_global = Global::instance();
-	
 	if(ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if(ImGui::MenuItem("SaveBodysettings")) {
-				auto & global = Global::instance();
+				auto & global = g_global;
 				
 				if (global.getAppMode() == BODY_DETAILS ||
 				    global.getAppMode() == CHARACTER_SETTING ||
@@ -708,7 +705,7 @@ void DisplayMainMenu()
 			}
 			if(ImGui::MenuItem("Load bodysetting", "Ctrl+O")) {
 				
-				auto & global = Global::instance();
+				auto & global = g_global;
 				
 				if (global.getAppMode() == BODY_DETAILS ||
 				    global.getAppMode() == CHARACTER_SETTING ||
@@ -756,16 +753,16 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("View")) {
-			ImGui::Checkbox("Grid", &Global::instance().drawGrid);
-			if(ImGui::Checkbox("Subsurfaces", &Global::instance().subdivision)) {
-				if(Global::instance().subdivision) {
-					Mesh *mesh = Global::instance().getMesh();
+			ImGui::Checkbox("Grid", &g_global.drawGrid);
+			if(ImGui::Checkbox("Subsurfaces", &g_global.subdivision)) {
+				if(g_global.subdivision) {
+					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 					mesh->calcSubsurf();
 				}
 			}
-			ImGui::Checkbox("Quoted box", &Global::instance().quotedBox);
-			ImGui::Checkbox("Texture", &Global::instance().m_enableTexture);
+			ImGui::Checkbox("Quoted box", &g_global.quotedBox);
+			ImGui::Checkbox("Texture", &g_global.m_enableTexture);
 			ImGui::Checkbox("Axis", &g_displayAxis);
 			
 			ImGui::Separator();
@@ -878,7 +875,7 @@ void DisplayMainMenu()
 				    (SplashPanel *)g_mainWindow->getPanel(kComponentID_SplashPanel);
 				
 				if (splashScreen == NULL) {
-					Global::instance().setDrawGrid(false);
+					g_global.setDrawGrid(false);
 					splashScreen = new SplashPanel(g_mainWindow->getSize());
 					g_mainWindow->addPanel(splashScreen);
 					splashScreen->createWidgets();
@@ -908,7 +905,7 @@ void DisplayCharacterSettings()
 		return;
 	}
 	
-	Global &global = Global::instance();
+	Global &global = g_global;
 
 	static std::array<float, 2> ageAndSex = {0.f, 0.f};
 	static std::array<float, 2> bodyWeightMuscle = {0.f, 0.f};
@@ -932,7 +929,7 @@ void DisplayCharacterSettings()
 		assert(mesh);
 		mesh->resetMorph();
 		loadDefaultBodySettings();
-		Global::instance().resetFuzzyValues();
+		g_global.resetFuzzyValues();
 	}
 
 	if (ImGui::SliderFloat2("Age/Sex", ageAndSex.data(), 0.0f, 1.0f)) {
@@ -1013,8 +1010,8 @@ static void display()
 
 	camera->applyMatrix();
 
-	if(Global::instance().getSubdivision() &&
-	    !Global::instance().getLightMesh()) {
+	if(g_global.getSubdivision() &&
+	    !g_global.getLightMesh()) {
 		renderSubsurf();
 	} else {
 		renderMesh();
@@ -1024,13 +1021,13 @@ static void display()
 		cgutils::drawAxis();
 	}
 
-	if (Global::instance().getQuotedBox())
+	if (g_global.getQuotedBox())
 		cgutils::mhWireCube(twopoints);
 
 	Window &mainWindow(*g_mainWindow);
 	mainWindow.draw();
 
-	if (Global::instance().getDrawGrid()) {
+	if (g_global.getDrawGrid()) {
 		cgutils::drawGrid(mainWindow.getSize(), 220, 70, grid_color, border_color,
 		                  50);
 	} else {
@@ -1095,12 +1092,12 @@ static void timerTrigger(int val)
 	Window &mainWindow(*g_mainWindow);
 
 	tmp = camera->timerTrigger();
-	if (Global::instance().getSubdivision()) {
+	if (g_global.getSubdivision()) {
 		if (!tmp && oldCameraTimerTrigger) {
-			Global::instance().setLightMesh(false);
+			g_global.setLightMesh(false);
 			cgutils::redisplay();
 		} else if (tmp && !oldCameraTimerTrigger) {
-			Global::instance().setLightMesh(true);
+			g_global.setLightMesh(true);
 		}
 		oldCameraTimerTrigger = tmp;
 	}
@@ -1237,8 +1234,8 @@ static void mouse(int button, int state, int x, int y)
 		switch (button) {
 		case GLUT_LEFT_BUTTON:
 			if (state != GLUT_DOWN) {
-				if (Global::instance().getSubdivision()) {
-					Global::instance().setLightMesh(false);
+				if (g_global.getSubdivision()) {
+					g_global.setLightMesh(false);
 				}
 			}
 			break;
@@ -1251,8 +1248,8 @@ static void mouse(int button, int state, int x, int y)
 				right_button_down = true;
 			} else {
 				right_button_down = false;
-				if (Global::instance().getSubdivision()) {
-					Global::instance().setLightMesh(false);
+				if (g_global.getSubdivision()) {
+					g_global.setLightMesh(false);
 				}
 			}
 			break;
@@ -1303,8 +1300,8 @@ static void activeMotion(int x, int y)
 			camera->rotateMouse(x, y);
 		}
 
-		if (Global::instance().getSubdivision()) {
-			Global::instance().setLightMesh(true);
+		if (g_global.getSubdivision()) {
+			g_global.setLightMesh(true);
 		}
 
 		cgutils::redisplay();
@@ -1449,20 +1446,20 @@ int main(int argc, char **argv)
 	
 
 	// put mesh container into the Global Singleton
-	Global::instance().setMesh(mesh);
+	g_global.setMesh(mesh);
 
 	// put camera into the Global Singleton
-	Global::instance().setCamera(camera);
+	g_global.setCamera(camera);
 
 	// put meshTexture into the Global Singleton
-	// Global::instance().setBodyTexture (bodyTexture);
-	// Global::instance().setHeadTexture (headTexture);
+	// g_global.setBodyTexture (bodyTexture);
+	// g_global.setHeadTexture (headTexture);
 
 	// put animation into the Global Singleton
-	Global::instance().setAnimation(animation);
+	g_global.setAnimation(animation);
 
 	// put autozoom into the Global Singleton
-	Global::instance().setAutozoom(autozoom);
+	g_global.setAutozoom(autozoom);
 
 	mesh->loadTargetsFactory(searchDataDir("targets"));
 	mesh->loadTargetsFactory(searchDataDir("selectors"), 1, true, false);
@@ -1508,8 +1505,8 @@ int main(int argc, char **argv)
 	splashPanel->show_all();
 
 	if (loadTextures()) {
-		Global::instance().setTexture(true);
-		Global::instance().setCanTexture(true);
+		g_global.setTexture(true);
+		g_global.setCanTexture(true);
 	}
 
 	// Glut callbacks
@@ -1711,7 +1708,7 @@ void renderFace(const Face &face, const MaterialVector &materialvector,
 		const Vertex &vertex = vertexvector[face.getVertexAtIndex(j)];
 		const Vector2f &uv = texture_face[j];
 		/*
-		    if(Global::instance().getFlatShading())
+		    if(g_global.getFlatShading())
 		    {
 		      ::glNormal3fv (face.no.getAsOpenGLVector());
 		    }
@@ -1721,12 +1718,12 @@ void renderFace(const Face &face, const MaterialVector &materialvector,
 		::glNormal3fv(vertex.no.getAsOpenGLVector());
 		//    }
 
-		if(Global::instance().m_canTexture && Global::instance().getTexture() && !Global::instance().getLightMesh()) {
+		if(g_global.m_canTexture && g_global.getTexture() && !g_global.getLightMesh()) {
 			::glTexCoord2f(uv.x, uv.y);
 		}
 		::glVertex3fv(vertex.co.getAsOpenGLVector());
 
-		if (Global::instance().getQuotedBox()) {
+		if (g_global.getQuotedBox()) {
 			calcMinMax(vertex.co);
 		}
 	} // for (j = 0; j != facesize; ++j)
@@ -1800,13 +1797,13 @@ void renderMesh()
 	int istri = -1; // to remember which type was the latest drawn geometry and
 	                // avoid too many glBegin
 
-	if (Global::instance().getQuotedBox()) {
+	if (g_global.getQuotedBox()) {
 		for (int i = 0; i < 6; i++) {
 			twopoints[i] = 0;
 		}
 	}
 
-	if(Global::instance().m_canTexture && Global::instance().getTexture() && !Global::instance().getLightMesh()) {
+	if(g_global.m_canTexture && g_global.getTexture() && !g_global.getLightMesh()) {
 		::glEnable(GL_TEXTURE_2D);
 	}
 
@@ -1818,8 +1815,8 @@ void renderMesh()
 		if ((*facegroup_it).second.visible == false)
 			continue;
 
-		if(Global::instance().m_canTexture && Global::instance().getTexture() && !Global::instance().getLightMesh()) {
-			::glBindTexture(GL_TEXTURE_2D, Global::instance()
+		if(g_global.m_canTexture && g_global.getTexture() && !g_global.getLightMesh()) {
+			::glBindTexture(GL_TEXTURE_2D, g_global
 			                                   .getTexture((*facegroup_it).first)
 			                                   ->getTextureIdOfXY(0, 0));
 		}
@@ -1849,7 +1846,7 @@ void renderMesh()
 
 	renderClothes();
 
-	if(Global::instance().m_canTexture && Global::instance().m_enableTexture && !Global::instance().getLightMesh()) {
+	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 		::glDisable(GL_TEXTURE_2D);
 	}
 	cgutils::disableBlend();
@@ -1862,8 +1859,8 @@ bool loadTextures()
 	for (FaceGroup::iterator facegroup_it = facegroup.begin();
 	     facegroup_it != facegroup.end(); facegroup_it++) {
 		string name((*facegroup_it).first);
-		Global::instance().setTexture(name, new Texture());
-		if (!Global::instance().getTexture(name)->load(
+		g_global.setTexture(name, new Texture());
+		if (!g_global.getTexture(name)->load(
 		        searchPixmapFile("ui/" + name + "_color.png"))) {
 			cerr << "couldn't load base skin_color Texture Data " << name
 			     << "_color.png" << endl;
@@ -1884,13 +1881,13 @@ void renderSubsurf()
 
 	FaceGroup &facegroup(mesh->getSubdFaceGroupRef());
 
-	if (Global::instance().getQuotedBox()) {
+	if (g_global.getQuotedBox()) {
 		for (int i = 0; i < 6; i++) {
 			twopoints[i] = 0;
 		}
 	}
 
-	::glBegin(Global::instance().getLightMesh() ? GL_POINTS : GL_QUADS);
+	::glBegin(g_global.getLightMesh() ? GL_POINTS : GL_QUADS);
 
 	for (FaceGroup::iterator facegroup_it = facegroup.begin();
 	     facegroup_it != facegroup.end(); facegroup_it++) {
@@ -1901,7 +1898,7 @@ void renderSubsurf()
 		FGroupData &groupdata = (*facegroup_it).second.facesIndexes;
 
 		for (unsigned int i = 0; i < groupdata.size(); i++) {
-			// if(Global::instance().getLightMesh() && i % 10 != 0) continue;
+			// if(g_global.getLightMesh() && i % 10 != 0) continue;
 			const Face &face(facevector_subd[groupdata[i]]);
 
 			int material_index = face.getMaterialIndex();
@@ -1935,7 +1932,7 @@ void renderSubsurf()
 			::glVertex3fv(
 			    vertexvector_subd_e[face.getVertexAtIndex(3)].co.getAsOpenGLVector());
 
-			if (Global::instance().getQuotedBox()) {
+			if (g_global.getQuotedBox()) {
 				calcMinMax(vertexvector_subd_o[face.getVertexAtIndex(0)].co);
 			}
 		}

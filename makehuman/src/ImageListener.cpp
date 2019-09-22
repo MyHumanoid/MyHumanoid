@@ -132,7 +132,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 		assert(imgSource); // Check if this is really an Image object?
 
 		if (imgSource->getAbsoluteRect().isHitBy(inMousePos)) {
-			Global &global = Global::instance();
+			Global &global = g_global;
 
 			// DialogPanel *dialogPanel;// = new DialogPanel (imgSource->getID ());
 

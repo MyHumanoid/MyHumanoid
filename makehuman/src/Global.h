@@ -53,8 +53,6 @@ enum Modes {
 
 struct Global
 {
-	static Global *sSingleGlobal;
-
 	Global()
 	    : mesh(NULL)
 	    , drawGrid(false)
@@ -88,11 +86,7 @@ struct Global
 
 	map<const uint32_t, Point *> fuzzyValues;
 
-	static Global glob;
-
 public:
-	static Global &instance();
-
 	void setMesh(Mesh *mesh) { this->mesh = mesh; }
 	Mesh *getMesh() { return mesh; }
 
@@ -139,5 +133,7 @@ public:
 	void setLightMesh(bool lmesh) { lightMesh = lmesh; }
 	bool getLightMesh() { return lightMesh; }
 };
+
+extern Global g_global;
 
 #endif // GLOBAL_H

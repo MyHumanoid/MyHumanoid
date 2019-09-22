@@ -80,7 +80,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_age = selector;
 
-	Point *cursorPosition = Global::instance().getFuzzyValue(selector->getID());
+	Point *cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if (cursorPosition == NULL) {
 		selector->setCursorPos(Point(96, 52));
 	} else {
@@ -105,7 +105,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_muscleSize = selector;
 
-	cursorPosition = Global::instance().getFuzzyValue(selector->getID());
+	cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if (cursorPosition == NULL) {
 		selector->setCursorPos(Point(96, 52));
 	} else {
@@ -130,7 +130,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_breast = selector;
 
-	cursorPosition = Global::instance().getFuzzyValue(selector->getID());
+	cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if (cursorPosition == NULL) {
 		selector->setCursorPos(Point(96, 52));
 	} else {
@@ -155,7 +155,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_shape = selector;
 
-	cursorPosition = Global::instance().getFuzzyValue(selector->getID());
+	cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if (cursorPosition == NULL) {
 		selector->setCursorPos(Point(96, 52));
 	} else {
@@ -180,7 +180,7 @@ void CharacterSettingPanel::resetSlidersValues()
 
 void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 {
-	Point *cursorPosition = Global::instance().getFuzzyValue(index);
+	Point *cursorPosition = g_global.getFuzzyValue(index);
 
 	for (vector<Selector *>::iterator sel_it = selectorVector.begin();
 	     sel_it != selectorVector.end(); sel_it++) {

@@ -79,7 +79,7 @@ bool TargetSliderListener::mouseDragged(const Point &inMousePos,
 	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 
 	if (global.getSubdivision()) {
@@ -114,7 +114,7 @@ bool TargetSliderListener::mouseReleased(const Point &inMousePos, int button,
 	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Global &global = Global::instance();
+	Global &global = g_global;
 	Mesh *mesh = global.getMesh();
 
 	mesh->doMorph(imgSliderSource->getTargetName(),
