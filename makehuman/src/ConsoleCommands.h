@@ -28,7 +28,6 @@
 #ifndef CONSOLECOMMANDS_H
 #define CONSOLECOMMANDS_H 1
 
-static const string kConsoleCommand_Load_Background = "lbg";
 static const string kConsoleCommand_Save_Autozoom = "saz";
 static const string kConsoleCommand_Exit = "quit";
 static const string kConsoleCommand_Load_AqsisPath = "aqs";
@@ -37,11 +36,6 @@ static const string kConsoleCommand_Set_Parameter = "set";
 static const string kConsoleCommand_Create_WeightsMatrix = "wgt";
 
 // console messages
-static const string kConsoleMessage_Load_Background =
-    "Load background image (*.png)";
-static const string kConsoleMessage_Load_Background_Success =
-    "Background image loaded";
-
 static const string kConsoleMessage_Save_Autozoom =
     "Save Autozoom file (*.camera)";
 static const string kConsoleMessage_Save_Autozoom_Success = "Autozoom saved";
@@ -50,8 +44,6 @@ static const string kConsoleMessage_Dir_Load_Error =
     "Error: couldn't read directory. Press ESC to exit or ENTER to retry!";
 // static const string kConsoleMessage_Dir_Save_Error             = "Error:
 // couldn't save files. Press ESC to exit or ENTER to retry!";
-static const string kConsoleMessage_Load_Error =
-    "Error: couldn't load file. Press ESC to exit or ENTER to retry!";
 static const string kConsoleMessage_Save_Error =
     "Error: couldn't save file. Press ESC to exit or ENTER to retry!";
 static const string kConsoleMessage_Unknown_Command = "Unknown command";

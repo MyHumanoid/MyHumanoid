@@ -332,6 +332,21 @@ static void exportCollada(string &filename)
 
 
 
+static void loadWindowBackground(const string &filename)
+{
+	Window &mainWindow(*g_mainWindow);
+	if (mainWindow.loadPNG(filename)) {
+		mainWindow.show();
+		log("Background image loaded");
+	} else {
+		mainWindow.loadPNG(searchPixmapFile("ui/background.png"));
+		log_err("Background image load failed");
+	}
+}
+
+
+
+
 
 
 
@@ -402,6 +417,15 @@ void DisplayMainMenu()
 				} else if (global.getAppMode() == ANIMATIONS) {
 
 					loadAnimation("foo-Animation");
+				}
+			}
+			
+			ImGui::Separator();
+			
+			if(ImGui::MenuItem("Load Background")) {
+				if(g_global.getAppMode() != ANIMATIONS) {
+					
+					loadWindowBackground("foo-background.png");
 				}
 			}
 			

@@ -235,16 +235,6 @@ void ToolbarPanel::createWidgets()
 	addWidget(image);
 
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_LoadBackground,
-	                  searchPixmapFile("ui/toolbar_load_bckgnd.png"),
-	                  Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Load Background", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_06.png"),
 	                  Rect(0, 0, 32, 32));

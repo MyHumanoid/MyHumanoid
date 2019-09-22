@@ -155,14 +155,7 @@ void ConsoleListener::parseCommand(Console &console)
 			arg = line;
 		}
 
-		if (cmd == kConsoleCommand_Load_Background) {
-			if (arg.size() == 0) {
-				console.inputMode(kConsoleMessage_Load_Background,
-				                  getMyBackgroundsPath());
-			} else {
-				loadWindowBackground(console, arg);
-			}
-		} else if (cmd == kConsoleCommand_Load_AqsisPath) {
+		if (cmd == kConsoleCommand_Load_AqsisPath) {
 			if (arg.size() == 0) {
 				console.inputMode(kConsoleCommand_Load_AqsisPath,
 				                  GetDefaultAqsisPath());
@@ -233,22 +226,6 @@ void ConsoleListener::startStopAnimation(Console& console)
   }
 }
 */
-
-void ConsoleListener::loadWindowBackground(Console &console,
-                                           const string &filename)
-{
-	Window &mainWindow(*g_mainWindow);
-	if (mainWindow.loadPNG(filename)) {
-		mainWindow.show();
-		console.printMessage(kConsoleMessage_Load_Background_Success);
-	} else {
-		mainWindow.loadPNG(searchPixmapFile("ui/background.png"));
-		console.printMessage(kConsoleMessage_Load_Error);
-		console.setError(true);
-	}
-}
-
-
 
 void ConsoleListener::loadAqsisPath(Console &console, const string &path)
 {

@@ -150,14 +150,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 			switch (imgSource->getID()) {
 			// toolbar buttons
-			case kComponentID_ImageToolbarPanel_LoadBackground:
-				if (global.getAppMode() != ANIMATIONS) {
-					mainWindow.getConsole()->openWithCommand(
-					    kConsoleCommand_Load_Background, kConsoleMessage_Load_Background,
-					    getMyBackgroundsPath());
-				}
-				break;
-
 			case kComponentID_ImageToolbarPanel_CharacterSettings: {
 				if (global.getAppMode() == CHARACTER_SETTING)
 					return true;
