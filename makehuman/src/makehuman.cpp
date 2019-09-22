@@ -31,6 +31,7 @@
 #endif
 
 #include <iostream>
+#include <unordered_map>
 
 #include <GL/gl.h>
 #include <GL/freeglut.h>
@@ -44,12 +45,15 @@
 #include <examples/imgui_impl_opengl2.h>
 
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+
 #include <animorph/Mesh.h>
 #include <animorph/Vector3.h>
 #include <animorph/util.h>
 #include <animorph/ColladaExporter.h>
 #include <animorph/ObjExporter.h>
-
 
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
@@ -138,9 +142,95 @@ const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
+// ================================================================================================
+
+std::vector<std::string> filesInDirRecursive(const fs::path& directoryPath)
+{
+	using Iter = fs::recursive_directory_iterator;
+	
+	std::vector<std::string> files;
+	auto it = Iter(directoryPath);
+	auto end = Iter();
+	while(it != end) {
+		auto & path = it->path();
+		if(fs::is_regular_file(path)) {
+			files.push_back(path);
+		}
+		error_code ec;
+		it.increment(ec);
+		if(ec) {
+			std::cerr << "Error While Accessing : " << path.string() << " :: " << ec.message() << '\n';
+		}
+	}
+	return files;
+}
 
 
 
+bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
+{
+	// Load from file
+	int image_width = 0;
+	int image_height = 0;
+	unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+	if (image_data == NULL)
+		return false;
+	
+	// Create a OpenGL texture identifier
+	GLuint image_texture;
+	glGenTextures(1, &image_texture);
+	glBindTexture(GL_TEXTURE_2D, image_texture);
+	
+	// Setup filtering parameters for display
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	// Upload pixels into texture
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+	stbi_image_free(image_data);
+	
+	*out_texture = image_texture;
+	*out_width = image_width;
+	*out_height = image_height;
+	
+	return true;
+}
+
+#include <fmt/format.h>
+
+static std::unordered_map<std::string, GLuint> g_targetImageTextures;
+
+static void CreateTargetImageTextures() {
+	
+	fs::path baseDir = "pixmaps/tgimg/";
+	
+	auto files = filesInDirRecursive(baseDir);
+	
+	for(auto & file: files) {
+		int my_image_width = 0;
+		int my_image_height = 0;
+		GLuint my_image_texture = 0;
+		bool ret = LoadTextureFromFile(file.c_str(),
+		                               &my_image_texture,
+		                               &my_image_width,
+		                               &my_image_height);
+		
+		if(ret) {
+			auto foo = file;
+			foo.erase(0, baseDir.string().length());
+			fs::path foobar = foo;
+			foobar.replace_extension();
+			
+			g_targetImageTextures[foobar] = my_image_texture;
+		} else {
+			std::cout <<
+			    fmt::format("Failed to load file {}\n", file) << std::endl;
+		}
+	}
+}
+
+// ================================================================================================
 
 static void saveBodySettings(const string &filename)
 {
@@ -385,13 +475,90 @@ static void ResetMeshMorph(Global &global)
 	Global::instance().resetFuzzyValues();
 }
 
+// ================================================================================================
+
+
+
+void doMorphFromGui(std::string morphTarget, float value) {
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	
+	mesh->doMorph(morphTarget, value);
+	
+//	mesh->doMorph(imgSliderSource->getTargetName(),
+//	              imgSliderSource->getSliderValue());
+	
+	mesh->calcNormals();
+	
+	if (global.getSubdivision()) {
+		mesh->calcSubsurf();
+		global.setLightMesh(false);
+	}
+}
 
 
 
 
 
 
+void DisplayAppliedTargets()
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	
+	TargetMap &targetmap = mesh->getTargetMapRef();
+	BodySettings bodyset = mesh->getBodySettings();
+	
+	ImGui::Begin("Applied Morph Targets");
+	
+	for (BodySettings::iterator bodyset_it = bodyset.begin();
+		 bodyset_it != bodyset.end(); bodyset_it++) {
+		
+		const string target_name((*bodyset_it).first);
+		
+		if (target_name.find("ages", 0) != string::npos ||
+			target_name.find("breast", 0) != string::npos ||
+			target_name.find("muscleSize", 0) != string::npos ||
+			target_name.find("shapes", 0) != string::npos) {
+			continue;
+		}
+		
+		float target_value = (*bodyset_it).second;
+		
+		fs::path targetImageName = target_name;
+		targetImageName.replace_extension();
+		
+		const auto & texIdIt = g_targetImageTextures.find(targetImageName);
+		if(texIdIt != g_targetImageTextures.end()) {
+			auto texId = texIdIt->second;
+			
+			ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
+			if(ImGui::IsItemHovered()) {
+				ImGui::BeginTooltip();
+				ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
+				ImGui::EndTooltip();
+			}
+		} else {
+			ImGui::Dummy(ImVec2(16, 16));
+		}
+		ImGui::SameLine(0, 4);
+		
+		// FIXME only the button in the first line is working
+		if(ImGui::Button("X", ImVec2(16, 16))) {
+			doMorphFromGui(target_name, 0.f);
+		}
+		ImGui::SameLine(0, 4);
+		
+		// TODO used min so that morph does not vanish
+		if(ImGui::SliderFloat(target_name.c_str(), &target_value, 0.001f, 1.f)) {
+			doMorphFromGui(target_name, target_value);
+		}
+	}
+	ImGui::End();
+}
 
+// ================================================================================================
 
 // Our state
 static bool show_demo_window = false;
@@ -400,6 +567,7 @@ static bool g_userRequestedQuit = false;
 
 static bool g_displayCharacterSettings = false;
 static bool g_displayPerformance = false;
+static bool g_displayUsedMorphingList = false;
 
 void DisplayQuitPopup() {
 	if(ImGui::BeginPopupModal("Quit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -578,6 +746,11 @@ void DisplayMainMenu()
 			}
 			ImGui::EndMenu();
 		}
+		if(ImGui::BeginMenu("Morph")) {
+			ImGui::Separator();
+			ImGui::Checkbox("Used morphing list", &g_displayUsedMorphingList);
+			ImGui::EndMenu();
+		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Help")) {
 			ImGui::Checkbox("Performance", &g_displayPerformance);
@@ -597,6 +770,11 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
+	}
+	
+	
+	if(g_displayUsedMorphingList) {
+		DisplayAppliedTargets();
 	}
 }
 
@@ -701,12 +879,7 @@ void DisplayPerformance()
 	ImGui::End();
 }
 
-
-
-
-
-
-
+// ================================================================================================
 
 int g_mainWindowPosX;
 int g_mainWindowPosY;
@@ -1119,6 +1292,7 @@ int main(int argc, char **argv)
 
 	ParseConfigurationXML();
 	ExportConfigurationXML();
+	
 	tooltipPanel = new TooltipPanel(mainWindow.getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();
 	footerPanel = new FooterPanel(mainWindow.getSize().getHeight());
@@ -1210,6 +1384,15 @@ int main(int argc, char **argv)
 		cerr << "couldn't load subsurf info" << endl;
 		return 1;
 	}
+	
+	
+	
+	
+	CreateTargetImageTextures();
+	
+	
+	
+	
 
 	// put mesh container into the Global Singleton
 	Global::instance().setMesh(mesh);

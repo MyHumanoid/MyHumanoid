@@ -143,6 +143,7 @@ set(makehuman_sources
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(PNG REQUIRED)
+find_package(fmt REQUIRED)
 
 add_executable(makehuman
 	${gui_sources}
@@ -155,9 +156,11 @@ target_include_directories(makehuman PRIVATE src)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
 target_link_libraries(makehuman PRIVATE
 	stdc++fs
+	fmt
 	animorph
 	imgui
 	nlohmann-json
+	stb_image
 	${OPENGL_LIBRARIES}
 	${GLUT_LIBRARY}
 	${PNG_LIBRARY}

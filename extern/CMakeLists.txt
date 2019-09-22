@@ -85,8 +85,9 @@ target_sources(stb_image INTERFACE
 )
 
 target_include_directories(stb_image INTERFACE
-	"${PROJECT_SOURCE_DIR}/stb_image"
+	"${PROJECT_SOURCE_DIR}/stb"
 )
+
 
 
 
