@@ -105,9 +105,6 @@ void CreateWeightsFile();
 
 int ParseParameter(string cmd);
 
-void ExportConfigurationXML();
-void ParseConfigurationXML();
-
 void loadDefaultBodySettings();
 bool loadSelectorsPositions(const std::string &filename);
 bool loadSelectorsPositions(const std::vector<string> &strings,

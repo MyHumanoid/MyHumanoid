@@ -31,7 +31,6 @@
 #include "Global.h"
 #include <animorph/DirectoryList.h>
 #include <animorph/util.h>
-#include <animorph/xmlParser.h>
 #include <gui/CGUtilities.h>
 
 #ifdef _WIN32
@@ -477,7 +476,6 @@ int getSymmJoint(int joint)
 
 void CreateWeightsFile()
 {
-	ExportConfigurationXML();
 	return;
 
 	FileReader file_reader;
@@ -577,73 +575,6 @@ void CreateWeightsFile()
 	}
 	file_write.close();
 	file_reader.close();
-}
-
-void ExportConfigurationXML()
-{
-
-	XMLNode xMainNode;
-	Global &global = Global::instance();
-
-	xMainNode = XMLNode::createXMLTopNode("xml", TRUE);
-	xMainNode.addAttribute("version", "1.0");
-	xMainNode.addAttribute("encoding", "utf-8");
-
-	XMLNode xNode_makehuman = xMainNode.addChild("MAKEHUMAN");
-
-	XMLNode xNode_rendering_parameters, xNode_collada_parameters,
-	    xNode_aqsis_path, xNode_pixie_path, xNode_rendering_path,
-	    xNode_texture_path;
-
-	XMLNode xNode_head_texture, xNode_body_texture, xNode_head_bump,
-	    xNode_body_bump;
-
-	XMLNode xNode_km, xNode_Veins, xNode_Wrinkles, xNode_oilVal, xNode_sssScale,
-	    xNode_Ka, xNode_ColorR, xNode_ColorG, xNode_ColorB;
-	XMLNode xNode_DisplayX, xNode_DisplayY;
-
-	XMLNode xNode_eyescol, xNode_eyelcol, xNode_eyebcol, xNode_headspec,
-	    xNode_bodyspec;
-
-	XMLError error = xMainNode.writeToFile(
-	    (getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "makehuman.parameters")
-	        .c_str());
-
-	if (error > 0) {
-		return;
-	} else {
-		return;
-	}
-}
-
-void ParseConfigurationXML()
-{
-
-	string file = (getUserWorkDir() + "makehuman" + PATH_SEPARATOR +
-	               "makehuman.parameters");
-	XMLNode xNode_main = XMLNode::parseFile(file.c_str());
-	string path, value;
-	Global &global = Global::instance();
-
-	if (xNode_main.isEmpty())
-		return;
-
-	XMLNode xNode_makehuman;
-	XMLNode xNode_rendering_parameters, xNode_collada_parameters,
-	    xNode_aqsis_path, xNode_pixie_path, xNode_rendering_path,
-	    xNode_texture_path;
-
-	XMLNode xNode_head_texture, xNode_body_texture, xNode_head_bump,
-	    xNode_body_bump;
-
-	XMLNode xNode_Km, xNode_Veins, xNode_Wrinkles, xNode_oilVal, xNode_sssScale,
-	    xNode_Ka, xNode_ColorR, xNode_ColorG, xNode_ColorB;
-	XMLNode xNode_DisplayX, xNode_DisplayY, xNode_exp_controller;
-
-	xNode_makehuman = xNode_main.getChildNode("MAKEHUMAN");
-
-	if (!xNode_makehuman.isEmpty()) {
-	}
 }
 
 void loadDefaultBodySettings()
