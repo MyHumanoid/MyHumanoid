@@ -77,13 +77,12 @@ void PosesBsPanel::createWidgets()
 
 	int numTargetsInPage = 1;
 
-	Global &global = g_global;
 	Window &mainWindow = *g_mainWindow;
 
 	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 
 	CharactersMap &charactersmap = mesh->getCharactersMapRef();

@@ -467,9 +467,7 @@ bool GetSymmVertexConfig(int *symm_vertex)
 }
 int getSymmJoint(int joint)
 {
-	Global &global = g_global;
-
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 
 	return mesh->getSymmetricJoint((SKELETON_JOINT)joint);
 }
@@ -487,9 +485,7 @@ void CreateWeightsFile()
 	int weight[SK_JOINT_END];
 	int actual_weight[SK_JOINT_END];
 
-	Global &global = g_global;
-
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 
 	VertexVector &vertexvector(mesh->getVertexVectorMorphOnlyRef());
 	unsigned int size_vx = vertexvector.size();
@@ -579,8 +575,7 @@ void CreateWeightsFile()
 
 void loadDefaultBodySettings()
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	Window &mainWindow = *g_mainWindow;
 
@@ -593,7 +588,7 @@ void loadDefaultBodySettings()
 	}
 
 	if (state) {
-		global.resetFuzzyValues();
+		g_global.resetFuzzyValues();
 		state = loadSelectorsPositions(searchDataFile("default.bs"));
 
 		CharacterSettingPanel *tmpPanel =
@@ -612,7 +607,7 @@ void loadDefaultBodySettings()
 		mesh->doMorph(bodyset);
 		mesh->calcNormals();
 
-		if (global.getSubdivision()) {
+		if (g_global.getSubdivision()) {
 			mesh->calcSubsurf();
 		}
 	}
@@ -620,7 +615,6 @@ void loadDefaultBodySettings()
 
 bool loadSelectorsPositions(const std::string &filename)
 {
-	Global &global = g_global;
 	char buffer[MAX_LINE];
 	char tmp[MAX_LINE];
 	char tmp1[MAX_LINE];
@@ -635,7 +629,7 @@ bool loadSelectorsPositions(const std::string &filename)
 
 	while (file_reader.getline(buffer, MAX_LINE)) {
 		if (sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			global.setFuzzyValue(id, Point(x, y));
+			g_global.setFuzzyValue(id, Point(x, y));
 		}
 	}
 
@@ -645,7 +639,6 @@ bool loadSelectorsPositions(const std::string &filename)
 bool loadSelectorsPositions(const std::vector<string> &strings,
                             const float value)
 {
-	Global &global = g_global;
 	char buffer[MAX_LINE];
 	char tmp[MAX_LINE];
 	char tmp1[MAX_LINE];
@@ -655,7 +648,7 @@ bool loadSelectorsPositions(const std::vector<string> &strings,
 	for (vector<string>::const_iterator it = strings.begin(); it != strings.end();
 	     it++) {
 		if (sscanf((*it).c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			global.setFuzzyValue(id,
+			g_global.setFuzzyValue(id,
 			                     Point((int32_t)(x * value), (int32_t)(y * value)));
 		}
 	}
@@ -666,7 +659,6 @@ bool loadSelectorsPositions(const std::vector<string> &strings,
 bool saveSelectorsPositions(const std::string &filename,
                             std::ios_base::openmode mode)
 {
-	Global &global = g_global;
 	FileWriter file_writer;
 	file_writer.open(filename, mode);
 
@@ -675,25 +667,25 @@ bool saveSelectorsPositions(const std::string &filename,
 
 	std::ostringstream out_stream;
 
-	Point *tmp = global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
+	Point *tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
 	if (tmp != NULL) {
 		out_stream << "#t,A," << kComponentID_CharacterSettingPanel_Age << ","
 		           << tmp->getX() << "," << tmp->getY() << endl;
 	}
 
-	tmp = global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
+	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
 	if (tmp != NULL) {
 		out_stream << "#t,M," << kComponentID_CharacterSettingPanel_MuscleSize
 		           << "," << tmp->getX() << "," << tmp->getY() << endl;
 	}
 
-	tmp = global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
+	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
 	if (tmp != NULL) {
 		out_stream << "#t,B," << kComponentID_CharacterSettingPanel_Breast << ","
 		           << tmp->getX() << "," << tmp->getY() << endl;
 	}
 
-	tmp = global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
+	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
 	if (tmp != NULL) {
 		out_stream << "#t,S," << kComponentID_CharacterSettingPanel_Shape << ","
 		           << tmp->getX() << "," << tmp->getY();

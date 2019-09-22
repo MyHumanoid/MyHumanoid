@@ -132,7 +132,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 		assert(imgSource); // Check if this is really an Image object?
 
 		if (imgSource->getAbsoluteRect().isHitBy(inMousePos)) {
-			Global &global = g_global;
 
 			// DialogPanel *dialogPanel;// = new DialogPanel (imgSource->getID ());
 
@@ -142,132 +141,132 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 			switch (imgSource->getID()) {
 			// toolbar buttons
 			case kComponentID_ImageToolbarPanel_CharacterSettings: {
-				if (global.getAppMode() == CHARACTER_SETTING)
+				if (g_global.getAppMode() == CHARACTER_SETTING)
 					return true;
 
-				hidePanels(global.getAppMode());
+				hidePanels(g_global.getAppMode());
 
-				if (global.getAppMode() != BODY_DETAILS &&
-				    global.getAppMode() != BODY_SETTINGS &&
-				    global.getAppMode() != CLOTHES) {
-					Mesh *mesh = global.getMesh();
+				if (g_global.getAppMode() != BODY_DETAILS &&
+				    g_global.getAppMode() != BODY_SETTINGS &&
+				    g_global.getAppMode() != CLOTHES) {
+					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
 
-					if (global.getSubdivision()) {
+					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
 				}
 
-				if (global.getAppMode() == ANIMATIONS) {
-					global.getAnimation()->setStarted(false);
-					global.getAnimation()->setLoaded(false);
+				if (g_global.getAppMode() == ANIMATIONS) {
+					g_global.getAnimation()->setStarted(false);
+					g_global.getAnimation()->setLoaded(false);
 				}
 
-				global.setAppMode(CHARACTER_SETTING);
+				g_global.setAppMode(CHARACTER_SETTING);
 				showCharacterSetting();
 			} break;
 			case kComponentID_ImageToolbarPanel_BodyDetailsRealistic: {
-				if (global.getAppMode() == BODY_DETAILS)
+				if (g_global.getAppMode() == BODY_DETAILS)
 					return true;
 
-				hidePanels(global.getAppMode());
+				hidePanels(g_global.getAppMode());
 
-				if (global.getAppMode() != CHARACTER_SETTING &&
-				    global.getAppMode() != BODY_SETTINGS &&
-				    global.getAppMode() != CLOTHES) {
-					Mesh *mesh = global.getMesh();
+				if (g_global.getAppMode() != CHARACTER_SETTING &&
+				    g_global.getAppMode() != BODY_SETTINGS &&
+				    g_global.getAppMode() != CLOTHES) {
+					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
 
-					if (global.getSubdivision()) {
+					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
 				}
 
-				if (global.getAppMode() == ANIMATIONS) {
-					global.getAnimation()->setStarted(false);
-					global.getAnimation()->setLoaded(false);
+				if (g_global.getAppMode() == ANIMATIONS) {
+					g_global.getAnimation()->setStarted(false);
+					g_global.getAnimation()->setLoaded(false);
 				}
 
-				global.setAppMode(BODY_DETAILS);
+				g_global.setAppMode(BODY_DETAILS);
 				showBodyDetails();
 			} break;
 			case kComponentID_ImageToolbarPanel_Poses: {
-				if (global.getAppMode() == POSES)
+				if (g_global.getAppMode() == POSES)
 					return true;
 
-				hidePanels(global.getAppMode());
+				hidePanels(g_global.getAppMode());
 
-				if (global.getAppMode() != ANIMATIONS &&
-				    global.getAppMode() != POSES_BODY_SETTINGS) {
-					Mesh *mesh = global.getMesh();
+				if (g_global.getAppMode() != ANIMATIONS &&
+				    g_global.getAppMode() != POSES_BODY_SETTINGS) {
+					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 					mesh->poseMode();
-					if (global.getSubdivision()) {
+					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
 				}
 
-				if (global.getAppMode() == ANIMATIONS) {
-					global.getAnimation()->setStarted(false);
-					global.getAnimation()->setLoaded(false);
+				if (g_global.getAppMode() == ANIMATIONS) {
+					g_global.getAnimation()->setStarted(false);
+					g_global.getAnimation()->setLoaded(false);
 				}
 
-				global.setAppMode(POSES);
+				g_global.setAppMode(POSES);
 				showPoses();
 			} break;
 			case kComponentID_ImageToolbarPanel_BodySettings: {
-				if (global.getAppMode() == BODY_SETTINGS)
+				if (g_global.getAppMode() == BODY_SETTINGS)
 					return true;
 
-				hidePanels(global.getAppMode());
+				hidePanels(g_global.getAppMode());
 
-				if (global.getAppMode() != CHARACTER_SETTING &&
-				    global.getAppMode() != BODY_DETAILS &&
-				    global.getAppMode() != CLOTHES) {
-					Mesh *mesh = global.getMesh();
+				if (g_global.getAppMode() != CHARACTER_SETTING &&
+				    g_global.getAppMode() != BODY_DETAILS &&
+				    g_global.getAppMode() != CLOTHES) {
+					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
 
-					if (global.getSubdivision()) {
+					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
 				}
 
-				if (global.getAppMode() == ANIMATIONS) {
-					global.getAnimation()->setStarted(false);
-					global.getAnimation()->setLoaded(false);
+				if (g_global.getAppMode() == ANIMATIONS) {
+					g_global.getAnimation()->setStarted(false);
+					g_global.getAnimation()->setLoaded(false);
 				}
 
-				global.setAppMode(BODY_SETTINGS);
+				g_global.setAppMode(BODY_SETTINGS);
 				showBsCategory();
 			} break;
 			case kComponentID_ImageToolbarPanel_PoseBodySettings: {
-				if (global.getAppMode() == POSES_BODY_SETTINGS)
+				if (g_global.getAppMode() == POSES_BODY_SETTINGS)
 					return true;
 
-				hidePanels(global.getAppMode());
+				hidePanels(g_global.getAppMode());
 
-				if (global.getAppMode() != ANIMATIONS && global.getAppMode() != POSES) {
-					Mesh *mesh = global.getMesh();
+				if (g_global.getAppMode() != ANIMATIONS && g_global.getAppMode() != POSES) {
+					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
 					mesh->poseMode();
-					if (global.getSubdivision()) {
+					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
 				}
 
-				if (global.getAppMode() == ANIMATIONS) {
-					global.getAnimation()->setStarted(false);
-					global.getAnimation()->setLoaded(false);
+				if (g_global.getAppMode() == ANIMATIONS) {
+					g_global.getAnimation()->setStarted(false);
+					g_global.getAnimation()->setLoaded(false);
 				}
 
-				global.setAppMode(POSES_BODY_SETTINGS);
+				g_global.setAppMode(POSES_BODY_SETTINGS);
 				showPosesBsCategory();
 			} break;
 			/*     case kComponentID_ImageToolbarPanel_Lights:
@@ -292,8 +291,8 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				mainWindow.removePanel(p);
 				delete p;
 
-				if (global.getAppMode() == BODY_DETAILS ||
-				    global.getAppMode() == CHARACTER_SETTING) {
+				if (g_global.getAppMode() == BODY_DETAILS ||
+				    g_global.getAppMode() == CHARACTER_SETTING) {
 					TargetPanel *targetPanel;
 
 					int x = mainWindow.getSize().getWidth() - 210;
@@ -302,7 +301,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					mainWindow.addPanel(targetPanel);
 					targetPanel->createWidgets();
 					targetPanel->show();
-				} else if (global.getAppMode() == POSES) {
+				} else if (g_global.getAppMode() == POSES) {
 					PoseTargetPanel *targetPanel;
 
 					int x = mainWindow.getSize().getWidth() - 210;
@@ -311,29 +310,29 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					mainWindow.addPanel(targetPanel);
 					targetPanel->createWidgets();
 					targetPanel->show_all();
-				} else if (global.getAppMode() == CLOTHES) {
+				} else if (g_global.getAppMode() == CLOTHES) {
 					// TODO: what happens when in clothes mode ?
-				} else if (global.getAppMode() == ANIMATIONS) {
+				} else if (g_global.getAppMode() == ANIMATIONS) {
 					// TODO: what happens when in animation mode ?
 				}
 			} break;
 			case kComponentID_ImageToolbarPanel_Animation: {
-				if (global.getAppMode() == ANIMATIONS)
+				if (g_global.getAppMode() == ANIMATIONS)
 					return true;
 
-				hidePanels(global.getAppMode());
+				hidePanels(g_global.getAppMode());
 
-				if (global.getAppMode() != POSES) {
-					Mesh *mesh = global.getMesh();
+				if (g_global.getAppMode() != POSES) {
+					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 					mesh->animationMode();
 
-					if (global.getSubdivision()) {
+					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
 				}
 
-				global.setAppMode(ANIMATIONS);
+				g_global.setAppMode(ANIMATIONS);
 				showUtilities();
 			} break;
 			// utilitybar buttons
@@ -383,7 +382,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				break;
 			}
 			case kComponentID_UtilitiesPanel_Reset: {
-				Animation *animation = global.getAnimation();
+				Animation *animation = g_global.getAnimation();
 				if (animation->isLoaded()) {
 					animation->setStarted(false);
 				}

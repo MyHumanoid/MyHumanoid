@@ -179,8 +179,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 	unsigned int j = 0;
 	unsigned int k = 0;
 
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 
 	// std::cout << "--------------------------" << std::endl;
 	vector<float>::const_iterator di_end = ageDists.end();

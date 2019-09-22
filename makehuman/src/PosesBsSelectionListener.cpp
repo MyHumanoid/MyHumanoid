@@ -118,8 +118,7 @@ bool PosesBsSelectionListener::mouseReleased(const Point &inMousePos,
 		if (imgSource->getID() == kComponentID_BsCategoryPanel_MyBS) {
 			character = "lib";
 
-			Global &global = g_global;
-			Mesh *mesh = global.getMesh();
+			Mesh *mesh = g_global.getMesh();
 			CharactersMap &charactersmap = mesh->getCharactersMapRef();
 			list<string> toErase;
 

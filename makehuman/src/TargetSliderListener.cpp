@@ -79,11 +79,10 @@ bool TargetSliderListener::mouseDragged(const Point &inMousePos,
 	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 
-	if (global.getSubdivision()) {
-		global.setLightMesh(true);
+	if (g_global.getSubdivision()) {
+		g_global.setLightMesh(true);
 	}
 
 	mesh->doMorph(imgSliderSource->getTargetName(),
@@ -114,17 +113,16 @@ bool TargetSliderListener::mouseReleased(const Point &inMousePos, int button,
 	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 
 	mesh->doMorph(imgSliderSource->getTargetName(),
 	              imgSliderSource->getSliderValue());
 
 	mesh->calcNormals();
 
-	if (global.getSubdivision()) {
+	if (g_global.getSubdivision()) {
 		mesh->calcSubsurf();
-		global.setLightMesh(false);
+		g_global.setLightMesh(false);
 	}
 
 	return false;

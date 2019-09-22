@@ -351,10 +351,9 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 		}
 
 		Window &mainWindow = *g_mainWindow;
-		Global &global = g_global;
 
-		if (global.getAppMode() == CLOTHES) {
-			Mesh *mesh = global.getMesh();
+		if (g_global.getAppMode() == CLOTHES) {
+			Mesh *mesh = g_global.getMesh();
 			assert(mesh);
 			FaceGroup &clothesgroup = mesh->getClothesGroupRef();
 			clothesgroup.toggleVisible(target);
@@ -377,11 +376,11 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 			targetPanel->createWidgets();
 		}
 
-		Autozoom *autozoom = global.getAutozoom();
-		Camera *camera = global.getCamera();
+		Autozoom *autozoom = g_global.getAutozoom();
+		Camera *camera = g_global.getCamera();
 		assert(autozoom);
 
-		Mesh *mesh = global.getMesh();
+		Mesh *mesh = g_global.getMesh();
 		assert(mesh);
 		VertexVector &vertexvector(mesh->getVertexVectorRef());
 

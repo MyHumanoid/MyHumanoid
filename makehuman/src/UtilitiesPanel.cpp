@@ -53,8 +53,7 @@ UtilitiesPanel::~UtilitiesPanel()
 void UtilitiesPanel::createWidgets()
 {
 	Window &mainWindow = *g_mainWindow;
-	Global &global = g_global;
-	Animation *animation = global.getAnimation();
+	Animation *animation = g_global.getAnimation();
 
 	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);

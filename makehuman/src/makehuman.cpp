@@ -254,8 +254,7 @@ static void CreatePoseImageTextures() {
 
 static void saveBodySettings(const string &filename)
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	BodySettings bodyset = mesh->getBodySettings();
@@ -280,8 +279,7 @@ static void saveBodySettings(const string &filename)
 
 static void loadBodySettings(const string &filename)
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	Window &mainWindow = *g_mainWindow;
 	
@@ -294,7 +292,7 @@ static void loadBodySettings(const string &filename)
 	}
 	
 	if (state) {
-		global.resetFuzzyValues();
+		g_global.resetFuzzyValues();
 		state = loadSelectorsPositions(filename);
 		
 		CharacterSettingPanel *tmpPanel =
@@ -312,7 +310,7 @@ static void loadBodySettings(const string &filename)
 	if (state) {
 		mesh->doMorph(bodyset);
 		mesh->calcNormals();
-		if (global.getSubdivision()) {
+		if (g_global.getSubdivision()) {
 			mesh->calcSubsurf();
 		}
 		
@@ -326,8 +324,7 @@ static void loadBodySettings(const string &filename)
 
 static void savePoses(const string &filename)
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	BodySettings poses = mesh->getPoses();
@@ -343,8 +340,7 @@ static void savePoses(const string &filename)
 
 static void loadPoses(const string &filename)
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	BodySettings poses;
@@ -352,7 +348,7 @@ static void loadPoses(const string &filename)
 	
 	if (state) {
 		mesh->doPose(poses);
-		if (global.getSubdivision()) {
+		if (g_global.getSubdivision()) {
 			mesh->calcSubsurf();
 		}
 		log("Poses loaded");
@@ -375,8 +371,7 @@ static void saveAnimation(const string& path)
 
 static void loadAnimation(const string &path)
 {
-	Global &global = g_global;
-	Animation *animation = global.getAnimation();
+	Animation *animation = g_global.getAnimation();
 	assert(animation);
 	
 	bool state = animation->load(path);
@@ -391,8 +386,7 @@ static void loadAnimation(const string &path)
 
 static void exportBodySettings(string &directory, bool full)
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	ObjExporter obj_export(*mesh);
@@ -414,8 +408,7 @@ static void exportBodySettings(string &directory, bool full)
 
 static void exportCollada(string &filename)
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	ColladaExporter collada_export(*mesh);
@@ -451,9 +444,8 @@ static void loadWindowBackground(const string &filename)
 
 static void saveAutozoom(const string &filename)
 {
-	Global &global = g_global;
-	Autozoom *autozoom = global.getAutozoom();
-	Camera *camera = global.getCamera();
+	Autozoom *autozoom = g_global.getAutozoom();
+	Camera *camera = g_global.getCamera();
 	assert(autozoom);
 	
 	bool state = autozoom->save(filename, *camera);
@@ -467,20 +459,20 @@ static void saveAutozoom(const string &filename)
 
 
 
-static void ResetMeshPose(Global &global)
+static void ResetMeshPose()
 {
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	mesh->resetPose();
 	
-	if (global.getSubdivision()) {
+	if (g_global.getSubdivision()) {
 		mesh->calcSubsurf();
 	}
 }
 
-static void ResetMeshMorph(Global &global)
+static void ResetMeshMorph()
 {
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	mesh->resetMorph();
 	
@@ -493,9 +485,9 @@ static void ResetMeshMorph(Global &global)
 
 
 
-void doMorphFromGui(std::string morphTarget, float value) {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+void doMorphFromGui(std::string morphTarget, float value)
+{
+	Mesh *mesh = g_global.getMesh();
 	
 	mesh->doMorph(morphTarget, value);
 	
@@ -504,9 +496,9 @@ void doMorphFromGui(std::string morphTarget, float value) {
 	
 	mesh->calcNormals();
 	
-	if (global.getSubdivision()) {
+	if (g_global.getSubdivision()) {
 		mesh->calcSubsurf();
-		global.setLightMesh(false);
+		g_global.setLightMesh(false);
 	}
 }
 
@@ -516,15 +508,13 @@ void doPoseFromGui(std::string targetName, float value) {
 		g_global.setLightMesh(true);
 	}
 	
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	mesh->setPose(targetName, value);
 }
 
 void startStopAnimation()
 {
-	Global &global = g_global;
-	Animation *animation = global.getAnimation();
+	Animation *animation = g_global.getAnimation();
 	assert (animation);
 	
 	if(animation->isLoaded()) {
@@ -538,8 +528,7 @@ void startStopAnimation()
 
 void DisplayMorphApplied()
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	TargetMap &targetmap = mesh->getTargetMapRef();
@@ -596,8 +585,7 @@ void DisplayMorphApplied()
 
 void DisplayPoseRotationsApplied()
 {
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	const BodySettings &bodyset(mesh->getPoses());
@@ -813,11 +801,11 @@ void DisplayMainMenu()
 					if (pt_p != NULL) {
 						pt_p->resetTargetValues();
 					}
-					ResetMeshPose(g_global);
+					ResetMeshPose();
 					break;
 				}
 				case POSES_BODY_SETTINGS: {
-					ResetMeshPose(g_global);
+					ResetMeshPose();
 					break;
 				}
 				case BODY_DETAILS: {
@@ -826,11 +814,11 @@ void DisplayMainMenu()
 					if (tg_p != NULL) {
 						tg_p->resetTargetValues();
 					}
-					ResetMeshMorph(g_global);
+					ResetMeshMorph();
 					break;
 				}
 				case BODY_SETTINGS:
-					ResetMeshMorph(g_global);
+					ResetMeshMorph();
 					break;
 				case CHARACTER_SETTING: {
 					CharacterSettingPanel *cs_p = dynamic_cast<CharacterSettingPanel *>(
@@ -838,7 +826,7 @@ void DisplayMainMenu()
 					if (cs_p != NULL) {
 						cs_p->resetSlidersValues();
 					}
-					ResetMeshMorph(g_global);
+					ResetMeshMorph();
 					break;
 				}
 				default:
@@ -905,8 +893,6 @@ void DisplayCharacterSettings()
 		return;
 	}
 	
-	Global &global = g_global;
-
 	static std::array<float, 2> ageAndSex = {0.f, 0.f};
 	static std::array<float, 2> bodyWeightMuscle = {0.f, 0.f};
 	static std::array<float, 2> breastSizeShape = {0.f, 0.f};
@@ -925,7 +911,7 @@ void DisplayCharacterSettings()
 		characterSettingPanel->selectorListener.breastDists.clear();
 		characterSettingPanel->selectorListener.shapeDists.clear();
 
-		Mesh *mesh = global.getMesh();
+		Mesh *mesh = g_global.getMesh();
 		assert(mesh);
 		mesh->resetMorph();
 		loadDefaultBodySettings();

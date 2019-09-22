@@ -49,8 +49,7 @@ bool Animation::load(const string &path)
 	BodySettings poses;
 	BodySettings prevPoses;
 
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 
 	frames.clear();
@@ -136,8 +135,7 @@ void Animation::interpolate(BodySettings &prev, BodySettings &next)
 		}
 	}
 
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 
 	for (i = 0; i < interpNumber; i++) {

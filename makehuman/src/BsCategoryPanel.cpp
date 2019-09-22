@@ -96,9 +96,7 @@ void BsCategoryPanel::createWidgets()
 
 bool BsCategoryPanel::checkEnabled(string category)
 {
-	Global &global = g_global;
-
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 
 	CharactersMap &charactersmap = mesh->getCharactersMapRef();

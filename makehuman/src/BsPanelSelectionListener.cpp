@@ -112,14 +112,13 @@ bool BsPanelSelectionListener::mouseReleased(const Point &inMousePos,
 		if (!imgSource->getAbsoluteRect().isHitBy(inMousePos))
 			return false;
 
-		Global &global = g_global;
-		Mesh *mesh = global.getMesh();
+		Mesh *mesh = g_global.getMesh();
 
 		CharactersMap &charactersmap = mesh->getCharactersMapRef();
 		mesh->doMorph(charactersmap[imgSource->infoCommand], 1.0, true);
 		mesh->calcNormals();
 
-		if (global.getSubdivision()) {
+		if (g_global.getSubdivision()) {
 			mesh->calcSubsurf();
 		}
 

@@ -89,8 +89,7 @@ bool PoseTargetSliderListener::mouseDragged(const Point &inMousePos,
 		if (diffValue < -kPoseThreshold || diffValue > kPoseThreshold) {
 			lastTargetValue = imgSliderSource->getSliderValue();
 
-			Global &global = g_global;
-			Mesh *mesh = global.getMesh();
+			Mesh *mesh = g_global.getMesh();
 			mesh->setPose(imgSliderSource->getTargetName(),
 			              imgSliderSource->getSliderValue());
 		}
@@ -112,8 +111,7 @@ bool PoseTargetSliderListener::mouseReleased(const Point &inMousePos,
 	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Global &global = g_global;
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 
 	mesh->setPose(imgSliderSource->getTargetName(),
 	              imgSliderSource->getSliderValue());

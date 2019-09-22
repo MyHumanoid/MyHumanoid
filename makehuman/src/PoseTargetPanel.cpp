@@ -63,13 +63,12 @@ PoseTargetPanel::~PoseTargetPanel()
 
 void PoseTargetPanel::createWidgets()
 {
-	Global &global = g_global;
 	Window &mainWindow = *g_mainWindow;
 
 	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
-	Mesh *mesh = global.getMesh();
+	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 
 	PoseMap &posemap = mesh->getPoseMapRef();
