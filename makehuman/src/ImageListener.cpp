@@ -32,7 +32,6 @@
 #include "BsPanel.h"
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
-#include "ConsoleCommands.h"
 #include "FacePanel.h"
 #include "Global.h"
 #include "HandsPanel.h"
@@ -52,7 +51,6 @@
 #include <assert.h>
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
-#include <gui/Console.h>
 #include <gui/GLUTWrapper.h>
 #include <gui/Image.h>
 #include <gui/Window.h>

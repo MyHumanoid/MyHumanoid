@@ -38,7 +38,6 @@
 #include <animorph/Vector3.h>
 #include <list>
 #include <string>
-//#include "Console.h"
 //#include "Panel.h"
 #include "Camera.h"
 #include "ImageData.h"
@@ -52,7 +51,6 @@ using namespace Animorph;
 namespace mhgui
 {
 
-class Console;
 class Panel;
 class Size;
 class Point;
@@ -77,7 +75,6 @@ class Window : public Component
 	int panelListChangedCount;
 
 	Camera *inCamera;
-	Console *console;
 	int mWindowId; ///< The GLUT Window ID;
 	
 public:
@@ -87,7 +84,6 @@ public:
 	Window &operator=(Window &) = delete;
 	Window(const Window &) = delete;
 
-	void drawConsole();
 	void drawPanels();
 
 	void drawBackground();
@@ -102,9 +98,6 @@ public:
 	void reshape(const Size &inSize, const Camera &inCamera);
 
 	void setCamera(Camera *p_camera);
-
-	void setConsole(Console *p_console);
-	Console *getConsole();
 
 	// main functions
 	bool addPanel(Panel *p /*, bool now = true*/);

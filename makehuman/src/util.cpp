@@ -28,13 +28,11 @@
 #include "util.h"
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
-#include "ConsoleCommands.h"
 #include "Global.h"
 #include <animorph/DirectoryList.h>
 #include <animorph/util.h>
 #include <animorph/xmlParser.h>
 #include <gui/CGUtilities.h>
-#include <gui/Console.h>
 
 #ifdef _WIN32
 #include <winbase.h>

@@ -8,8 +8,6 @@ set(gui_sources
 	src/gui/CGUtilities.cpp
 	src/gui/Component.h
 	src/gui/Component.cpp
-	src/gui/Console.h
-	src/gui/Console.cpp
 	src/gui/GLUTWrapper.h
 	src/gui/Image.h
 	src/gui/Image.cpp
@@ -74,9 +72,6 @@ set(makehuman_sources
 	src/CharacterSettingPanel.cpp
 	src/CharacterSettingPanel.h
 	src/ComponentID.h
-	src/ConsoleCommands.h
-	src/ConsoleListener.cpp
-	src/ConsoleListener.h
 	src/FacePanel.cpp
 	src/FacePanel.h
 	src/FileTools.cpp

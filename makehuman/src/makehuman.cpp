@@ -57,7 +57,6 @@
 
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
-#include <gui/Console.h>
 #include <gui/GLUTWrapper.h>
 #include <gui/Image.h>
 #include <gui/ImageSlider.h>
@@ -78,8 +77,6 @@
 #include "BottomPanel.h"
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
-#include "ConsoleCommands.h"
-#include "ConsoleListener.h"
 #include "FooterPanel.h"
 #include "Global.h"
 #include "PoseTargetPanel.h"
@@ -104,15 +101,12 @@ static void renderSubsurf();
 
 json g_jsonConfig;
 
-// console listener
-static ConsoleListener *consoleListener;
 static TooltipPanel *tooltipPanel;
 static ToolbarPanel *toolbarPanel;
 static FooterPanel *footerPanel;
 static ViewPanel *viewPanel;
 static BottomPanel *bottomPanel;
 static SplashPanel *splashPanel;
-static Console *console;
 static Mesh *mesh;
 static Camera *camera;
 // static Texture               *headTexture;
@@ -1221,9 +1215,6 @@ static void keyboard(unsigned char key)
 			camera->resetPosition();
 			camera->move(0, 0, -125);
 			break;
-		case 'O':
-			console->open();
-			break;
 		default:
 			break;
 		}
@@ -1242,11 +1233,6 @@ static void mouse(int button, int state, int x, int y)
 
 		splashMotionCount = 0;
 		// cgutils::redisplay();
-	}
-
-	if (console->isActive()) {
-		console->isMouseClick(Point(x, y), button, state);
-		return;
 	}
 
 	// cout << "mouse: " << button << endl;
@@ -1314,11 +1300,6 @@ static void mouse(int button, int state, int x, int y)
 
 static void activeMotion(int x, int y)
 {
-	if (console->isActive()) {
-		console->isMouseDragged(Point(x, y));
-		return;
-	}
-
 	Window &mainWindow(*g_mainWindow);
 	if (!mainWindow.isMouseDraggedPanel(Point(x, y))) {
 		if (right_button_down) {
@@ -1498,20 +1479,6 @@ int main(int argc, char **argv)
 	// mesh->loadCharactersFactory(searchDataDir ("my"));
 
 	init = false;
-
-	consoleListener = new ConsoleListener();
-	// Add console
-	console = new Console(FOUR_CHAR_CONST('C', 'O', 'N', '1'));
-	console->setListener(consoleListener);
-
-	console->loadPNG(searchPixmapFile("ui/console.png"));
-	console->addSplashLine("MakeHuman operating console");
-	console->addSplashLine("version 0.1");
-	console->addSplashLine("2005-2007");
-	console->addSplashLine("(press ESC to exit)");
-	console->addSplashLine("- - - - - - - - - - - - - -");
-	console->setActive(false);
-	mainWindow.setConsole(console);
 	mainWindow.setCamera(camera);
 
 	// Add panels to mainwindow
@@ -1564,15 +1531,11 @@ int main(int argc, char **argv)
 		
 //		g_userRequestedQuit = true;
 //		Window &mainWindow(*g_mainWindow);
-//		if (console->isActive()) {
-//			console->close();
-//		}
 
 		// TODO WHY?
 		// mainWindow.mainLoop();
 	});
 
-	console->show();
 	mainWindow.show();
 
 	//glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);

@@ -36,7 +36,6 @@
 #include "gui/Size.h"
 #include "gui/Window.h"
 
-#include "gui/Console.h"
 #include "gui/Panel.h"
 #include <iostream>
 
@@ -105,7 +104,6 @@ Window::Window(const Rect &rect, const char *t, const Color &inColor)
 	, panelList()
 	, panelListChangedCount(0)
 	, inCamera(NULL)
-	, console(NULL)
 	, mWindowId(0)
 {
 }
@@ -144,10 +142,6 @@ bool Window::loadPNG(const string &filename)
 
 void Window::setCamera(Camera *p_camera) { inCamera = p_camera; }
 
-void Window::setConsole(Console *p_console) { console = p_console; }
-
-Console *Window::getConsole() { return console; }
-
 void Window::setMouseCallback(void (*inMouseCB)(int, int, int, int))
 {
 	sMouseFuncCB = inMouseCB;
@@ -157,23 +151,11 @@ void Window::draw()
 {
 	drawBackground();
 	drawPanels();
-	drawConsole();
 }
 
 void Window::show() { setVisible(true); }
 
 void Window::hide() {}
-
-void Window::drawConsole()
-{
-	if (isVisible()) {
-		if (console != NULL && console->isActive()) {
-			cgutils::enableOrthographicProjection();
-			console->draw();
-			cgutils::disableOrthographicProjection();
-		}
-	}
-}
 
 // Add panel into window
 bool Window::addPanel(Panel *p)
@@ -263,9 +245,6 @@ void Window::setTitle(const std::string &t)
 bool Window::isMouseOverPanel(const Point &inMousePos)
 {
 	bool isOver = false;
-	if (console != NULL && console->isActive()) {
-		return console->isMouseOver(inMousePos);
-	}
 
 	int rememberedPanelListChangedCount = panelListChangedCount;
 
@@ -300,9 +279,6 @@ bool Window::isMouseOverPanel(const Point &inMousePos)
 bool Window::isMouseClickPanel(const Point &inMousePos, int button, int state)
 {
 	bool isClick = false;
-	if (console != NULL && console->isActive()) {
-		return console->isMouseClick(inMousePos, button, state);
-	}
 
 	int rememberedPanelListChangedCount = panelListChangedCount;
 
@@ -338,9 +314,6 @@ bool Window::isMouseClickPanel(const Point &inMousePos, int button, int state)
 bool Window::isKeyTypePanel(unsigned char key)
 {
 	bool keyType = false;
-	if (console != NULL && console->isActive()) {
-		return console->isKeyType(key);
-	}
 
 	int rememberedPanelListChangedCount = panelListChangedCount;
 
@@ -374,9 +347,6 @@ bool Window::isKeyTypePanel(unsigned char key)
 bool Window::isMouseDraggedPanel(const Point &inMousePos)
 {
 	bool dragged = false;
-	if (console != NULL && console->isActive()) {
-		return console->isMouseDragged(inMousePos);
-	}
 
 	int rememberedPanelListChangedCount = panelListChangedCount;
 
@@ -418,9 +388,6 @@ void Window::initWindow()
 void Window::reshape(const Size &inSize, const Camera &inCamera)
 {
 	cgutils::reshape(inSize, inCamera);
-	if (console != NULL) {
-		console->setSize(Size(inSize.getWidth(), inSize.getHeight() / 2));
-	}
 
 	for (list<Panel *>::const_iterator pl_it = panelList.begin();
 	     pl_it != panelList.end(); pl_it++) {
