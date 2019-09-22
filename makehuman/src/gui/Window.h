@@ -55,8 +55,6 @@ class Panel;
 class Size;
 class Point;
 
-int getKeyModifiers();
-
 /// Object oriented interface to a GLUT window
 class Window : public Component
 {

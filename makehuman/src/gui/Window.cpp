@@ -48,9 +48,6 @@ namespace mhgui
 Window *g_mainWindow;
 
 
-// Remember the key modifier within the glutMouseFunc callback
-static int sKeyModifier = 0; // No modifier pressed at init
-
 // Remember the users glutMouseFunc callback
 static void (*sMouseFuncCB)(int, int, int, int);
 
@@ -70,23 +67,10 @@ static void (*sMouseFuncCB)(int, int, int, int);
 /* ========================================================================== */
 void mouseCallbackWrapper(int inButton, int inState, int inX, int inY)
 {
-	// remember the key modifier actually pressed
-	sKeyModifier = glutGetModifiers();
-
 	// If there is any custom MouseFunc callback registered, then call it.
 	if (sMouseFuncCB != NULL) {
 		sMouseFuncCB(inButton, inState, inX, inY);
 	}
-}
-
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
-int getKeyModifiers()
-{
-	// Return the last remembered keyboard modifier (see mouseCallbackWrapper)
-	return sKeyModifier;
 }
 
 // Constructor

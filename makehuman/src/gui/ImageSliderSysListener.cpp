@@ -34,8 +34,6 @@
 #include <cstdio>
 #include <iostream>
 
-#define SNAP_VALUE 5
-
 using namespace Animorph;
 using namespace std;
 
@@ -71,12 +69,7 @@ bool ImageSliderSysListener::mouseWheel(const Point &inMousePos, int inButton,
 	    dynamic_cast<ImageSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really an ImageSlider object?
 
-	int mod = mhgui::getKeyModifiers();
-
 	int value = 1;
-	if (mod == GLUT_ACTIVE_ALT) {
-		value = SNAP_VALUE;
-	}
 
 	if (inButton == GLUT_WHEEL_UP) {
 		imgSliderSource->increaseValue(value);
@@ -99,14 +92,9 @@ bool ImageSliderSysListener::mouseDragged(const Point &inMousePos,
 	    dynamic_cast<ImageSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really an ImageSlider object?
 
-	int mod = mhgui::getKeyModifiers();
-
 	if (inMousePos.getX() > imgSliderSource->getOldMouseX() &&
 	    imgSliderSource->getSliderValue() < imgSliderSource->getMaxValue()) {
 		int value = inMousePos.getX() - imgSliderSource->getOldMouseX();
-		if (mod == GLUT_ACTIVE_ALT) {
-			value *= SNAP_VALUE;
-		}
 		imgSliderSource->increaseValue(value);
 		imgSliderSource->setOldMouseX(inMousePos.getX());
 		cgutils::redisplay();
@@ -114,9 +102,6 @@ bool ImageSliderSysListener::mouseDragged(const Point &inMousePos,
 	           imgSliderSource->getSliderValue() >
 	               imgSliderSource->getMinValue()) {
 		int value = imgSliderSource->getOldMouseX() - inMousePos.getX();
-		if (mod == GLUT_ACTIVE_ALT) {
-			value *= SNAP_VALUE;
-		}
 		imgSliderSource->decreaseValue(value);
 		imgSliderSource->setOldMouseX(inMousePos.getX());
 		cgutils::redisplay();
