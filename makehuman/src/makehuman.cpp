@@ -99,7 +99,6 @@ using namespace std;
 using namespace Animorph;
 
 static void renderMesh();
-static void renderMeshEdges();
 static bool loadTextures();
 static void toggleVisiblePart(const std::string &name);
 static void toggleSubdivision();
@@ -1004,11 +1003,6 @@ static void display()
 		cgutils::drawAxis();
 	}
 
-	/*
-	  if(Global::instance().getFlatShading())
-	    renderMeshEdges();
-	*/
-
 	if (Global::instance().getQuotedBox())
 		cgutils::mhWireCube(twopoints);
 
@@ -1758,47 +1752,6 @@ void calcMinMax(const Vector3f &coords)
 	} else if (coords.z > twopoints[5]) {
 		twopoints[5] = coords.z;
 	}
-}
-
-void renderMeshEdges()
-{
-	const EdgeStrip &edgestrip(mesh->getEdgeStripRef());
-	const VertexVector &vertexvector(
-	    animation->isLoaded() ? animation->getMesh().getVertexVectorRef()
-	                          : mesh->getVertexVectorRef());
-
-	EdgeStrip::const_iterator i;
-
-	glColor4f(edges_color.red(), edges_color.green(), edges_color.blue(),
-	          edges_color.alpha());
-	// the same as above, but ~5fps faster:
-	// GLfloat edgescolor[]={0.75, 0.75, 0.75, 1.0};
-	// glColor4fv(edgescolor);
-	// not used for "consistency of the code"
-
-	cgutils::enableBlend();
-	cgutils::enableLineSmoothing();
-	glDisable(GL_LIGHTING);
-
-	::glEnable(GL_POLYGON_OFFSET_FILL);
-
-	for (i = edgestrip.begin(); i != edgestrip.end(); ++i) {
-		const StripData &stripdata(*i);
-
-		StripData::const_iterator j;
-
-		::glBegin(GL_LINE_STRIP);
-		for (j = stripdata.begin(); j != stripdata.end(); ++j) {
-			const Vertex &vertex = vertexvector[*j];
-			::glVertex3fv(vertex.co.getAsOpenGLVector());
-		}
-		::glEnd();
-	} //   for (i = facevector.begin(); i != facevector.end(); ++i)
-
-	::glDisable(GL_POLYGON_OFFSET_FILL);
-	glEnable(GL_LIGHTING);
-	cgutils::disableLineSmoothing();
-	cgutils::disableBlend();
 }
 
 void renderFace(const Face &face, const MaterialVector &materialvector,
