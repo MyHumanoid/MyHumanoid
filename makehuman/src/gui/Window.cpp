@@ -47,32 +47,6 @@ namespace mhgui
 
 Window *g_mainWindow;
 
-
-// Remember the users glutMouseFunc callback
-static void (*sMouseFuncCB)(int, int, int, int);
-
-/* ========================================================================== */
-/** Trap the glutMouseFunc in order to remember which Key modifier has been
- *  pressed when a mousbutton has been pressed / released.
- *  This method wraps the users glutMouseFunc callback hook either to mime the
- *  expected semantics.
- *
- *  This wrapper is neccessary because glut allows to call getKeyModifiers()
- *  only within three particular callback functions. These are keyboard,
- *  special, or the mouse callback!
- *
- * Note that the neither the keyboard nor the special callback is triggered when
- * a keyboard modifier is altered! So we are using the mouse callback instead.
- */
-/* ========================================================================== */
-void mouseCallbackWrapper(int inButton, int inState, int inX, int inY)
-{
-	// If there is any custom MouseFunc callback registered, then call it.
-	if (sMouseFuncCB != NULL) {
-		sMouseFuncCB(inButton, inState, inX, inY);
-	}
-}
-
 // Constructor
 Window::Window(const Rect &rect, const char *t, const Color &inColor)
 	: Component(FOUR_CHAR_CONST('M', 'W', 'i', 'n'), rect)
@@ -125,11 +99,6 @@ bool Window::loadPNG(const string &filename)
 }
 
 void Window::setCamera(Camera *p_camera) { inCamera = p_camera; }
-
-void Window::setMouseCallback(void (*inMouseCB)(int, int, int, int))
-{
-	sMouseFuncCB = inMouseCB;
-}
 
 void Window::draw()
 {

@@ -1514,7 +1514,6 @@ int main(int argc, char **argv)
 
 	// Glut callbacks
 	glutDisplayFunc(display);
-	mainWindow.setMouseCallback(mouse);
 	glutTimerFunc(kTimerCallback, timer, 0);           // Animation
 	glutTimerFunc(1000, timerTrigger, 1);              // Autozoom
 	glutCloseFunc([]()->void{
@@ -1585,7 +1584,7 @@ int main(int argc, char **argv)
 
 			ImGuiIO &io = ImGui::GetIO();
 			if (!io.WantCaptureMouse) {
-				mouseCallbackWrapper(glut_button, state, x, y);
+				mouse(glut_button, state, x, y);
 			}
 		});
 

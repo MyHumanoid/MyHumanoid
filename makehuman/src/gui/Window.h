@@ -109,9 +109,6 @@ public:
 
 	void defaultDisplay();
 
-	// callbacks setter
-	void setMouseCallback(void (*mouse)(int, int, int, int));
-
 	// texture functions
 	bool loadPNG(const string &filename);
 
@@ -121,8 +118,6 @@ public:
 };
 
 extern Window *g_mainWindow;
-
-void mouseCallbackWrapper(int inButton, int inState, int inX, int inY);
 
 } // namespace mhgui
 
