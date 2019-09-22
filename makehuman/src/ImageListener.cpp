@@ -31,7 +31,6 @@
 #include "BsCategoryPanel.h"
 #include "BsPanel.h"
 #include "CharacterSettingPanel.h"
-#include "ClothesPanel.h"
 #include "ComponentID.h"
 #include "ConsoleCommands.h"
 #include "FacePanel.h"
@@ -204,23 +203,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				global.setAppMode(BODY_DETAILS);
 				showBodyDetails();
 			} break;
-			/*      case kComponentID_ImageToolbarPanel_Clothes:
-				      {
-				        if(global.getAppMode() == CLOTHES) return true;
-
-				        hidePanels(global.getAppMode());
-
-				        if(global.getAppMode() == ANIMATIONS)
-				        {
-				          global.getAnimation()->setStarted(false);
-				          global.getAnimation()->setLoaded(false);
-				        }
-
-				        global.setAppMode(CLOTHES);
-				        showClothes();
-				      }
-				      break;
-			*/
 			case kComponentID_ImageToolbarPanel_Poses: {
 				if (global.getAppMode() == POSES)
 					return true;
@@ -668,20 +650,6 @@ void ImageListener::showPoses()
 	mainWindow.addPanel(posesPanel);
 	posesPanel->createWidgets();
 	posesPanel->show_all();
-
-	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
-	assert(p);
-	p->setPosition(kBottomPosition2);
-	p->createWidgets();
-}
-
-void ImageListener::showClothes()
-{
-	Window &mainWindow = *g_mainWindow;
-	ClothesPanel *clothesPanel = new ClothesPanel();
-	mainWindow.addPanel(clothesPanel);
-	clothesPanel->createWidgets();
-	clothesPanel->show_all();
 
 	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
 	assert(p);

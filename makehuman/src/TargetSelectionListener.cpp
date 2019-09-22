@@ -345,12 +345,6 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 		case kComponentID_HandsPanel_LittlefingerLeftParams:
 			target = "littlefinger";
 			break;
-
-		// The Image ID's of the  ClothesPanel (kComponentID_ClothesPanel)
-		case kComponentID_ImageClothes_HatParams:
-			target = "cl_hat";
-			break;
-
 		default:
 			return false;
 			break;

@@ -86,17 +86,6 @@ void ToolbarPanel::createWidgets()
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
 	addWidget(image);
-	/*
-	  // -------------------------------------------------------------------------
-	  image = new Image(kComponentID_ImageToolbarPanel_Clothes,
-	                    searchPixmapFile ("ui/toolbar_07.png"),
-	                    Rect(0,0,32,32));
-	  image->setListener(&imgListener1);
-	  image->setTooltip(Tooltip("Clothes", kTooltipPos, color_red, tooltipPanel));
-	  image->setAlpha (alpha);
-	  imageVector.push_back (image);
-	  addWidget (image);
-	*/
 	// -------------------------------------------------------------------------
 	image =
 	    new Image(kComponentID_ImageToolbarPanel_Poses,

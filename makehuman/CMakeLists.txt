@@ -73,8 +73,6 @@ set(makehuman_sources
 	src/BsSelectionListener.h
 	src/CharacterSettingPanel.cpp
 	src/CharacterSettingPanel.h
-	src/ClothesPanel.cpp
-	src/ClothesPanel.h
 	src/ComponentID.h
 	src/ConsoleCommands.h
 	src/ConsoleListener.cpp

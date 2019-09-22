@@ -49,7 +49,6 @@ private:
 	void showPoses();
 	void showBodyDetails();
 	void showCharacterSetting();
-	void showClothes();
 	void showUtilities();
 	void showBsCategory();
 	void showPosesBsCategory();
