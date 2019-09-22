@@ -605,17 +605,6 @@ void ExportConfigurationXML()
 	XMLNode xNode_eyescol, xNode_eyelcol, xNode_eyebcol, xNode_headspec,
 	    xNode_bodyspec;
 
-	XMLNode xNode_exp_controller;
-	xNode_collada_parameters = xNode_makehuman.addChild("collada_parameters");
-	xNode_exp_controller = xNode_collada_parameters.addChild("export_controller");
-	xNode_exp_controller.addAttribute("command", "set exp_controller");
-
-	if (global.getExpMode() == WITH_CONTROLLER) {
-		xNode_exp_controller.addText("true");
-	} else {
-		xNode_exp_controller.addText("false");
-	}
-
 	XMLError error = xMainNode.writeToFile(
 	    (getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "makehuman.parameters")
 	        .c_str());
@@ -654,26 +643,6 @@ void ParseConfigurationXML()
 	xNode_makehuman = xNode_main.getChildNode("MAKEHUMAN");
 
 	if (!xNode_makehuman.isEmpty()) {
-		xNode_rendering_parameters =
-		    xNode_makehuman.getChildNode("rendering_parameters");
-
-		xNode_collada_parameters =
-		    xNode_makehuman.getChildNode("collada_parameters");
-		if (!xNode_collada_parameters.isEmpty()) {
-			xNode_exp_controller =
-			    xNode_collada_parameters.getChildNode("export_controller");
-			if (!xNode_exp_controller.isEmpty()) {
-
-				if (xNode_exp_controller.getText() != NULL) {
-					if (!strcasecmp(xNode_exp_controller.getText(), "true")) {
-						global.setExportMode(WITH_CONTROLLER);
-					}
-					if (!strcasecmp(xNode_exp_controller.getText(), "false")) {
-						global.setExportMode(WITHOUT_CONTROLLER);
-					}
-				}
-			}
-		}
 	}
 }
 

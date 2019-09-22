@@ -50,10 +50,6 @@ enum Modes {
 	BODY_SETTINGS,
 	POSES_BODY_SETTINGS,
 };
-enum ExportMode {
-	WITHOUT_CONTROLLER = 0,
-	WITH_CONTROLLER,
-};
 
 struct Global
 {
@@ -69,7 +65,6 @@ struct Global
 	    , lightMesh(false)
 	    , appMode(CHARACTER_SETTING)
 	    , fuzzyValues()
-	    , expMode(WITHOUT_CONTROLLER)
 	{
 	}
 
@@ -92,7 +87,6 @@ struct Global
 	Modes appMode;
 
 	map<const uint32_t, Point *> fuzzyValues;
-	ExportMode expMode;
 
 	static Global glob;
 
@@ -138,9 +132,6 @@ public:
 	{
 		return this->fuzzyValues[index];
 	}
-
-	void setExportMode(ExportMode mode) { expMode = mode; }
-	ExportMode getExpMode() { return expMode; }
 
 	void setSubdivision(bool subd) { subdivision = subd; }
 	bool getSubdivision() { return subdivision; }

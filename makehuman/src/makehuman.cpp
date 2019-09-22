@@ -427,12 +427,7 @@ static void exportCollada(string &filename)
 	
 	fs::create_directories(filename);
 	
-	bool expMode = true;
-	
-	if (global.getExpMode() == WITHOUT_CONTROLLER)
-		expMode = false;
-	
-	bool state = collada_export.exportFile(filename, expMode);
+	bool state = collada_export.exportFile(filename);
 	
 	if (state) {
 		log("Collada exported");

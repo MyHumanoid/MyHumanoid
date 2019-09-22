@@ -92,7 +92,7 @@ public:
 	 * \return true if file is saved
 	 * \return false if file couldn't be saved
 	 */
-	bool exportFile(const string &filename, bool exportController = true);
+	bool exportFile(const string &filename);
 };
 } // namespace Animorph
 #endif

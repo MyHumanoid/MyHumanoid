@@ -3,7 +3,7 @@
 using namespace std;
 using namespace Animorph;
 
-bool ColladaExporter::exportFile(const string &filename, bool exportController)
+bool ColladaExporter::exportFile(const string &filename)
 {
 
 	mesh.loadSkeleton();
@@ -59,9 +59,7 @@ bool ColladaExporter::exportFile(const string &filename, bool exportController)
 	temp += "-Geometry";
 
 	AddGeometry(&xNode_geometry, temp);
-
-	if (exportController == true)
-		AddController(&xNode_library_controller, temp);
+	AddController(&xNode_library_controller, temp);
 
 	// THE SCENE
 	MaterialVector &materialvector = mesh.getMaterialVectorRef();
@@ -117,14 +115,9 @@ bool ColladaExporter::exportFile(const string &filename, bool exportController)
 	xNode_matrix.addText(matrix_stream.str().c_str());
 
 	// geometetry-->controller
-	if (exportController == true) {
-		xNode_instance_geometry = xNode_node.addChild(
-		    "instance_controller"); // it is notr an error...before it was geometry
-		xNode_instance_geometry.addAttribute("url", ("#" + temp + "-skin").c_str());
-	} else {
-		xNode_instance_geometry = xNode_node.addChild("instance_geometry"); //
-		xNode_instance_geometry.addAttribute("url", ("#" + temp).c_str());
-	}
+	xNode_instance_geometry = xNode_node.addChild(
+		"instance_controller"); // it is notr an error...before it was geometry
+	xNode_instance_geometry.addAttribute("url", ("#" + temp + "-skin").c_str());
 
 	xNode_bind_material = xNode_instance_geometry.addChild("bind_material");
 	xNode_technique_common = xNode_bind_material.addChild("technique_common");
@@ -325,9 +318,9 @@ void ColladaExporter::AddGeometry(XMLNode *xNode_geometry, string temp)
 	unsigned int texture_number = 0;
 
 	// int mv_size = materialvector.size();
-	for (register unsigned int m = 0; m < materialvector.size(); m++) {
+	for (unsigned int m = 0; m < materialvector.size(); m++) {
 		bool found = false;
-		for (register unsigned int m1 = 0; m1 < m; m1++) {
+		for (unsigned int m1 = 0; m1 < m; m1++) {
 
 			// already rendered this material???
 			if (materialvector[m1].getName() == materialvector[m].getName()) {
@@ -492,7 +485,7 @@ void ColladaExporter::CreateLibraryMaterialsNode(
 		Material material_2;
 		const Color &colRGB = material.getRGBCol();
 		bool found_duplicate = false;
-		for (register unsigned int j = 0; j < i; j++) {
+		for (unsigned int j = 0; j < i; j++) {
 			Material &material_2 = materialvector[j];
 			if (material_2.getName() == material.getName())
 				found_duplicate = true;
