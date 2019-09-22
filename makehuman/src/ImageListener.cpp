@@ -389,12 +389,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				}
 			} break;
 			// utilitybar buttons
-			case kComponentID_ImageUtilitybar_FlatShading: {
-				if (global.getFlatShading())
-					global.setFlatShading(false);
-				else
-					global.setFlatShading(true);
-			} break;
 			case kComponentID_ImageUtilitybar_RenderPreview: {
 				rendering(mainWindow, PREVIEW);
 			} break;

@@ -62,7 +62,6 @@ struct Global
 	Global()
 	    : mesh(NULL)
 	    , drawGrid(false)
-	    , flatShading(false)
 	    , quotedBox(false)
 	    , m_enableTexture(false)
 	    , m_canTexture(false)
@@ -86,7 +85,6 @@ struct Global
 	Animation *animation;
 	Autozoom *autozoom;
 	bool drawGrid;
-	bool flatShading;
 	bool quotedBox;
 	bool m_enableTexture;
 	bool m_canTexture;
@@ -120,9 +118,6 @@ public:
 
 	void setDrawGrid(bool grid) { drawGrid = grid; }
 	bool getDrawGrid() { return drawGrid; }
-
-	void setFlatShading(bool flat) { flatShading = flat; }
-	bool getFlatShading() { return flatShading; }
 
 	void setQuotedBox(bool qbox) { quotedBox = qbox; }
 	bool getQuotedBox() { return quotedBox; }

@@ -69,8 +69,6 @@ static const uint32_t kComponentID_UtilitybarPanel =
 // The Image ID's of the  UtilitybarPanel (kComponentID_UtilitybarPanel)
 static const uint32_t kComponentID_ImageUtilitybar_RenderPreview =
     FOUR_CHAR_CONST('R', 'e', 'P', 'r');
-static const uint32_t kComponentID_ImageUtilitybar_FlatShading =
-    FOUR_CHAR_CONST('F', 'l', 'S', 'h');
 static const uint32_t kComponentID_ImageUtilitybar_Frames_01 =
     kComponentID_Dummy;
 
