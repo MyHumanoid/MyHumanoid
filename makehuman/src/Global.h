@@ -51,40 +51,28 @@ enum Modes {
 	POSES_BODY_SETTINGS,
 };
 
+struct GlobalPaths {
+	
+};
+
 struct Global
 {
-	Global()
-	    : mesh(NULL)
-	    , drawGrid(false)
-	    , quotedBox(false)
-	    , m_enableTexture(false)
-	    , m_canTexture(false)
-	    , subdivision(false)
-	    , lightMesh(false)
-	    , appMode(CHARACTER_SETTING)
-	    , fuzzyValues()
-	{
-	}
-
-	Global(const Global &) = delete;
-	Global &operator=(const Global &) = delete;
-
-	// some global variables
-	Mesh *mesh;
-	Camera *camera;
-	map<string, Texture *> textures;
-
-	Animation *animation;
-	Autozoom *autozoom;
-	bool drawGrid;
-	bool quotedBox;
-	bool m_enableTexture;
-	bool m_canTexture;
-	bool subdivision;
-	bool lightMesh;
-	Modes appMode;
-
-	map<const uint32_t, Point *> fuzzyValues;
+	GlobalPaths paths;
+	
+	Mesh *mesh = NULL;
+	Camera *camera = NULL;
+	Animation *animation = NULL;
+	Autozoom *autozoom = NULL;
+	bool drawGrid = false;
+	bool quotedBox = false;
+	bool m_enableTexture = false;
+	bool m_canTexture = false;
+	bool subdivision = false;
+	bool lightMesh = false;
+	Modes appMode = CHARACTER_SETTING;
+	
+	std::map<string, Texture *> textures;
+	std::map<const uint32_t, Point *> fuzzyValues;
 
 public:
 	void setMesh(Mesh *mesh) { this->mesh = mesh; }
