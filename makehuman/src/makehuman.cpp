@@ -200,6 +200,7 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
 #include <fmt/format.h>
 
 static std::unordered_map<std::string, GLuint> g_targetImageTextures;
+static std::unordered_map<std::string, GLuint> g_poseImageTextures;
 
 static void CreateTargetImageTextures() {
 	
@@ -223,6 +224,35 @@ static void CreateTargetImageTextures() {
 			foobar.replace_extension();
 			
 			g_targetImageTextures[foobar] = my_image_texture;
+		} else {
+			std::cout <<
+			    fmt::format("Failed to load file {}\n", file) << std::endl;
+		}
+	}
+}
+
+static void CreatePoseImageTextures() {
+	
+	fs::path baseDir = "pixmaps/rotimg/";
+	
+	auto files = filesInDirRecursive(baseDir);
+	
+	for(auto & file: files) {
+		int my_image_width = 0;
+		int my_image_height = 0;
+		GLuint my_image_texture = 0;
+		bool ret = LoadTextureFromFile(file.c_str(),
+		                               &my_image_texture,
+		                               &my_image_width,
+		                               &my_image_height);
+		
+		if(ret) {
+			auto foo = file;
+			foo.erase(0, baseDir.string().length());
+			fs::path foobar = foo;
+			foobar.replace_extension();
+			
+			g_poseImageTextures[foobar] = my_image_texture;
 		} else {
 			std::cout <<
 			    fmt::format("Failed to load file {}\n", file) << std::endl;
@@ -496,12 +526,21 @@ void doMorphFromGui(std::string morphTarget, float value) {
 	}
 }
 
+void doPoseFromGui(std::string targetName, float value) {
+	
+	if (Global::instance().getSubdivision()) {
+		Global::instance().setLightMesh(true);
+	}
+	
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	mesh->setPose(targetName, value);
+}
 
 
 
 
-
-void DisplayAppliedTargets()
+void DisplayMorphApplied()
 {
 	Global &global = Global::instance();
 	Mesh *mesh = global.getMesh();
@@ -558,6 +597,64 @@ void DisplayAppliedTargets()
 	ImGui::End();
 }
 
+
+void DisplayPoseRotationsApplied()
+{
+	Global &global = Global::instance();
+	Mesh *mesh = global.getMesh();
+	assert(mesh);
+	
+	const BodySettings &bodyset(mesh->getPoses());
+
+	ImGui::Begin("Applied Pose Rotations");
+	
+	for (BodySettings::const_iterator bodyset_it = bodyset.begin();
+		 bodyset_it != bodyset.end(); bodyset_it++) {
+		
+		const string &target_name(bodyset_it->first);
+		float target_value = bodyset_it->second;
+		
+		PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
+		assert(poseTarget);
+
+		fs::path targetImageName = target_name;
+		targetImageName.replace_extension();
+		
+		const auto & texIdIt = g_poseImageTextures.find(targetImageName);
+		if(texIdIt != g_poseImageTextures.end()) {
+			auto texId = texIdIt->second;
+			
+			ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
+			if(ImGui::IsItemHovered()) {
+				ImGui::BeginTooltip();
+				ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
+				ImGui::EndTooltip();
+			}
+		} else {
+			ImGui::Dummy(ImVec2(16, 16));
+		}
+		ImGui::SameLine(0, 4);
+		
+		// FIXME only the button in the first line is working
+		if(ImGui::Button("X", ImVec2(16, 16))) {
+			doPoseFromGui(target_name, 0.f);
+		}
+		ImGui::SameLine(0, 4);
+		
+		if(ImGui::SliderFloat(target_name.c_str(), &target_value,
+		                       poseTarget->getMinAngle(),
+		                       poseTarget->getMaxAngle())
+		) {
+			// TODO used min so that rotation does not vanish
+			if(target_value != 0.f)
+				doPoseFromGui(target_name, target_value);
+		}
+	}
+	
+	ImGui::End();
+}
+
+
 // ================================================================================================
 
 // Our state
@@ -568,11 +665,12 @@ static bool g_userRequestedQuit = false;
 static bool g_displayCharacterSettings = false;
 static bool g_displayPerformance = false;
 static bool g_displayUsedMorphingList = false;
+static bool g_displayUsedPoseList = false;
 
 void DisplayQuitPopup() {
 	if(ImGui::BeginPopupModal("Quit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("Do you really want to quit? (press ENTER to quit)\n");
+		ImGui::Text("Do you really want to quit?\n");
 		ImGui::Separator();
 		if(ImGui::Button("YES", ImVec2(120, 0))) {
 			g_userRequestedQuit = true;
@@ -746,9 +844,13 @@ void DisplayMainMenu()
 			}
 			ImGui::EndMenu();
 		}
+		ImGui::Separator();
 		if(ImGui::BeginMenu("Morph")) {
-			ImGui::Separator();
 			ImGui::Checkbox("Used morphing list", &g_displayUsedMorphingList);
+			ImGui::EndMenu();
+		}
+		if(ImGui::BeginMenu("Pose")) {
+			ImGui::Checkbox("Used pose list", &g_displayUsedPoseList);
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
@@ -774,7 +876,10 @@ void DisplayMainMenu()
 	
 	
 	if(g_displayUsedMorphingList) {
-		DisplayAppliedTargets();
+		DisplayMorphApplied();
+	}
+	if(g_displayUsedPoseList) {
+		DisplayPoseRotationsApplied();
 	}
 }
 
@@ -1389,6 +1494,7 @@ int main(int argc, char **argv)
 	
 	
 	CreateTargetImageTextures();
+	CreatePoseImageTextures();
 	
 	
 	
