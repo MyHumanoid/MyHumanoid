@@ -100,7 +100,6 @@ using namespace Animorph;
 
 static void renderMesh();
 static bool loadTextures();
-static void toggleVisiblePart(const std::string &name);
 static void renderSubsurf();
 
 json g_jsonConfig;
@@ -768,6 +767,19 @@ void DisplayMainMenu()
 			ImGui::Checkbox("Quoted box", &Global::instance().quotedBox);
 			ImGui::Checkbox("Texture", &Global::instance().m_enableTexture);
 			ImGui::Checkbox("Axis", &g_displayAxis);
+			
+			ImGui::Separator();
+			
+			if (ImGui::BeginMenu("Toggle Visibility")) {
+				for(auto & g: mesh->getFaceGroupRef()) {
+					if(ImGui::Button(g.first.c_str())) {
+						mesh->getFaceGroupRef().toggleVisible(g.first);
+						mesh->getSubdFaceGroupRef().toggleVisible(g.first);
+					}
+				}
+				ImGui::EndMenu();
+			}
+			
 			ImGui::Separator();
 			
 			if(ImGui::MenuItem("Save autozoom")) {
@@ -1212,15 +1224,6 @@ static void keyboard(unsigned char key)
 			break;
 		case 'T':
 			rendering(mainWindow, TOON);
-			break;
-		case 'H':
-			toggleVisiblePart("head");
-			break;
-		case 'B':
-			toggleVisiblePart("body");
-			break;
-		case 'E':
-			toggleVisiblePart("zeyebrows");
 			break;
 		case 'K': {
 			int ret;
@@ -1839,15 +1842,6 @@ void renderClothes()
 		} //   for (i = facevector.begin(); i != facevector.end(); ++i)
 		::glEnd();
 	}
-}
-
-void toggleVisiblePart(const std::string &name)
-{
-	FaceGroup &facegroup(mesh->getFaceGroupRef());
-	facegroup.toggleVisible(name);
-
-	FaceGroup &subd_facegroup(mesh->getSubdFaceGroupRef());
-	subd_facegroup.toggleVisible(name);
 }
 
 void renderMesh()
