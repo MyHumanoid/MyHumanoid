@@ -148,26 +148,9 @@ void Window::setConsole(Console *p_console) { console = p_console; }
 
 Console *Window::getConsole() { return console; }
 
-// Callback setters
-void Window::setDisplayCallback(void (*inDisplayCB)(void))
-{
-	glutDisplayFunc(inDisplayCB);
-}
-
-void Window::setCloseCallback(void (*inCloseCB)(void))
-{
-	glutCloseFunc(inCloseCB);
-}
-
 void Window::setMouseCallback(void (*inMouseCB)(int, int, int, int))
 {
 	sMouseFuncCB = inMouseCB;
-}
-
-void Window::setTimerCallback(int inMillis, void (*inTimerCB)(int value),
-                              int inId)
-{
-	glutTimerFunc(inMillis, inTimerCB, inId);
 }
 
 void Window::draw()

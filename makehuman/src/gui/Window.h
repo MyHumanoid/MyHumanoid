@@ -119,10 +119,7 @@ public:
 	void defaultDisplay();
 
 	// callbacks setter
-	void setDisplayCallback(void (*display)(void));
 	void setMouseCallback(void (*mouse)(int, int, int, int));
-	void setTimerCallback(int inMillis, void (*inTimerCB)(int value), int inId);
-	void setCloseCallback(void (*close)(void));
 
 	// texture functions
 	bool loadPNG(const string &filename);

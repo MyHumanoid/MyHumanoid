@@ -756,7 +756,7 @@ static void timerTrigger(int val)
 	if (!camera->isPerspective()) {
 		reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
 	}
-	mainWindow.setTimerCallback(50, timerTrigger, 1);
+	glutTimerFunc(50, timerTrigger, 1);
 }
 
 static void motion(int x, int y)
@@ -782,10 +782,10 @@ static void timerRendering(int value)
 	if (Global::instance().isRendering() && waitDisplay) {
 		waitDisplay = false;
 		renderingStep();
-		mainWindow.setTimerCallback(kTimerRendering, timerRendering,
+		glutTimerFunc(kTimerRendering, timerRendering,
 		                            0); // Rendering
 	} else {
-		mainWindow.setTimerCallback(kTimerRendering, timerRendering,
+		glutTimerFunc(kTimerRendering, timerRendering,
 		                            0); // Rendering
 	}
 }
@@ -802,7 +802,7 @@ static void timer(int value)
 			cgutils::redisplay();
 		}
 	}
-	mainWindow.setTimerCallback(kTimerCallback, timer, value);
+	glutTimerFunc(kTimerCallback, timer, value);
 }
 
 static void special(int key)
@@ -1225,12 +1225,12 @@ int main(int argc, char **argv)
 	}
 
 	// Glut callbacks
-	mainWindow.setDisplayCallback(display);
+	glutDisplayFunc(display);
 	mainWindow.setMouseCallback(mouse);
-	mainWindow.setTimerCallback(kTimerCallback, timer, 0);           // Animation
-	mainWindow.setTimerCallback(1000, timerTrigger, 1);              // Autozoom
-	mainWindow.setTimerCallback(kTimerRendering, timerRendering, 0); // Rendering
-	mainWindow.setCloseCallback([]()->void{
+	glutTimerFunc(kTimerCallback, timer, 0);           // Animation
+	glutTimerFunc(1000, timerTrigger, 1);              // Autozoom
+	glutTimerFunc(kTimerRendering, timerRendering, 0); // Rendering
+	glutCloseFunc([]()->void{
 		// TODO glut does not let us prevent closing in a sane way
 		// just let it happen for now :/
 		
