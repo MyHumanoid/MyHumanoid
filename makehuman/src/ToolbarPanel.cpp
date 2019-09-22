@@ -119,16 +119,6 @@ void ToolbarPanel::createWidgets()
 	addWidget(image);
 
 	// -------------------------------------------------------------------------
-#ifdef _ANIMATIONS
-	image =
-	    new Image(kComponentID_ImageToolbarPanel_Animation,
-	              searchPixmapFile("ui/toolbar_util.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(Tooltip("Utilities", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-#endif
 	image = new Image(kComponentID_ImageToolbarPanel_MorphingList,
 	                  searchPixmapFile("ui/toolbar_morph_list.png"),
 	                  Rect(0, 0, 32, 32));
@@ -148,11 +138,8 @@ void ToolbarPanel::createWidgets()
 
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/frames_01.png"),
-#ifdef _ANIMATIONS
-	                  Rect(0, 0, 736, 16)); // w = 1280 - 32x17
-#else
 	                  Rect(0, 0, 768, 16)); // w = 1280 - 32x17
-#endif
+	
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
 	addWidget(image);
