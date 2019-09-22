@@ -101,7 +101,6 @@ using namespace Animorph;
 static void renderMesh();
 static bool loadTextures();
 static void toggleVisiblePart(const std::string &name);
-static void toggleSubdivision();
 static void renderSubsurf();
 
 json g_jsonConfig;
@@ -1211,9 +1210,6 @@ static void keyboard(unsigned char key)
 		case 'O':
 			console->open();
 			break;
-		case 'S':
-			toggleSubdivision();
-			break;
 		case 'T':
 			rendering(mainWindow, TOON);
 			break;
@@ -1852,15 +1848,6 @@ void toggleVisiblePart(const std::string &name)
 
 	FaceGroup &subd_facegroup(mesh->getSubdFaceGroupRef());
 	subd_facegroup.toggleVisible(name);
-}
-
-void toggleSubdivision()
-{
-	Global::instance().setSubdivision(!Global::instance().getSubdivision());
-
-	if (Global::instance().getSubdivision()) {
-		mesh->calcSubsurf();
-	}
 }
 
 void renderMesh()
