@@ -146,9 +146,13 @@ add_executable(makehuman
 	${makehuman_sources}
 )
 
-target_include_directories(makehuman PRIVATE src)
+target_include_directories(makehuman PRIVATE
+	${OPENGL_INCLUDE_DIRS}
+	${GLUT_INCLUDE_DIRS}
+	${PNG_INCLUDE_DIRS}
+	src
+)
 
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
 target_link_libraries(makehuman PRIVATE
 	stdc++fs
 	fmt
