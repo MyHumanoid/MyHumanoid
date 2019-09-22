@@ -169,18 +169,6 @@ void ConsoleListener::parseCommand(Console &console)
 			} else {
 				loadPixiePath(console, arg);
 			}
-		} else if (cmd == kConsoleCommand_Save_Autozoom) {
-			if (arg.size() == 0) {
-				Window &mainWindow(*g_mainWindow);
-				TargetPanel *targetPanel = dynamic_cast<TargetPanel *>(
-				    mainWindow.getPanel(kComponentID_TargetPanel));
-				string target = targetPanel->getCategory();
-				std::string pathAutozoom_data =
-				    searchDataDir("targets") + "/" + target + "/" + target + ".camera";
-				console.inputMode(kConsoleMessage_Save_Autozoom, pathAutozoom_data);
-			} else {
-				saveAutozoom(console, arg);
-			}
 		} else if (cmd == kConsoleCommand_Set_Parameter) {
 			if (arg.size() == 0) {
 
@@ -288,25 +276,5 @@ void ConsoleListener::parseSetParameter(Console &console, const string &path)
 	} else {
 		ExportConfigurationXML();
 		console.printMessage(kConsoleMessage_Parameter_OK);
-	}
-}
-
-
-
-
-
-void ConsoleListener::saveAutozoom(Console &console, const string &filename)
-{
-	Global &global = Global::instance();
-	Autozoom *autozoom = global.getAutozoom();
-	Camera *camera = global.getCamera();
-	assert(autozoom);
-
-	bool state = autozoom->save(filename, *camera);
-
-	if (state) {
-		console.printMessage(kConsoleMessage_Save_Autozoom_Success);
-	} else {
-		console.printMessage(kConsoleMessage_Save_Error);
 	}
 }

@@ -28,7 +28,6 @@
 #ifndef CONSOLECOMMANDS_H
 #define CONSOLECOMMANDS_H 1
 
-static const string kConsoleCommand_Save_Autozoom = "saz";
 static const string kConsoleCommand_Exit = "quit";
 static const string kConsoleCommand_Load_AqsisPath = "aqs";
 static const string kConsoleCommand_Load_PixiePath = "pix";
@@ -36,10 +35,6 @@ static const string kConsoleCommand_Set_Parameter = "set";
 static const string kConsoleCommand_Create_WeightsMatrix = "wgt";
 
 // console messages
-static const string kConsoleMessage_Save_Autozoom =
-    "Save Autozoom file (*.camera)";
-static const string kConsoleMessage_Save_Autozoom_Success = "Autozoom saved";
-
 static const string kConsoleMessage_Dir_Load_Error =
     "Error: couldn't read directory. Press ESC to exit or ENTER to retry!";
 // static const string kConsoleMessage_Dir_Save_Error             = "Error:

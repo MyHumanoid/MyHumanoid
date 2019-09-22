@@ -344,6 +344,22 @@ static void loadWindowBackground(const string &filename)
 	}
 }
 
+static void saveAutozoom(const string &filename)
+{
+	Global &global = Global::instance();
+	Autozoom *autozoom = global.getAutozoom();
+	Camera *camera = global.getCamera();
+	assert(autozoom);
+	
+	bool state = autozoom->save(filename, *camera);
+	
+	if (state) {
+		log("Autozoom saved");
+	} else {
+		log_err("Autozoom save failed");
+	}
+}
+
 
 
 
@@ -469,6 +485,27 @@ void DisplayMainMenu()
 			ImGui::Checkbox("Texture", &Global::instance().m_enableTexture);
 			
 			ImGui::Separator();
+			
+			if(ImGui::MenuItem("Save autozoom")) {
+				
+				// searchDataDir("targets")
+				std::string fooAutozoom = "foo-Autozoom";
+				
+				Window &mainWindow(*g_mainWindow);
+				TargetPanel *targetPanel = dynamic_cast<TargetPanel *>(
+					mainWindow.getPanel(kComponentID_TargetPanel));
+				
+				if(targetPanel) {
+					string target = targetPanel->getCategory();
+					std::string pathAutozoom_data =
+						fooAutozoom + "/" + target + "/" + target + ".camera";
+					
+					saveAutozoom(pathAutozoom_data);
+				} else {
+					saveAutozoom("foo-Default.camera");
+				}
+			}
+			
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Edit")) {
