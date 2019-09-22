@@ -661,6 +661,7 @@ void DisplayPoseRotationsApplied()
 static bool show_demo_window = false;
 
 static bool g_userRequestedQuit = false;
+static bool g_displayAxis = false;
 
 static bool g_displayCharacterSettings = false;
 static bool g_displayPerformance = false;
@@ -750,11 +751,6 @@ void DisplayMainMenu()
 					exportCollada(filename);
 				}
 			}
-			
-			if(ImGui::MenuItem("asd")) {
-				
-			}
-			
 			ImGui::Separator();
 			if(ImGui::Button("Quit...")) {
 				ImGui::OpenPopup("Quit?");
@@ -773,7 +769,7 @@ void DisplayMainMenu()
 			}
 			ImGui::Checkbox("Quoted box", &Global::instance().quotedBox);
 			ImGui::Checkbox("Texture", &Global::instance().m_enableTexture);
-			
+			ImGui::Checkbox("Axis", &g_displayAxis);
 			ImGui::Separator();
 			
 			if(ImGui::MenuItem("Save autozoom")) {
@@ -992,18 +988,20 @@ int g_mainWindowPosY;
 // Display function
 static void display()
 {
-	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplGLUT_NewFrame();
 
 	camera->applyMatrix();
 
-	// cgutils::drawAxis ();
-	if (Global::instance().getSubdivision() &&
+	if(Global::instance().getSubdivision() &&
 	    !Global::instance().getLightMesh()) {
 		renderSubsurf();
 	} else {
 		renderMesh();
+	}
+	
+	if(g_displayAxis) {
+		cgutils::drawAxis();
 	}
 
 	/*
