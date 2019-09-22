@@ -102,51 +102,8 @@ void loadRenderingPaths();
 void saveRenderingPaths(string path, int RENDER_TYPE);
 
 void CreateWeightsFile();
-enum RenderType { NORMAL, PREVIEW, TOON };
-enum render_Prog {
-	AQSIS = 0,
-	PIXIE,
-};
-
-enum multith {
-	NMT = 0,
-	MT,
-};
-
-bool callRender(const string &cmd, const string &opt, const string &file_rib,
-                Window &mainWindow);
-bool compileShaders(const string &shader_compiler, Window &mainWindow);
-bool compileTextures(const string &textures_dir, const string &texture_compiler,
-                     Window &mainWindow);
-void rendering(Window &mainWindow, const RenderType type);
-void renderingStep();
-bool ExecuteCommand(int multithreading, const string &command,
-                    const string &opt);
-bool ExecuteCommand_WFile(int multithreading, const string &command,
-                          const string &opt, const string &file);
-/// Aqsis
-int SetAqsisBasePath(const string &path);
-
-const string GetDefaultAqsisPath();
-const string GetAqsisBasePath();
-const string GetAqsisBinPath();
-const string GetAqsisRender();
-const string GetAqsisCompiler();
-const string GetAqsisShaderCompiler();
-const string GetAqsisVersion();
-/// pixie
-int SetPixieBasePath(const string &path);
-
-const string GetDefaultPixiePath();
-const string GetPixieBasePath();
-const string GetPixieBinPath();
-const string GetPixieRender();
-const string GetPixieCompiler();
-const string GetPixieShaderCompiler();
-const string GetPixieVersion();
 
 int ParseParameter(string cmd);
-int ParseStringRIBParameter(char *param, char *value);
 
 void ExportConfigurationXML();
 void ParseConfigurationXML();
@@ -161,5 +118,4 @@ bool saveSelectorsPositions(const std::string &filename,
 template <class T> struct deleteFunctor {
 	void operator()(T &t) { delete t; }
 };
-int KillProcessList();
 #endif // MHUTIL_H

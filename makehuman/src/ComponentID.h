@@ -67,8 +67,6 @@ static const uint32_t kComponentID_UtilitybarPanel =
     FOUR_CHAR_CONST('p', 'a', 'U', 't');
 
 // The Image ID's of the  UtilitybarPanel (kComponentID_UtilitybarPanel)
-static const uint32_t kComponentID_ImageUtilitybar_RenderPreview =
-    FOUR_CHAR_CONST('R', 'e', 'P', 'r');
 static const uint32_t kComponentID_ImageUtilitybar_Frames_01 =
     kComponentID_Dummy;
 
@@ -247,10 +245,6 @@ static const uint32_t kComponentID_ImageToolbarPanel_Hairs =
     FOUR_CHAR_CONST('H', 'a', 'i', 'r');
 // static const uint32_t kComponentID_ImageToolbarPanel_Materials            =
 // FOUR_CHAR_CONST ('M', 'a', 't', 'e');
-static const uint32_t kComponentID_ImageToolbarPanel_Rendering =
-    FOUR_CHAR_CONST('R', 'e', 'n', 'd');
-static const uint32_t kComponentID_ImageToolbarPanel_RenderingPreview =
-    FOUR_CHAR_CONST('R', 'n', 'P', 'v');
 static const uint32_t kComponentID_ImageToolbarPanel_MorphingList =
     FOUR_CHAR_CONST('M', 'o', 'L', 'i');
 static const uint32_t kComponentID_ImageToolbarPanel_Animation =

@@ -115,9 +115,7 @@ bool ConsoleListener::keyType(unsigned char key, Component *source)
 		}
 	} else {
 		if (toupper(key) == 27) {
-			if (!Global::instance().isRendering()) {
-				console->close();
-			}
+			console->close();
 		} else if (toupper(key) == '\r' && console->isInError()) {
 			console->retryCommand();
 		}
@@ -150,27 +148,7 @@ void ConsoleListener::parseCommand(Console &console)
 			arg = line;
 		}
 
-		if (cmd == kConsoleCommand_Load_AqsisPath) {
-			if (arg.size() == 0) {
-				console.inputMode(kConsoleCommand_Load_AqsisPath,
-				                  GetDefaultAqsisPath());
-			} else {
-				loadAqsisPath(console, arg);
-			}
-		} else if (cmd == kConsoleCommand_Load_PixiePath) {
-			if (arg.size() == 0) {
-				console.inputMode(kConsoleCommand_Load_PixiePath,
-				                  GetDefaultPixiePath());
-			} else {
-				loadPixiePath(console, arg);
-			}
-		} else if (cmd == kConsoleCommand_Set_Parameter) {
-			if (arg.size() == 0) {
-
-			} else {
-				parseSetParameter(console, arg);
-			}
-		} else if (cmd == kConsoleCommand_Create_WeightsMatrix) {
+		if (cmd == kConsoleCommand_Create_WeightsMatrix) {
 
 			if (arg.size() == 0) {
 				CreateWeightsFile();
@@ -209,67 +187,3 @@ void ConsoleListener::startStopAnimation(Console& console)
   }
 }
 */
-
-void ConsoleListener::loadAqsisPath(Console &console, const string &path)
-{
-	int ret;
-	if ((ret = SetAqsisBasePath(path + "/")) >= 0) {
-		saveRenderingPaths(path + "/", AQSIS);
-		console.printMessage(kConsoleMessage_OK);
-
-		ExportConfigurationXML();
-	} else {
-		switch (ret) {
-		case -1:
-			console.printMessage(kConsoleMessage_InvalidPath);
-			break;
-		case -2:
-			console.printMessage(kConsoleMessage_WrongPath);
-			break;
-		default:
-			break;
-		}
-	}
-}
-
-void ConsoleListener::loadPixiePath(Console &console, const string &path)
-{
-	int ret;
-	if ((ret = SetPixieBasePath(path + "/")) >= 0) {
-		saveRenderingPaths(path + "/", PIXIE);
-		console.printMessage(kConsoleMessage_OK);
-
-		ExportConfigurationXML();
-	} else {
-		switch (ret) {
-		case -1:
-			console.printMessage(kConsoleMessage_InvalidPath);
-			break;
-		case -2:
-			console.printMessage(kConsoleMessage_WrongPath);
-			break;
-		default:
-			break;
-		}
-	}
-}
-
-void ConsoleListener::parseSetParameter(Console &console, const string &path)
-{
-	int ret;
-
-	if ((ret = ParseParameter(path)) < 0) {
-		switch (ret) {
-		case -3:
-			console.printMessage(kConsoleMessage_InvalidPath);
-			break;
-		default:
-			console.printMessage(kConsoleMessage_Parameter_NG);
-			break;
-		}
-
-	} else {
-		ExportConfigurationXML();
-		console.printMessage(kConsoleMessage_Parameter_OK);
-	}
-}

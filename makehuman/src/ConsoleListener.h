@@ -52,9 +52,6 @@ protected:
 	void loadWindowBackground(Console &console, const string &filename);
 	void loadBodySettings(Console &console, const string &filename);
 	void loadPoses(Console &console, const string &filename);
-	void loadAqsisPath(Console &console, const string &path);
-	void loadPixiePath(Console &console, const string &path);
-	void parseSetParameter(Console &console, const string &path);
 	void savePoses(Console &console, const string &filename);
 	void saveAutozoom(Console &console, const string &filename);
 

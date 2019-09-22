@@ -33,7 +33,6 @@ set(animorph_headers
 	include/animorph/Mesh.h
 	include/animorph/PoseRotation.h
 	include/animorph/PoseTranslation.h
-	include/animorph/RIBExporter.h
 	include/animorph/SmoothVertex.h
 	include/animorph/util.h
 	include/animorph/VertexGroup.h
@@ -72,7 +71,6 @@ set(animorph_sources
 	src/Mesh.cpp
 	src/PoseRotation.cpp
 	src/PoseTranslation.cpp
-	src/RIBExporter.cpp
 	src/SmoothVertex.cpp
 	src/util.cpp
 	src/VertexVector.cpp

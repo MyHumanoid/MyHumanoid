@@ -65,7 +65,6 @@ struct Global
 	    , quotedBox(false)
 	    , m_enableTexture(false)
 	    , m_canTexture(false)
-	    , rendering(false)
 	    , subdivision(false)
 	    , lightMesh(false)
 	    , appMode(CHARACTER_SETTING)
@@ -88,7 +87,6 @@ struct Global
 	bool quotedBox;
 	bool m_enableTexture;
 	bool m_canTexture;
-	bool rendering;
 	bool subdivision;
 	bool lightMesh;
 	Modes appMode;
@@ -130,9 +128,6 @@ public:
 
 	void setCanTexture(bool canTexture) { this->m_canTexture = canTexture; }
 	bool getCanTexture() { return m_canTexture; }
-
-	void setRendering(bool rendering) { this->rendering = rendering; }
-	bool isRendering() { return rendering; }
 
 	void setFuzzyValue(uint32_t index, const Point &inPoint)
 	{

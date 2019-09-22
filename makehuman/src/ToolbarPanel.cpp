@@ -181,26 +181,7 @@ void ToolbarPanel::createWidgets()
 	  addWidget (image);
 	*/
 	// -------------------------------------------------------------------------
-	image =
-	    new Image(kComponentID_ImageToolbarPanel_Rendering,
-	              searchPixmapFile("ui/toolbar_rend.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(Tooltip("Rendering", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(1.0);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_RenderingPreview,
-	                  searchPixmapFile("ui/toolbar_rend_preview.png"),
-	                  Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Rendering preview", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(1.0);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_MorphingList,
 	                  searchPixmapFile("ui/toolbar_morph_list.png"),

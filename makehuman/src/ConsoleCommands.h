@@ -28,47 +28,11 @@
 #ifndef CONSOLECOMMANDS_H
 #define CONSOLECOMMANDS_H 1
 
-static const string kConsoleCommand_Load_AqsisPath = "aqs";
-static const string kConsoleCommand_Load_PixiePath = "pix";
-static const string kConsoleCommand_Set_Parameter = "set";
 static const string kConsoleCommand_Create_WeightsMatrix = "wgt";
 
-// console messages
-static const string kConsoleMessage_Dir_Load_Error =
-    "Error: couldn't read directory. Press ESC to exit or ENTER to retry!";
-// static const string kConsoleMessage_Dir_Save_Error             = "Error:
-// couldn't save files. Press ESC to exit or ENTER to retry!";
-static const string kConsoleMessage_Save_Error =
-    "Error: couldn't save file. Press ESC to exit or ENTER to retry!";
 static const string kConsoleMessage_Unknown_Command = "Unknown command";
-static const string kConsoleMessage_InvalidPath =
-    "Error: the path doesn't exist.";
-static const string kConsoleMessage_WrongPath =
-    "Error: the path is wrong. Impossible locate rendering";
-
-static const string kConsoleMessage_RenderEngineNotFound =
-    "Unable to find a render engine. Press ESC to exit!";
-static const string kConsoleMessage_TextureCompileError =
-    "Error during texture compilation. Press ESC to exit!";
-static const string kConsoleMessage_ShaderCompileError =
-    "Error during shader compilation. Press ESC to exit!";
-static const string kConsoleMessage_RenderError =
-    "Rendering error. Press ESC to exit!";
-
-static const string kConsoleMessage_WrongMode_Animations =
-    "This command can be executed only in Utilities panel";
-static const string kConsoleMessage_WrongMode_Poses =
-    "This command can be executed only in Poses panel";
-static const string kConsoleMessage_WrongMode_BodyDetails =
-    "This command can be executed only in Body details, Character settings or "
-    "Clothes panel";
 
 static const string kConsoleMessage_NotLoaded_Animations =
     "Animations not loaded!";
-static const string kConsoleMessage_OK = "O.K.! path stored, press Esc to Exit";
-static const string kConsoleMessage_Parameter_OK =
-    "O.K.! parameter stored, press Esc to Exit";
-static const string kConsoleMessage_Parameter_NG =
-    "Error! parameter not stored, press Esc to Exit";
 
 #endif // CONSOLECOMMANDS_H

@@ -49,7 +49,6 @@
 #include <animorph/DirectoryList.h>
 #include <animorph/MathUtil.h>
 #include <animorph/ObjExporter.h>
-#include <animorph/RIBExporter.h>
 #include <assert.h>
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
@@ -290,12 +289,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 				     break;
 		 */
-			case kComponentID_ImageToolbarPanel_Rendering:
-				rendering(mainWindow, NORMAL);
-				break;
-			case kComponentID_ImageToolbarPanel_RenderingPreview: {
-				rendering(mainWindow, PREVIEW);
-			} break;
 			case kComponentID_ImageToolbarPanel_MorphingList: {
 				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);
@@ -346,9 +339,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				showUtilities();
 			} break;
 			// utilitybar buttons
-			case kComponentID_ImageUtilitybar_RenderPreview: {
-				rendering(mainWindow, PREVIEW);
-			} break;
 			case kComponentID_CloseTargetPanel: {
 				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);

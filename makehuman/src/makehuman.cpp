@@ -130,7 +130,6 @@ int n_display = 0;
 bool right_button_down = false;
 int tickCount = 0;
 float kTimePerRaster(0.03f);
-bool waitDisplay = false;
 bool oldCameraTimerTrigger = false;
 
 static Vector3f cameraPos;
@@ -1036,10 +1035,6 @@ static void display()
 	//	  init = true;
 	//  }
 
-	if (Global::instance().isRendering()) {
-		waitDisplay = true;
-	}
-
 	{
 		DisplayMainMenu();
 		DisplayPerformance();
@@ -1119,21 +1114,6 @@ static void motion(int x, int y)
 	}
 
 	mainWindow.isMouseOverPanel(Point(x, y));
-}
-
-static void timerRendering(int value)
-{
-	Window &mainWindow(*g_mainWindow);
-
-	if (Global::instance().isRendering() && waitDisplay) {
-		waitDisplay = false;
-		renderingStep();
-		glutTimerFunc(kTimerRendering, timerRendering,
-		                            0); // Rendering
-	} else {
-		glutTimerFunc(kTimerRendering, timerRendering,
-		                            0); // Rendering
-	}
 }
 
 static void timer(int value)
@@ -1222,24 +1202,6 @@ static void keyboard(unsigned char key)
 		case 'O':
 			console->open();
 			break;
-		case 'T':
-			rendering(mainWindow, TOON);
-			break;
-		case 'K': {
-			int ret;
-			if ((ret = KillProcessList()) == 0) {
-				mainWindow.getConsole()->open();
-				mainWindow.getConsole()->printMessage("No process killed");
-				cgutils::redisplay();
-			} else {
-				std::stringstream kk;
-				kk << ret;
-				mainWindow.getConsole()->open();
-				mainWindow.getConsole()->printMessage("Killed  " + kk.str() +
-				                                      " process ");
-				cgutils::redisplay();
-			}
-		} break;
 		default:
 			break;
 		}
@@ -1574,7 +1536,6 @@ int main(int argc, char **argv)
 	mainWindow.setMouseCallback(mouse);
 	glutTimerFunc(kTimerCallback, timer, 0);           // Animation
 	glutTimerFunc(1000, timerTrigger, 1);              // Autozoom
-	glutTimerFunc(kTimerRendering, timerRendering, 0); // Rendering
 	glutCloseFunc([]()->void{
 		// TODO glut does not let us prevent closing in a sane way
 		// just let it happen for now :/
