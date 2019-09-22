@@ -102,17 +102,6 @@ void UtilitiesPanel::createWidgets()
 	addWidget(img);
 
 	// -------------------------------------------------------------------------
-
-	img = new Image(kComponentID_UtilitiesPanel_StartStop,
-	                searchPixmapFile("ui/utilitiespanel_03.png"),
-	                Rect(0, 0, 64, 64));
-	img->setListener(&imgListener);
-	img->setTooltip(
-	    Tooltip("Start/stop animation", kTooltipPos, c, tooltipPanel));
-	img->setAlpha(alpha);
-	imageVector.push_back(img);
-	addWidget(img);
-
 	// -------------------------------------------------------------------------
 
 	img = new Image(kComponentID_UtilitiesPanel_Reset,

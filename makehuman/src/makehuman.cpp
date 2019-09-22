@@ -533,8 +533,20 @@ void doPoseFromGui(std::string targetName, float value) {
 	mesh->setPose(targetName, value);
 }
 
+void startStopAnimation()
+{
+	Global &global = Global::instance();
+	Animation *animation = global.getAnimation();
+	assert (animation);
+	
+	if(animation->isLoaded()) {
+		animation->setStarted(!animation->isStarted());
+	} else {
+		log_err("Animations not loaded!");
+	}
+}
 
-
+// ================================================================================================
 
 void DisplayMorphApplied()
 {
@@ -859,9 +871,12 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
-		if(ImGui::BeginMenu("Misc (alpha)")) {
+		if(ImGui::BeginMenu("Broken stuff")) {
 			if(ImGui::Button("CreateWeightsFile")) {
 				CreateWeightsFile();
+			}
+			if(ImGui::Button("Start/stop animation")) {
+				startStopAnimation();
 			}
 			ImGui::EndMenu();
 		}

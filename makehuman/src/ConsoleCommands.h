@@ -30,7 +30,4 @@
 
 static const string kConsoleMessage_Unknown_Command = "Unknown command";
 
-static const string kConsoleMessage_NotLoaded_Animations =
-    "Animations not loaded!";
-
 #endif // CONSOLECOMMANDS_H

@@ -159,23 +159,3 @@ void ConsoleListener::commandNotFound(Console &console)
 	console.setMessage(kConsoleMessage_Unknown_Command);
 	console.setStatus(Console::MESSAGE);
 }
-
-
-/*
-void ConsoleListener::startStopAnimation(Console& console)
-{
-  Global &global = Global::instance ();
-  Animation *animation = global.getAnimation();
-  assert (animation);
-
-  if(animation->isLoaded())
-  {
-    animation->setStarted(!animation->isStarted());
-  }
-  else
-  {
-   console.printMessage(kConsoleMessage_NotLoaded_Animations);
-   console.setError(true);
-  }
-}
-*/

@@ -384,17 +384,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				p->pageBack();
 				break;
 			}
-			case kComponentID_UtilitiesPanel_StartStop: {
-				Animation *animation = global.getAnimation();
-				if (animation->isLoaded()) {
-					animation->setStarted(!animation->isStarted());
-				} else {
-					mainWindow.getConsole()->open();
-					mainWindow.getConsole()->printMessage(
-					    kConsoleMessage_NotLoaded_Animations);
-				}
-				break;
-			}
 			case kComponentID_UtilitiesPanel_Reset: {
 				Animation *animation = global.getAnimation();
 				if (animation->isLoaded()) {

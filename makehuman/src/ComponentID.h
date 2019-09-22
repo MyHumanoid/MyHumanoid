@@ -469,8 +469,6 @@ static const uint32_t kComponentID_UtilitiesPanel_Interpolations =
     FOUR_CHAR_CONST('I', 'n', 't', 'p');
 static const uint32_t kComponentID_UtilitiesPanel_FrameRate =
     FOUR_CHAR_CONST('F', 'r', 'm', 'R');
-static const uint32_t kComponentID_UtilitiesPanel_StartStop =
-    FOUR_CHAR_CONST('S', 't', 'r', 't');
 static const uint32_t kComponentID_UtilitiesPanel_Reset =
     FOUR_CHAR_CONST('R', 's', 't', 'e');
 
