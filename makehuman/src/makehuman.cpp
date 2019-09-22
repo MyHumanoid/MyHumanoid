@@ -1239,8 +1239,7 @@ int main(int argc, char **argv)
 //		if (console->isActive()) {
 //			console->close();
 //		}
-//		console->openWithCommand(kConsoleCommand_Exit, kConsoleMessage_ConfirmExit,
-//		                         "");
+
 		// TODO WHY?
 		// mainWindow.mainLoop();
 	});

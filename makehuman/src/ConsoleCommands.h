@@ -28,7 +28,6 @@
 #ifndef CONSOLECOMMANDS_H
 #define CONSOLECOMMANDS_H 1
 
-static const string kConsoleCommand_Exit = "quit";
 static const string kConsoleCommand_Load_AqsisPath = "aqs";
 static const string kConsoleCommand_Load_PixiePath = "pix";
 static const string kConsoleCommand_Set_Parameter = "set";

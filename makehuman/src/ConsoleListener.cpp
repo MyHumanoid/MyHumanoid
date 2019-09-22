@@ -134,11 +134,6 @@ void ConsoleListener::parseCommand(Console &console)
 
 	Global &global = Global::instance();
 
-	if (console.getCommand() == kConsoleCommand_Exit) {
-		ExportConfigurationXML();
-		exit(0);
-	}
-
 	if (!line.empty()) {
 		if (console.getStatus() == Console::PROMPT) {
 			i = line.find_first_of(' ');
