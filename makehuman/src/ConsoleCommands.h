@@ -28,8 +28,6 @@
 #ifndef CONSOLECOMMANDS_H
 #define CONSOLECOMMANDS_H 1
 
-static const string kConsoleCommand_Create_WeightsMatrix = "wgt";
-
 static const string kConsoleMessage_Unknown_Command = "Unknown command";
 
 static const string kConsoleMessage_NotLoaded_Animations =

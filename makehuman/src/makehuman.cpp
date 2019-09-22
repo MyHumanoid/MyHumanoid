@@ -859,6 +859,13 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
+		if(ImGui::BeginMenu("Misc (alpha)")) {
+			if(ImGui::Button("CreateWeightsFile")) {
+				CreateWeightsFile();
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::Separator();
 		if(ImGui::BeginMenu("Help")) {
 			ImGui::Checkbox("Performance", &g_displayPerformance);
 			ImGui::Separator();

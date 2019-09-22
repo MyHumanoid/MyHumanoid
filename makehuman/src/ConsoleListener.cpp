@@ -148,15 +148,7 @@ void ConsoleListener::parseCommand(Console &console)
 			arg = line;
 		}
 
-		if (cmd == kConsoleCommand_Create_WeightsMatrix) {
-
-			if (arg.size() == 0) {
-				CreateWeightsFile();
-
-			} else {
-			}
-		}
-		else {
+		{
 			commandNotFound(console);
 		}
 	}
