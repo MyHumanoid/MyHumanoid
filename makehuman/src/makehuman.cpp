@@ -391,8 +391,8 @@ static void exportBodySettings(string &directory, bool full)
 	
 	ObjExporter obj_export(*mesh);
 	
-	if (directory.substr(directory.size() - 1, 1) != PATH_SEPARATOR) {
-		directory.append(PATH_SEPARATOR);
+	if (directory.substr(directory.size() - 1, 1) != "/") {
+		directory.append("/");
 	}
 	
 	fs::create_directories(directory);
@@ -413,8 +413,8 @@ static void exportCollada(string &filename)
 	
 	ColladaExporter collada_export(*mesh);
 	
-	if (filename.substr(filename.size() - 1, 1) != PATH_SEPARATOR) {
-		filename.append(PATH_SEPARATOR);
+	if (filename.substr(filename.size() - 1, 1) != "/") {
+		filename.append("/");
 	}
 	
 	fs::create_directories(filename);

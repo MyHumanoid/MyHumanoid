@@ -83,17 +83,16 @@ const string searchPixmapDir(const string &pixmap_dir)
 const StringVector getPixmapsAlternatives(const string &pixmap)
 {
 	StringVector name_vector;
-	name_vector.push_back("pixmaps" + PATH_SEPARATOR + pixmap);
-	name_vector.push_back(".." + PATH_SEPARATOR + "pixmaps" + PATH_SEPARATOR +
-	                      pixmap);
+	name_vector.push_back("pixmaps/" + pixmap);
+	name_vector.push_back("../pixmaps/" + pixmap);
 	return name_vector;
 }
 
 const StringVector getDataAlternatives(const string &data)
 {
 	StringVector name_vector;
-	name_vector.push_back("data" + PATH_SEPARATOR + data);
-	name_vector.push_back(".." + PATH_SEPARATOR + "data" + PATH_SEPARATOR + data);
+	name_vector.push_back("data/" + data);
+	name_vector.push_back("../data/" + data);
 	return name_vector;
 }
 
@@ -144,14 +143,12 @@ const string getUserWorkDir() {
 
 const string getMyPosesBasePath()
 {
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "myposes" +
-	              PATH_SEPARATOR);
+	return string(getUserWorkDir() + "makehuman/myposes/");
 }
 
 const string getMyBodysettingsBasePath()
 {
-	return string(getUserWorkDir() + "makehuman" + PATH_SEPARATOR + "mybs" +
-	              PATH_SEPARATOR);
+	return string(getUserWorkDir() + "makehuman/mybs/");
 }
 
 bool GetSymmVertexConfig(int *symm_vertex)

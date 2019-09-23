@@ -42,13 +42,6 @@
 #include <string>
 #include <vector>
 
-/// some system specific defines
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-#define PATH_SEPARATOR string("\\")
-#else
-#define PATH_SEPARATOR string("/")
-#endif
-
 using std::string;
 using std::vector;
 

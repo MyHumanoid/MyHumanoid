@@ -13,7 +13,7 @@ bool OgreXMLExporter::exportFile(const string &filename)
 	string file_ending_cut(cutFileEnding(filename, ".obj"));
 
 	string bname = file_ending_cut.substr(
-	    filename.find_last_of(PATH_SEPARATOR) + 1, filename.size());
+	    filename.find_last_of("/") + 1, filename.size());
 	int index = bname.find_last_of("/");
 	temp = bname.substr(index + 1);
 
