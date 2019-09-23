@@ -130,6 +130,7 @@ set(makehuman_sources
 )
 
 find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(PNG REQUIRED)
 find_package(fmt REQUIRED)
@@ -142,6 +143,7 @@ add_executable(makehuman
 
 target_include_directories(makehuman PRIVATE
 	${OPENGL_INCLUDE_DIRS}
+	${GLEW_INCLUDE_DIRS}
 	${GLUT_INCLUDE_DIRS}
 	${PNG_INCLUDE_DIRS}
 	src
@@ -154,8 +156,9 @@ target_link_libraries(makehuman PRIVATE
 	imgui
 	nlohmann-json
 	stb_image
-	${OPENGL_LIBRARIES}
-	${GLUT_LIBRARY}
+	OpenGL::OpenGL
+	GLEW::GLEW
+	GLUT::GLUT
 	${PNG_LIBRARY}
 )
 

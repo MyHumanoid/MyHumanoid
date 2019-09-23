@@ -56,8 +56,8 @@ set(imguiSources
 	
 	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_glut.h
 	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_glut.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_opengl2.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_opengl2.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_opengl3.h
+	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_opengl3.cpp
 )
 
 add_library(imgui STATIC ${imguiSources})

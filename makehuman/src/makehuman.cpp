@@ -33,8 +33,9 @@
 #include <iostream>
 #include <unordered_map>
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/freeglut.h>
+
 
 #include <experimental/filesystem>
 
@@ -42,7 +43,7 @@
 
 #include <imgui.h>
 #include <examples/imgui_impl_glut.h>
-#include <examples/imgui_impl_opengl2.h>
+#include <examples/imgui_impl_opengl3.h>
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -992,7 +993,7 @@ int g_mainWindowPosY;
 // Display function
 static void display()
 {
-	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGLUT_NewFrame();
 
 	camera->applyMatrix();
@@ -1029,7 +1030,7 @@ static void display()
 	// glClear(GL_COLOR_BUFFER_BIT);
 	// glUseProgram(0); // You may want this if using this code in an OpenGL 3+
 	// context where shaders may be bound, but prefer using the GL3+ code.
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -1566,7 +1567,7 @@ int main(int argc, char **argv)
 		glutSpecialUpFunc(ImGui_ImplGLUT_SpecialUpFunc);
 	}
 
-	ImGui_ImplOpenGL2_Init();
+	ImGui_ImplOpenGL3_Init();
 
 	// Load Fonts
 	// - If no fonts are loaded, dear imgui will use the default font. You can
@@ -1595,7 +1596,7 @@ int main(int argc, char **argv)
 	glutMainLoop();
 
 	// Cleanup
-	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplOpenGL3_Shutdown();
 	ImGui::DestroyContext();
 	
 	{

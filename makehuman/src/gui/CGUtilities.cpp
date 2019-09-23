@@ -25,6 +25,8 @@
  *
  */
 
+#include "GL/glew.h"
+
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"
 #include "gui/Point.h"
@@ -123,8 +125,10 @@ void cgutils::enableOrthographicProjection()
 	glPushMatrix();
 	// reset matrix
 	glLoadIdentity();
+	
 	// set a 2D orthographic projection
-	gluOrtho2D(0, w, h, 0); //, 0, 10); // realize 10 layers [0,-10]
+	glOrtho(0, w, h, 0, -1, 1); 
+	
 	glClear(GL_DEPTH_BUFFER_BIT);
 	// invert the y axis, down is positive (GLUT has different Y than openGL)
 	// glScalef (1, -1, 1);
@@ -273,6 +277,18 @@ void cgutils::drawSquare(const Rect &inRect, const Color &c)
 	glEnd();
 }
 
+void perspectiveGL( GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar )
+{
+	const GLdouble pi = 3.1415926535897932384626433832795;
+	GLdouble fW, fH;
+	
+	//fH = tan( (fovY / 2) / 180 * pi ) * zNear;
+	fH = tan( fovY / 360 * pi ) * zNear;
+	fW = fH * aspect;
+	
+	glFrustum( -fW, fW, -fH, fH, zNear, zFar );
+}
+
 // Glut call back functions
 void cgutils::reshape(const Size &inSize, const Camera &inCamera)
 {
@@ -288,10 +304,10 @@ void cgutils::reshape(const Size &inSize, const Camera &inCamera)
 	if (inCamera.isPerspective()) // if perspective
 	{
 		if (inSize.getHeight() == 0)
-			gluPerspective(kFOVY, static_cast<float>(inSize.getWidth()), kZNear,
+			perspectiveGL(kFOVY, static_cast<float>(inSize.getWidth()), kZNear,
 			               kZFar);
 		else
-			gluPerspective(kFOVY,
+			perspectiveGL(kFOVY,
 			               static_cast<float>(inSize.getWidth()) /
 			                   static_cast<float>(inSize.getHeight()),
 			               kZNear, kZFar);
@@ -318,6 +334,8 @@ int cgutils::initWindow(const Rect &rect, const char *title,
 	glutInitWindowSize(rect.getWidth(), rect.getHeight());
 	glutInitWindowPosition(rect.getX(), rect.getY());
 	int winID = glutCreateWindow(title);
+	
+	glewInit();
 
 	// Enables
 	glEnable(GL_LIGHTING);
