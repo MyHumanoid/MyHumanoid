@@ -1081,7 +1081,7 @@ static void timerTrigger(int val)
 	if (g_global.getSubdivision()) {
 		if (!tmp && oldCameraTimerTrigger) {
 			g_global.setLightMesh(false);
-			cgutils::redisplay();
+			glutPostRedisplay();
 		} else if (tmp && !oldCameraTimerTrigger) {
 			g_global.setLightMesh(true);
 		}
@@ -1104,7 +1104,7 @@ static void motion(int x, int y)
 		splashPanel = NULL;
 
 		splashMotionCount = 0;
-		cgutils::redisplay();
+		glutPostRedisplay();
 	}
 
 	mainWindow.isMouseOverPanel(Point(x, y));
@@ -1119,7 +1119,7 @@ static void timer(int value)
 		    (int)((1000 / kTimerCallback) / animation->getFrameRate())) {
 			animation->nextFrame();
 			tickCount = 0;
-			cgutils::redisplay();
+			glutPostRedisplay();
 		}
 	}
 	glutTimerFunc(kTimerCallback, timer, value);
@@ -1144,7 +1144,7 @@ static void special(int key)
 			break;
 		}
 	}
-	cgutils::redisplay();
+	glutPostRedisplay();
 }
 
 static void keyboard(unsigned char key)
@@ -1197,7 +1197,7 @@ static void keyboard(unsigned char key)
 			break;
 		}
 	}
-	cgutils::redisplay();
+	glutPostRedisplay();
 }
 
 static void mouse(int button, int state, int x, int y)
@@ -1210,7 +1210,7 @@ static void mouse(int button, int state, int x, int y)
 		splashPanel = NULL;
 
 		splashMotionCount = 0;
-		// cgutils::redisplay();
+		// glutPostRedisplay();
 	}
 
 	// cout << "mouse: " << button << endl;
@@ -1273,7 +1273,7 @@ static void mouse(int button, int state, int x, int y)
 	}
 	// mainWindow.isMouseClickPanel  (Point(x, y), button, state);
 
-	cgutils::redisplay();
+	glutPostRedisplay();
 }
 
 static void activeMotion(int x, int y)
@@ -1290,7 +1290,7 @@ static void activeMotion(int x, int y)
 			g_global.setLightMesh(true);
 		}
 
-		cgutils::redisplay();
+		glutPostRedisplay();
 	}
 }
 
@@ -1834,7 +1834,7 @@ void renderMesh()
 	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 		::glDisable(GL_TEXTURE_2D);
 	}
-	cgutils::disableBlend();
+	glDisable(GL_BLEND);
 }
 
 bool loadTextures()

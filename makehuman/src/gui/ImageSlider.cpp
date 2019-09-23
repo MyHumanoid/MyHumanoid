@@ -77,7 +77,7 @@ void ImageSlider::draw()
 			cgutils::drawSquareFillTexture(rect, getAlpha(), getTextures());
 		}
 
-		cgutils::disableBlend();
+		glDisable(GL_BLEND);
 
 		if (sliderValue == 0) {
 			c.rgb(1, 1, 1);
@@ -112,7 +112,7 @@ void ImageSlider::drawOverlay()
 				cgutils::drawSquareFillTexture(rect, getAlpha(), getTexturesOver());
 			}
 		}
-		cgutils::disableBlend();
+		glDisable(GL_BLEND);
 	}
 }
 

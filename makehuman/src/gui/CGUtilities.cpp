@@ -92,7 +92,7 @@ void cgutils::drawGrid(const Size &inSize, const int xMargin, const int yMargin,
 	drawSquareFill(Rect(inSize.getWidth() - xMargin, yMargin, 3, 40), b);
 	drawSquareFill(Rect(inSize.getWidth() - xMargin - 40, yMargin, 40, 3), b);
 
-	disableBlend();
+	glDisable(GL_BLEND);
 
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
@@ -459,23 +459,11 @@ void cgutils::drawString3D(const Vector3f &pos, FontType font,
 	}
 }
 
-void cgutils::redisplay() { glutPostRedisplay(); }
-
-void cgutils::swapBuffers() { glutSwapBuffers(); }
-
-void cgutils::mainLoop() { glutMainLoop(); }
-
 void cgutils::enableBlend()
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
-
-void cgutils::enableLineSmoothing() { glEnable(GL_LINE_SMOOTH); }
-
-void cgutils::disableLineSmoothing() { glDisable(GL_LINE_SMOOTH); }
-
-void cgutils::disableBlend() { glDisable(GL_BLEND); }
 
 void cgutils::enableScissor(const Rect &box)
 {
@@ -609,7 +597,7 @@ void cgutils::mhWireCube(const float twoxyz[6])
 	snprintf(stry, sizeof(stry), "H = %5.2f", sy * 10);
 
 	cgutils::enableBlend();
-	cgutils::enableLineSmoothing();
+	glEnable(GL_LINE_SMOOTH);
 	glDisable(GL_LIGHTING);
 
 	// Set the color for the bounding box
@@ -639,6 +627,6 @@ void cgutils::mhWireCube(const float twoxyz[6])
 	glFlush();
 
 	glEnable(GL_LIGHTING);
-	cgutils::disableLineSmoothing();
-	cgutils::disableBlend();
+	glDisable(GL_LINE_SMOOTH);
+	glDisable(GL_BLEND);
 }

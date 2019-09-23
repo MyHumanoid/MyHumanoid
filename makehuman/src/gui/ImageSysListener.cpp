@@ -49,14 +49,14 @@ ImageSysListener::~ImageSysListener() {}
 
 bool ImageSysListener::mouseOver(const Point &inMousePos, Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return false;
 }
 
 bool ImageSysListener::mouseOut(const Point &inMousePos, Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return false;
 }

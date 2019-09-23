@@ -269,7 +269,7 @@ void Panel::draw()
 			w->drawOverlay();
 		}
 
-		cgutils::disableBlend();
+		glDisable(GL_BLEND);
 	}
 }
 

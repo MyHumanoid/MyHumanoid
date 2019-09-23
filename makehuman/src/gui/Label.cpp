@@ -95,7 +95,7 @@ void Label::draw()
 
 		// cgutils::disableScissor ();
 
-		cgutils::disableBlend();
+		glDisable(GL_BLEND);
 	}
 }
 

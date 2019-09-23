@@ -135,11 +135,11 @@ void Image::drawOverlay()
 			if (lazyLoadTexture(true)) {
 				cgutils::enableBlend();
 				cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, textureOver);
-				cgutils::disableBlend();
+				glDisable(GL_BLEND);
 			} else {
 				cgutils::enableBlend();
 				cgutils::drawSquareFill(getAbsoluteRect(), overlay);
-				cgutils::disableBlend();
+				glDisable(GL_BLEND);
 			}
 		}
 	}
@@ -152,12 +152,12 @@ void Image::draw()
 		if (lazyLoadTexture()) {
 			cgutils::enableBlend();
 			cgutils::drawSquareFillTexture(getAbsoluteRect(), alpha, getTextures());
-			cgutils::disableBlend();
+			glDisable(GL_BLEND);
 		} else {
 			cgutils::enableBlend();
 			cgutils::drawSquareFill(
 			    getAbsoluteRect(), Color(1.0, 1.0, 1.0, enabled ? alpha : alpha / 2));
-			cgutils::disableBlend();
+			glDisable(GL_BLEND);
 		}
 	}
 }

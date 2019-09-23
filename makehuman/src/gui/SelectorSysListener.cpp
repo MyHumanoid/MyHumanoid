@@ -49,14 +49,14 @@ SelectorSysListener::~SelectorSysListener() {}
 
 bool SelectorSysListener::mouseOver(const Point &inMousePos, Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return false;
 }
 
 bool SelectorSysListener::mouseOut(const Point &inMousePos, Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return false;
 }
@@ -69,7 +69,7 @@ bool SelectorSysListener::mouseDragged(const Point &inMousePos,
 
 	selectorSource->setCursorPosFromMousePoint(inMousePos);
 
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return true;
 }
@@ -91,7 +91,7 @@ bool SelectorSysListener::mousePressed(const Point &inMousePos, int button,
 	selectorSource->setActive(true);
 	selectorSource->setClickConsumed(false);
 
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return true;
 }

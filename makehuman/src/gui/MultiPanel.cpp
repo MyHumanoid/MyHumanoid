@@ -98,7 +98,7 @@ void MultiPanel::draw()
 			w->drawOverlay();
 		}
 
-		cgutils::disableBlend();
+		glDisable(GL_BLEND);
 	}
 }
 

@@ -73,7 +73,7 @@ void TextEntry::drawOverlay()
 		if (overlayEffect) {
 			cgutils::enableBlend();
 			cgutils::drawSquareFill(getAbsoluteRect(), overlay);
-			cgutils::disableBlend();
+			glDisable(GL_BLEND);
 		}
 	}
 }
@@ -123,7 +123,7 @@ void TextEntry::draw()
 
 		cgutils::disableScissor();
 
-		cgutils::disableBlend();
+		glDisable(GL_BLEND);
 	}
 }
 

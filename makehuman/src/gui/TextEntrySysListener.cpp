@@ -49,14 +49,14 @@ TextEntrySysListener::~TextEntrySysListener() {}
 
 bool TextEntrySysListener::mouseOver(const Point &inMousePos, Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return false;
 }
 
 bool TextEntrySysListener::mouseOut(const Point &inMousePos, Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 
 	return false;
 }

@@ -50,14 +50,14 @@ ImageSliderSysListener::~ImageSliderSysListener() {}
 bool ImageSliderSysListener::mouseOver(const Point &inMousePos,
                                        Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 	return false;
 }
 
 bool ImageSliderSysListener::mouseOut(const Point &inMousePos,
                                       Component *source)
 {
-	cgutils::redisplay();
+	glutPostRedisplay();
 	return false;
 }
 
@@ -73,11 +73,11 @@ bool ImageSliderSysListener::mouseWheel(const Point &inMousePos, int inButton,
 
 	if (inButton == GLUT_WHEEL_UP) {
 		imgSliderSource->increaseValue(value);
-		cgutils::redisplay();
+		glutPostRedisplay();
 		return true;
 	} else if (inButton == GLUT_WHEEL_DOWN) {
 		imgSliderSource->decreaseValue(value);
-		cgutils::redisplay();
+		glutPostRedisplay();
 		return true;
 	}
 #endif
@@ -97,14 +97,14 @@ bool ImageSliderSysListener::mouseDragged(const Point &inMousePos,
 		int value = inMousePos.getX() - imgSliderSource->getOldMouseX();
 		imgSliderSource->increaseValue(value);
 		imgSliderSource->setOldMouseX(inMousePos.getX());
-		cgutils::redisplay();
+		glutPostRedisplay();
 	} else if (inMousePos.getX() < imgSliderSource->getOldMouseX() &&
 	           imgSliderSource->getSliderValue() >
 	               imgSliderSource->getMinValue()) {
 		int value = imgSliderSource->getOldMouseX() - inMousePos.getX();
 		imgSliderSource->decreaseValue(value);
 		imgSliderSource->setOldMouseX(inMousePos.getX());
-		cgutils::redisplay();
+		glutPostRedisplay();
 	}
 
 	return true;

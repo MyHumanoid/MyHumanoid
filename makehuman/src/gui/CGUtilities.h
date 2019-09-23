@@ -102,17 +102,7 @@ void drawString3D(const Vector3f &pos, FontType font, const string &str,
 
 void redisplay();
 
-void swapBuffers();
-
-void mainLoop();
-
 void enableBlend();
-
-void disableBlend();
-
-void enableLineSmoothing();
-
-void disableLineSmoothing();
 
 void enableScissor(const Rect &box);
 

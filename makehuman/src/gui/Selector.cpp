@@ -248,7 +248,7 @@ void Selector::draw()
 			}
 		}
 
-		cgutils::disableBlend();
+		glDisable(GL_BLEND);
 	}
 }
 
