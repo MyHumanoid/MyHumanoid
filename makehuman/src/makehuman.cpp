@@ -84,7 +84,6 @@
 #include "TargetPanel.h"
 #include "ToolbarPanel.h"
 #include "TooltipPanel.h"
-#include "ViewPanel.h"
 #include "util.h"
 
 #define kTimerRendering 1000
@@ -104,7 +103,6 @@ json g_jsonConfig;
 static TooltipPanel *tooltipPanel;
 static ToolbarPanel *toolbarPanel;
 static FooterPanel *footerPanel;
-static ViewPanel *viewPanel;
 static BottomPanel *bottomPanel;
 static SplashPanel *splashPanel;
 static Mesh *mesh;
@@ -1331,7 +1329,6 @@ int main(int argc, char **argv)
 	tooltipPanel = new TooltipPanel(mainWindow.getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();
 	footerPanel = new FooterPanel(mainWindow.getSize().getHeight());
-	viewPanel = new ViewPanel(mainWindow.getSize().getHeight());
 	bottomPanel = new BottomPanel();
 	splashPanel = new SplashPanel(mainWindow.getSize());
 	mesh = new Mesh();
@@ -1459,7 +1456,6 @@ int main(int argc, char **argv)
 	mainWindow.addPanel(tooltipPanel);
 	mainWindow.addPanel(toolbarPanel);
 	mainWindow.addPanel(footerPanel);
-	mainWindow.addPanel(viewPanel);
 	mainWindow.addPanel(bottomPanel);
 	mainWindow.addPanel(characterSettingPanel);
 	mainWindow.addPanel(splashPanel);
@@ -1472,7 +1468,6 @@ int main(int argc, char **argv)
 	tooltipPanel->createWidgets();
 	toolbarPanel->createWidgets();
 	footerPanel->createWidgets();
-	viewPanel->createWidgets();
 	bottomPanel->createWidgets();
 	characterSettingPanel->createWidgets();
 	splashPanel->createWidgets();
@@ -1483,7 +1478,6 @@ int main(int argc, char **argv)
 	// Note it's after context creation
 	toolbarPanel->show_all();
 	footerPanel->show_all();
-	viewPanel->show_all();
 	tooltipPanel->show_all();
 	bottomPanel->show_all();
 	characterSettingPanel->show_all();

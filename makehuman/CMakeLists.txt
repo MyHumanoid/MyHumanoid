@@ -127,8 +127,6 @@ set(makehuman_sources
 	src/UtilitiesPanel.h
 	src/UtilitiesSliderListener.cpp
 	src/UtilitiesSliderListener.h
-	src/ViewPanel.cpp
-	src/ViewPanel.h
 )
 
 find_package(OpenGL REQUIRED)
