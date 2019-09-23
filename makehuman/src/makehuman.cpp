@@ -1501,15 +1501,9 @@ int main(int argc, char **argv)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO &io = ImGui::GetIO();
-	(void)io;
-	// io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
-	// Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-	// ImGui::StyleColorsClassic();
-
-	// Setup Platform/Renderer bindings
 	ImGui_ImplGLUT_Init();
 
 	{
@@ -1572,7 +1566,6 @@ int main(int argc, char **argv)
 		glutSpecialUpFunc(ImGui_ImplGLUT_SpecialUpFunc);
 	}
 
-	// ImGui_ImplGLUT_InstallFuncs();
 	ImGui_ImplOpenGL2_Init();
 
 	// Load Fonts
@@ -1603,7 +1596,6 @@ int main(int argc, char **argv)
 
 	// Cleanup
 	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplGLUT_Shutdown();
 	ImGui::DestroyContext();
 	
 	{
