@@ -35,10 +35,6 @@ set(gui_sources
 	src/gui/SelectorSysListener.cpp
 	src/gui/Size.h
 	src/gui/Size.cpp
-	src/gui/TextEntry.h
-	src/gui/TextEntry.cpp
-	src/gui/TextEntrySysListener.h
-	src/gui/TextEntrySysListener.cpp
 	src/gui/Texture.h
 	src/gui/Texture.cpp
 	src/gui/Tooltip.h

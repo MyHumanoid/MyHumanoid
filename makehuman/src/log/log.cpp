@@ -1,5 +1,3 @@
-#pragma once
-
 #include "log/log.h"
 
 #include <iostream>
