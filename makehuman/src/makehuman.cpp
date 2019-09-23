@@ -639,7 +639,6 @@ void DisplayPoseRotationsApplied()
 
 // ================================================================================================
 
-// Our state
 static bool show_demo_window = false;
 
 static bool g_userRequestedQuit = false;
@@ -882,15 +881,8 @@ void DisplayMainMenu()
 	}
 }
 
-
-
-
 void DisplayCharacterSettings()
 {
-	if(!g_displayCharacterSettings) {
-		return;
-	}
-	
 	static std::array<float, 2> ageAndSex = {0.f, 0.f};
 	static std::array<float, 2> bodyWeightMuscle = {0.f, 0.f};
 	static std::array<float, 2> breastSizeShape = {0.f, 0.f};
@@ -966,19 +958,30 @@ void DisplayCharacterSettings()
 	ImGui::End();
 }
 
-
-
 void DisplayPerformance()
 {
-	if(!g_displayPerformance) {
-		return;
-	}
-	
 	ImGui::Begin("Performance");
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
 	            1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::Checkbox("Demo Window", &show_demo_window);
 	ImGui::End();
+}
+
+void DisplayGui()
+{
+	DisplayMainMenu();
+	
+	if(g_displayCharacterSettings) {
+		DisplayCharacterSettings();
+	}
+	
+	if(g_displayPerformance) {
+		DisplayPerformance();
+	}
+	
+	if (show_demo_window) {
+		ImGui::ShowDemoWindow(&show_demo_window);
+	}
 }
 
 // ================================================================================================
@@ -1007,38 +1010,18 @@ static void display()
 
 	if (g_global.getQuotedBox())
 		cgutils::mhWireCube(twopoints);
-
-	Window &mainWindow(*g_mainWindow);
-	mainWindow.draw();
+	
+	g_mainWindow->draw();
 
 	if (g_global.getDrawGrid()) {
-		cgutils::drawGrid(mainWindow.getSize(), 220, 70, grid_color, border_color,
+		cgutils::drawGrid(g_mainWindow->getSize(), 220, 70, grid_color, border_color,
 		                  50);
 	} else {
 		cgutils::drawSquare(Rect(0, 0, 1, 1), border_color);
 	}
-
-	// cgutils::swapBuffers();
-
-	// TODO: put this in a own function
-	//  if (!init)
-	//  {
-	//	  //mesh->loadTargetsFactory (searchDataDir ("targets"));
-	//	  init = true;
-	//  }
-
-	{
-		DisplayMainMenu();
-		DisplayPerformance();
-		DisplayCharacterSettings();
-		DisplayQuitPopup();
-
-		if (show_demo_window) {
-			ImGui::ShowDemoWindow(&show_demo_window);
-		}
-	}
-
-	// Rendering
+	
+	DisplayGui();
+	
 	ImGui::Render();
 	// ImGuiIO& io = ImGui::GetIO();
 	// glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
