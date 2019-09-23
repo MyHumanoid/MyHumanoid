@@ -216,8 +216,11 @@ void Camera::applyMatrix()
 	Matrix m_tmp;
 
 	m_tmp = cam_center * cam_pos;
-
-	cgutils::displayStart(m_tmp);
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glMultMatrixf(m_tmp.data);
 }
 
 /*! Set the camera mode. Ortho (false) or perspective (true). */

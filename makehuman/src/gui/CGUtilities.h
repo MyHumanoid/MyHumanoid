@@ -80,15 +80,9 @@ void drawSquareFill(const Rect &inRect, const Color &c);
 
 void drawSquare(const Rect &inRect, const Color &c);
 
-void displayStart(const Vector3f &tra, const Vector3f &rot);
-
-void displayStart(const Matrix &m);
-
 int initWindow(const Rect &rect, const char *title, const Vector3f &light0Pos,
                const Vector3f &light1Pos, float light0Lum, float light1Lum,
                const Color &c);
-
-void destroyWindow(int inWindowId);
 
 void drawString(const Point &inPoint, FontType font, const string &str,
                 const Color &c);

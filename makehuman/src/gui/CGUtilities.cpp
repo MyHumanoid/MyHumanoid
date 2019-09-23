@@ -206,32 +206,6 @@ void cgutils::drawAxis()
 	}
 }
 
-/*!Start  part of display function before draw the scene.*/
-void cgutils::displayStart(const Vector3f &tra, const Vector3f &rot)
-{
-	// Classic openGL  display commands
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	// Zoom and Pan
-	glTranslatef(tra.x, tra.y, tra.z);
-	glRotatef(rot.x, 1, 0, 0);
-	glRotatef(rot.y, 0, 1, 0);
-	glRotatef(rot.z, 0, 0, 1);
-}
-
-/*! Classic openGL  display commands.*/
-void cgutils::displayStart(const Matrix &m)
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-
-	glLoadIdentity();
-
-	glMultMatrixf(m.data);
-}
-
 void cgutils::drawSquareFillTexture(const Rect &inRect, float alpha,
                                     const Texture &inTexture)
 {
@@ -391,12 +365,6 @@ int cgutils::initWindow(const Rect &rect, const char *title,
 	glClearColor(c.red(), c.green(), c.blue(), c.alpha());
 
 	return winID;
-}
-
-void cgutils::destroyWindow(int inWindowId)
-{
-	if (inWindowId > 0)
-		glutDestroyWindow(inWindowId);
 }
 
 void cgutils::drawString(const Point &inPoint, FontType font, const string &str,

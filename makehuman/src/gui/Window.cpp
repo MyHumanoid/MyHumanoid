@@ -66,7 +66,10 @@ Window::Window(const Rect &rect, const char *t, const Color &inColor)
 {
 }
 
-Window::~Window() { cgutils::destroyWindow(mWindowId); }
+Window::~Window() {
+	if (mWindowId > 0)
+		glutDestroyWindow(mWindowId);
+}
 
 Panel *Window::getPanel(uint32_t inPanelId)
 {
