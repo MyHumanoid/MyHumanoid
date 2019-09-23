@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef UTIL_H
-#define UTIL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Vector3.h"
 #include "Vertex.h"
@@ -41,9 +35,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-using std::string;
-using std::vector;
 
 namespace Animorph
 {
@@ -75,22 +66,6 @@ template <typename T> void delete_array(T *t)
 	delete[] t;
 	t = NULL;
 }
-
-// '<<' operator for vector class
-/*template <typename T>
-std::ostream &operator << (std::ostream &s, std::vector<T> iv)
-{
-  s << "[";
-  for (unsigned i = 0; i < iv.size (); i++)
-  {
-    s << iv[i];
-    if (i < iv.size ()-1)
-      s << ",";
-  }
-  s << "]" << std::endl;
-
-  return s;
-}*/
 
 /// print Vector on std::cout
 template <typename T> void printVector(std::vector<T> iv)
@@ -136,7 +111,7 @@ void StringToken(const std::string &line, const std::string &separator,
 }
 
 template <typename T>
-void stringTokeni(const string &line, const std::string &separator, T &result)
+void stringTokeni(const std::string &line, const std::string &separator, T &result)
 {
 	std::string::size_type start = line.find_first_not_of(separator);
 	if (std::string::npos == start)
@@ -154,7 +129,7 @@ void stringTokeni(const string &line, const std::string &separator, T &result)
 	} while (std::string::npos != start);
 }
 
-int replaceString(const string &match, const string &replace, string &str,
+int replaceString(const std::string &match, const std::string &replace, std::string &str,
                   unsigned int maxReplace = 0);
 
 /*! \brief Returns the location of the center of gravity
@@ -162,12 +137,10 @@ int replaceString(const string &match, const string &replace, string &str,
  * \param vertexvector a vector of vertices, from which only the ones indicated
  * by vertexNumbers are used \return location of the center of gravity
  */
-Vector3f calcCenteroid(const vector<int> &vertexNumbers,
+Vector3f calcCenteroid(const std::vector<int> &vertexNumbers,
                        const VertexVector &vertexvector);
 
-Vector3f calcAverageNormalLength(const vector<int> vertexNumbers,
+Vector3f calcAverageNormalLength(const std::vector<int> vertexNumbers,
                                  const VertexVector &vertexvector);
 
 } // namespace Animorph
-
-#endif // UTIL_H

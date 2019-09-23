@@ -183,12 +183,12 @@ const Texture &Selector::getCursorTextures()
 	return cursorTexture;
 }
 
-vector<float> Selector::getDists()
+std::vector<float> Selector::getDists()
 {
-	vector<float> ret;
+	std::vector<float> ret;
 
-	vector<Point>::iterator vp_end = points.end();
-	for (vector<Point>::iterator vp_it = points.begin(); vp_it != vp_end;
+	std::vector<Point>::iterator vp_end = points.end();
+	for (std::vector<Point>::iterator vp_it = points.begin(); vp_it != vp_end;
 	     vp_it++) {
 		Point &tmp(*vp_it);
 

@@ -84,8 +84,8 @@ public:
 	float maxValue;
 	float cellRatio;
 
-	vector<Point> points;  // from left-bottom point to right-up point
-	vector<string> labels; // from left-bottom point to right-up point
+	std::vector<Point> points;  // from left-bottom point to right-up point
+	std::vector<string> labels; // from left-bottom point to right-up point
 
 	Color linesColor;
 	Color backgroundColor;
@@ -115,7 +115,7 @@ public:
 
 	void setCursorPosFromMousePoint(const Point &inMousePoint);
 
-	vector<float> getDists();
+	std::vector<float> getDists();
 	void setDisabledTexture(const string &inFilename);
 
 	const Texture &getTextures(); // return the textureID
@@ -126,8 +126,8 @@ public:
 	void setBackgroundColor(const Color &inColor) { backgroundColor = inColor; }
 	void setLinesColor(const Color &inColor) { linesColor = inColor; }
 	void setCursorTexture(const string &inFilename);
-	void setLabels(const vector<string> &inLabels) { labels = inLabels; }
-	vector<string> getLabels() { return labels; }
+	void setLabels(const std::vector<string> &inLabels) { labels = inLabels; }
+	std::vector<string> getLabels() { return labels; }
 
 	const Texture &getCursorTextures(); // return the cursor textureID
 
