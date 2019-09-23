@@ -25,7 +25,7 @@
  *
  */
 
-#include "GL/glew.h"
+#include <GL/glew.h>
 
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"
@@ -33,6 +33,8 @@
 #include "gui/Rect.h"
 #include "gui/Size.h"
 #include "gui/Texture.h"
+
+#include "log/log.h"
 
 using namespace std;
 using namespace mhgui;
@@ -336,6 +338,20 @@ int cgutils::initWindow(const Rect &rect, const char *title,
 	int winID = glutCreateWindow(title);
 	
 	glewInit();
+	
+	{
+		logger("GLEW Version: {}.{}.{}",
+		       GLEW_VERSION_MAJOR,
+		       GLEW_VERSION_MINOR,
+		       GLEW_VERSION_MICRO);
+		
+		glewExperimental = true;
+		GLenum err = glewInit();
+		if(err != GLEW_OK) {
+			logger_err("GLEW error: {}", glewGetErrorString(err));
+		}
+	}
+	
 
 	// Enables
 	glEnable(GL_LIGHTING);

@@ -270,9 +270,9 @@ static void saveBodySettings(const string &filename)
 	}
 	
 	if (state) {
-		log("BodySettings saved");
+		logger("BodySettings saved");
 	} else {
-		log_err("Error: couldn't save file.");
+		logger_err("Error: couldn't save file.");
 	}
 }
 
@@ -313,9 +313,9 @@ static void loadBodySettings(const string &filename)
 			mesh->calcSubsurf();
 		}
 		
-		log("BodySettings loaded");
+		logger("BodySettings loaded");
 	} else {
-		log("BodySettings load failed");
+		logger("BodySettings load failed");
 	}
 }
 
@@ -331,9 +331,9 @@ static void savePoses(const string &filename)
 	bool state = poses.save(filename);
 	
 	if (state) {
-		log("Poses saved");
+		logger("Poses saved");
 	} else {
-		log_err("Save pose failed");
+		logger_err("Save pose failed");
 	}
 }
 
@@ -350,9 +350,9 @@ static void loadPoses(const string &filename)
 		if (g_global.getSubdivision()) {
 			mesh->calcSubsurf();
 		}
-		log("Poses loaded");
+		logger("Poses loaded");
 	} else {
-		log_err("Poses load failed");
+		logger_err("Poses load failed");
 	}
 }
 
@@ -365,7 +365,7 @@ static void saveAnimation(const string& path)
 	
 	//bool state = animation->save(path);
 	
-	log_err("Saving animations not implemented");
+	logger_err("Saving animations not implemented");
 }
 
 static void loadAnimation(const string &path)
@@ -375,9 +375,9 @@ static void loadAnimation(const string &path)
 	
 	bool state = animation->load(path);
 	if (state) {
-		log("Animation loaded");
+		logger("Animation loaded");
 	} else {
-		log_err("Animation load failed");
+		logger_err("Animation load failed");
 	}
 }
 
@@ -399,9 +399,9 @@ static void exportBodySettings(string &directory, bool full)
 	bool state = obj_export.exportFile(directory, full);
 	
 	if (state) {
-		log("OBJ exported");
+		logger("OBJ exported");
 	} else {
-		log_err("OBJ export failed");
+		logger_err("OBJ export failed");
 	}
 }
 
@@ -421,9 +421,9 @@ static void exportCollada(string &filename)
 	bool state = collada_export.exportFile(filename);
 	
 	if (state) {
-		log("Collada exported");
+		logger("Collada exported");
 	} else {
-		log_err("Collada export failed");
+		logger_err("Collada export failed");
 	}
 }
 
@@ -434,10 +434,10 @@ static void loadWindowBackground(const string &filename)
 	Window &mainWindow(*g_mainWindow);
 	if (mainWindow.loadPNG(filename)) {
 		mainWindow.show();
-		log("Background image loaded");
+		logger("Background image loaded");
 	} else {
 		mainWindow.loadPNG(searchPixmapFile("ui/background.png"));
-		log_err("Background image load failed");
+		logger_err("Background image load failed");
 	}
 }
 
@@ -450,9 +450,9 @@ static void saveAutozoom(const string &filename)
 	bool state = autozoom->save(filename, *camera);
 	
 	if (state) {
-		log("Autozoom saved");
+		logger("Autozoom saved");
 	} else {
-		log_err("Autozoom save failed");
+		logger_err("Autozoom save failed");
 	}
 }
 
@@ -519,7 +519,7 @@ void startStopAnimation()
 	if(animation->isLoaded()) {
 		animation->setStarted(!animation->isStarted());
 	} else {
-		log_err("Animations not loaded!");
+		logger_err("Animations not loaded!");
 	}
 }
 
