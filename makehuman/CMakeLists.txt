@@ -129,6 +129,7 @@ set(makehuman_sources
 	src/UtilitiesSliderListener.h
 )
 
+
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLUT REQUIRED)
@@ -141,12 +142,20 @@ add_executable(makehuman
 	${makehuman_sources}
 )
 
+set_target_properties(makehuman PROPERTIES
+	CXX_STANDARD 17
+#	CXX_EXTENSIONS OFF
+	INTERPROCEDURAL_OPTIMIZATION TRUE
+)
+
+#target_compile_options(makehuman PRIVATE -Wall -Wextra -pedantic)
+
 target_include_directories(makehuman PRIVATE
 	${OPENGL_INCLUDE_DIRS}
 	${GLEW_INCLUDE_DIRS}
 	${GLUT_INCLUDE_DIRS}
 	${PNG_INCLUDE_DIRS}
-	src
+	${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 target_link_libraries(makehuman PRIVATE
