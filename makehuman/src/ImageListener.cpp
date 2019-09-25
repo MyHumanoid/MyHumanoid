@@ -323,33 +323,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);
 			} break;
-
-			// main character setting panel icons
-			/*    case kComponentID_CharacterSettingPanel_Reset:
-				    {
-
-				      CharacterSettingPanel *csp = (CharacterSettingPanel
-				 *)mainWindow.getPanel (kComponentID_CharacterSettingPanel); if(csp !=
-				 NULL)
-				      {
-				        csp->resetTargetValues();
-				      }
-
-				      BsPanel *bsp = (BsPanel
-				 *)mainWindow.getPanel(kComponentID_TargetPanel); if(bsp != NULL)
-				      {
-				        bsp->resetTargetValues();
-				      }
-
-				      Mesh *mesh = global.getMesh ();
-				      assert (mesh);
-
-				      mesh->resetMorph();
-				      mesh->calcNormals();
-
-				    }
-				    break;
-		*/
 			case kComponentID_NextTargetPanel: {
 				MultiPanel *p = dynamic_cast<MultiPanel *>(
 				    mainWindow.getPanel(kComponentID_TargetPanel));
