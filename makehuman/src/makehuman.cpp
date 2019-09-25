@@ -1468,7 +1468,7 @@ int main(int argc, char **argv)
 	splashPanel->show_all();
 
 	if (loadTextures()) {
-		g_global.setTexture(true);
+		g_global.m_enableTexture = true;
 		g_global.setCanTexture(true);
 	}
 
@@ -1673,7 +1673,7 @@ void renderFace(const Face &face, const MaterialVector &materialvector,
 		::glNormal3fv(vertex.no.getAsOpenGLVector());
 		//    }
 
-		if(g_global.m_canTexture && g_global.getTexture() && !g_global.getLightMesh()) {
+		if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 			::glTexCoord2f(uv.x, uv.y);
 		}
 		::glVertex3fv(vertex.co.getAsOpenGLVector());
@@ -1758,7 +1758,7 @@ void renderMesh()
 		}
 	}
 
-	if(g_global.m_canTexture && g_global.getTexture() && !g_global.getLightMesh()) {
+	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 		::glEnable(GL_TEXTURE_2D);
 	}
 
@@ -1770,7 +1770,7 @@ void renderMesh()
 		if ((*facegroup_it).second.visible == false)
 			continue;
 
-		if(g_global.m_canTexture && g_global.getTexture() && !g_global.getLightMesh()) {
+		if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 			::glBindTexture(GL_TEXTURE_2D, g_global
 			                                   .getTexture((*facegroup_it).first)
 			                                   ->getTextureIdOfXY(0, 0));

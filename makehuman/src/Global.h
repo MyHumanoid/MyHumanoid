@@ -99,9 +99,6 @@ public:
 	void setAppMode(Modes mode) { appMode = mode; }
 	Modes getAppMode() { return appMode; }
 
-	void setTexture(bool texture) { this->m_enableTexture = texture; }
-	bool getTexture() { return m_enableTexture; }
-
 	void setCanTexture(bool canTexture) { this->m_canTexture = canTexture; }
 	bool getCanTexture() { return m_canTexture; }
 
