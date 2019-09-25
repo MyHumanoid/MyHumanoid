@@ -1662,16 +1662,8 @@ void renderFace(const Face &face, const MaterialVector &materialvector,
 	for (j = 0; j != facesize; ++j) {
 		const Vertex &vertex = vertexvector[face.getVertexAtIndex(j)];
 		const Vector2f &uv = texture_face[j];
-		/*
-		    if(g_global.getFlatShading())
-		    {
-		      ::glNormal3fv (face.no.getAsOpenGLVector());
-		    }
-		    else
-		    {
-		*/
+
 		::glNormal3fv(vertex.no.getAsOpenGLVector());
-		//    }
 
 		if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 			::glTexCoord2f(uv.x, uv.y);
@@ -1681,7 +1673,7 @@ void renderFace(const Face &face, const MaterialVector &materialvector,
 		if (g_global.getQuotedBox()) {
 			calcMinMax(vertex.co);
 		}
-	} // for (j = 0; j != facesize; ++j)
+	}
 }
 
 void renderClothes()
