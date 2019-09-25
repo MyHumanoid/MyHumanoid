@@ -332,7 +332,7 @@ int cgutils::initWindow(const Rect &rect, const char *title,
                         float light0Lum, float light1Lum, const Color &c)
 {
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowSize(rect.getWidth(), rect.getHeight());
 	glutInitWindowPosition(rect.getX(), rect.getY());
 	int winID = glutCreateWindow(title);
