@@ -59,7 +59,6 @@ struct Global
 	bool m_enableTexture = false;
 	bool m_canTexture = false;
 	bool subdivision = false;
-	bool lightMesh = false;
 	Modes appMode = CHARACTER_SETTING;
 	
 	std::map<string, Texture *> textures;
@@ -99,9 +98,6 @@ public:
 	{
 		return this->fuzzyValues[index];
 	}
-
-	void setLightMesh(bool lmesh) { lightMesh = lmesh; }
-	bool getLightMesh() { return lightMesh; }
 };
 
 extern Global g_global;

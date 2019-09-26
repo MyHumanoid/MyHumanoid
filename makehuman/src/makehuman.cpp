@@ -1656,7 +1656,7 @@ void renderMesh()
 		if ((*facegroup_it).second.visible == false)
 			continue;
 
-		if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
+		if(g_global.m_canTexture && g_global.m_enableTexture) {
 			glActiveTexture(GL_TEXTURE0);
 			::glBindTexture(GL_TEXTURE_2D, g_global
 			                                   .getTexture((*facegroup_it).first)
@@ -1700,7 +1700,7 @@ void renderMesh()
 					
 					::glNormal3fv(vertex.no.getAsOpenGLVector());
 					
-					if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
+					if(g_global.m_canTexture && g_global.m_enableTexture) {
 						::glTexCoord2f(uv.x, uv.y);
 					}
 					::glVertex3fv(vertex.co.getAsOpenGLVector());
