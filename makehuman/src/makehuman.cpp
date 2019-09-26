@@ -33,9 +33,10 @@
 #include <iostream>
 #include <unordered_map>
 
+#include <fmt/format.h>
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-
 
 #include <experimental/filesystem>
 
@@ -45,10 +46,8 @@
 #include <examples/imgui_impl_glut.h>
 #include <examples/imgui_impl_opengl3.h>
 
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
 
 #include <animorph/Mesh.h>
 #include <animorph/Vector3.h>
@@ -68,6 +67,8 @@
 #include <gui/Window.h>
 
 #include "log/log.h"
+
+#include "render/Shader.h"
 
 #include <time.h>
 #ifdef DEBUG
@@ -184,7 +185,7 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
 	return true;
 }
 
-#include <fmt/format.h>
+
 
 static std::unordered_map<std::string, GLuint> g_targetImageTextures;
 static std::unordered_map<std::string, GLuint> g_poseImageTextures;
@@ -488,6 +489,8 @@ static bool g_displayMorphTargetsApplied = false;
 
 static bool g_displayPoseTargets = false;
 static bool g_displayPoseTargetsApplied = false;
+
+static bool g_requestShaderReload = false;
 
 // ================================================================================================
 
@@ -879,6 +882,13 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
+		if(ImGui::BeginMenu("Shading")) {
+			if(ImGui::MenuItem("Reload Shaders")) {
+				g_requestShaderReload = true;
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::Separator();
 		if(ImGui::BeginMenu("Broken stuff")) {
 			if(ImGui::Button("CreateWeightsFile")) {
 				CreateWeightsFile();
@@ -1028,6 +1038,8 @@ void DisplayGui()
 int g_mainWindowPosX;
 int g_mainWindowPosY;
 
+GLuint g_bodyShader;
+
 // Display function
 static void display()
 {
@@ -1072,6 +1084,14 @@ static void display()
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+	
+	
+	if(g_requestShaderReload) {
+		g_requestShaderReload = false;
+		glDeleteProgram(g_bodyShader);
+		g_bodyShader = LoadShader("shader/body.vert", "shader/body.frag");
+	}
+	
 	
 	// TODO this is a hack
 	g_mainWindowPosX = glutGet(GLUT_WINDOW_X);
@@ -1298,10 +1318,6 @@ static void activeMotion(int x, int y)
 		glutPostRedisplay();
 	}
 }
-
-#include "render/Shader.h"
-
-GLuint g_bodyShader;
 
 int main(int argc, char **argv)
 {
