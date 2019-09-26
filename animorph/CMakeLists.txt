@@ -18,7 +18,6 @@ set(animorph_headers
 	include/animorph/Face.h
 	include/animorph/FileWriter.h
 	include/animorph/Matrix.h
-	include/animorph/OgreXMLExporter.h
 	include/animorph/PoseTarget.h
 	include/animorph/RawMesh.h
 	include/animorph/SkinVertex.h
@@ -57,7 +56,6 @@ set(animorph_sources
 	src/FaceGroup.cpp
 	src/FileWriter.cpp
 	src/Matrix.cpp
-	src/OgreXMLExporter.cpp
 	src/PoseTarget.cpp
 	src/RawMesh.cpp
 	src/SkinVertex.cpp
