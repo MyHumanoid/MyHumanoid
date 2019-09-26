@@ -492,15 +492,16 @@ static bool g_displayAxis = false;
 
 static bool g_displayCharacterSettings = false;
 static bool g_displayPerformance = false;
-static bool g_displayMorphList = false;
-static bool g_displayUsedMorphingList = false;
 
-static bool g_displayPoseRotations = false;
-static bool g_displayUsedPoseList = false;
+static bool g_displayMorphTargets = false;
+static bool g_displayMorphTargetsApplied = false;
+
+static bool g_displayPoseTargets = false;
+static bool g_displayPoseTargetsApplied = false;
 
 // ================================================================================================
 
-void drawTarget(const string & target_name, float & target_value, bool xBtn)
+void DisplayMorphTargetRow(const string & target_name, float & target_value, bool xBtn)
 {
 	fs::path targetImageName = target_name;
 	targetImageName.replace_extension();
@@ -546,9 +547,9 @@ bool isCompositeMorphTarget(const std::string & target_name) {
 	return false;
 }
 
-void DisplayMorph() {
+void DisplayMorphTargets() {
 	
-	if(!ImGui::Begin("Morph Targets", &g_displayMorphList)) {
+	if(!ImGui::Begin("Morph Targets", &g_displayMorphTargets)) {
 		ImGui::End();
 		return;
 	}
@@ -572,15 +573,15 @@ void DisplayMorph() {
 			
 			float target_value = bodyset[target_name];
 			
-			drawTarget(target_name, target_value, false);
+			DisplayMorphTargetRow(target_name, target_value, false);
 		}
 	}
 	ImGui::End();
 }
 
-void DisplayMorphApplied()
+void DisplayMorphTargetsApplied()
 {
-	if(!ImGui::Begin("Applied Morph Targets", &g_displayUsedMorphingList)) {
+	if(!ImGui::Begin("Applied Morph Targets", &g_displayMorphTargetsApplied)) {
 		ImGui::End();
 		return;
 	}
@@ -601,16 +602,16 @@ void DisplayMorphApplied()
 
 		float target_value = (*bodyset_it).second;
 		
-		drawTarget(target_name, target_value, true);
+		DisplayMorphTargetRow(target_name, target_value, true);
 	}
 	ImGui::End();
 }
 
 // ================================================================================================
 
-void DisplayPoseRotationRow(const std::string & target_name,
-                            const PoseTarget * poseTarget,
-                            float & target_value)
+void DisplayPoseTargetRow(const std::string & target_name,
+                          const PoseTarget * poseTarget,
+                          float & target_value)
 {
 	fs::path targetImageName = target_name;
 	targetImageName.replace_extension();
@@ -647,9 +648,9 @@ void DisplayPoseRotationRow(const std::string & target_name,
 }
 
 
-void DisplayPoseRotations()
+void DisplayPoseTargets()
 {
-	if(!ImGui::Begin("Pose Rotations", &g_displayPoseRotations)) {
+	if(!ImGui::Begin("Pose Rotations", &g_displayPoseTargets)) {
 		ImGui::End();
 		return;
 	}
@@ -663,59 +664,25 @@ void DisplayPoseRotations()
 	     posemap_it != posemap.end(); posemap_it++) {
 		const string &target_name(posemap_it->first);
 		
-		string::size_type loc = target_name.find("/", 0);
-		if (loc == string::npos)
-			continue;
-		else {
-			string sub = target_name.substr(0, loc);
-			
-				string target_image(target_name);
-				
-				PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
-				assert(poseTarget);
-			    
-				BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
+		PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
+		assert(poseTarget);
+		
+		BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
 
-				// FIX: Make sure that a bodyset with the given name really exists!
-				float target_value =
-					(bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
-				
-				DisplayPoseRotationRow(target_name, poseTarget, target_value);
-				
-				//          if(!poseTarget->hasNegative())
-				//          image_slider->setMinValue(0); else
-				//          image_slider->setMinValue(-1.0);
-				
-//				image_slider->setMinValue(poseTarget->getMinAngle());
-//				image_slider->setMaxValue(poseTarget->getMaxAngle());
-				
-//				image_slider->setOverlayMultiplier(1);
-//				image_slider->setStep(1.0);
-				
-//				BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
-				
-//				// FIX: Make sure that a bodyset with the given name really exists!
-//				float target_value =
-//				    (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
-				
-//				image_slider->setSliderValue(target_value);
-//				image_slider->setListener(&imgSliderListener);
-//				image_slider->setTooltip(
-//				    Tooltip(target_name.substr(4, target_name.length() - 4),
-//				            kTooltipPos, c, tooltipPanel));
-//				targetVector.push_back(image_slider);
-//				addWidget(image_slider);
-			}
+		// FIX: Make sure that a bodyset with the given name really exists!
+		float target_value =
+			(bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
+		
+		DisplayPoseTargetRow(target_name, poseTarget, target_value);
 	}
-	
 	
 	ImGui::End();
 }
 
 
-void DisplayPoseRotationsApplied()
+void DisplayPoseTargetsApplied()
 {
-	if(!ImGui::Begin("Applied Pose Rotations", &g_displayUsedPoseList)) {
+	if(!ImGui::Begin("Applied Pose Rotations", &g_displayPoseTargetsApplied)) {
 		ImGui::End();
 		return;
 	}
@@ -734,7 +701,7 @@ void DisplayPoseRotationsApplied()
 		PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);
 
-		DisplayPoseRotationRow(target_name, poseTarget, target_value);
+		DisplayPoseTargetRow(target_name, poseTarget, target_value);
 	}
 	
 	ImGui::End();
@@ -915,13 +882,13 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Morph")) {
-			ImGui::Checkbox("Morph Targets", &g_displayMorphList);
-			ImGui::Checkbox("Used Morph Targets", &g_displayUsedMorphingList);
+			ImGui::Checkbox("Morph Targets", &g_displayMorphTargets);
+			ImGui::Checkbox("Used Morph Targets", &g_displayMorphTargetsApplied);
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Pose")) {
-			ImGui::Checkbox("Pose Rotations", &g_displayPoseRotations);
-			ImGui::Checkbox("Used pose list", &g_displayUsedPoseList);
+			ImGui::Checkbox("Pose Rotations", &g_displayPoseTargets);
+			ImGui::Checkbox("Used pose list", &g_displayPoseTargetsApplied);
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
@@ -952,17 +919,17 @@ void DisplayMainMenu()
 		ImGui::EndMainMenuBar();
 	}
 	
-	if(g_displayMorphList) {
-		DisplayMorph();
+	if(g_displayMorphTargets) {
+		DisplayMorphTargets();
 	}
-	if(g_displayUsedMorphingList) {
-		DisplayMorphApplied();
+	if(g_displayMorphTargetsApplied) {
+		DisplayMorphTargetsApplied();
 	}
-	if(g_displayPoseRotations) {
-		DisplayPoseRotations();
+	if(g_displayPoseTargets) {
+		DisplayPoseTargets();
 	}
-	if(g_displayUsedPoseList) {
-		DisplayPoseRotationsApplied();
+	if(g_displayPoseTargetsApplied) {
+		DisplayPoseTargetsApplied();
 	}
 }
 
