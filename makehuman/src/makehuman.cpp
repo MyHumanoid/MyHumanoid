@@ -1088,8 +1088,12 @@ static void display()
 	
 	if(g_requestShaderReload) {
 		g_requestShaderReload = false;
-		glDeleteProgram(g_bodyShader);
-		g_bodyShader = LoadShader("shader/body.vert", "shader/body.frag");
+		
+		auto shader = LoadShader("shader/body.vert", "shader/body.frag");
+		if(shader) {
+			glDeleteProgram(g_bodyShader);
+			g_bodyShader = shader.value();
+		}
 	}
 	
 	
@@ -1367,8 +1371,14 @@ int main(int argc, char **argv)
 	characterSettingPanel = new CharacterSettingPanel();
 	mainWindow.initWindow();
 	
-	
-	g_bodyShader = LoadShader("shader/body.vert", "shader/body.frag");
+	{
+		auto shader = LoadShader("shader/body.vert", "shader/body.frag");
+		if(shader) {
+			g_bodyShader = shader.value();
+		} else {
+			g_bodyShader = 0;
+		}
+	}
 	
 	// TODO: put animorph mesh loading stuff in extra function
 

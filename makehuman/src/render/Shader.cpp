@@ -27,7 +27,7 @@ std::string readFile(const char *filePath) {
 }
 
 
-GLuint LoadShader(const char *vertex_path, const char *fragment_path) {
+std::optional<GLuint> LoadShader(const char *vertex_path, const char *fragment_path) {
 	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 	
@@ -85,5 +85,9 @@ GLuint LoadShader(const char *vertex_path, const char *fragment_path) {
 	glDeleteShader(vertShader);
 	glDeleteShader(fragShader);
 	
-	return program;
+	if(result == GL_TRUE) {
+		return program;
+	} else {
+		return std::nullopt;
+	}
 }
