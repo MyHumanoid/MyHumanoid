@@ -494,6 +494,8 @@ static bool g_displayCharacterSettings = false;
 static bool g_displayPerformance = false;
 static bool g_displayMorphList = false;
 static bool g_displayUsedMorphingList = false;
+
+static bool g_displayPoseRotations = false;
 static bool g_displayUsedPoseList = false;
 
 // ================================================================================================
@@ -571,38 +573,10 @@ void DisplayMorph() {
 			float target_value = bodyset[target_name];
 			
 			drawTarget(target_name, target_value, false);
-			
-			//if (sub == category) {
-
-				// remove ".target"
-//				string target_image(target_name);
-//				target_image.replace(target_image.length() -
-//				                         kFilePrefixTarget.length(),
-//				                     kFilePrefixTarget.length(), kFilePrefixPNG);
-				
-//				image_slider =
-//				    new TargetSlider(kComponentID_TargetPanel_Target,
-//				                     searchPixmapFile("tgimg/" + target_image),
-//				                     target_name, Rect(0, 0, 32, 42), 0.0, 1.0);
-				
-//				image_slider->setOverlayTexture(
-//				    searchPixmapFile("tgimg/" + target_image));
-//				image_slider->setOverlayMultiplier(4);
-//				float target_value = bodyset[target_name];
-//				image_slider->setSliderValue(target_value);
-				
-//				image_slider->setListener(&imgSliderListener);
-//				image_slider->setTooltip(
-//				    Tooltip(target_name, kTooltipPos, c, tooltipPanel));
-//				page->targetVector.push_back(image_slider);
-//				page->addWidget(image_slider);
-			}
-		//}
+		}
 	}
 	ImGui::End();
 }
-
-
 
 void DisplayMorphApplied()
 {
@@ -632,6 +606,112 @@ void DisplayMorphApplied()
 	ImGui::End();
 }
 
+// ================================================================================================
+
+void DisplayPoseRotationRow(const std::string & target_name,
+                            const PoseTarget * poseTarget,
+                            float & target_value)
+{
+	fs::path targetImageName = target_name;
+	targetImageName.replace_extension();
+	
+	const auto & texIdIt = g_poseImageTextures.find(targetImageName);
+	if(texIdIt != g_poseImageTextures.end()) {
+		auto texId = texIdIt->second;
+		
+		ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
+		if(ImGui::IsItemHovered()) {
+			ImGui::BeginTooltip();
+			ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
+			ImGui::EndTooltip();
+		}
+	} else {
+		ImGui::Dummy(ImVec2(16, 16));
+	}
+	ImGui::SameLine(0, 4);
+	
+	// FIXME only the button in the first line is working
+	if(ImGui::Button("X", ImVec2(16, 16))) {
+		doPoseFromGui(target_name, 0.f);
+	}
+	ImGui::SameLine(0, 4);
+	
+	if(ImGui::SliderFloat(target_name.c_str(), &target_value,
+	                       poseTarget->getMinAngle(),
+	                       poseTarget->getMaxAngle())
+	    ) {
+		// TODO used min so that rotation does not vanish
+		if(target_value != 0.f)
+			doPoseFromGui(target_name, target_value);
+	}
+}
+
+
+void DisplayPoseRotations()
+{
+	if(!ImGui::Begin("Pose Rotations", &g_displayPoseRotations)) {
+		ImGui::End();
+		return;
+	}
+	
+	Mesh *mesh = g_global.getMesh();
+	assert(mesh);
+	PoseMap &posemap = mesh->getPoseMapRef();
+	BodySettings bodyset = mesh->getBodySettings();
+	
+	for (PoseMap::const_iterator posemap_it = posemap.begin();
+	     posemap_it != posemap.end(); posemap_it++) {
+		const string &target_name(posemap_it->first);
+		
+		string::size_type loc = target_name.find("/", 0);
+		if (loc == string::npos)
+			continue;
+		else {
+			string sub = target_name.substr(0, loc);
+			
+				string target_image(target_name);
+				
+				PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
+				assert(poseTarget);
+			    
+				BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
+
+				// FIX: Make sure that a bodyset with the given name really exists!
+				float target_value =
+					(bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
+				
+				DisplayPoseRotationRow(target_name, poseTarget, target_value);
+				
+				//          if(!poseTarget->hasNegative())
+				//          image_slider->setMinValue(0); else
+				//          image_slider->setMinValue(-1.0);
+				
+//				image_slider->setMinValue(poseTarget->getMinAngle());
+//				image_slider->setMaxValue(poseTarget->getMaxAngle());
+				
+//				image_slider->setOverlayMultiplier(1);
+//				image_slider->setStep(1.0);
+				
+//				BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
+				
+//				// FIX: Make sure that a bodyset with the given name really exists!
+//				float target_value =
+//				    (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
+				
+//				image_slider->setSliderValue(target_value);
+//				image_slider->setListener(&imgSliderListener);
+//				image_slider->setTooltip(
+//				    Tooltip(target_name.substr(4, target_name.length() - 4),
+//				            kTooltipPos, c, tooltipPanel));
+//				targetVector.push_back(image_slider);
+//				addWidget(image_slider);
+			}
+	}
+	
+	
+	ImGui::End();
+}
+
 
 void DisplayPoseRotationsApplied()
 {
@@ -654,38 +734,7 @@ void DisplayPoseRotationsApplied()
 		PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);
 
-		fs::path targetImageName = target_name;
-		targetImageName.replace_extension();
-		
-		const auto & texIdIt = g_poseImageTextures.find(targetImageName);
-		if(texIdIt != g_poseImageTextures.end()) {
-			auto texId = texIdIt->second;
-			
-			ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
-			if(ImGui::IsItemHovered()) {
-				ImGui::BeginTooltip();
-				ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
-				ImGui::EndTooltip();
-			}
-		} else {
-			ImGui::Dummy(ImVec2(16, 16));
-		}
-		ImGui::SameLine(0, 4);
-		
-		// FIXME only the button in the first line is working
-		if(ImGui::Button("X", ImVec2(16, 16))) {
-			doPoseFromGui(target_name, 0.f);
-		}
-		ImGui::SameLine(0, 4);
-		
-		if(ImGui::SliderFloat(target_name.c_str(), &target_value,
-		                       poseTarget->getMinAngle(),
-		                       poseTarget->getMaxAngle())
-		) {
-			// TODO used min so that rotation does not vanish
-			if(target_value != 0.f)
-				doPoseFromGui(target_name, target_value);
-		}
+		DisplayPoseRotationRow(target_name, poseTarget, target_value);
 	}
 	
 	ImGui::End();
@@ -871,6 +920,7 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Pose")) {
+			ImGui::Checkbox("Pose Rotations", &g_displayPoseRotations);
 			ImGui::Checkbox("Used pose list", &g_displayUsedPoseList);
 			ImGui::EndMenu();
 		}
@@ -907,6 +957,9 @@ void DisplayMainMenu()
 	}
 	if(g_displayUsedMorphingList) {
 		DisplayMorphApplied();
+	}
+	if(g_displayPoseRotations) {
+		DisplayPoseRotations();
 	}
 	if(g_displayUsedPoseList) {
 		DisplayPoseRotationsApplied();
