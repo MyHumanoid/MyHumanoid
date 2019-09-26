@@ -534,6 +534,16 @@ void drawTarget(const string & target_name, float & target_value, bool xBtn)
 }
 
 
+bool isCompositeMorphTarget(const std::string & target_name) {
+	if (target_name.find("ages", 0) != string::npos ||
+	    target_name.find("breast", 0) != string::npos ||
+	    target_name.find("muscleSize", 0) != string::npos ||
+	    target_name.find("shapes", 0) != string::npos) {
+		return true;
+	}
+	return false;
+}
+
 void DisplayMorph() {
 	
 	if(!ImGui::Begin("Morph Targets", &g_displayMorphList)) {
@@ -553,6 +563,10 @@ void DisplayMorph() {
 			continue;
 		else {
 			string sub = target_name.substr(0, loc);
+			
+			if(isCompositeMorphTarget(target_name)) {
+				continue;
+			}
 			
 			float target_value = bodyset[target_name];
 			
@@ -607,13 +621,10 @@ void DisplayMorphApplied()
 		
 		string target_name((*bodyset_it).first);
 		
-		if (target_name.find("ages", 0) != string::npos ||
-			target_name.find("breast", 0) != string::npos ||
-			target_name.find("muscleSize", 0) != string::npos ||
-			target_name.find("shapes", 0) != string::npos) {
+		if(isCompositeMorphTarget(target_name)) {
 			continue;
 		}
-		
+
 		float target_value = (*bodyset_it).second;
 		
 		drawTarget(target_name, target_value, true);
