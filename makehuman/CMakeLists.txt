@@ -45,6 +45,11 @@ set(gui_sources
 	src/gui/Window.cpp
 )
 
+set(render_sources
+	src/render/Shader.h
+	src/render/Shader.cpp
+)
+
 set(log_sources
 	src/log/log.h
 	src/log/log.cpp
@@ -123,6 +128,11 @@ set(makehuman_sources
 	src/util.h
 )
 
+set(shader_sources
+	shader/body.vert
+	shader/body.frag
+)
+
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
@@ -133,7 +143,9 @@ find_package(fmt REQUIRED)
 add_executable(makehuman
 	${gui_sources}
 	${log_sources}
+	${render_sources}
 	${makehuman_sources}
+	${shader_sources}
 )
 
 set_target_properties(makehuman PROPERTIES
@@ -165,5 +177,28 @@ target_link_libraries(makehuman PRIVATE
 	${PNG_LIBRARY}
 )
 
-file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY pixmaps DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+#file(CREATE_LINK
+	#${CMAKE_CURRENT_SOURCE_DIR}/pixmaps
+	#${CMAKE_CURRENT_BINARY_DIR}/pixmaps
+	#SYMBOLIC
+#)
+macro(create_symlink filepath sympath)
+	execute_process(COMMAND "${CMAKE_COMMAND}" -E create_symlink ${filepath} ${sympath})
+endmacro(create_symlink)
+
+create_symlink(
+	${CMAKE_CURRENT_SOURCE_DIR}/data
+	${CMAKE_CURRENT_BINARY_DIR}/data
+)
+
+create_symlink(
+	${CMAKE_CURRENT_SOURCE_DIR}/pixmaps
+	${CMAKE_CURRENT_BINARY_DIR}/pixmaps
+	
+)
+
+create_symlink(
+	${CMAKE_CURRENT_SOURCE_DIR}/shader
+	${CMAKE_CURRENT_BINARY_DIR}/shader
+	
+)

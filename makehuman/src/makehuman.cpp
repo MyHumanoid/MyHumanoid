@@ -1299,6 +1299,10 @@ static void activeMotion(int x, int y)
 	}
 }
 
+#include "render/Shader.h"
+
+GLuint g_bodyShader;
+
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
@@ -1346,7 +1350,10 @@ int main(int argc, char **argv)
 
 	characterSettingPanel = new CharacterSettingPanel();
 	mainWindow.initWindow();
-
+	
+	
+	g_bodyShader = LoadShader("shader/body.vert", "shader/body.frag");
+	
 	// TODO: put animorph mesh loading stuff in extra function
 
 	// load mesh with factory function
@@ -1707,11 +1714,13 @@ void renderMesh()
 		}
 	}
 
-	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
-		::glEnable(GL_TEXTURE_2D);
-	}
+//	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
+//		::glEnable(GL_TEXTURE_2D);
+//	}
 
 	cgutils::enableBlend();
+	
+	glUseProgram(g_bodyShader);
 
 	for (FaceGroup::iterator facegroup_it = facegroup.begin();
 	     facegroup_it != facegroup.end(); facegroup_it++) {
@@ -1720,6 +1729,7 @@ void renderMesh()
 			continue;
 
 		if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
+			glActiveTexture(GL_TEXTURE0);
 			::glBindTexture(GL_TEXTURE_2D, g_global
 			                                   .getTexture((*facegroup_it).first)
 			                                   ->getTextureIdOfXY(0, 0));
@@ -1747,11 +1757,15 @@ void renderMesh()
 		::glEnd();
 		istri = -1;
 	}
+	
+	glUseProgram(0);
 
-	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
-		::glDisable(GL_TEXTURE_2D);
-	}
+//	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
+//		::glDisable(GL_TEXTURE_2D);
+//	}
 	glDisable(GL_BLEND);
+	
+	
 }
 
 bool loadTextures()
