@@ -1699,40 +1699,6 @@ void calcMinMax(const Vector3f &coords)
 	}
 }
 
-void renderFace(const Face &face, const MaterialVector &materialvector,
-                const VertexVector &vertexvector,
-                const TextureFace &texture_face)
-{
-	unsigned int facesize = face.getSize();
-
-	size_t j;
-
-	int material_index = face.getMaterialIndex();
-	if (material_index != -1) {
-		const Material &material(materialvector[material_index]);
-		const Color &color(material.getRGBCol());
-
-		// Set the color for these vertices
-		::glColor4fv(color.getAsOpenGLVector());
-	}
-
-	for (j = 0; j != facesize; ++j) {
-		const Vertex &vertex = vertexvector[face.getVertexAtIndex(j)];
-		const Vector2f &uv = texture_face[j];
-
-		::glNormal3fv(vertex.no.getAsOpenGLVector());
-
-		if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
-			::glTexCoord2f(uv.x, uv.y);
-		}
-		::glVertex3fv(vertex.co.getAsOpenGLVector());
-
-		if (g_global.getQuotedBox()) {
-			calcMinMax(vertex.co);
-		}
-	}
-}
-
 void renderMesh()
 {
 	const MaterialVector &materialvector(mesh->getMaterialVectorRef());
@@ -1791,7 +1757,37 @@ void renderMesh()
 				::glBegin(facesize == 4 ? GL_QUADS : GL_TRIANGLES);
 				istri = facesize;
 			}
-			renderFace(face, materialvector, vertexvector, texture_face);
+			
+			{
+				unsigned int facesize = face.getSize();
+				
+				size_t j;
+				
+				int material_index = face.getMaterialIndex();
+				if (material_index != -1) {
+					const Material &material(materialvector[material_index]);
+					const Color &color(material.getRGBCol());
+					
+					// Set the color for these vertices
+					::glColor4fv(color.getAsOpenGLVector());
+				}
+				
+				for (j = 0; j != facesize; ++j) {
+					const Vertex &vertex = vertexvector[face.getVertexAtIndex(j)];
+					const Vector2f &uv = texture_face[j];
+					
+					::glNormal3fv(vertex.no.getAsOpenGLVector());
+					
+					if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
+						::glTexCoord2f(uv.x, uv.y);
+					}
+					::glVertex3fv(vertex.co.getAsOpenGLVector());
+					
+					if (g_global.getQuotedBox()) {
+						calcMinMax(vertex.co);
+					}
+				}
+			}
 		}
 
 		::glEnd();
