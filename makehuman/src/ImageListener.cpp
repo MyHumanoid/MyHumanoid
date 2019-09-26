@@ -151,10 +151,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
-
-					if (g_global.getSubdivision()) {
-						mesh->calcSubsurf();
-					}
 				}
 
 				g_global.setAppMode(CHARACTER_SETTING);
@@ -172,10 +168,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
-
-					if (g_global.getSubdivision()) {
-						mesh->calcSubsurf();
-					}
 				}
 
 				g_global.setAppMode(BODY_DETAILS);
@@ -191,9 +183,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 					mesh->poseMode();
-					if (g_global.getSubdivision()) {
-						mesh->calcSubsurf();
-					}
 				}
 
 				g_global.setAppMode(POSES);
@@ -211,10 +200,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
-
-					if (g_global.getSubdivision()) {
-						mesh->calcSubsurf();
-					}
 				}
 
 				g_global.setAppMode(BODY_SETTINGS);
@@ -231,9 +216,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					assert(mesh);
 
 					mesh->poseMode();
-					if (g_global.getSubdivision()) {
-						mesh->calcSubsurf();
-					}
 				}
 
 				g_global.setAppMode(POSES_BODY_SETTINGS);

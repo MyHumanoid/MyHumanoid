@@ -62,21 +62,6 @@ public:
 	int setCoordinates(std::vector<Vector3f> &vertexvector);
 };
 
-/*Subdivision surfaces */
-
-class subdVertexVector : public std::vector<subdVertex>
-{
-private:
-	void fromStream(std::ifstream &in_stream);
-
-public:
-	bool load(const std::string &filename);
-	void loadFromFaceVector(FaceVector &facevector);
-	void updateFacePoints(VertexVector &vertexvector);
-	void updateEdgePoints(VertexVector &vertexvector,
-	                      subdVertexVector &facePoints);
-};
-
 class origVertexVector : public std::vector<origVertex>
 {
 private:
@@ -84,9 +69,6 @@ private:
 
 public:
 	bool load(const std::string &filename);
-	void updateOrigVertexPoints(VertexVector &vertexvector,
-	                            subdVertexVector &facePoints,
-	                            subdVertexVector &edgePoints);
 };
 
 } // namespace Animorph

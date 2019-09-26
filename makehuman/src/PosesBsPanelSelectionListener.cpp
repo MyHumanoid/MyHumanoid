@@ -119,10 +119,6 @@ bool PosesBsPanelSelectionListener::mouseReleased(const Point &inMousePos,
 		mesh->doPose(charactersmap[imgSource->infoCommand], 1.0, true);
 		// mesh->doPose (charactersmap[imgSource->getTargetName ()], false);
 		mesh->calcNormals();
-
-		if (g_global.getSubdivision()) {
-			mesh->calcSubsurf();
-		}
 	}
 
 	return false;

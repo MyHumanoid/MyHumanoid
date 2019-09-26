@@ -81,10 +81,6 @@ bool PoseTargetSliderListener::mouseDragged(const Point &inMousePos,
 		lastTargetName = imgSliderSource->getTargetName();
 		lastTargetValue = imgSliderSource->getSliderValue();
 	} else {
-		if (g_global.getSubdivision()) {
-			g_global.setLightMesh(true);
-		}
-
 		float diffValue = lastTargetValue - imgSliderSource->getSliderValue();
 		if (diffValue < -kPoseThreshold || diffValue > kPoseThreshold) {
 			lastTargetValue = imgSliderSource->getSliderValue();
@@ -117,11 +113,6 @@ bool PoseTargetSliderListener::mouseReleased(const Point &inMousePos,
 	              imgSliderSource->getSliderValue());
 
 	mesh->calcNormals();
-
-	if (g_global.getSubdivision()) {
-		mesh->calcSubsurf();
-		g_global.setLightMesh(false);
-	}
 
 	return false;
 }

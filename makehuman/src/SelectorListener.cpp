@@ -91,20 +91,11 @@ bool SelectorListener::mouseDragged(const Point &inMousePos, Component *source)
 	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
-	if (g_global.getSubdivision()) {
-		g_global.setLightMesh(true);
-	}
-
 	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 
 	if (xDist > 3 || yDist > 3) {
 		oldPos = inMousePos;
 		calcWidgetTargets(*selectorSource);
-
-		if (g_global.getSubdivision()) {
-			Mesh *mesh = g_global.getMesh();
-			mesh->calcSubsurf();
-		}
 	}
 
 	return true;
@@ -135,11 +126,6 @@ bool SelectorListener::mouseReleased(const Point &inMousePos, int button,
 
 	Mesh *mesh = g_global.getMesh();
 	mesh->calcNormals();
-
-	if (g_global.getSubdivision()) {
-		mesh->calcSubsurf();
-		g_global.setLightMesh(false);
-	}
 
 	return true;
 }

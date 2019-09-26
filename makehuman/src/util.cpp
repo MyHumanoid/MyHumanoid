@@ -307,10 +307,6 @@ void loadDefaultBodySettings()
 	if (state) {
 		mesh->doMorph(bodyset);
 		mesh->calcNormals();
-
-		if (g_global.getSubdivision()) {
-			mesh->calcSubsurf();
-		}
 	}
 }
 

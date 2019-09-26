@@ -91,31 +91,6 @@ public:
 	std::vector<int> &getSharedFaces();
 };
 
-/*Subdivision surfaces */
-
-class subdVertex : public Vertex
-{
-private:
-	/// Vertices from which this one is generated
-	int vertices[4];
-	int size;
-
-public:
-	/// construct Vertex from a quad
-	subdVertex(int v0, int v1, int v2, int v3);
-
-	/// construct Vertex from a tri
-	subdVertex(int v0, int v1, int v2);
-
-	int getVertexAtIndex(int inIndex) const
-	{
-		assert(inIndex < size);
-		return vertices[inIndex];
-	}
-
-	int getSize() { return size; }
-};
-
 class origVertex : public Vertex
 {
 private:

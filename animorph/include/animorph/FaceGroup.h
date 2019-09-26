@@ -45,7 +45,6 @@ struct FGroup {
 	bool visible;
 	/// A vector of ints
 	FGroupData facesIndexes;
-	FGroupData facesIndexes_subd; /// subdivision
 };
 
 /*! \brief A map of FaceGroup identifiers (part names) via associated vertex

@@ -118,10 +118,6 @@ bool BsPanelSelectionListener::mouseReleased(const Point &inMousePos,
 		mesh->doMorph(charactersmap[imgSource->infoCommand], 1.0, true);
 		mesh->calcNormals();
 
-		if (g_global.getSubdivision()) {
-			mesh->calcSubsurf();
-		}
-
 		loadSelectorsPositions(
 		    charactersmap[imgSource->infoCommand].cursorPositions);
 	}

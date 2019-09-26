@@ -81,10 +81,6 @@ bool TargetSliderListener::mouseDragged(const Point &inMousePos,
 
 	Mesh *mesh = g_global.getMesh();
 
-	if (g_global.getSubdivision()) {
-		g_global.setLightMesh(true);
-	}
-
 	mesh->doMorph(imgSliderSource->getTargetName(),
 	              imgSliderSource->getSliderValue());
 
@@ -119,11 +115,6 @@ bool TargetSliderListener::mouseReleased(const Point &inMousePos, int button,
 	              imgSliderSource->getSliderValue());
 
 	mesh->calcNormals();
-
-	if (g_global.getSubdivision()) {
-		mesh->calcSubsurf();
-		g_global.setLightMesh(false);
-	}
 
 	return false;
 }

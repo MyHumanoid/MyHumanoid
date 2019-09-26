@@ -97,7 +97,6 @@ using namespace Animorph;
 
 static void renderMesh();
 static bool loadTextures();
-static void renderSubsurf();
 
 json g_jsonConfig;
 
@@ -298,10 +297,6 @@ static void loadBodySettings(const string &filename)
 	if (state) {
 		mesh->doMorph(bodyset);
 		mesh->calcNormals();
-		if (g_global.getSubdivision()) {
-			mesh->calcSubsurf();
-		}
-		
 		logger("BodySettings loaded");
 	} else {
 		logger("BodySettings load failed");
@@ -336,9 +331,6 @@ static void loadPoses(const string &filename)
 	
 	if (state) {
 		mesh->doPose(poses);
-		if (g_global.getSubdivision()) {
-			mesh->calcSubsurf();
-		}
 		logger("Poses loaded");
 	} else {
 		logger_err("Poses load failed");
@@ -426,10 +418,6 @@ static void ResetMeshPose()
 	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	mesh->resetPose();
-	
-	if (g_global.getSubdivision()) {
-		mesh->calcSubsurf();
-	}
 }
 
 static void ResetMeshMorph()
@@ -457,18 +445,9 @@ void doMorphFromGui(std::string morphTarget, float value)
 //	              imgSliderSource->getSliderValue());
 	
 	mesh->calcNormals();
-	
-	if (g_global.getSubdivision()) {
-		mesh->calcSubsurf();
-		g_global.setLightMesh(false);
-	}
 }
 
 void doPoseFromGui(std::string targetName, float value) {
-	
-	if (g_global.getSubdivision()) {
-		g_global.setLightMesh(true);
-	}
 	
 	Mesh *mesh = g_global.getMesh();
 	mesh->setPose(targetName, value);
@@ -778,13 +757,6 @@ void DisplayMainMenu()
 		}
 		if(ImGui::BeginMenu("View")) {
 			ImGui::Checkbox("Grid", &g_global.drawGrid);
-			if(ImGui::Checkbox("Subsurfaces", &g_global.subdivision)) {
-				if(g_global.subdivision) {
-					Mesh *mesh = g_global.getMesh();
-					assert(mesh);
-					mesh->calcSubsurf();
-				}
-			}
 			ImGui::Checkbox("Quoted box", &g_global.quotedBox);
 			ImGui::Checkbox("Texture", &g_global.m_enableTexture);
 			ImGui::Checkbox("Axis", &g_displayAxis);
@@ -795,7 +767,6 @@ void DisplayMainMenu()
 				for(auto & g: mesh->getFaceGroupRef()) {
 					if(ImGui::Button(g.first.c_str())) {
 						mesh->getFaceGroupRef().toggleVisible(g.first);
-						mesh->getSubdFaceGroupRef().toggleVisible(g.first);
 					}
 				}
 				ImGui::EndMenu();
@@ -1054,12 +1025,7 @@ static void display()
 
 	camera->applyMatrix();
 
-	if(g_global.getSubdivision() &&
-	    !g_global.getLightMesh()) {
-		renderSubsurf();
-	} else {
-		renderMesh();
-	}
+	renderMesh();
 	
 	if(g_displayAxis) {
 		cgutils::drawAxis();
@@ -1136,15 +1102,6 @@ static void timerTrigger(int val)
 	Window &mainWindow(*g_mainWindow);
 
 	tmp = camera->timerTrigger();
-	if (g_global.getSubdivision()) {
-		if (!tmp && oldCameraTimerTrigger) {
-			g_global.setLightMesh(false);
-			glutPostRedisplay();
-		} else if (tmp && !oldCameraTimerTrigger) {
-			g_global.setLightMesh(true);
-		}
-		oldCameraTimerTrigger = tmp;
-	}
 
 	if (!camera->isPerspective()) {
 		reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
@@ -1262,24 +1219,14 @@ static void mouse(int button, int state, int x, int y)
 	if (!mainWindow.isMouseClickPanel(Point(x, y), button, state)) {
 		switch (button) {
 		case GLUT_LEFT_BUTTON:
-			if (state != GLUT_DOWN) {
-				if (g_global.getSubdivision()) {
-					g_global.setLightMesh(false);
-				}
-			}
 			break;
-
 		case GLUT_MIDDLE_BUTTON:
 			break;
-
 		case GLUT_RIGHT_BUTTON:
 			if (state == GLUT_DOWN) {
 				right_button_down = true;
 			} else {
 				right_button_down = false;
-				if (g_global.getSubdivision()) {
-					g_global.setLightMesh(false);
-				}
 			}
 			break;
 
@@ -1328,11 +1275,6 @@ static void activeMotion(int x, int y)
 		} else {
 			camera->rotateMouse(x, y);
 		}
-
-		if (g_global.getSubdivision()) {
-			g_global.setLightMesh(true);
-		}
-
 		glutPostRedisplay();
 	}
 }
@@ -1423,14 +1365,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	// load subdivided face groups with factory function
-	bool subd_groups_loaded =
-	    mesh->loadSubdGroupsFactory(searchDataFile("subd.parts"));
-	if (!subd_groups_loaded) {
-		cerr << "couldn't load subdivided face groups" << endl;
-		return 1;
-	}
-
 	// load skin info with factory function
 	bool skin_loaded = mesh->loadSkinFactory(searchDataFile("base.skin"));
 	if (!skin_loaded) {
@@ -1452,17 +1386,6 @@ int main(int argc, char **argv)
 		cerr << "couldn't load smooth info" << endl;
 		return 1;
 	}
-
-	// load subdivision surfaces info with factory function
-	bool subd_loaded = mesh->loadSubdFactory(searchDataFile("base.subde"),
-	                                         searchDataFile("base.subdo"),
-	                                         searchDataFile("base.subdf"));
-	if (!subd_loaded) {
-		cerr << "couldn't load subsurf info" << endl;
-		return 1;
-	}
-	
-	
 	
 	
 	CreateTargetImageTextures();
@@ -1553,7 +1476,6 @@ int main(int argc, char **argv)
 	::glPolygonOffset(1.0, 1.0);
 
 	loadDefaultBodySettings();
-	mesh->calcSubsurf();
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -1821,74 +1743,4 @@ bool loadTextures()
 	}
 
 	return true;
-}
-
-void renderSubsurf()
-{
-	const FaceVector &facevector_subd(mesh->getFaceVectorSubdRef());
-	const subdVertexVector &vertexvector_subd_f(mesh->getVertexVectorSubdFRef());
-	const subdVertexVector &vertexvector_subd_e(mesh->getVertexVectorSubdERef());
-	const origVertexVector &vertexvector_subd_o(mesh->getVertexVectorSubdORef());
-	const MaterialVector &materialvector(mesh->getMaterialVectorRef());
-
-	FaceGroup &facegroup(mesh->getSubdFaceGroupRef());
-
-	if (g_global.getQuotedBox()) {
-		for (int i = 0; i < 6; i++) {
-			twopoints[i] = 0;
-		}
-	}
-
-	::glBegin(g_global.getLightMesh() ? GL_POINTS : GL_QUADS);
-
-	for (FaceGroup::iterator facegroup_it = facegroup.begin();
-	     facegroup_it != facegroup.end(); facegroup_it++) {
-
-		if ((*facegroup_it).second.visible == false)
-			continue;
-
-		FGroupData &groupdata = (*facegroup_it).second.facesIndexes;
-
-		for (unsigned int i = 0; i < groupdata.size(); i++) {
-			// if(g_global.getLightMesh() && i % 10 != 0) continue;
-			const Face &face(facevector_subd[groupdata[i]]);
-
-			int material_index = face.getMaterialIndex();
-			if (material_index != -1) {
-				const Material &material(materialvector[material_index]);
-				const Color &color(material.getRGBCol());
-
-				// Set the color for these vertices
-				::glColor4fv(color.getAsOpenGLVector());
-			}
-
-			//::glNormal3fv ((*f_it).no.getAsOpenGLVector());
-
-			::glNormal3fv(
-			    vertexvector_subd_o[face.getVertexAtIndex(0)].no.getAsOpenGLVector());
-			::glVertex3fv(
-			    vertexvector_subd_o[face.getVertexAtIndex(0)].co.getAsOpenGLVector());
-
-			::glNormal3fv(
-			    vertexvector_subd_e[face.getVertexAtIndex(1)].no.getAsOpenGLVector());
-			::glVertex3fv(
-			    vertexvector_subd_e[face.getVertexAtIndex(1)].co.getAsOpenGLVector());
-
-			::glNormal3fv(
-			    vertexvector_subd_f[face.getVertexAtIndex(2)].no.getAsOpenGLVector());
-			::glVertex3fv(
-			    vertexvector_subd_f[face.getVertexAtIndex(2)].co.getAsOpenGLVector());
-
-			::glNormal3fv(
-			    vertexvector_subd_e[face.getVertexAtIndex(3)].no.getAsOpenGLVector());
-			::glVertex3fv(
-			    vertexvector_subd_e[face.getVertexAtIndex(3)].co.getAsOpenGLVector());
-
-			if (g_global.getQuotedBox()) {
-				calcMinMax(vertexvector_subd_o[face.getVertexAtIndex(0)].co);
-			}
-		}
-	}
-
-	::glEnd();
 }

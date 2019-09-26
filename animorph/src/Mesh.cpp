@@ -261,32 +261,19 @@ const float M_PI_180 = (M_PI / 180.0);
 
 Mesh::Mesh()
     : facevector()
-    , vertexvector_morph()
-    , // container for modified mesh
-    vertexvector_morph_copy()
-    , // copy container for morphed mesh
-    vertexvector_morph_only()
-    , vertexvector_orginal()
-    , // container for orginal mesh
-    facevector_subd()
-    , // Subdivision surfaces
-    vertexvector_subd_f()
-    , vertexvector_subd_e()
-    , vertexvector_subd_o()
+    , vertexvector_morph() //!< container for modified mesh
+    , vertexvector_morph_copy() //!< copy container for morphed mesh
+    , vertexvector_morph_only()
+    , vertexvector_orginal() //!< container for orginal mesh
     , bodyset()
     , targetmap()
     , materialvector()
     , centeroid()
     , texture_vector()
-    ,
-    // texture_vector_subd    (),
-    poses()
-    , // container for applied poses
-    posemap()
-    , // container for all poses
-    charactersmap()
-    , // container for all characters
-    facegroup()
+    , poses() //!< container for applied poses
+    , posemap() //!< container for all poses
+    , charactersmap() //!< container for all characters
+    , facegroup()
     , skin()
     , edgestrip()
     , smoothvertex()
@@ -331,36 +318,6 @@ void Mesh::calcSharedVertices()
 
 			vertex.addSharedFace(i);
 		}
-	}
-}
-
-void Mesh::calcSubdSharedVertices()
-{
-	for (unsigned int i = 0; i < facevector_subd.size(); i++) {
-		const Face &face(facevector_subd[i]);
-
-		origVertex &vertex0 = vertexvector_subd_o[face.getVertexAtIndex(0)];
-		vertex0.addSharedFace(i);
-
-		subdVertex &vertex1 = vertexvector_subd_e[face.getVertexAtIndex(1)];
-		vertex1.addSharedFace(i);
-
-		subdVertex &vertex2 = vertexvector_subd_f[face.getVertexAtIndex(2)];
-		vertex2.addSharedFace(i);
-
-		subdVertex &vertex3 = vertexvector_subd_e[face.getVertexAtIndex(3)];
-		vertex3.addSharedFace(i);
-	}
-}
-
-void Mesh::updateSubdFaceData()
-{
-	for (unsigned int i = 0; i < facevector_subd.size(); i++) {
-		Face &face(facevector_subd[i]);
-
-		const Face &orig_face(facevector[face.getVertexAtIndex(2)]);
-
-		face.setMaterialIndex(orig_face.getMaterialIndex());
 	}
 }
 
@@ -411,113 +368,9 @@ void Mesh::calcNormals()
 	calcVertexNormals();
 }
 
-void Mesh::calcSubdVertexNormals()
-{
-	for (unsigned int i = 0; i < vertexvector_subd_f.size(); i++) {
-		subdVertex &vertex(vertexvector_subd_f[i]);
-
-		// sum up the normals of all shared faces
-		vector<int> &faces(vertex.getSharedFaces());
-
-		for (unsigned int j = 0; j < faces.size(); j++) {
-			try {
-				const Vector3f &face_normal(facevector_subd.at(faces[j]).no);
-				vertex.no += face_normal;
-			} catch (const exception &e) {
-				return;
-			}
-		}
-
-		vertex.no.normalize();
-	}
-
-	for (unsigned int i = 0; i < vertexvector_subd_e.size(); i++) {
-		subdVertex &vertex(vertexvector_subd_e[i]);
-
-		// sum up the normals of all shared faces
-		vector<int> &faces(vertex.getSharedFaces());
-		for (unsigned int j = 0; j < faces.size(); j++) {
-			try {
-				const Vector3f &face_normal(facevector_subd.at(faces[j]).no);
-				vertex.no += face_normal;
-			} catch (const exception &e) {
-				return;
-			}
-		}
-
-		vertex.no.normalize();
-	}
-
-	for (unsigned int i = 0; i < vertexvector_subd_o.size(); i++) {
-		origVertex &vertex(vertexvector_subd_o[i]);
-
-		// sum up the normals of all shared faces
-		vector<int> &faces(vertex.getSharedFaces());
-		for (unsigned int j = 0; j < faces.size(); j++) {
-			try {
-				const Vector3f &face_normal(facevector_subd.at(faces[j]).no);
-				vertex.no += face_normal;
-			} catch (const exception &e) {
-				return;
-			}
-		}
-
-		vertex.no.normalize();
-	}
-}
-
-void Mesh::calcSubdFaceNormals()
-{
-	for (FaceGroup::iterator facegroup_it = facegroup_subd.begin();
-	     facegroup_it != facegroup_subd.end(); facegroup_it++) {
-
-		if ((*facegroup_it).second.visible == false)
-			continue;
-
-		FGroupData &groupdata = (*facegroup_it).second.facesIndexes;
-
-		for (unsigned int i = 0; i < groupdata.size(); i++) {
-			Face &face(facevector_subd[groupdata[i]]);
-
-			if (face.getSize() == 4) {
-				const origVertex &vertex1(
-				    vertexvector_subd_o[face.getVertexAtIndex(0)]);
-				const subdVertex &vertex2(
-				    vertexvector_subd_e[face.getVertexAtIndex(1)]);
-				const subdVertex &vertex3(
-				    vertexvector_subd_f[face.getVertexAtIndex(2)]);
-
-				const Vector3f v1_tmp(vertex2.co - vertex1.co);
-				const Vector3f v2_tmp(vertex3.co - vertex2.co);
-
-				face.no = crossProduct(v1_tmp, v2_tmp);
-				face.no.normalize();
-			} else {
-				cerr << "Error: a subdivided face must have 4 vertices!" << endl;
-				return;
-			}
-		}
-	}
-}
-
-void Mesh::calcSubsurf()
-{
-	vertexvector_subd_f.updateFacePoints(vertexvector_morph);
-	vertexvector_subd_e.updateEdgePoints(vertexvector_morph, vertexvector_subd_f);
-	vertexvector_subd_o.updateOrigVertexPoints(
-	    vertexvector_morph, vertexvector_subd_f, vertexvector_subd_e);
-	calcSubdFaceNormals();
-	calcSubdVertexNormals();
-}
-
 bool Mesh::loadGroupsFactory(const string &groups_filename)
 {
 	return facegroup.load(groups_filename);
-}
-
-bool Mesh::loadSubdGroupsFactory(const string &subd_groups_filename)
-{
-	return facegroup_subd.load(subd_groups_filename);
 }
 
 bool Mesh::loadSkinFactory(const string &filename)
@@ -533,27 +386,6 @@ bool Mesh::loadEdgeStripFactory(const string &filename)
 bool Mesh::loadSmoothVertexFactory(const string &filename)
 {
 	return smoothvertex.load(filename);
-}
-
-bool Mesh::loadSubdFactory(const string &subd_e_filename,
-                           const string &subd_o_filename,
-                           const string &faces_filename)
-{
-	vertexvector_subd_f.loadFromFaceVector(facevector);
-	bool eload = vertexvector_subd_e.load(subd_e_filename);
-	bool oload = vertexvector_subd_o.load(subd_o_filename);
-	bool fload = facevector_subd.loadGeometry(faces_filename);
-	if (!eload || !oload || !fload)
-		return false;
-
-	calcSubdSharedVertices();
-
-	calcSubsurf();
-	updateSubdFaceData();
-	// calcSubdFaceNormals();
-	// calcSubdVertexNormals();
-
-	return true;
 }
 
 bool Mesh::loadMeshFactory(const string &mesh_filename,

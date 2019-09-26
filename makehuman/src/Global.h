@@ -100,9 +100,6 @@ public:
 		return this->fuzzyValues[index];
 	}
 
-	void setSubdivision(bool subd) { subdivision = subd; }
-	bool getSubdivision() { return subdivision; }
-
 	void setLightMesh(bool lmesh) { lightMesh = lmesh; }
 	bool getLightMesh() { return lightMesh; }
 };

@@ -292,37 +292,23 @@ private:
 
 	vector<Vector3f> vertexvector_orginal; ///< Orginal mesh
 
-	// Subdivision Surfaces
-	FaceVector facevector_subd;
-	subdVertexVector vertexvector_subd_f; ///< Face points
-	subdVertexVector vertexvector_subd_e; ///< Edge points
-	origVertexVector vertexvector_subd_o; ///< Original points recalculated
-
 	// VertexGroup       vgroup;
 	BodySettings bodyset;
 	TargetMap targetmap;
 	MaterialVector materialvector;
 	Centeroid centeroid;
 	TextureVector texture_vector;
-	// TextureVector     texture_vector_subd;
 	BodySettings poses; ///< Currently active PoseTargets
 	PoseMap posemap;    ///< Possible pose transformations
 	CharactersMap charactersmap;
 	FaceGroup facegroup; ///< Access to the faces of body parts by name
 	                     ///< - not affected by posing or morphing
-	FaceGroup facegroup_subd;
 	Skin skin;
 	EdgeStrip edgestrip;
 	SmoothVertex smoothvertex;
 
 	/// Save with each vertex to which faces it belongs
 	void calcSharedVertices();
-
-	/// The same as calcSharedVertices() but for the subdivided mesh
-	void calcSubdSharedVertices();
-
-	/// Update material_index for the subdivided mesh
-	void updateSubdFaceData();
 
 	vector<Vector3f> jointvector;
 
@@ -345,26 +331,12 @@ private:
 	 */
 	void calcFaceNormals();
 
-	/*! \brief Calculate the normals of all subdivided faces
-	 *
-	 * Calculates the face normals from coordinates of the first three vertices
-	 * of each face in vertexvector_subd_o, vertexvector_subd_e and
-	 * vertexvector_subd_f.
-	 */
-	void calcSubdFaceNormals();
-
 	/*! \brief Calculate the normals of all vertices in vertexvector_morph
 	 *
 	 * Calculates the vertex normals by averaging the normals of shared faces
 	 * from facevector.
 	 */
 	void calcVertexNormals();
-
-	/*! \brief Calculate the normals of all subdivided vertices
-	 *
-	 * Calculates the vertex normals by averaging the normals of shared faces.
-	 */
-	void calcSubdVertexNormals();
 
 	/// Looks up inTargetname in targetmap
 	const Target *getTargetForName(const string &inTargetname);
@@ -473,23 +445,9 @@ public:
 	}
 
 	/*!
-	 * \return a reference to the morphed subdVertexVectors of this Mesh
-	 */
-	subdVertexVector &getVertexVectorSubdFRef() { return vertexvector_subd_f; }
-
-	subdVertexVector &getVertexVectorSubdERef() { return vertexvector_subd_e; }
-
-	origVertexVector &getVertexVectorSubdORef() { return vertexvector_subd_o; }
-
-	/*!
 	 * \return a reference to the FaceVector of this Mesh
 	 */
 	FaceVector &getFaceVectorRef() { return facevector; }
-
-	/*!
-	 * \return a reference to the FaceVector_subd of this Mesh
-	 */
-	FaceVector &getFaceVectorSubdRef() { return facevector_subd; }
 
 	/*!
 	 * \return a reference to the MaterialVector of this Mesh
@@ -530,11 +488,6 @@ public:
 	 * \return a reference to the FaceGroup of the Mesh
 	 */
 	FaceGroup &getFaceGroupRef() { return facegroup; }
-
-	/*!
-	 * \return a reference to the subdivided FaceGroup of the Mesh
-	 */
-	FaceGroup &getSubdFaceGroupRef() { return facegroup_subd; }
 
 	/*!
 	 * \return a reference to the ClothesGroup of the Mesh
@@ -624,9 +577,6 @@ public:
 	/// Load faces groups from file
 	bool loadGroupsFactory(const string &groups_filename);
 
-	/// Load subdivided faces groups from file
-	bool loadSubdGroupsFactory(const string &subd_groups_filename);
-
 	/// Load skin info from file
 	bool loadSkinFactory(const string &filename);
 
@@ -636,10 +586,6 @@ public:
 	/// Load smooth info from file
 	bool loadSmoothVertexFactory(const string &filename);
 
-	/// Load precomputed subdivision surface info from facevector and files
-	bool loadSubdFactory(const string &subd_e_filename,
-	                     const string &subd_o_filename,
-	                     const string &faces_filename);
 	//@}
 
 	void loadSkeleton() { prepareSkeleton(); }
@@ -763,8 +709,6 @@ public:
 	/// Switch to body details mode
 	void bodyDetailsMode();
 
-	/// Main routine for subsurf
-	void calcSubsurf();
 }; // class Mesh
 
 } // namespace Animorph
