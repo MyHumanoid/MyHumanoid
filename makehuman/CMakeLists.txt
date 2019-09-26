@@ -133,6 +133,8 @@ set(makehuman_sources
 set(shader_sources
 	shader/body.vert
 	shader/body.frag
+	shader/body_2.vert
+	shader/body_2.frag
 )
 
 

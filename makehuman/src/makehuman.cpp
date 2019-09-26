@@ -491,6 +491,7 @@ static bool g_displayPoseTargets = false;
 static bool g_displayPoseTargetsApplied = false;
 
 static bool g_requestShaderReload = false;
+static int  g_requestShaderVersion = 1;
 
 // ================================================================================================
 
@@ -884,6 +885,11 @@ void DisplayMainMenu()
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Shading")) {
 			if(ImGui::MenuItem("Reload Shaders")) {
+				g_requestShaderVersion = 1;
+				g_requestShaderReload = true;
+			}
+			if(ImGui::MenuItem("Reload Shaders 2")) {
+				g_requestShaderVersion = 2;
 				g_requestShaderReload = true;
 			}
 			ImGui::EndMenu();
@@ -1089,7 +1095,15 @@ static void display()
 	if(g_requestShaderReload) {
 		g_requestShaderReload = false;
 		
-		auto shader = LoadShader("shader/body.vert", "shader/body.frag");
+		logger("Loading Shader set {}", g_requestShaderVersion);
+		
+		std::optional<GLuint> shader;
+		if(g_requestShaderVersion == 1) {
+			shader = LoadShader("shader/body.vert", "shader/body.frag");
+		} else {
+			shader = LoadShader("shader/body_2.vert", "shader/body_2.frag");
+		}
+		
 		if(shader) {
 			glDeleteProgram(g_bodyShader);
 			g_bodyShader = shader.value();
