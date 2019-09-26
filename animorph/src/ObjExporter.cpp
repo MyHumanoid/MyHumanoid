@@ -295,9 +295,6 @@ bool ObjExporter::exportFile(const string &exportpath, bool full)
 
 	// FaceVector &facevector (mesh.getFaceVectorRef());
 
-	FaceGroup &clothesgroup(mesh.getClothesGroupRef());
-	clothesgroup.calcVertexes(mesh.getFaceVectorRef());
-
 	FileWriter file_writer;
 
 	file_writer.open(exportpath + (full ? "full" : "") + "mesh.obj");
@@ -352,32 +349,6 @@ bool ObjExporter::exportFile(const string &exportpath, bool full)
 	    if (!file_writer)
 	      return false;
 
-	  }
-	*/
-
-	/*
-	  for (FaceGroup::const_iterator clothesgroup_it = clothesgroup.begin ();
-	       clothesgroup_it != clothesgroup.end ();
-	       clothesgroup_it++)
-	  {
-	    FGroup clothes = (*clothesgroup_it).second;
-	    if(!clothes.visible) continue;
-
-	    string cl_name("clothes_" + (*clothesgroup_it).first);
-	    FGroupData &groupdata = clothes.facesIndexes;
-	    file_writer.open (exportpath + cl_name + ".obj");
-	    if (file_writer)
-	    {
-	      std::ostringstream out_stream;
-	      createOBJStream (out_stream, cl_name, groupdata,
-	  clothesgroup.getPartVertexesRef(cl_name));
-
-	      file_writer << out_stream.str ();
-	      file_writer.close ();
-	    }
-
-	    if (!file_writer)
-	      return false;
 	  }
 	*/
 	return true;

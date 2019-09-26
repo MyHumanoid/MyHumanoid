@@ -255,13 +255,8 @@ static void saveBodySettings(const string &filename)
 	assert(mesh);
 	
 	BodySettings bodyset = mesh->getBodySettings();
-	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
 	
 	bool state = bodyset.save(filename);
-	
-	if (state) {
-		state = clothesgroup.saveVisibilities(filename);
-	}
 	
 	if (state) {
 		state = saveSelectorsPositions(filename);
@@ -280,13 +275,8 @@ static void loadBodySettings(const string &filename)
 	assert(mesh);
 	Window &mainWindow = *g_mainWindow;
 	
-	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
-	
 	BodySettings bodyset;
 	bool state = bodyset.load(filename);
-	if (state) {
-		state = clothesgroup.loadVisibilities(filename);
-	}
 	
 	if (state) {
 		g_global.resetFuzzyValues();
@@ -735,9 +725,7 @@ void DisplayMainMenu()
 				auto & global = g_global;
 				
 				if (global.getAppMode() == BODY_DETAILS ||
-				    global.getAppMode() == CHARACTER_SETTING ||
-				    global.getAppMode() == CLOTHES) {
-					
+				    global.getAppMode() == CHARACTER_SETTING) {
 					
 					saveBodySettings("foo-BodySettings");
 				} else if (global.getAppMode() == POSES) {
@@ -751,8 +739,7 @@ void DisplayMainMenu()
 				auto & global = g_global;
 				
 				if (global.getAppMode() == BODY_DETAILS ||
-				    global.getAppMode() == CHARACTER_SETTING ||
-				    global.getAppMode() == CLOTHES) {
+				    global.getAppMode() == CHARACTER_SETTING) {
 					
 					loadBodySettings("foo-BodySettings");
 				} else if (global.getAppMode() == POSES) {
@@ -1405,14 +1392,6 @@ int main(int argc, char **argv)
 	}
 
 	// load skin info with factory function
-	bool clothes_loaded =
-	    mesh->loadClothesFactory(searchDataFile("base.clothes"));
-	if (!clothes_loaded) {
-		cerr << "couldn't load clothes info" << endl;
-		return 1;
-	}
-
-	// load skin info with factory function
 	bool edges_loaded = mesh->loadEdgeStripFactory(searchDataFile("base.strips"));
 	if (!edges_loaded) {
 		cerr << "couldn't load edges info" << endl;
@@ -1707,49 +1686,6 @@ void renderFace(const Face &face, const MaterialVector &materialvector,
 	}
 }
 
-void renderClothes()
-{
-	const MaterialVector &materialvector(mesh->getMaterialVectorRef());
-	const TextureVector &texturevector(mesh->getTextureVectorRef());
-
-	const FaceVector &facevector(mesh->getFaceVectorRef());
-
-	const VertexVector &vertexvector(mesh->getVertexVectorRef());
-
-	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
-
-	clothesgroup.calcVertexes(facevector);
-
-	int facesize;
-	int istri = -1; // to remember which type was the latest drawn geometry and
-	                // avoid too many glBegin
-
-	for (FaceGroup::const_iterator clothesgroup_it = clothesgroup.begin();
-	     clothesgroup_it != clothesgroup.end(); clothesgroup_it++) {
-		FGroup clothes = (*clothesgroup_it).second;
-		if (!clothes.visible)
-			continue;
-
-		FGroupData &groupdata = clothes.facesIndexes;
-		for (unsigned int i = 0; i < groupdata.size(); i++) {
-			const Face &face(facevector[clothes.facesIndexes[i]]);
-			const TextureFace &texture_face = texturevector[clothes.facesIndexes[i]];
-
-			facesize = face.getSize();
-			if (istri != facesize) {
-				if (istri != -1) {
-					::glEnd();
-				}
-
-				::glBegin(facesize == 4 ? GL_QUADS : GL_TRIANGLES);
-				istri = facesize;
-			}
-			renderFace(face, materialvector, vertexvector, texture_face);
-		} //   for (i = facevector.begin(); i != facevector.end(); ++i)
-		::glEnd();
-	}
-}
-
 void renderMesh()
 {
 	const MaterialVector &materialvector(mesh->getMaterialVectorRef());
@@ -1811,8 +1747,6 @@ void renderMesh()
 		::glEnd();
 		istri = -1;
 	}
-
-	renderClothes();
 
 	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 		::glDisable(GL_TEXTURE_2D);

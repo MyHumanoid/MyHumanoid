@@ -146,8 +146,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				hidePanels(g_global.getAppMode());
 
 				if (g_global.getAppMode() != BODY_DETAILS &&
-				    g_global.getAppMode() != BODY_SETTINGS &&
-				    g_global.getAppMode() != CLOTHES) {
+				    g_global.getAppMode() != BODY_SETTINGS) {
 					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
@@ -168,8 +167,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				hidePanels(g_global.getAppMode());
 
 				if (g_global.getAppMode() != CHARACTER_SETTING &&
-				    g_global.getAppMode() != BODY_SETTINGS &&
-				    g_global.getAppMode() != CLOTHES) {
+				    g_global.getAppMode() != BODY_SETTINGS) {
 					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
@@ -208,8 +206,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				hidePanels(g_global.getAppMode());
 
 				if (g_global.getAppMode() != CHARACTER_SETTING &&
-				    g_global.getAppMode() != BODY_DETAILS &&
-				    g_global.getAppMode() != CLOTHES) {
+				    g_global.getAppMode() != BODY_DETAILS) {
 					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
@@ -266,8 +263,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					mainWindow.addPanel(targetPanel);
 					targetPanel->createWidgets();
 					targetPanel->show_all();
-				} else if (g_global.getAppMode() == CLOTHES) {
-					// TODO: what happens when in clothes mode ?
 				}
 			} break;
 			// utilitybar buttons
@@ -313,8 +308,6 @@ void ImageListener::hidePanels(const Modes currentMode)
 		hideBodyDetails();
 	} else if (currentMode == CHARACTER_SETTING) {
 		hideCharacterSetting();
-	} else if (currentMode == CLOTHES) {
-		hideClothes();
 	} else if (currentMode == BODY_SETTINGS) {
 		hideBsCategory();
 	} else if (currentMode == POSES_BODY_SETTINGS) {
@@ -362,18 +355,6 @@ void ImageListener::hidePoses()
 {
 	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_BodyPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_TargetPanel);
-	mainWindow.removePanel(p);
-	delete p;
-}
-
-void ImageListener::hideClothes()
-{
-	Window &mainWindow = *g_mainWindow;
-	Panel *p = mainWindow.getPanel(kComponentID_ClothesPanel);
 	mainWindow.removePanel(p);
 	delete p;
 

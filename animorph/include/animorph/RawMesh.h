@@ -46,7 +46,6 @@ private:
 	FaceVector facevector;
 	VertexVector vertexvector;
 	FaceGroup bodyfaces;
-	FaceGroup clothesgroup;
 	// FaceGroup         facegroup;
 
 	string name;
@@ -87,16 +86,6 @@ public:
 	 */
 	FaceGroup &getBodyFacesRef() { return bodyfaces; }
 
-	/*!
-	 * \return a reference to the FaceGroup of the Mesh
-	 */
-	// FaceGroup &getFaceGroupRef () {return facegroup;}
-
-	/*!
-	 * \return a reference to the ClothesGroup of the Mesh
-	 */
-	FaceGroup &getClothesGroupRef() { return clothesgroup; }
-
 	/**** set Reference API ****/
 	/***************************/
 
@@ -111,13 +100,6 @@ public:
 	}
 
 	void setBodyFaces(const FaceGroup &inBodyFaces) { bodyfaces = inBodyFaces; }
-
-	// void setFaceGroup(const FaceGroup& inFaceGroup) {facegroup = inFaceGroup;}
-
-	void setClothesGroup(const FaceGroup &inClothesGroup)
-	{
-		clothesgroup = inClothesGroup;
-	}
 
 	void setName(const string &inName) { name = inName; }
 	const string &getName() { return name; }

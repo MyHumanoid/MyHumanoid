@@ -313,7 +313,6 @@ private:
 	FaceGroup facegroup_subd;
 	Skin skin;
 	EdgeStrip edgestrip;
-	FaceGroup clothesgroup;
 	SmoothVertex smoothvertex;
 
 	/// Save with each vertex to which faces it belongs
@@ -540,11 +539,6 @@ public:
 	/*!
 	 * \return a reference to the ClothesGroup of the Mesh
 	 */
-	FaceGroup &getClothesGroupRef() { return clothesgroup; }
-
-	/*!
-	 * \return a reference to the ClothesGroup of the Mesh
-	 */
 	EdgeStrip &getEdgeStripRef() { return edgestrip; }
 	//@}
 
@@ -635,9 +629,6 @@ public:
 
 	/// Load skin info from file
 	bool loadSkinFactory(const string &filename);
-
-	/// Load clothes info from file
-	bool loadClothesFactory(const string &filename);
 
 	/// Load edges info from file
 	bool loadEdgeStripFactory(const string &filename);

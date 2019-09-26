@@ -289,7 +289,6 @@ Mesh::Mesh()
     facegroup()
     , skin()
     , edgestrip()
-    , clothesgroup()
     , smoothvertex()
 {
 }
@@ -524,11 +523,6 @@ bool Mesh::loadSubdGroupsFactory(const string &subd_groups_filename)
 bool Mesh::loadSkinFactory(const string &filename)
 {
 	return skin.load(filename);
-}
-
-bool Mesh::loadClothesFactory(const string &filename)
-{
-	return clothesgroup.load(filename);
 }
 
 bool Mesh::loadEdgeStripFactory(const string &filename)

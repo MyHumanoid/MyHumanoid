@@ -442,12 +442,6 @@ static const uint32_t kComponentID_SplashPanel =
     FOUR_CHAR_CONST('S', 'p', 'l', 's');
 
 // ------------------------------------------------------------------
-// The Clothes Panel
-// ------------------------------------------------------------------
-static const uint32_t kComponentID_ClothesPanel =
-    FOUR_CHAR_CONST('C', 'l', 't', 'h');
-
-// ------------------------------------------------------------------
 // The Utilities Panel
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_UtilitiesPanel =

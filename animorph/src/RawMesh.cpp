@@ -14,7 +14,6 @@ RawMesh::RawMesh()
     : facevector()
     , vertexvector()
     , bodyfaces()
-    , clothesgroup()
     , name()
 {
 }

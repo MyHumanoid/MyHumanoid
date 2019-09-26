@@ -285,13 +285,8 @@ void loadDefaultBodySettings()
 	assert(mesh);
 	Window &mainWindow = *g_mainWindow;
 
-	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
-
 	BodySettings bodyset;
 	bool state = bodyset.load(searchDataFile("default.bs"));
-	if (state) {
-		state = clothesgroup.loadVisibilities(searchDataFile("default.bs"));
-	}
 
 	if (state) {
 		g_global.resetFuzzyValues();

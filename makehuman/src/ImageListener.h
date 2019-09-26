@@ -56,7 +56,6 @@ private:
 	void hideBodyDetails();
 	void hidePoses();
 	void hideCharacterSetting();
-	void hideClothes();
 	void hideUtilities();
 	void hideBsCategory();
 	void hidePosesBsCategory();

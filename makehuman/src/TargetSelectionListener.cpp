@@ -352,13 +352,6 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 
 		Window &mainWindow = *g_mainWindow;
 
-		if (g_global.getAppMode() == CLOTHES) {
-			Mesh *mesh = g_global.getMesh();
-			assert(mesh);
-			FaceGroup &clothesgroup = mesh->getClothesGroupRef();
-			clothesgroup.toggleVisible(target);
-		}
-
 		TargetPanel *targetPanel = dynamic_cast<TargetPanel *>(
 		    mainWindow.getPanel(kComponentID_TargetPanel));
 
