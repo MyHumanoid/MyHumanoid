@@ -74,7 +74,6 @@
 #include <StopClock/StopClock.h>
 #endif
 
-#include "Animation.h"
 #include "BottomPanel.h"
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
@@ -110,7 +109,6 @@ static Mesh *mesh;
 static Camera *camera;
 // static Texture               *headTexture;
 // static Texture               *bodyTexture;
-static Animation *animation;
 static Autozoom *autozoom;
 
 static CharacterSettingPanel *characterSettingPanel;
@@ -357,32 +355,6 @@ static void loadPoses(const string &filename)
 }
 
 
-
-static void saveAnimation(const string& path)
-{
-	Animation *animation = g_global.getAnimation();
-	assert (animation);
-	
-	//bool state = animation->save(path);
-	
-	logger_err("Saving animations not implemented");
-}
-
-static void loadAnimation(const string &path)
-{
-	Animation *animation = g_global.getAnimation();
-	assert(animation);
-	
-	bool state = animation->load(path);
-	if (state) {
-		logger("Animation loaded");
-	} else {
-		logger_err("Animation load failed");
-	}
-}
-
-
-
 static void exportBodySettings(string &directory, bool full)
 {
 	Mesh *mesh = g_global.getMesh();
@@ -509,18 +481,6 @@ void doPoseFromGui(std::string targetName, float value) {
 	
 	Mesh *mesh = g_global.getMesh();
 	mesh->setPose(targetName, value);
-}
-
-void startStopAnimation()
-{
-	Animation *animation = g_global.getAnimation();
-	assert (animation);
-	
-	if(animation->isLoaded()) {
-		animation->setStarted(!animation->isStarted());
-	} else {
-		logger_err("Animations not loaded!");
-	}
 }
 
 // ================================================================================================
@@ -684,9 +644,6 @@ void DisplayMainMenu()
 					
 					savePoses("foo-Poses");
 					
-				} else if (global.getAppMode() == ANIMATIONS) {
-					
-					saveAnimation("foo-Animation");
 				}
 			}
 			if(ImGui::MenuItem("Load bodysetting", "Ctrl+O")) {
@@ -701,35 +658,25 @@ void DisplayMainMenu()
 				} else if (global.getAppMode() == POSES) {
 					
 					loadPoses("foo-Poses");
-				} else if (global.getAppMode() == ANIMATIONS) {
-
-					loadAnimation("foo-Animation");
 				}
 			}
 			
 			ImGui::Separator();
 			
 			if(ImGui::MenuItem("Load Background")) {
-				if(g_global.getAppMode() != ANIMATIONS) {
-					
-					loadWindowBackground("foo-background.png");
-				}
+				loadWindowBackground("foo-background.png");
 			}
 			
 			ImGui::Separator();
 			
 			if(ImGui::MenuItem("Export wavefront (.obj)")) {
-				if (g_global.getAppMode() != ANIMATIONS) {
-					std::string filename = "foo-ObjExport";
-					exportBodySettings(filename, false);
-				}
+				std::string filename = "foo-ObjExport";
+				exportBodySettings(filename, false);
 			}
 			
 			if(ImGui::MenuItem("Export Collada (.dae)")) {
-				if (g_global.getAppMode() != ANIMATIONS) {
-					std::string filename = "foo-ColladaExport";
-					exportCollada(filename);
-				}
+				std::string filename = "foo-ColladaExport";
+				exportCollada(filename);
 			}
 			ImGui::Separator();
 			if(ImGui::Button("Quit...")) {
@@ -846,9 +793,6 @@ void DisplayMainMenu()
 		if(ImGui::BeginMenu("Broken stuff")) {
 			if(ImGui::Button("CreateWeightsFile")) {
 				CreateWeightsFile();
-			}
-			if(ImGui::Button("Start/stop animation")) {
-				startStopAnimation();
 			}
 			ImGui::EndMenu();
 		}
@@ -1092,21 +1036,6 @@ static void motion(int x, int y)
 	mainWindow.isMouseOverPanel(Point(x, y));
 }
 
-static void timer(int value)
-{
-	Window &mainWindow(*g_mainWindow);
-
-	if (animation->isStarted()) {
-		if (tickCount++ >=
-		    (int)((1000 / kTimerCallback) / animation->getFrameRate())) {
-			animation->nextFrame();
-			tickCount = 0;
-			glutPostRedisplay();
-		}
-	}
-	glutTimerFunc(kTimerCallback, timer, value);
-}
-
 static void special(int key)
 {
 	Window &mainWindow(*g_mainWindow);
@@ -1319,7 +1248,6 @@ int main(int argc, char **argv)
 	camera = new Camera();
 	// headTexture           = new Texture();
 	// bodyTexture           = new Texture();
-	animation = new Animation();
 	autozoom = new Autozoom();
 
 	characterSettingPanel = new CharacterSettingPanel();
@@ -1421,9 +1349,6 @@ int main(int argc, char **argv)
 	// g_global.setBodyTexture (bodyTexture);
 	// g_global.setHeadTexture (headTexture);
 
-	// put animation into the Global Singleton
-	g_global.setAnimation(animation);
-
 	// put autozoom into the Global Singleton
 	g_global.setAutozoom(autozoom);
 
@@ -1474,7 +1399,6 @@ int main(int argc, char **argv)
 
 	// Glut callbacks
 	glutDisplayFunc(display);
-	glutTimerFunc(kTimerCallback, timer, 0);           // Animation
 	glutTimerFunc(1000, timerTrigger, 1);              // Autozoom
 	glutCloseFunc([]()->void{
 		// TODO glut does not let us prevent closing in a sane way
@@ -1681,17 +1605,11 @@ void renderClothes()
 	const MaterialVector &materialvector(mesh->getMaterialVectorRef());
 	const TextureVector &texturevector(mesh->getTextureVectorRef());
 
-	const FaceVector &facevector(animation->isLoaded()
-	                                 ? animation->getMesh().getFaceVectorRef()
-	                                 : mesh->getFaceVectorRef());
+	const FaceVector &facevector(mesh->getFaceVectorRef());
 
-	const VertexVector &vertexvector(
-	    animation->isLoaded() ? animation->getMesh().getVertexVectorRef()
-	                          : mesh->getVertexVectorRef());
+	const VertexVector &vertexvector(mesh->getVertexVectorRef());
 
-	FaceGroup &clothesgroup(animation->isLoaded()
-	                            ? animation->getMesh().getClothesGroupRef()
-	                            : mesh->getClothesGroupRef());
+	FaceGroup &clothesgroup(mesh->getClothesGroupRef());
 
 	clothesgroup.calcVertexes(facevector);
 
@@ -1730,13 +1648,9 @@ void renderMesh()
 	const MaterialVector &materialvector(mesh->getMaterialVectorRef());
 	const TextureVector &texturevector(mesh->getTextureVectorRef());
 
-	const FaceVector &facevector(animation->isLoaded()
-	                                 ? animation->getMesh().getFaceVectorRef()
-	                                 : mesh->getFaceVectorRef());
+	const FaceVector &facevector(mesh->getFaceVectorRef());
 
-	const VertexVector &vertexvector(
-	    animation->isLoaded() ? animation->getMesh().getVertexVectorRef()
-	                          : mesh->getVertexVectorRef());
+	const VertexVector &vertexvector(mesh->getVertexVectorRef());
 
 	FaceGroup &facegroup(mesh->getFaceGroupRef());
 

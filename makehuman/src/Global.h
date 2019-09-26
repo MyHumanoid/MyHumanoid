@@ -24,15 +24,9 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
+#pragma once
 
-#ifndef GLOBAL_H
-#define GLOBAL_H 1
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include "Animation.h"
 #include <animorph/Mesh.h>
 #include <gui/Camera.h>
 #include <gui/Point.h>
@@ -46,7 +40,6 @@ enum Modes {
 	POSES,
 	CHARACTER_SETTING,
 	CLOTHES,
-	ANIMATIONS,
 	BODY_SETTINGS,
 	POSES_BODY_SETTINGS,
 };
@@ -61,7 +54,6 @@ struct Global
 	
 	Mesh *mesh = NULL;
 	Camera *camera = NULL;
-	Animation *animation = NULL;
 	Autozoom *autozoom = NULL;
 	bool drawGrid = false;
 	bool quotedBox = false;
@@ -83,9 +75,6 @@ public:
 
 	void setTexture(string name, Texture *texture) { textures[name] = texture; }
 	Texture *getTexture(string name) { return textures[name]; }
-
-	void setAnimation(Animation *animation) { this->animation = animation; }
-	Animation *getAnimation() { return animation; }
 
 	void setAutozoom(Autozoom *autozoom) { this->autozoom = autozoom; }
 	Autozoom *getAutozoom() { return autozoom; }
@@ -120,5 +109,3 @@ public:
 };
 
 extern Global g_global;
-
-#endif // GLOBAL_H

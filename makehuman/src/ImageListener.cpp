@@ -43,7 +43,6 @@
 #include "TargetPanel.h"
 #include "TeethPanel.h"
 #include "ToolbarPanel.h"
-#include "UtilitiesPanel.h"
 #include "util.h"
 #include <animorph/DirectoryList.h>
 #include <animorph/MathUtil.h>
@@ -159,11 +158,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					}
 				}
 
-				if (g_global.getAppMode() == ANIMATIONS) {
-					g_global.getAnimation()->setStarted(false);
-					g_global.getAnimation()->setLoaded(false);
-				}
-
 				g_global.setAppMode(CHARACTER_SETTING);
 				showCharacterSetting();
 			} break;
@@ -186,11 +180,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					}
 				}
 
-				if (g_global.getAppMode() == ANIMATIONS) {
-					g_global.getAnimation()->setStarted(false);
-					g_global.getAnimation()->setLoaded(false);
-				}
-
 				g_global.setAppMode(BODY_DETAILS);
 				showBodyDetails();
 			} break;
@@ -200,19 +189,13 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 				hidePanels(g_global.getAppMode());
 
-				if (g_global.getAppMode() != ANIMATIONS &&
-				    g_global.getAppMode() != POSES_BODY_SETTINGS) {
+				if (g_global.getAppMode() != POSES_BODY_SETTINGS) {
 					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 					mesh->poseMode();
 					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
-				}
-
-				if (g_global.getAppMode() == ANIMATIONS) {
-					g_global.getAnimation()->setStarted(false);
-					g_global.getAnimation()->setLoaded(false);
 				}
 
 				g_global.setAppMode(POSES);
@@ -237,11 +220,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					}
 				}
 
-				if (g_global.getAppMode() == ANIMATIONS) {
-					g_global.getAnimation()->setStarted(false);
-					g_global.getAnimation()->setLoaded(false);
-				}
-
 				g_global.setAppMode(BODY_SETTINGS);
 				showBsCategory();
 			} break;
@@ -251,7 +229,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 				hidePanels(g_global.getAppMode());
 
-				if (g_global.getAppMode() != ANIMATIONS && g_global.getAppMode() != POSES) {
+				if (g_global.getAppMode() != POSES) {
 					Mesh *mesh = g_global.getMesh();
 					assert(mesh);
 
@@ -259,11 +237,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					if (g_global.getSubdivision()) {
 						mesh->calcSubsurf();
 					}
-				}
-
-				if (g_global.getAppMode() == ANIMATIONS) {
-					g_global.getAnimation()->setStarted(false);
-					g_global.getAnimation()->setLoaded(false);
 				}
 
 				g_global.setAppMode(POSES_BODY_SETTINGS);
@@ -295,28 +268,7 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 					targetPanel->show_all();
 				} else if (g_global.getAppMode() == CLOTHES) {
 					// TODO: what happens when in clothes mode ?
-				} else if (g_global.getAppMode() == ANIMATIONS) {
-					// TODO: what happens when in animation mode ?
 				}
-			} break;
-			case kComponentID_ImageToolbarPanel_Animation: {
-				if (g_global.getAppMode() == ANIMATIONS)
-					return true;
-
-				hidePanels(g_global.getAppMode());
-
-				if (g_global.getAppMode() != POSES) {
-					Mesh *mesh = g_global.getMesh();
-					assert(mesh);
-					mesh->animationMode();
-
-					if (g_global.getSubdivision()) {
-						mesh->calcSubsurf();
-					}
-				}
-
-				g_global.setAppMode(ANIMATIONS);
-				showUtilities();
 			} break;
 			// utilitybar buttons
 			case kComponentID_CloseTargetPanel: {
@@ -337,16 +289,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				p->pageBack();
 				break;
 			}
-			case kComponentID_UtilitiesPanel_Reset: {
-				Animation *animation = g_global.getAnimation();
-				if (animation->isLoaded()) {
-					animation->setStarted(false);
-				}
-				animation->reset();
-
-				break;
-			}
-
 			default:
 				cerr << "Unknown widget handler!" << imgSource->getIDAsString() << endl;
 			}
@@ -373,8 +315,6 @@ void ImageListener::hidePanels(const Modes currentMode)
 		hideCharacterSetting();
 	} else if (currentMode == CLOTHES) {
 		hideClothes();
-	} else if (currentMode == ANIMATIONS) {
-		hideUtilities();
 	} else if (currentMode == BODY_SETTINGS) {
 		hideBsCategory();
 	} else if (currentMode == POSES_BODY_SETTINGS) {
@@ -543,10 +483,6 @@ void ImageListener::showPoses()
 void ImageListener::showUtilities()
 {
 	Window &mainWindow = *g_mainWindow;
-	UtilitiesPanel *utilitiesPanel = new UtilitiesPanel();
-	mainWindow.addPanel(utilitiesPanel);
-	utilitiesPanel->createWidgets();
-	utilitiesPanel->show_all();
 
 	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
 	assert(p);

@@ -51,8 +51,6 @@ set(log_sources
 )
 
 set(makehuman_sources
-	src/Animation.cpp
-	src/Animation.h
 	src/BodyPanel.cpp
 	src/BodyPanel.h
 	src/BottomPanel.cpp
@@ -123,10 +121,6 @@ set(makehuman_sources
 	src/TooltipPanel.h
 	src/util.cpp
 	src/util.h
-	src/UtilitiesPanel.cpp
-	src/UtilitiesPanel.h
-	src/UtilitiesSliderListener.cpp
-	src/UtilitiesSliderListener.h
 )
 
 

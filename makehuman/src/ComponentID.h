@@ -237,8 +237,6 @@ static const uint32_t kComponentID_ImageToolbarPanel_Poses =
     FOUR_CHAR_CONST('P', 'o', 's', 'e');
 static const uint32_t kComponentID_ImageToolbarPanel_MorphingList =
     FOUR_CHAR_CONST('M', 'o', 'L', 'i');
-static const uint32_t kComponentID_ImageToolbarPanel_Animation =
-    FOUR_CHAR_CONST('A', 'n', 'i', 'm');
 static const uint32_t kComponentID_ImageToolbarPanel_BodySettings =
     FOUR_CHAR_CONST('B', 'o', 'S', 'e');
 static const uint32_t kComponentID_ImageToolbarPanel_PoseBodySettings =
@@ -454,13 +452,6 @@ static const uint32_t kComponentID_ClothesPanel =
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_UtilitiesPanel =
     FOUR_CHAR_CONST('U', 't', 'l', 't');
-
-static const uint32_t kComponentID_UtilitiesPanel_Interpolations =
-    FOUR_CHAR_CONST('I', 'n', 't', 'p');
-static const uint32_t kComponentID_UtilitiesPanel_FrameRate =
-    FOUR_CHAR_CONST('F', 'r', 'm', 'R');
-static const uint32_t kComponentID_UtilitiesPanel_Reset =
-    FOUR_CHAR_CONST('R', 's', 't', 'e');
 
 // ------------------------------------------------------------------
 // The Body Settings Panel
