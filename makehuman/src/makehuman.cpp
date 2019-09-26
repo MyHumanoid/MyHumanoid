@@ -485,12 +485,100 @@ void doPoseFromGui(std::string targetName, float value) {
 
 // ================================================================================================
 
+void drawTarget(const string & target_name, float & target_value, bool xBtn)
+{
+	fs::path targetImageName = target_name;
+	targetImageName.replace_extension();
+	
+	const auto & texIdIt = g_targetImageTextures.find(targetImageName);
+	if(texIdIt != g_targetImageTextures.end()) {
+		auto texId = texIdIt->second;
+		
+		ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
+		if(ImGui::IsItemHovered()) {
+			ImGui::BeginTooltip();
+			ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
+			ImGui::EndTooltip();
+		}
+	} else {
+		ImGui::Dummy(ImVec2(16, 16));
+	}
+	ImGui::SameLine(0, 4);
+	
+	if(xBtn) {
+		// FIXME only the button in the first line is working
+		if(ImGui::Button("X", ImVec2(16, 16))) {
+			doMorphFromGui(target_name, 0.f);
+		}
+		ImGui::SameLine(0, 4);
+	}
+	
+	ImGui::PushItemWidth(-400);
+	// TODO used min so that morph does not vanish
+	if(ImGui::SliderFloat(target_name.c_str(), &target_value, 0.001f, 1.f)) {
+		doMorphFromGui(target_name, target_value);
+	}	
+}
+
+
+void DisplayMorph() {
+	
+	TargetMap &targetmap = mesh->getTargetMapRef();
+	BodySettings bodyset = mesh->getBodySettings();
+	
+	ImGui::Begin("Morph Targets");
+	
+	for (TargetMap::const_iterator targetmap_it = targetmap.begin();
+	     targetmap_it != targetmap.end(); targetmap_it++) {
+		const string &target_name((*targetmap_it).first);
+		
+		string::size_type loc = target_name.find("/", 0);
+		if (loc == string::npos)
+			continue;
+		else {
+			string sub = target_name.substr(0, loc);
+			
+			float target_value = bodyset[target_name];
+			
+			drawTarget(target_name, target_value, false);
+			
+			//if (sub == category) {
+
+				// remove ".target"
+//				string target_image(target_name);
+//				target_image.replace(target_image.length() -
+//				                         kFilePrefixTarget.length(),
+//				                     kFilePrefixTarget.length(), kFilePrefixPNG);
+				
+//				image_slider =
+//				    new TargetSlider(kComponentID_TargetPanel_Target,
+//				                     searchPixmapFile("tgimg/" + target_image),
+//				                     target_name, Rect(0, 0, 32, 42), 0.0, 1.0);
+				
+//				image_slider->setOverlayTexture(
+//				    searchPixmapFile("tgimg/" + target_image));
+//				image_slider->setOverlayMultiplier(4);
+//				float target_value = bodyset[target_name];
+//				image_slider->setSliderValue(target_value);
+				
+//				image_slider->setListener(&imgSliderListener);
+//				image_slider->setTooltip(
+//				    Tooltip(target_name, kTooltipPos, c, tooltipPanel));
+//				page->targetVector.push_back(image_slider);
+//				page->addWidget(image_slider);
+			}
+		//}
+	}
+	ImGui::End();
+}
+
+
+
 void DisplayMorphApplied()
 {
 	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
-	TargetMap &targetmap = mesh->getTargetMapRef();
 	BodySettings bodyset = mesh->getBodySettings();
 	
 	ImGui::Begin("Applied Morph Targets");
@@ -498,7 +586,7 @@ void DisplayMorphApplied()
 	for (BodySettings::iterator bodyset_it = bodyset.begin();
 		 bodyset_it != bodyset.end(); bodyset_it++) {
 		
-		const string target_name((*bodyset_it).first);
+		string target_name((*bodyset_it).first);
 		
 		if (target_name.find("ages", 0) != string::npos ||
 			target_name.find("breast", 0) != string::npos ||
@@ -509,34 +597,7 @@ void DisplayMorphApplied()
 		
 		float target_value = (*bodyset_it).second;
 		
-		fs::path targetImageName = target_name;
-		targetImageName.replace_extension();
-		
-		const auto & texIdIt = g_targetImageTextures.find(targetImageName);
-		if(texIdIt != g_targetImageTextures.end()) {
-			auto texId = texIdIt->second;
-			
-			ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
-			if(ImGui::IsItemHovered()) {
-				ImGui::BeginTooltip();
-				ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
-				ImGui::EndTooltip();
-			}
-		} else {
-			ImGui::Dummy(ImVec2(16, 16));
-		}
-		ImGui::SameLine(0, 4);
-		
-		// FIXME only the button in the first line is working
-		if(ImGui::Button("X", ImVec2(16, 16))) {
-			doMorphFromGui(target_name, 0.f);
-		}
-		ImGui::SameLine(0, 4);
-		
-		// TODO used min so that morph does not vanish
-		if(ImGui::SliderFloat(target_name.c_str(), &target_value, 0.001f, 1.f)) {
-			doMorphFromGui(target_name, target_value);
-		}
+		drawTarget(target_name, target_value, true);
 	}
 	ImGui::End();
 }
@@ -607,6 +668,7 @@ static bool g_displayAxis = false;
 
 static bool g_displayCharacterSettings = false;
 static bool g_displayPerformance = false;
+static bool g_displayMorphList = false;
 static bool g_displayUsedMorphingList = false;
 static bool g_displayUsedPoseList = false;
 
@@ -782,6 +844,7 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Morph")) {
+			ImGui::Checkbox("Morphs", &g_displayMorphList);
 			ImGui::Checkbox("Used morphing list", &g_displayUsedMorphingList);
 			ImGui::EndMenu();
 		}
@@ -817,7 +880,9 @@ void DisplayMainMenu()
 		ImGui::EndMainMenuBar();
 	}
 	
-	
+	if(g_displayMorphList) {
+		DisplayMorph();
+	}
 	if(g_displayUsedMorphingList) {
 		DisplayMorphApplied();
 	}
