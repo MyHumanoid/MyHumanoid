@@ -10,14 +10,10 @@ using namespace Animorph;
 PoseRotation::PoseRotation()
     : modVertex()
     , hasCenter(false)
-    ,
-    // mainRotation(false),
-    minAngle(0.0f)
+    , minAngle(0.0f)
     , maxAngle(0.0f)
     , normalize(false)
-    ,
-    // inFilename(),
-    cat()
+    , cat()
 {
 }
 

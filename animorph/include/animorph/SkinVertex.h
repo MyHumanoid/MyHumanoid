@@ -55,7 +55,6 @@ private:
 	vector<int> linkedMuscles;
 	set<int> linkedMusclesSet;
 	float originalDist;
-	// Vector3f oldCenteroid;
 
 public:
 	SkinVertex(int _skinVertex, float _originalDist, const vector<int> &tokens);
@@ -69,9 +68,6 @@ public:
 	{
 		originalDist = inOriginalDist;
 	}
-	// Vector3f &getOldCenteroid () {return oldCenteroid;}
-	// void setOldCenteroid (const Vector3f &inCenteroid) {oldCenteroid =
-	// inCenteroid;}
 };
 
 } // namespace Animorph

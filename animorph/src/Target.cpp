@@ -1,8 +1,5 @@
 #include "../include/animorph/Target.h"
 #include <cstdio>
-#ifdef DEBUG
-#include <StopClock/StopClock.h>
-#endif
 
 using namespace std;
 using namespace Animorph;
@@ -17,43 +14,8 @@ void Target::createStream(std::ostringstream &out_stream)
 	}
 }
 
-/*void  Target::fromStream (std::ifstream &in_stream)
-{
-  char buffer[MAX_LINE_BUFFER];
-  Target &target = (*this);
-
-  clear ();
-
-  while (in_stream.getline (buffer, MAX_LINE_BUFFER))
-  {
-    TargetData td;
-
-    if (sscanf (buffer, "%d,%f,%f,%f\n", &td.vertex_number,
-                &td.morph_vector.x, &td.morph_vector.y, &td.morph_vector.z) ==
-4)
-    {
-      target.push_back (td);
-    }
-    else
-    {
-      cerr << "illegal target format line: " << endl << buffer << endl;
-    }
-  }
-}*/
-
 bool Target::load(const std::string &filename)
 {
-	/* FileReader file_reader;
-
-	 file_reader.open (filename);
-
-	 if (!file_reader)
-	   return false;
-
-	 fromStream (file_reader);*/
-
-	// this is done in C because of speed reasons!
-
 	clear();
 
 	FILE *fd = fopen(filename.c_str(), "r");

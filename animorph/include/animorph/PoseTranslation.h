@@ -105,17 +105,7 @@ public:
 	 */
 	bool load(const string &filename);
 
-	//  const vector<int> &getCenterVertexNumbers () {return centerVertexNumbers;}
 	UnsortedUsedVertex &getModVertex() { return target->getModVertex(); }
-	/*
-	  const RotateAxis& getAxis () const {return axis;}
-
-	  bool getHasCenter() const {return hasCenter;}
-	  void setHasCenter(bool c) {hasCenter = c;}
-
-	  const Vector3f &getCenter() const {return center;}
-	  void setCenter(const Vector3f& c) {center = c;}
-	*/
 
 	/// The distance between startVertexNumbers and endVertexNumbers, divided by
 	/// originalSize

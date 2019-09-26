@@ -35,7 +35,6 @@ SkinVertex::SkinVertex(int _skinVertex, float _originalDist,
     , linkedMuscles(tokens)
     , linkedMusclesSet()
     , originalDist(_originalDist)
-// oldCenteroid()
 {
 	linkedMusclesSet.insert(tokens.begin(), tokens.end());
 }

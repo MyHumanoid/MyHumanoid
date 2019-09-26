@@ -327,30 +327,6 @@ bool ObjExporter::exportFile(const string &exportpath, bool full)
 	if (!file_writer)
 		return false;
 
-	/*
-	  for (FaceGroup::iterator facegroup_it = facegroup.begin ();
-	       facegroup_it != facegroup.end ();
-	       facegroup_it++)
-	  {
-	    string partname = (*facegroup_it).first;
-	    FGroupData &groupdata = (*facegroup_it).second.facesIndexes;
-
-	    file_writer.open (exportpath + partname + ".obj");
-	    if (file_writer)
-	    {
-	      std::ostringstream out_stream;
-	      createOBJStream (out_stream, partname, groupdata,
-	  facegroup.getPartVertexesRef(partname));
-
-	      file_writer << out_stream.str ();
-	      file_writer.close ();
-	    }
-
-	    if (!file_writer)
-	      return false;
-
-	  }
-	*/
 	return true;
 }
 

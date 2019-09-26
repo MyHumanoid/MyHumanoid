@@ -167,26 +167,6 @@ const Vector3f PoseTarget::getFirstRotationCenteroid()
 	}
 	return res;
 }
-/*
-void PoseTarget::showCenters()
-{
-cout << "positive rotations" << endl;
-  for (vector<PoseRotation>::iterator rotations_it = positiveRotations.begin ();
-       rotations_it != positiveRotations.end ();
-       rotations_it++)
-  {
-cout << (*rotations_it).getCenter() << endl;
-  }
-
-cout << "negative rotations" << endl;
-  for (vector<PoseRotation>::iterator rotations_it = negativeRotations.begin ();
-       rotations_it != negativeRotations.end ();
-       rotations_it++)
-  {
-cout << (*rotations_it).getCenter() << endl;
-  }
-}
-*/
 
 void PoseTarget::calcNormalizations()
 {
