@@ -392,40 +392,6 @@ public:
 	/** @name Getting pointers to member variables
 	 */
 	//@{
-	/*!
-	 * \return a pointer to the morphed VertexVector of this Mesh
-	 */
-	VertexVector *getVertexVectorPtr() { return &vertexvector_morph; }
-
-	/*!
-	 * \return a pointer to the FaceVector of this Mesh
-	 */
-	FaceVector *getFaceVectorPtr() { return &facevector; }
-
-	/*!
-	 * \return a pointer to the MaterialVector of this Mesh
-	 */
-	MaterialVector *getMaterialVectorPtr() { return &materialvector; }
-
-	/*!
-	 * \return a pointer to the TargetMap of this Mesh
-	 */
-	TargetMap *getTargetMapPtr() { return &targetmap; }
-
-	/*!
-	 * \return a pointer to the HotspotMap of this Mesh
-	 */
-	// HotspotMap *getHotspotMapPtr () {return &hotspotmap;}
-
-	/*!
-	 * \return a pointer to the VertexGroup of this Mesh
-	 */
-	// VertexGroup *getVertexGroupPtr () {return &vgroup;}
-
-	/*!
-	 * \return TODO
-	 */
-	TextureVector *getTextureVectorPtr() { return &texture_vector; }
 
 	vector<Vector3f> *getJointVector() { return &jointvector; }
 	Vector3f GetJoint0_Pos() { return getJointVector()->at(0); }
@@ -458,16 +424,6 @@ public:
 	 * \return a reference to the TargetMap of this Mesh
 	 */
 	TargetMap &getTargetMapRef() { return targetmap; }
-
-	/*!
-	 * \return a reference to the HotspotMap of this Mesh
-	 */
-	// HotspotMap &getHotspotMapRef () {return hotspotmap;}
-
-	/*!
-	 * \return a reference to the VertexGroup of this Mesh
-	 */
-	// VertexGroup &getVertexGroupRef () {return vgroup;}
 
 	/*!
 	 * \return TODO

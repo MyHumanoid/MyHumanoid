@@ -55,22 +55,6 @@ public:
 	~RawMesh();
 
 public:
-	/**** get Pointer API ****/
-	/*************************/
-
-	/*!
-	 * \return a pointer to the morphed VertexVector of this Mesh
-	 */
-	VertexVector *getVertexVectorPtr() { return &vertexvector; }
-
-	/*!
-	 * \return a pointer to the FaceVector of this Mesh
-	 */
-	FaceVector *getFaceVectorPtr() { return &facevector; }
-
-	/**** get Reference API ****/
-	/***************************/
-
 	/*!
 	 * \return a reference to the morphed VertexVector of this Mesh
 	 */
