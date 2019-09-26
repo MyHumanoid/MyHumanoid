@@ -485,6 +485,19 @@ void doPoseFromGui(std::string targetName, float value) {
 
 // ================================================================================================
 
+static bool show_demo_window = false;
+
+static bool g_userRequestedQuit = false;
+static bool g_displayAxis = false;
+
+static bool g_displayCharacterSettings = false;
+static bool g_displayPerformance = false;
+static bool g_displayMorphList = false;
+static bool g_displayUsedMorphingList = false;
+static bool g_displayUsedPoseList = false;
+
+// ================================================================================================
+
 void drawTarget(const string & target_name, float & target_value, bool xBtn)
 {
 	fs::path targetImageName = target_name;
@@ -523,10 +536,13 @@ void drawTarget(const string & target_name, float & target_value, bool xBtn)
 
 void DisplayMorph() {
 	
+	if(!ImGui::Begin("Morph Targets", &g_displayMorphList)) {
+		ImGui::End();
+		return;
+	}
+	
 	TargetMap &targetmap = mesh->getTargetMapRef();
 	BodySettings bodyset = mesh->getBodySettings();
-	
-	ImGui::Begin("Morph Targets");
 	
 	for (TargetMap::const_iterator targetmap_it = targetmap.begin();
 	     targetmap_it != targetmap.end(); targetmap_it++) {
@@ -576,12 +592,15 @@ void DisplayMorph() {
 
 void DisplayMorphApplied()
 {
+	if(!ImGui::Begin("Applied Morph Targets", &g_displayUsedMorphingList)) {
+		ImGui::End();
+		return;
+	}
+	
 	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	BodySettings bodyset = mesh->getBodySettings();
-	
-	ImGui::Begin("Applied Morph Targets");
 	
 	for (BodySettings::iterator bodyset_it = bodyset.begin();
 		 bodyset_it != bodyset.end(); bodyset_it++) {
@@ -605,12 +624,15 @@ void DisplayMorphApplied()
 
 void DisplayPoseRotationsApplied()
 {
+	if(!ImGui::Begin("Applied Pose Rotations", &g_displayUsedPoseList)) {
+		ImGui::End();
+		return;
+	}
+	
 	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
 	const BodySettings &bodyset(mesh->getPoses());
-
-	ImGui::Begin("Applied Pose Rotations");
 	
 	for (BodySettings::const_iterator bodyset_it = bodyset.begin();
 		 bodyset_it != bodyset.end(); bodyset_it++) {
@@ -660,17 +682,6 @@ void DisplayPoseRotationsApplied()
 
 
 // ================================================================================================
-
-static bool show_demo_window = false;
-
-static bool g_userRequestedQuit = false;
-static bool g_displayAxis = false;
-
-static bool g_displayCharacterSettings = false;
-static bool g_displayPerformance = false;
-static bool g_displayMorphList = false;
-static bool g_displayUsedMorphingList = false;
-static bool g_displayUsedPoseList = false;
 
 void DisplayQuitPopup() {
 	if(ImGui::BeginPopupModal("Quit?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -844,8 +855,8 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Morph")) {
-			ImGui::Checkbox("Morphs", &g_displayMorphList);
-			ImGui::Checkbox("Used morphing list", &g_displayUsedMorphingList);
+			ImGui::Checkbox("Morph Targets", &g_displayMorphList);
+			ImGui::Checkbox("Used Morph Targets", &g_displayUsedMorphingList);
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Pose")) {
