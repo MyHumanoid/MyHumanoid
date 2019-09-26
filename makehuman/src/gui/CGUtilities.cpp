@@ -36,6 +36,8 @@
 
 #include "log/log.h"
 
+#include "render/DebugGl.h"
+
 using namespace std;
 using namespace mhgui;
 
@@ -331,7 +333,10 @@ int cgutils::initWindow(const Rect &rect, const char *title,
                         const Vector3f &light0Pos, const Vector3f &light1Pos,
                         float light0Lum, float light1Lum, const Color &c)
 {
-
+	
+	glutInitContextVersion(3, 3);
+	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+	glutInitContextFlags(/*GLUT_FORWARD_COMPATIBLE | */GLUT_DEBUG);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowSize(rect.getWidth(), rect.getHeight());
 	glutInitWindowPosition(rect.getX(), rect.getY());
@@ -351,6 +356,8 @@ int cgutils::initWindow(const Rect &rect, const char *title,
 			logger_err("GLEW error: {}", glewGetErrorString(err));
 		}
 	}
+	
+	initDebugGl();
 	
 
 	// Enables

@@ -46,6 +46,8 @@ set(gui_sources
 )
 
 set(render_sources
+	src/render/DebugGl.h
+	src/render/DebugGl.cpp
 	src/render/Shader.h
 	src/render/Shader.cpp
 )
