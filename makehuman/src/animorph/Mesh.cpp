@@ -494,7 +494,7 @@ void Mesh::loadCharactersFactory(const string &characters_root_path,
 }
 
 void Mesh::loadTargetsFactory(const string &target_root_path,
-                              int recursive_level, bool preload, bool clearmap)
+                              int recursive_level, bool clearmap)
 {
 
 	if (clearmap) {
@@ -516,8 +516,13 @@ void Mesh::loadTargetsFactory(const string &target_root_path,
 		string target_name(file);
 		target_name.erase(0, target_root_path.length() + 1);
 
-		TargetEntry *targetEntry = new TargetEntry(file, preload);
-
+		Target *targetEntry = new Target();
+		bool rc = targetEntry->load(file);
+		if(!rc) {
+			delete targetEntry;
+			targetEntry = nullptr;
+		}
+		
 		targetmap[target_name] = targetEntry;
 	}
 }
@@ -528,7 +533,7 @@ const Target *Mesh::getTargetForName(const string &inTargetname)
 	if (i == targetmap.end())
 		return NULL;
 
-	return (i->second)->getTarget();
+	return i->second;
 }
 
 bool Mesh::doMorph(const string &target_name, float morph_value)
@@ -1035,47 +1040,6 @@ SKELETON_JOINT Mesh::getSymmetricJoint(SKELETON_JOINT joint)
 		return jointSymmetric[joint];
 }
 
-TargetEntry::TargetEntry(const string &inFilename, bool inPreload)
-    : mFilename(new string(inFilename))
-    , mTarget(NULL)
-    ,                     // not initialized yet
-    mTargetLoadTry(false) // not tried yet
-{
-	if (inPreload)
-		loadFromFile();
-}
-
-TargetEntry::~TargetEntry()
-{
-	delete mFilename;
-	delete mTarget;
-}
-
-Target *TargetEntry::getTarget()
-{
-	if (!mTargetLoadTry)
-		loadFromFile();
-	return mTarget;
-}
-
-bool TargetEntry::loadFromFile()
-{
-	// if we didn't try to loaded the target, then try it NOW
-	if (mTargetLoadTry == false) {
-		mTargetLoadTry = true; // marks as 'tried to load' for further attempts
-
-		mTarget = new (std::nothrow) Target();
-		assert(mTarget);
-		bool rc = mTarget->load(*mFilename);
-
-		// When the attempt to load the target failed, then release the target
-		if (rc == false) {
-			delete mTarget;
-			mTarget = NULL;
-		}
-	}
-	return (mTarget != NULL); // when a target object exists, then return true
-}
 
 PoseEntry::PoseEntry(const string &inFilename, const string &inFullPath,
                      bool inPreload)

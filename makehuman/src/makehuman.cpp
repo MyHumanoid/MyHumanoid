@@ -1438,7 +1438,7 @@ int main(int argc, char **argv)
 	g_global.setAutozoom(autozoom);
 
 	mesh->loadTargetsFactory(searchDataDir("targets"));
-	mesh->loadTargetsFactory(searchDataDir("selectors"), 1, true, false);
+	mesh->loadTargetsFactory(searchDataDir("selectors"), 1, false);
 	mesh->loadPoseTargetsFactory(searchDataDir("rotations"));
 	mesh->loadCharactersFactory(searchDataDir("bs_data"));
 	// mesh->loadCharactersFactory(searchDataDir ("my"));
