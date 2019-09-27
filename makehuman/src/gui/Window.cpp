@@ -105,7 +105,6 @@ void Window::setCamera(Camera *p_camera) { inCamera = p_camera; }
 
 void Window::draw()
 {
-	drawBackground();
 	drawPanels();
 }
 
@@ -160,16 +159,6 @@ void Window::removePanel(Panel *p)
 			++panelListChangedCount; // mark a change of the Panel List
 			return;
 		}
-	}
-}
-
-void Window::drawBackground()
-{
-	if (isVisible()) {
-		glColor3f(c.red(), c.green(), c.blue()); // TODO: wrap this!
-
-		if (image_loaded)
-			cgutils::drawBackgroundSquare(getSize(), 1.0f, texture);
 	}
 }
 

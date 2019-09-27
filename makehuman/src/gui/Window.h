@@ -84,8 +84,6 @@ public:
 
 	void drawPanels();
 
-	void drawBackground();
-
 	void setTitle(const string &t);
 
 	// Some "shortcut functions" that wrap a series of OpenGL lines

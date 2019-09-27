@@ -199,6 +199,8 @@ set(makehuman_sources
 )
 
 set(shader_sources
+	shader/background.vert
+	shader/background.frag
 	shader/body.vert
 	shader/body.frag
 	shader/body_2.vert

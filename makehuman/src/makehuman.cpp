@@ -95,6 +95,7 @@ using json = nlohmann::json;
 using namespace std;
 using namespace Animorph;
 
+static void drawBackground();
 static void renderMesh();
 static bool loadTextures();
 
@@ -471,6 +472,8 @@ static bool g_displayPoseTargetsApplied = false;
 
 static bool g_requestShaderReload = false;
 static int  g_requestShaderVersion = 1;
+
+static bool g_requestBackgroundShaderReload = false;
 
 // ================================================================================================
 
@@ -863,6 +866,11 @@ void DisplayMainMenu()
 				g_requestShaderVersion = 2;
 				g_requestShaderReload = true;
 			}
+			ImGui::Separator();
+			if(ImGui::MenuItem("Reload Background Shader")) {
+				g_requestBackgroundShaderReload = true;
+			}
+			
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
@@ -1015,7 +1023,8 @@ void DisplayGui()
 int g_mainWindowPosX;
 int g_mainWindowPosY;
 
-GLuint g_bodyShader;
+GLuint g_bodyShader = 0;
+GLuint g_backgroundShader = 0;
 
 // Display function
 static void display()
@@ -1034,6 +1043,7 @@ static void display()
 	if (g_global.getQuotedBox())
 		cgutils::mhWireCube(twopoints);
 	
+	drawBackground();
 	g_mainWindow->draw();
 
 	if (g_global.getDrawGrid()) {
@@ -1075,6 +1085,19 @@ static void display()
 			g_bodyShader = shader.value();
 		}
 	}
+	if(g_requestBackgroundShaderReload) {
+		g_requestBackgroundShaderReload = false;
+		logger("Loading Background Shader");
+		
+		std::optional<GLuint> shader;
+			shader = LoadShader("shader/background.vert", "shader/background.frag");
+		
+		if(shader) {
+			glDeleteProgram(g_backgroundShader);
+			g_backgroundShader = shader.value();
+		}
+	}
+	
 	
 	
 	// TODO this is a hack
@@ -1331,8 +1354,12 @@ int main(int argc, char **argv)
 		auto shader = LoadShader("shader/body.vert", "shader/body.frag");
 		if(shader) {
 			g_bodyShader = shader.value();
-		} else {
-			g_bodyShader = 0;
+		}
+	}
+	{
+		auto shader = LoadShader("shader/background.vert", "shader/background.frag");
+		if(shader) {
+			g_backgroundShader = shader.value();
 		}
 	}
 	
@@ -1619,6 +1646,47 @@ void calcMinMax(const Vector3f &coords)
 	} else if (coords.z > twopoints[5]) {
 		twopoints[5] = coords.z;
 	}
+}
+
+
+void drawBackground()
+{
+	auto inSize = g_mainWindow->getSize();
+	
+	glUseProgram(g_backgroundShader);
+	GLint myLoc = glGetUniformLocation(g_backgroundShader, "u_viewportResolution");
+	if(myLoc != -1) {
+		glProgramUniform2f(g_backgroundShader, myLoc, inSize.getWidth(), inSize.getHeight());
+	}
+	
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	
+	glBegin(GL_QUADS);
+	// bottom
+	glVertex2f(-1.0, -1.0);
+	glVertex2f(1.0, -1.0);
+	// top
+	glVertex2f(1.0, 1.0);
+	glVertex2f(-1.0, 1.0);
+	glEnd();
+	
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+	
+	glUseProgram(0);
+	
+	//glColor3f(c.red(), c.green(), c.blue()); // TODO: wrap this!
+	
+	//if(image_loaded)
+	//	cgutils::drawBackgroundSquare(getSize(), 1.0f, texture);
 }
 
 void renderMesh()
