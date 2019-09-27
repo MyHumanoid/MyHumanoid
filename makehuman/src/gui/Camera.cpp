@@ -152,7 +152,7 @@ void Camera::resetRotation()
 void Camera::resetPosition()
 {
 	cam_center.identity();
-	mCameraPos.zero();
+	mCameraPos = glm::vec3(0);
 }
 
 /*! Modify orientation values. In Makehuman is called via Glut callbacks when
@@ -239,7 +239,7 @@ float Camera::getYForX(float x)
 void Camera::calcForStepAnimate(float inX)
 {
 	cam_center.identity();
-	mCameraPos.zero();
+	mCameraPos = glm::vec3(0.f);
 	cam_pos.identity();
 	mAngleX = mAngleY = mAngleZ = 0.0f;
 

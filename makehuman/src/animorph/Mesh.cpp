@@ -336,8 +336,8 @@ void Mesh::calcVertexNormals()
 				return;
 			}
 		}
-
-		vertex.no.normalize();
+		
+		vertex.no = glm::normalize(vertex.no);
 	}
 }
 
@@ -352,9 +352,8 @@ void Mesh::calcFaceNormals()
 
 			const Vector3f v1_tmp(vertex2.co - vertex1.co);
 			const Vector3f v2_tmp(vertex3.co - vertex1.co);
-
-			face.no = crossProduct(v1_tmp, v2_tmp);
-			face.no.normalize();
+			
+			face.no = glm::normalize(glm::cross(v1_tmp, v2_tmp));
 		} else {
 			cerr << "Error: a face needs at least 3 vertices!" << endl;
 			return;
@@ -659,7 +658,7 @@ void Mesh::initPoses()
 
 		Vector3f oriDist =
 		    vertexvector_morph[skinVertex.getSkinVertex()].co - centeroid;
-		skinVertex.setOriginalDist(oriDist.getMagnitude());
+		skinVertex.setOriginalDist(glm::length(oriDist));
 	}
 }
 
@@ -900,8 +899,8 @@ void Mesh::applySkin()
 
 		Vector3f normal(calcAverageNormalLength(skinVertex.getLinkedMuscles(),
 		                                        vertexvector_morph));
-
-		float r = skinVertex.getOriginalDist() / normal.getMagnitude();
+		
+		float r = skinVertex.getOriginalDist() / glm::length(normal);//normal.getMagnitude();
 		Vector3f delta = normal * r;
 		vertexvector_morph[skinVertex.getSkinVertex()].co = centeroid + delta;
 	}

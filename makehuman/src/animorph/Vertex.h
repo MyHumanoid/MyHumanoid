@@ -60,12 +60,9 @@ public:
 	// Color color;
 
 	Vertex()
-	    : co()
-	    , no()
-	{
-		co.zero();
-		no.zero();
-	}
+	    : co(0.f)
+	    , no(0.f)
+	{}
 
 	/// construct Vertex with coordinates
 	/*!
@@ -75,10 +72,8 @@ public:
 	 */
 	Vertex(float x, float y, float z)
 	    : co(x, y, z)
-	    , no()
-	{
-		no.zero();
-	}
+	    , no(0.f)
+	{}
 
 	/*!
 	 * \param shared_face add the index number to which face this Vertex belongs

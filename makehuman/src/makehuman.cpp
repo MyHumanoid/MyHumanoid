@@ -49,6 +49,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <animorph/Mesh.h>
 #include <animorph/Vector3.h>
 #include <animorph/util.h>
@@ -1766,12 +1768,12 @@ void renderMesh()
 					const Vertex &vertex = vertexvector[face.getVertexAtIndex(j)];
 					const Vector2f &uv = texture_face[j];
 					
-					::glNormal3fv(vertex.no.getAsOpenGLVector());
+					::glNormal3fv(glm::value_ptr(vertex.no));
 					
 					if(g_global.m_canTexture && g_global.m_enableTexture) {
 						::glTexCoord2f(uv.x, uv.y);
 					}
-					::glVertex3fv(vertex.co.getAsOpenGLVector());
+					::glVertex3fv(glm::value_ptr(vertex.co));
 					
 					if (g_global.getQuotedBox()) {
 						calcMinMax(vertex.co);
