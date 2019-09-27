@@ -90,7 +90,6 @@ The filenames of these files end in ".rot.info".
 */
 class PoseRotation : public vector<PoseTargetData>
 {
-private:
 	/// Used to calculate center
 	vector<int> centerVertexNumbers;
 	/// Will be used as parameter for Matrix::setRoation()
@@ -134,15 +133,14 @@ public:
 	void setCenter(const glm::vec3 &c) { center = c; }
 
 	const RotateAxis &getAxis() const { return axis; }
-	const bool getHasCenter() const { return hasCenter; }
+	bool getHasCenter() const { return hasCenter; }
 	void setHasCenter(bool c) { hasCenter = c; }
 
-	const float getMinAngle() const { return minAngle; }
-	const float getMaxAngle() const { return maxAngle; }
-	const bool getNormalize() const { return normalize; }
+	float getMinAngle() const { return minAngle; }
+	float getMaxAngle() const { return maxAngle; }
+	bool getNormalize() const { return normalize; }
 	void setNormalize(bool inNormalize) { normalize = inNormalize; }
 
-	// const string &getFilename() const {return inFilename;}
 	const string &getCat() const { return cat; }
 	void setCat(string inCat) { cat = inCat; }
 

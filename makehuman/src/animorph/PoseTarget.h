@@ -61,7 +61,6 @@ typedef std::list<PoseRotation> PoseRotationVector;
  */
 class PoseTarget
 {
-private:
 	// normally these vectors contain only one element
 	/// Translations to be applied on Mesh::doPose()
 	PoseTranslationVector positiveTranslations;
@@ -131,9 +130,8 @@ public:
 	PoseRotationVector &getNegativeRotations() { return negativeRotations; }
 
 	UsedVertex &getModVertex() { return modVertex; }
-	// void showCenters();
-	const float getMinAngle() const { return minAngle; }
-	const float getMaxAngle() const { return maxAngle; }
+	float getMinAngle() const { return minAngle; }
+	float getMaxAngle() const { return maxAngle; }
 
 	bool load();
 };
