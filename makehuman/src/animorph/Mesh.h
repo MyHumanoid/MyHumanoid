@@ -40,7 +40,6 @@
 #include "Face.h"
 #include "FaceGroup.h"
 #include "FaceVector.h"
-#include "Hotspot.h"
 #include "Material.h"
 #include "MathUtil.h"
 #include "Matrix.h"
@@ -260,7 +259,6 @@ private:
 	bool mTargetLoadTry;
 }; // class PoseEntry
 
-// typedef map <string, Hotspot>      HotspotMap;
 typedef map<string, TargetEntry *> TargetMap;
 typedef map<string, glm::vec3> Centeroid;
 typedef map<string, glm::vec3> FormFactor;

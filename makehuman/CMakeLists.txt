@@ -50,8 +50,6 @@ set(animorph_sources
 	src/animorph/Euler.h
 	src/animorph/FaceVector.h
 	src/animorph/FaceVector.cpp
-	src/animorph/Hotspot.h
-	src/animorph/Hotspot.cpp
 	src/animorph/Material.h
 	src/animorph/Material.cpp
 	src/animorph/Mesh.h
