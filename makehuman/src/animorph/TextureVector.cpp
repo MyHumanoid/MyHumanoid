@@ -18,14 +18,14 @@ void TextureVector::fromUVStream(ifstream &in_stream)
 		TextureFace texture_face;
 
 		if (nr_uv_coord == 6) {
-			texture_face.push_back(Vector2f(u[0], v[0]));
-			texture_face.push_back(Vector2f(u[1], v[1]));
-			texture_face.push_back(Vector2f(u[2], v[2]));
+			texture_face.push_back(glm::vec2(u[0], v[0]));
+			texture_face.push_back(glm::vec2(u[1], v[1]));
+			texture_face.push_back(glm::vec2(u[2], v[2]));
 		} else if (nr_uv_coord == 8) {
-			texture_face.push_back(Vector2f(u[0], v[0]));
-			texture_face.push_back(Vector2f(u[1], v[1]));
-			texture_face.push_back(Vector2f(u[2], v[2]));
-			texture_face.push_back(Vector2f(u[3], v[3]));
+			texture_face.push_back(glm::vec2(u[0], v[0]));
+			texture_face.push_back(glm::vec2(u[1], v[1]));
+			texture_face.push_back(glm::vec2(u[2], v[2]));
+			texture_face.push_back(glm::vec2(u[3], v[3]));
 		}
 
 		texture_vector.push_back(texture_face);

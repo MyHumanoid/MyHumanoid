@@ -51,7 +51,7 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 				const TextureFace &texture_face(texturevector[facegroupdata[i]]);
 
 				for (unsigned int n = 0; n < texture_face.size(); n++) {
-					const Vector2f &uv(texture_face[n]);
+					const glm::vec2 &uv(texture_face[n]);
 
 					// the -uv.y+1.0 stuff is a hack for renderman input UV data
 					// TODO: change renderman import UV data
@@ -156,7 +156,7 @@ void ObjExporter::createFullOBJStream(ostringstream &out_stream,
 			TextureFace &texture_face = texturevector[i];
 
 			for (unsigned int n = 0; n < texture_face.size(); n++) {
-				Vector2f &uv = texture_face[n];
+				glm::vec2 &uv = texture_face[n];
 
 				// the -uv.y+1.0 stuff is a hack for renderman input UV data
 				// TODO: change renderman import UV data

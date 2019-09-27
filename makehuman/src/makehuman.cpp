@@ -1766,7 +1766,7 @@ void renderMesh()
 				
 				for (j = 0; j != facesize; ++j) {
 					const Vertex &vertex = vertexvector[face.getVertexAtIndex(j)];
-					const Vector2f &uv = texture_face[j];
+					const glm::vec2 &uv = texture_face[j];
 					
 					::glNormal3fv(glm::value_ptr(vertex.no));
 					

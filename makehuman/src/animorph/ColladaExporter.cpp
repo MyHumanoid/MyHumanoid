@@ -269,7 +269,7 @@ void ColladaExporter::AddGeometry(XMLNode *xNode_geometry, string temp)
 		TextureFace &texture_face = texturevector[i];
 
 		for (unsigned int n = 0; n < texture_face.size(); n++) {
-			Vector2f &uv = texture_face[n];
+			glm::vec2 &uv = texture_face[n];
 			counteruv++;
 			// the -uv.y+1.0 stuff is a hack for renderman input UV data
 			// TODO: change renderman import UV data

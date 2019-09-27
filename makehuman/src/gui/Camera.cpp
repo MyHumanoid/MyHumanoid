@@ -313,7 +313,7 @@ void Autozoom::fromStream(std::ifstream &in_stream, const std::string &filename)
 	if (sscanf(buffer, "%f,%f,%f,%f,%f,%f,%f,%f,%s", &p0, &p1, &p2, &r1, &r2, &c0,
 	           &c1, &c2, verts) == 9) {
 		glm::vec3 pos(p0, p1, p2);
-		Vector2f xyRot(r1, r2);
+		glm::vec2 xyRot(r1, r2);
 		glm::vec3 cen(c0, c1, c2);
 		data.pos_camera = pos;
 		data.xyRot_camera = xyRot;

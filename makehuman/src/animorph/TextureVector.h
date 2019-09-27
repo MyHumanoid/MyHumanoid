@@ -38,7 +38,7 @@
 #include <vector>
 
 #include "FileReader.h"
-#include "Vector2.h"
+#include <glm/vec2.hpp>
 
 using std::ifstream;
 using std::string;
@@ -47,7 +47,7 @@ using std::vector;
 namespace Animorph
 {
 
-typedef std::vector<Vector2f> TextureFace;
+typedef std::vector<glm::vec2> TextureFace;
 
 /*! \brief Loadble vector of TextureFace
  */

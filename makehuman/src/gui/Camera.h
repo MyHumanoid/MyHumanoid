@@ -35,7 +35,7 @@
 #include "GLUTWrapper.h"
 #include <animorph/FileWriter.h>
 #include <animorph/Matrix.h>
-#include <animorph/Vector2.h>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <animorph/VertexVector.h>
 #include <animorph/util.h>
@@ -43,7 +43,6 @@
 #include <map>
 
 using Animorph::Matrix;
-using Animorph::Vector2f;
 using Animorph::VertexVector;
 
 namespace mhgui
@@ -53,7 +52,7 @@ typedef std::vector<int> Reference_Verts;
 
 struct AutozoomData {
 	glm::vec3 pos_camera;
-	Vector2f xyRot_camera;
+	glm::vec2 xyRot_camera;
 	Reference_Verts vertsIndexes;
 	glm::vec3 vertsCenteroid;
 };
@@ -64,7 +63,7 @@ struct AutozoomData {
 class Camera
 {
 private:
-	Vector2f last_mouse_pos;
+	glm::vec2 last_mouse_pos;
 	glm::vec3 last_pos_camera;
 	int width;
 	int height;

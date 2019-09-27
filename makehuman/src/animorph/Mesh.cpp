@@ -1,8 +1,6 @@
 #include "animorph/Mesh.h"
 
-#ifdef DEBUG
-#include <StopClock/StopClock.h>
-#endif // DEBUG
+#include <glm/glm.hpp>
 
 #include <assert.h>
 
