@@ -682,7 +682,10 @@ void Mesh::poseMode()
 	doPose(poses, false);
 }
 
-void Mesh::bodyDetailsMode() { vertexvector_morph = vertexvector_morph_copy; }
+void Mesh::bodyDetailsMode()
+{
+	vertexvector_morph = vertexvector_morph_copy;
+}
 
 void Mesh::resetMorph()
 {
@@ -694,30 +697,7 @@ void Mesh::resetPose()
 	poses.clear();
 	vertexvector_morph = vertexvector_morph_copy;
 	vertexvector_morph_only = vertexvector_morph_copy;
-
-	/*
-	  for (BodySettings::iterator poses_it = poses.begin ();
-	       poses_it != poses.end ();
-	       poses_it++)
-	  {
-	    (*poses_it).second = 0;
-	  }
-	*/
 }
-/*
-void Mesh::resetPose (const PoseRotation &target)
-{
-  for (PoseRotation::const_iterator target_it = target.begin ();
-       target_it != target.end ();
-       target_it++)
-  {
-    const PoseTargetData &td = (*target_it);
-
-    vertexvector_morph[td.vertex_number].co =
-vertexvector_morph_copy[td.vertex_number].co;
-  }
-}
-*/
 
 bool Mesh::setPose(const std::string &target_name, float morph_value)
 {

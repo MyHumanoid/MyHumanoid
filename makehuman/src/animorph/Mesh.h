@@ -445,14 +445,7 @@ public:
 	 */
 	FaceGroup &getFaceGroupRef() { return facegroup; }
 
-	/*!
-	 * \return a reference to the ClothesGroup of the Mesh
-	 */
-	EdgeStrip &getEdgeStripRef() { return edgestrip; }
 	//@}
-
-	/**** copy API ****/
-	/******************/
 
 	/*!
 	 * \return the Mesh's BodySetting
@@ -463,18 +456,6 @@ public:
 	 * \return the Mesh's Poses
 	 */
 	const BodySettings &getPoses() const { return poses; }
-
-	/*!
-	 * \return the Mesh's face vector
-	 */
-	const FaceVector &getFaces() const { return facevector; }
-
-	FaceVector getFacesCopy() { return facevector; }
-
-	/*!
-	 * \return the Mesh's vertex vector
-	 */
-	const VertexVector &getVertexes() const { return vertexvector_morph; }
 
 	/** @name Loading
 	 */
@@ -545,8 +526,6 @@ public:
 	//@}
 
 	void loadSkeleton() { prepareSkeleton(); }
-
-	void updateSkeleton() { prepareSkeleton(); }
 
 	SKELETON_JOINT getSymmetricJoint(SKELETON_JOINT joint);
 	/**** calculate API ****/
@@ -628,14 +607,6 @@ public:
 	 */
 	void doPose(const string &target_name, float morph_value,
 	            const UsedVertex &modVertex);
-
-	/*!
-	 * \param target_name the previously registered name of a target to morph
-	 * \param morph_value the value to morph this target
-	 * \return true if target is found in PoseMap and could be morphed
-	 * \return false if target isn't found in PoseMap and couldn't be morphed
-	 */
-	// bool doPose (const std::string& target_name, float morph_value);
 
 	/*! \brief Apply an additional PoseTarget by name
 	 *
