@@ -306,32 +306,16 @@ inline Vector2<T> operator+(const Vector2<T> &v1, const Vector2<T> &v2)
 	return v3 += v2;
 }
 
-/// calculate the distance between two Vector2 (float)
-inline float vectorDistance(const Vector2f &v1, const Vector2f &v2)
-{
-	Vector2f dist = v1 - v2;
+///// << operator for output
+//template <typename T>
+//std::ostream &operator<<(std::ostream &s, const Vector2<T> &v)
+//{
+//	s << "[";
+//	s << "x: " << v.x << " y: " << v.y;
+//	s << "]";
 
-	return dist.getMagnitude();
-}
-
-/// calculate the distance between two Vector2 (double)
-inline double vectorDistance(const Vector2d &v1, const Vector2d &v2)
-{
-	Vector2d dist = v1 - v2;
-
-	return dist.getMagnitude();
-}
-
-/// << operator for output
-template <typename T>
-std::ostream &operator<<(std::ostream &s, const Vector2<T> &v)
-{
-	s << "[";
-	s << "x: " << v.x << " y: " << v.y;
-	s << "]";
-
-	return s;
-}
+//	return s;
+//}
 
 } // end namespace Animorph
 

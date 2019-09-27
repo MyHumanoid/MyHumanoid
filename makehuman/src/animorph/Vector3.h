@@ -323,20 +323,6 @@ inline Vector3<T> crossProduct(const Vector3<T> &v1, const Vector3<T> &v2)
 	                  v1.x * v2.y - v1.y * v2.x);
 }
 
-/// calculate the distance between two Vector3 (float)
-// template <typename T>
-inline float vectorDistance(const Vector3f &v1, const Vector3f &v2)
-{
-	return Vector3f(v1 - v2).getMagnitude();
-}
-
-/// calculate the distance between two Vector3 (double)
-// template <typename T>
-inline double vectorDistance(const Vector3d &v1, const Vector3d &v2)
-{
-	return Vector3d(v1 - v2).getMagnitude();
-}
-
 /// << operator for output
 template <typename T>
 std::ostream &operator<<(std::ostream &s, const Vector3<T> &v)
