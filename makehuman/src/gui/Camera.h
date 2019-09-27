@@ -36,7 +36,7 @@
 #include <animorph/FileWriter.h>
 #include <animorph/Matrix.h>
 #include <animorph/Vector2.h>
-#include <animorph/Vector3.h>
+#include <glm/vec3.hpp>
 #include <animorph/VertexVector.h>
 #include <animorph/util.h>
 #include <cmath>
@@ -44,7 +44,6 @@
 
 using Animorph::Matrix;
 using Animorph::Vector2f;
-using Animorph::Vector3f;
 using Animorph::VertexVector;
 
 namespace mhgui
@@ -53,10 +52,10 @@ namespace mhgui
 typedef std::vector<int> Reference_Verts;
 
 struct AutozoomData {
-	Vector3f pos_camera;
+	glm::vec3 pos_camera;
 	Vector2f xyRot_camera;
 	Reference_Verts vertsIndexes;
-	Vector3f vertsCenteroid;
+	glm::vec3 vertsCenteroid;
 };
 
 // TODO: moving world vs. moving camera problem
@@ -66,11 +65,11 @@ class Camera
 {
 private:
 	Vector2f last_mouse_pos;
-	Vector3f last_pos_camera;
+	glm::vec3 last_pos_camera;
 	int width;
 	int height;
 	float angle;
-	Vector3f axis;
+	glm::vec3 axis;
 
 	Matrix cam_pos;
 	Matrix cam_center;
@@ -78,12 +77,12 @@ private:
 	bool mode;
 
 	// Ugly Test code following - just for test purposes!
-	Vector3f mCameraPos;
+	glm::vec3 mCameraPos;
 	float mAngleX;
 	float mAngleY;
 	float mAngleZ;
-	Vector3f startVector;
-	Vector3f endVector;
+	glm::vec3 startVector;
+	glm::vec3 endVector;
 	float startAngleX;
 	float endAngleX;
 	float startAngleY;
@@ -108,7 +107,7 @@ public:
 
 	void applyMatrix();
 
-	const Vector3f &getPosition() const { return mCameraPos; }
+	const glm::vec3 &getPosition() const { return mCameraPos; }
 	float getAngleX() const { return mAngleX; }
 	float getAngleY() const { return mAngleY; }
 	float getAngleZ() const { return mAngleZ; }

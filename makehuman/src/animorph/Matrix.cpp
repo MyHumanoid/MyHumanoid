@@ -117,7 +117,7 @@ void Matrix::setRotation(float theta, RotateAxis axis)
 	}
 }
 
-void Matrix::setRotation(float theta, const Vector3f &axis)
+void Matrix::setRotation(float theta, const glm::vec3 &axis)
 {
 	// implement a unit vector check?
 
@@ -147,7 +147,7 @@ void Matrix::setRotation(float theta, const Vector3f &axis)
 	data[14] = 0;
 }
 
-void Matrix::setScale(const Vector3f &s) { setScale(s.x, s.y, s.z); }
+void Matrix::setScale(const glm::vec3 &s) { setScale(s.x, s.y, s.z); }
 
 void Matrix::setScale(float x, float y, float z)
 {
@@ -169,7 +169,7 @@ void Matrix::setScale(float x, float y, float z)
 	data[15] = 1.0;
 }
 
-void Matrix::setTranslation(const Vector3f &t)
+void Matrix::setTranslation(const glm::vec3 &t)
 {
 	setTranslation(t.x, t.y, t.z);
 }
@@ -194,21 +194,21 @@ void Matrix::setTranslation(float x, float y, float z)
 	data[15] = 1.0;
 }
 
-Vector3f Matrix::getTranslation()
+glm::vec3 Matrix::getTranslation()
 {
-	return Vector3f(data[12], data[13], data[14]);
+	return glm::vec3(data[12], data[13], data[14]);
 }
 
 /**************************************/
 /* Non-Member operators and functions */
 /**************************************/
 
-Vector3f Animorph::operator*(const Vector3f &v, const Matrix &m) // REDO
+glm::vec3 Animorph::operator*(const glm::vec3 &v, const Matrix &m) // REDO
 {
 	// data[3], data[7], data[11], and data[15] are everytime [0 0 0 1] in OpenGL.
 	// if speed is critical, here's some place for optimization...
 
-	return Vector3f(
+	return glm::vec3(
 	    v.x * m.data[0] + v.y * m.data[4] + v.z * m.data[8] + m.data[12],
 	    v.x * m.data[1] + v.y * m.data[5] + v.z * m.data[9] + m.data[13],
 	    v.x * m.data[2] + v.y * m.data[6] + v.z * m.data[10] + m.data[14]);

@@ -112,7 +112,7 @@ public:
 	/// centerVertexNumbers
 	void calcRotationsCenteroids(const VertexVector &vertexvector);
 	void calcTranslationsFormFactors(const VertexVector &vertexvector);
-	const Vector3f getFirstRotationCenteroid();
+	const glm::vec3 getFirstRotationCenteroid();
 
 	/// Determines, whether normalizations of the rotations or translations are
 	/// required

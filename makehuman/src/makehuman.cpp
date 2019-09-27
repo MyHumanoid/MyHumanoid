@@ -52,7 +52,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <animorph/Mesh.h>
-#include <animorph/Vector3.h>
+#include <glm/vec3.hpp>
 #include <animorph/util.h>
 #include <animorph/ColladaExporter.h>
 #include <animorph/ObjExporter.h>
@@ -126,7 +126,7 @@ int tickCount = 0;
 float kTimePerRaster(0.03f);
 bool oldCameraTimerTrigger = false;
 
-static Vector3f cameraPos;
+static glm::vec3 cameraPos;
 
 const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
@@ -1629,7 +1629,7 @@ int main(int argc, char **argv)
 }
 
 // function to find the xyz values of the bounding box
-void calcMinMax(const Vector3f &coords)
+void calcMinMax(const glm::vec3 &coords)
 {
 	if (coords.x < twopoints[0]) {
 		twopoints[0] = coords.x;

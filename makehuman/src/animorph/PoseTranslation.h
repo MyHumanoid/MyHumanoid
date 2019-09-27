@@ -84,7 +84,7 @@ class PoseTranslation
 private:
 	Target *target;
 	float originalSize[3];
-	Vector3f formFactor;
+	glm::vec3 formFactor;
 	float minAngle;
 	float maxAngle;
 	/// flag
@@ -111,7 +111,7 @@ public:
 	/// originalSize
 	void calcFormFactor(const VertexVector &vertexvector);
 	Target &getTarget() { return *target; }
-	Vector3f &getFormFactor() { return formFactor; }
+	glm::vec3 &getFormFactor() { return formFactor; }
 	const float getMinAngle() const { return minAngle; }
 	const float getMaxAngle() const { return maxAngle; }
 	const bool getNormalize() const { return normalize; }

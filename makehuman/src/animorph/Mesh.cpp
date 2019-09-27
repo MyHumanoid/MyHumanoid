@@ -252,9 +252,9 @@ using namespace Animorph;
 #define DUMMY_JOINTS (SK_JOINT_END - SK_JOINT_68)
 
 const DummyJoint dummyJoints[DUMMY_JOINTS] = {
-    {SK_NONE, Vector3f(0, 0, 0)}, {SK_NONE, Vector3f(0, 0, 0)},
-    {SK_NONE, Vector3f(0, 0, 0)}, {SK_NONE, Vector3f(0, 0, 0)},
-    {SK_NONE, Vector3f(0, 0, 0)},
+    {SK_NONE, glm::vec3(0, 0, 0)}, {SK_NONE, glm::vec3(0, 0, 0)},
+    {SK_NONE, glm::vec3(0, 0, 0)}, {SK_NONE, glm::vec3(0, 0, 0)},
+    {SK_NONE, glm::vec3(0, 0, 0)},
 };
 
 const float M_PI_180 = (M_PI / 180.0);
@@ -330,7 +330,7 @@ void Mesh::calcVertexNormals()
 		vector<int> &faces(vertex.getSharedFaces());
 		for (unsigned int j = 0; j < faces.size(); j++) {
 			try {
-				const Vector3f &face_normal(facevector.at(faces[j]).no);
+				const glm::vec3 &face_normal(facevector.at(faces[j]).no);
 				vertex.no += face_normal;
 			} catch (const exception &e) {
 				return;
@@ -350,8 +350,8 @@ void Mesh::calcFaceNormals()
 			const Vertex &vertex2(vertexvector_morph[face.getVertexAtIndex(1)]);
 			const Vertex &vertex3(vertexvector_morph[face.getVertexAtIndex(2)]);
 
-			const Vector3f v1_tmp(vertex2.co - vertex1.co);
-			const Vector3f v2_tmp(vertex3.co - vertex1.co);
+			const glm::vec3 v1_tmp(vertex2.co - vertex1.co);
+			const glm::vec3 v2_tmp(vertex3.co - vertex1.co);
 			
 			face.no = glm::normalize(glm::cross(v1_tmp, v2_tmp));
 		} else {
@@ -653,10 +653,10 @@ void Mesh::initPoses()
 	     skin_it != skin.end(); skin_it++) {
 		SkinVertex &skinVertex = (*skin_it);
 
-		Vector3f centeroid(
+		glm::vec3 centeroid(
 		    calcCenteroid(skinVertex.getLinkedMuscles(), vertexvector_morph));
 
-		Vector3f oriDist =
+		glm::vec3 oriDist =
 		    vertexvector_morph[skinVertex.getSkinVertex()].co - centeroid;
 		skinVertex.setOriginalDist(glm::length(oriDist));
 	}
@@ -779,7 +779,7 @@ void Mesh::doPoseTranslation(PoseTranslation &pt, float morph_value,
                              const UsedVertex &modVertex)
 {
 	Target &tmpTarget = pt.getTarget();
-	Vector3f formFactor = pt.getFormFactor();
+	glm::vec3 formFactor = pt.getFormFactor();
 	float real_value = 0;
 
 	if (pt.getNormalize()) {
@@ -811,7 +811,7 @@ void Mesh::doPoseTranslation(PoseTranslation &pt, float morph_value,
 		// vertexvector_morph[td.vertex_number].co += (td.morph_vector * formFactor)
 		// * real_value;
 		vertexvector_morph[td.vertex_number].co +=
-		    Vector3f(formFactor.x * td.morph_vector.x,
+		    glm::vec3(formFactor.x * td.morph_vector.x,
 		             formFactor.y * td.morph_vector.y,
 		             formFactor.z * td.morph_vector.z) *
 		    real_value;
@@ -879,7 +879,7 @@ void Mesh::applySmooth(const int recursive_level)
 
 			vToMove = (*smoothData_it);
 
-			Vector3f centeroid(calcCenteroid(
+			glm::vec3 centeroid(calcCenteroid(
 			    vector<int>(smoothData_it++, smooth.end()), vertexvector_morph));
 			vertexvector_morph[vToMove].co =
 			    (centeroid + vertexvector_morph[vToMove].co);
@@ -894,19 +894,19 @@ void Mesh::applySkin()
 	     skin_it != skin.end(); skin_it++) {
 		SkinVertex &skinVertex = (*skin_it);
 
-		Vector3f centeroid(
+		glm::vec3 centeroid(
 		    calcCenteroid(skinVertex.getLinkedMuscles(), vertexvector_morph));
 
-		Vector3f normal(calcAverageNormalLength(skinVertex.getLinkedMuscles(),
+		glm::vec3 normal(calcAverageNormalLength(skinVertex.getLinkedMuscles(),
 		                                        vertexvector_morph));
 		
 		float r = skinVertex.getOriginalDist() / glm::length(normal);//normal.getMagnitude();
-		Vector3f delta = normal * r;
+		glm::vec3 delta = normal * r;
 		vertexvector_morph[skinVertex.getSkinVertex()].co = centeroid + delta;
 	}
 }
 
-bool Mesh::IsADummyJoint(SKELETON_JOINT joint, Vector3f &v3)
+bool Mesh::IsADummyJoint(SKELETON_JOINT joint, glm::vec3 &v3)
 {
 	for (int i = 0; i < DUMMY_JOINTS; i++) {
 
@@ -924,7 +924,7 @@ void Mesh::prepareSkeleton()
 
 	for (int i = 0; i < SK_JOINT_END; i++) {
 
-		Vector3f v(0.f, 0.f, 0.f);
+		glm::vec3 v(0.f, 0.f, 0.f);
 		PoseTarget *tmp;
 		PoseEntry *poseEntry;
 		PoseMap::iterator temp = posemap.find(jointName[i] + "/ROT1");
@@ -935,7 +935,7 @@ void Mesh::prepareSkeleton()
 			temp = posemap.find(jointName[i] + "/ROT_BASE1");
 
 			if (temp == posemap.end()) {
-				Vector3f v3;
+				glm::vec3 v3;
 				if (IsADummyJoint((SKELETON_JOINT)i, v3) == true) {
 					jointvector.push_back(v3);
 					continue;

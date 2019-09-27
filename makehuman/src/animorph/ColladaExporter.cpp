@@ -184,7 +184,7 @@ void ColladaExporter::AddGeometry(XMLNode *xNode_geometry, string temp)
 	for (unsigned int i = 0; i < vertexvector.size(); i++) {
 		Vertex &vertex = vertexvector[i];
 
-		Vector3f vector = vertex.co * tm;
+		glm::vec3 vector = vertex.co * tm;
 
 		vertex_stream << vector.x << " " << vector.y << " " << vector.z << " ";
 	}
@@ -227,7 +227,7 @@ void ColladaExporter::AddGeometry(XMLNode *xNode_geometry, string temp)
 
 	for (unsigned int i = 0; i < vertexvector.size(); i++) {
 		Vertex &vertex = vertexvector[i];
-		Vector3f vector = vertex.no * tm;
+		glm::vec3 vector = vertex.no * tm;
 
 		normals_stream << vector.x << " " << vector.y << " " << vector.z << " ";
 		normals_stream << vector.x << " " << vector.y << " " << vector.z << " ";
@@ -783,12 +783,12 @@ void ColladaExporter::setChildNode(XMLNode *child, SKELETON_JOINT numb,
 	xNode_translate = child->addChild("translate");
 	xNode_translate.addAttribute("sid", "translate");
 
-	Vector3f parentnode = mesh.getJointVector()->at(row);
-	Vector3f childnode = mesh.getJointVector()->at(numb);
+	glm::vec3 parentnode = mesh.getJointVector()->at(row);
+	glm::vec3 childnode = mesh.getJointVector()->at(numb);
 
-	Vector3f diff;
-	if (childnode == Vector3f(0, 0, 0))
-		diff = Vector3f(0, 0, 0);
+	glm::vec3 diff;
+	if (childnode == glm::vec3(0, 0, 0))
+		diff = glm::vec3(0, 0, 0);
 	else
 		diff = childnode - parentnode;
 

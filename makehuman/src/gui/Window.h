@@ -35,7 +35,7 @@
 #include "Component.h"
 #include <animorph/Color.h>
 #include <animorph/Matrix.h>
-#include <animorph/Vector3.h>
+#include <glm/vec3.hpp>
 #include <list>
 #include <string>
 //#include "Panel.h"
@@ -64,8 +64,8 @@ class Window : public Component
 	bool image_loaded;
 	float light0Lum;
 	float light1Lum;
-	Vector3f light0Pos;
-	Vector3f light1Pos;
+	glm::vec3 light0Pos;
+	glm::vec3 light1Pos;
 
 	Texture texture;
 

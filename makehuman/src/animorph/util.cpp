@@ -114,10 +114,10 @@ int Animorph::replaceString(const string &match, const string &replace,
 	return i;
 }
 
-Vector3f Animorph::calcCenteroid(const vector<int> &vertexNumbers,
+glm::vec3 Animorph::calcCenteroid(const vector<int> &vertexNumbers,
                                  const VertexVector &vertexvector)
 {
-	Vector3f center = glm::vec3(0);
+	glm::vec3 center = glm::vec3(0);
 
 	for (vector<int>::const_iterator v_it = vertexNumbers.begin();
 	     v_it != vertexNumbers.end(); v_it++) {
@@ -134,10 +134,10 @@ Vector3f Animorph::calcCenteroid(const vector<int> &vertexNumbers,
 	return center;
 }
 
-Vector3f Animorph::calcAverageNormalLength(const vector<int> vertexNumbers,
+glm::vec3 Animorph::calcAverageNormalLength(const vector<int> vertexNumbers,
                                            const VertexVector &vertexvector)
 {
-	Vector3f averageNormal = glm::vec3(0);
+	glm::vec3 averageNormal = glm::vec3(0);
 
 	for (vector<int>::const_iterator v_it = vertexNumbers.begin();
 	     v_it != vertexNumbers.end(); v_it++) {

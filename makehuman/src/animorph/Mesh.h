@@ -155,7 +155,7 @@ namespace Animorph
 typedef struct DummyJoint {
 
 	SKELETON_JOINT joint;
-	Vector3f v3;
+	glm::vec3 v3;
 } DummyJoint;
 
 /*! \brief Wraps a (morph) Target object to make it capable of lazy loading.
@@ -262,8 +262,8 @@ private:
 
 // typedef map <string, Hotspot>      HotspotMap;
 typedef map<string, TargetEntry *> TargetMap;
-typedef map<string, Vector3f> Centeroid;
-typedef map<string, Vector3f> FormFactor;
+typedef map<string, glm::vec3> Centeroid;
+typedef map<string, glm::vec3> FormFactor;
 typedef map<string, PoseEntry *> PoseMap;
 typedef map<string, BodySettings> CharactersMap;
 
@@ -290,7 +290,7 @@ private:
 	VertexVector vertexvector_morph_copy;
 	VertexVector vertexvector_morph_only;
 
-	vector<Vector3f> vertexvector_orginal; ///< Orginal mesh
+	vector<glm::vec3> vertexvector_orginal; ///< Orginal mesh
 
 	// VertexGroup       vgroup;
 	BodySettings bodyset;
@@ -310,7 +310,7 @@ private:
 	/// Save with each vertex to which faces it belongs
 	void calcSharedVertices();
 
-	vector<Vector3f> jointvector;
+	vector<glm::vec3> jointvector;
 
 	/*! \brief Releases all targets in targetmap
 	 *
@@ -351,7 +351,7 @@ private:
 
 	void applySkeleton();
 
-	bool IsADummyJoint(SKELETON_JOINT joint, Vector3f &v3);
+	bool IsADummyJoint(SKELETON_JOINT joint, glm::vec3 &v3);
 
 	/*! \brief Apply a PoseRotation target
 	 *
@@ -393,8 +393,8 @@ public:
 	 */
 	//@{
 
-	vector<Vector3f> *getJointVector() { return &jointvector; }
-	Vector3f GetJoint0_Pos() { return getJointVector()->at(0); }
+	vector<glm::vec3> *getJointVector() { return &jointvector; }
+	glm::vec3 GetJoint0_Pos() { return getJointVector()->at(0); }
 	//@}
 
 	/** @name Getting references to member variables

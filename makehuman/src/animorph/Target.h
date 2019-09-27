@@ -35,7 +35,7 @@
 
 #include "FileReader.h"
 #include "FileWriter.h"
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 #include <set>
 #include <vector>
 
@@ -46,7 +46,7 @@ typedef std::vector<int> UnsortedUsedVertex;
 
 struct TargetData {
 	int vertex_number;
-	Vector3f morph_vector;
+	glm::vec3 morph_vector;
 };
 
 /*! \brief A set of vertices and associated displacements.

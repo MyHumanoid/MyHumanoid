@@ -245,14 +245,14 @@ void Camera::calcForStepAnimate(float inX)
 
 	float s = getYForX(inX);
 
-	static Vector3f currentVector;
+	static glm::vec3 currentVector;
 	static float currentAngleX;
 	static float currentAngleY;
 
 	currentAngleX = startAngleX + s * (endAngleX - startAngleX);
 	currentAngleY = startAngleY + s * (endAngleY - startAngleY);
 
-	currentVector = Vector3f(startVector.x + s * (endVector.x - startVector.x),
+	currentVector = glm::vec3(startVector.x + s * (endVector.x - startVector.x),
 	                         startVector.y + s * (endVector.y - startVector.y),
 	                         startVector.z + s * (endVector.z - startVector.z));
 
@@ -283,7 +283,7 @@ bool Camera::timerTrigger()
 void Camera::moveCameraAnimated(const std::string &filename, AutozoomData data,
                                 const VertexVector &vertexvector)
 {
-	Vector3f delta_camera(calcCenteroid(data.vertsIndexes, vertexvector));
+	glm::vec3 delta_camera(calcCenteroid(data.vertsIndexes, vertexvector));
 	delta_camera -= data.vertsCenteroid;
 	endAngleX = data.xyRot_camera.x;
 
@@ -312,9 +312,9 @@ void Autozoom::fromStream(std::ifstream &in_stream, const std::string &filename)
 	/// TODO: lettura del file
 	if (sscanf(buffer, "%f,%f,%f,%f,%f,%f,%f,%f,%s", &p0, &p1, &p2, &r1, &r2, &c0,
 	           &c1, &c2, verts) == 9) {
-		Vector3f pos(p0, p1, p2);
+		glm::vec3 pos(p0, p1, p2);
 		Vector2f xyRot(r1, r2);
-		Vector3f cen(c0, c1, c2);
+		glm::vec3 cen(c0, c1, c2);
 		data.pos_camera = pos;
 		data.xyRot_camera = xyRot;
 		data.vertsCenteroid = cen;
@@ -377,7 +377,7 @@ bool Autozoom::save(const std::string &filename, const Camera &camera)
 void Autozoom::createStream(std::ostringstream &out_stream,
                             const std::string &filename, const Camera &camera)
 {
-	Vector3f camVector = camera.getPosition();
+	glm::vec3 camVector = camera.getPosition();
 	float camAngleX = camera.getAngleX();
 	float camAngleY = camera.getAngleY();
 	out_stream << camVector.x << "," << camVector.y << "," << camVector.z << ","

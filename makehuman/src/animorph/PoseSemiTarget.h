@@ -77,7 +77,7 @@ private:
 	UsedVertex modVertex;
 
 	bool hasCenter;
-	Vector3f center;
+	glm::vec3 center;
 	void stringTokenize(const string &str, vector<int> &tokens);
 
 public:
@@ -96,8 +96,8 @@ public:
 	bool getHasCenter() const { return hasCenter; }
 	void setHasCenter(bool c) { hasCenter = c; }
 
-	const Vector3f &getCenter() const { return center; }
-	void setCenter(const Vector3f &c) { center = c; }
+	const glm::vec3 &getCenter() const { return center; }
+	void setCenter(const glm::vec3 &c) { center = c; }
 };
 
 } // namespace Animorph

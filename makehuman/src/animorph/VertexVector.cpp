@@ -39,7 +39,7 @@ void VertexVector::fromStream(std::ifstream &in_stream)
 	}
 }
 
-int VertexVector::setCoordinates(std::vector<Vector3f> &vertexvector_orginal)
+int VertexVector::setCoordinates(std::vector<glm::vec3> &vertexvector_orginal)
 {
 	VertexVector &vertexvector_morph = (*this);
 
@@ -49,7 +49,7 @@ int VertexVector::setCoordinates(std::vector<Vector3f> &vertexvector_orginal)
 
 	for (unsigned int i = 0; i < size(); i++) {
 		Vertex &vertex_morph = vertexvector_morph[i];
-		Vector3f &vertex_orginal = vertexvector_orginal[i];
+		glm::vec3 &vertex_orginal = vertexvector_orginal[i];
 
 		vertex_morph.co = vertex_orginal;
 	}

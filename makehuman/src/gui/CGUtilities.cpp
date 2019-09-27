@@ -330,7 +330,7 @@ void cgutils::reshape(const Size &inSize, const Camera &inCamera)
 
 // Init window with some classic openGL commands
 int cgutils::initWindow(const Rect &rect, const char *title,
-                        const Vector3f &light0Pos, const Vector3f &light1Pos,
+                        const glm::vec3 &light0Pos, const glm::vec3 &light1Pos,
                         float light0Lum, float light1Lum, const Color &c)
 {
 	
@@ -454,7 +454,7 @@ void cgutils::drawMultiLineString(Point &inPoint, FontType font,
 	}
 }
 
-void cgutils::drawString3D(const Vector3f &pos, FontType font,
+void cgutils::drawString3D(const glm::vec3 &pos, FontType font,
                            const string &str, const Color &c)
 {
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
@@ -621,15 +621,15 @@ void cgutils::mhWireCube(const float twoxyz[6])
 	glPushMatrix();
 
 	// draws the D quote
-	const Vector3f posz(twoxyz[3] + 0.5, twoxyz[4] + 0.5, tz);
+	const glm::vec3 posz(twoxyz[3] + 0.5, twoxyz[4] + 0.5, tz);
 	drawString3D(posz, GLUT_BITMAP_9_BY_15, strz, box_color);
 
 	// draws the W quote
-	const Vector3f posx(tx - 0.5, twoxyz[4] + 0.75, twoxyz[5] + 0.5);
+	const glm::vec3 posx(tx - 0.5, twoxyz[4] + 0.75, twoxyz[5] + 0.5);
 	drawString3D(posx, GLUT_BITMAP_9_BY_15, strx, box_color);
 
 	// draws the H
-	const Vector3f posy(twoxyz[3] + 1.5, ty, twoxyz[5] + 0.5);
+	const glm::vec3 posy(twoxyz[3] + 1.5, ty, twoxyz[5] + 0.5);
 	drawString3D(posy, GLUT_BITMAP_9_BY_15, stry, box_color);
 
 	glPopMatrix();

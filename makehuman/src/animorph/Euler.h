@@ -33,14 +33,14 @@
 #include <config.h>
 #endif
 
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 
 namespace Animorph
 {
 
 /*! \brief Represents an Euler notation (3D rotation angles).
  */
-class Euler : public Vector3f
+class Euler : public glm::vec3
 {
 public:
 	enum Notation { XYZ };
@@ -51,7 +51,7 @@ private:
 public:
 	/// constructor for Euler with all components 0.
 	Euler(Notation n)
-	    : Vector3f(0, 0, 0)
+	    : glm::vec3(0, 0, 0)
 	    , n(XYZ)
 	{
 	}
@@ -64,7 +64,7 @@ public:
 	 * \param n A Notation for this three rotations.
 	 */
 	Euler(float x, float y, float z, Notation n)
-	    : Vector3f(x, y, z)
+	    : glm::vec3(x, y, z)
 	    , n(n)
 	{
 	}

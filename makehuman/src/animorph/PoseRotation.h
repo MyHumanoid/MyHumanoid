@@ -115,7 +115,7 @@ private:
 	/* \brief Centroid of centerVertexNumbers
 	 * Is initialized by PoseTarget::calcRotationsCenteroids()
 	 */
-	Vector3f center;
+	glm::vec3 center;
 	/// Limb rotation Type
 	bool mbLimb;
 
@@ -130,8 +130,8 @@ public:
 
 	const vector<int> &getCenterVertexNumbers() { return centerVertexNumbers; }
 	UnsortedUsedVertex &getModVertex() { return modVertex; }
-	const Vector3f &getCenter() const { return center; }
-	void setCenter(const Vector3f &c) { center = c; }
+	const glm::vec3 &getCenter() const { return center; }
+	void setCenter(const glm::vec3 &c) { center = c; }
 
 	const RotateAxis &getAxis() const { return axis; }
 	const bool getHasCenter() const { return hasCenter; }

@@ -34,7 +34,7 @@
 #endif
 
 #include "Color.h"
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -51,10 +51,10 @@ protected:
 
 public:
 	/// vertex coordinate
-	Vector3f co;
+	glm::vec3 co;
 
 	/// vertex normal
-	Vector3f no;
+	glm::vec3 no;
 
 	// vertex color
 	// Color color;

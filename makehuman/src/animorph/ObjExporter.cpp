@@ -32,7 +32,7 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 		for (VertexData::const_iterator vertexgroup_it = vertexgroupdata.begin();
 		     vertexgroup_it != vertexgroupdata.end(); vertexgroup_it++) {
 			const Vertex &vertex(vertexvector[(*vertexgroup_it).first]);
-			Vector3f vector(vertex.co * tm);
+			glm::vec3 vector(vertex.co * tm);
 
 			out_stream << "v " << vector.x << " " << vector.y << " " << vector.z
 			           << endl;
@@ -144,7 +144,7 @@ void ObjExporter::createFullOBJStream(ostringstream &out_stream,
 	// write vertices
 	for (unsigned int i = 0; i < vertexvector.size(); i++) {
 		Vertex &vertex = vertexvector[i];
-		Vector3f vector(vertex.co * tm);
+		glm::vec3 vector(vertex.co * tm);
 
 		out_stream << "v " << vector.x << " " << vector.y << " " << vector.z
 		           << endl;

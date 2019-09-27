@@ -27,7 +27,7 @@
  */
 #pragma once
 
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 #include "Vertex.h"
 #include "VertexVector.h"
 #include <iomanip>
@@ -137,10 +137,10 @@ int replaceString(const std::string &match, const std::string &replace, std::str
  * \param vertexvector a vector of vertices, from which only the ones indicated
  * by vertexNumbers are used \return location of the center of gravity
  */
-Vector3f calcCenteroid(const std::vector<int> &vertexNumbers,
+glm::vec3 calcCenteroid(const std::vector<int> &vertexNumbers,
                        const VertexVector &vertexvector);
 
-Vector3f calcAverageNormalLength(const std::vector<int> vertexNumbers,
+glm::vec3 calcAverageNormalLength(const std::vector<int> vertexNumbers,
                                  const VertexVector &vertexvector);
 
 } // namespace Animorph

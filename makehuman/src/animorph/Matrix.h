@@ -35,7 +35,7 @@
 
 #include "Euler.h"
 #include "Quaternion.h"
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 #include "util.h"
 #include <assert.h> // define NDEBUG for non debug modus!!
 #include <cmath>
@@ -120,12 +120,12 @@ public:
 	 */
 	void setRotation(float theta, RotateAxis axis);
 
-	void setRotation(float theta, const Vector3f &axis);
+	void setRotation(float theta, const glm::vec3 &axis);
 
 	/*!
 	 * \param s a Vector3 to scale the matrix
 	 */
-	void setScale(const Vector3f &s);
+	void setScale(const glm::vec3 &s);
 
 	/*!
 	 * \param x the x value of the scale vector
@@ -137,7 +137,7 @@ public:
 	/*!
 	 * \param t a Vector3 to translate the matrix
 	 */
-	void setTranslation(const Vector3f &t);
+	void setTranslation(const glm::vec3 &t);
 
 	/*!
 	 * \param x the x value of the translation vector
@@ -149,7 +149,7 @@ public:
 	/*!
 	 * \return get the translation part of the matrix
 	 */
-	Vector3f getTranslation();
+	glm::vec3 getTranslation();
 };
 
 /// Notation for matrix multiplication is from left to right.
@@ -157,7 +157,7 @@ public:
 Matrix operator*(const Matrix &a, const Matrix &b);
 
 /// multiply vector with Matrix
-Vector3f operator*(const Vector3f &v, const Matrix &m);
+glm::vec3 operator*(const glm::vec3 &v, const Matrix &m);
 
 /// write the Matrix elements into a stream
 std::ostream &operator<<(std::ostream &s, const Matrix &m);

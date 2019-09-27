@@ -35,7 +35,7 @@
 #include <set>
 #include <vector>
 
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 
 using std::set;
 using std::vector;

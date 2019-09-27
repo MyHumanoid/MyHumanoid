@@ -35,7 +35,7 @@
 
 #include "Color.h"
 #include "Vector2.h"
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 #include "Vertex.h"
 #include <assert.h>
 #include <list>
@@ -55,7 +55,7 @@ private:
 
 public:
 	/// the normal vector of this face
-	Vector3f no;
+	glm::vec3 no;
 
 	/// construct a quad
 	Face(int v0, int v1, int v2, int v3);

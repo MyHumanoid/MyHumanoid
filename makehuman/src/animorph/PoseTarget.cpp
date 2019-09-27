@@ -141,9 +141,9 @@ void PoseTarget::calcRotationsCenteroids(const VertexVector &vertexvector,
 	}
 }
 
-const Vector3f PoseTarget::getFirstRotationCenteroid()
+const glm::vec3 PoseTarget::getFirstRotationCenteroid()
 {
-	Vector3f res(0.f, 0.f, 0.f);
+	glm::vec3 res(0.f, 0.f, 0.f);
 
 	if (positive) {
 		for (list<PoseRotation>::iterator rotations_it = positiveRotations.begin();

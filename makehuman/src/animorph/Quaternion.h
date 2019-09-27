@@ -35,8 +35,10 @@
 
 #include "Euler.h"
 #include "MathUtil.h"
-#include "Vector3.h"
+#include <glm/vec3.hpp>
 #include <cmath>
+
+#include <iostream>
 
 namespace Animorph
 {

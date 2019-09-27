@@ -38,7 +38,7 @@
 
 #include <animorph/Color.h>
 #include <animorph/Matrix.h>
-#include <animorph/Vector3.h>
+#include <glm/vec3.hpp>
 
 #include "Camera.h"
 #include "GLUTWrapper.h"
@@ -80,8 +80,8 @@ void drawSquareFill(const Rect &inRect, const Color &c);
 
 void drawSquare(const Rect &inRect, const Color &c);
 
-int initWindow(const Rect &rect, const char *title, const Vector3f &light0Pos,
-               const Vector3f &light1Pos, float light0Lum, float light1Lum,
+int initWindow(const Rect &rect, const char *title, const glm::vec3 &light0Pos,
+               const glm::vec3 &light1Pos, float light0Lum, float light1Lum,
                const Color &c);
 
 void drawString(const Point &inPoint, FontType font, const string &str,
@@ -91,7 +91,7 @@ void drawMultiLineString(Point &inPoint, FontType font, const string &str,
                          const Color &c, const int32_t lineWidth,
                          const int lineOffset);
 
-void drawString3D(const Vector3f &pos, FontType font, const string &str,
+void drawString3D(const glm::vec3 &pos, FontType font, const string &str,
                   const Color &c);
 
 void redisplay();
