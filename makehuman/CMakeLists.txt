@@ -1,5 +1,73 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(animorph_sources
+	src/animorph/BodySettings.h
+	src/animorph/BodySettings.cpp
+	src/animorph/DirectoryList.h
+	src/animorph/DirectoryList.cpp
+	src/animorph/Face.h
+	src/animorph/Face.cpp
+	src/animorph/FileReader.h
+	src/animorph/FileReader.cpp
+	src/animorph/MathUtil.h
+	src/animorph/MathUtil.cpp
+	src/animorph/ObjExporter.h
+	src/animorph/ObjExporter.cpp
+	src/animorph/PoseSemiTarget.h
+	src/animorph/PoseSemiTarget.cpp
+	src/animorph/Quaternion.h
+	src/animorph/Quaternion.cpp
+	src/animorph/Skin.h
+	src/animorph/Skin.cpp
+	src/animorph/Target.h
+	src/animorph/Target.cpp
+	src/animorph/Vertex.h
+	src/animorph/Vertex.cpp
+	src/animorph/xmlParser.h
+	src/animorph/xmlParser.cpp
+	src/animorph/ColladaExporter.h
+	src/animorph/ColladaExporter.cpp
+	src/animorph/EdgeStrip.h
+	src/animorph/EdgeStrip.cpp
+	src/animorph/FaceGroup.h
+	src/animorph/FaceGroup.cpp
+	src/animorph/FileWriter.h
+	src/animorph/FileWriter.cpp
+	src/animorph/Matrix.h
+	src/animorph/Matrix.cpp
+	src/animorph/PoseTarget.h
+	src/animorph/PoseTarget.cpp
+	src/animorph/RawMesh.h
+	src/animorph/RawMesh.cpp
+	src/animorph/SkinVertex.h
+	src/animorph/SkinVertex.cpp
+	src/animorph/TextureVector.h
+	src/animorph/TextureVector.cpp
+	src/animorph/VertexGroup.h
+	src/animorph/VertexGroup.cpp
+	src/animorph/Color.h
+	src/animorph/Color.cpp
+	src/animorph/Euler.h
+	src/animorph/FaceVector.h
+	src/animorph/FaceVector.cpp
+	src/animorph/Hotspot.h
+	src/animorph/Hotspot.cpp
+	src/animorph/Material.h
+	src/animorph/Material.cpp
+	src/animorph/Mesh.h
+	src/animorph/Mesh.cpp
+	src/animorph/PoseRotation.h
+	src/animorph/PoseRotation.cpp
+	src/animorph/PoseTranslation.h
+	src/animorph/PoseTranslation.cpp
+	src/animorph/SmoothVertex.h
+	src/animorph/SmoothVertex.cpp
+	src/animorph/util.h
+	src/animorph/util.cpp
+	src/animorph/VertexVector.h
+	src/animorph/VertexVector.cpp
+)
+
 set(gui_sources
 	src/gui/AbstractListener.h
 	src/gui/Camera.h
@@ -145,6 +213,7 @@ find_package(PNG REQUIRED)
 find_package(fmt REQUIRED)
 
 add_executable(makehuman
+	${animorph_sources}
 	${gui_sources}
 	${log_sources}
 	${render_sources}
@@ -171,7 +240,6 @@ target_include_directories(makehuman PRIVATE
 target_link_libraries(makehuman PRIVATE
 	stdc++fs
 	fmt
-	animorph
 	imgui
 	nlohmann-json
 	stb_image
