@@ -22,11 +22,9 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 	           << "materials.mtl" << endl;
 
 	out_stream << "o " << basename << endl; // name of mesh
+	
+	for(auto & [partname, groupValue]: facegroup) {
 
-	for (FaceGroup::const_iterator facegroup_it = facegroup.begin();
-	     facegroup_it != facegroup.end(); facegroup_it++) {
-		const string &partname((*facegroup_it).first);
-		// FGroupData &facegroupdata = (*facegroup_it).second.facesIndexes;
 		const VertexData &vertexgroupdata(facegroup.getPartVertexesRef(partname));
 
 		for (VertexData::const_iterator vertexgroup_it = vertexgroupdata.begin();
@@ -38,11 +36,10 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 			           << endl;
 		}
 	}
-
-	for (FaceGroup::const_iterator facegroup_it = facegroup.begin();
-	     facegroup_it != facegroup.end(); facegroup_it++) {
-		const string &partname((*facegroup_it).first);
-		const FGroupData &facegroupdata((*facegroup_it).second.facesIndexes);
+	
+	for(auto & [partname, groupValue]: facegroup) {
+	
+		const FGroupData &facegroupdata(groupValue.facesIndexes);
 		// VertexData vertexgroupdata = facegroup.getPartVertexesRef(partname);
 
 		// write texture UV coordinates
@@ -66,10 +63,10 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 
 	int v_offset = 0;
 	int vt_offset = 0;
-	for (FaceGroup::const_iterator facegroup_it = facegroup.begin();
-	     facegroup_it != facegroup.end(); facegroup_it++) {
-		string partname = (*facegroup_it).first;
-		const FGroupData &facegroupdata((*facegroup_it).second.facesIndexes);
+	
+	for(const auto & [partname, groupValue]: facegroup) {
+	
+		const FGroupData &facegroupdata(groupValue.facesIndexes);
 		const VertexData &vertexgroupdata(facegroup.getPartVertexesRef(partname));
 
 		// write faces

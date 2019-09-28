@@ -1765,8 +1765,6 @@ void renderMesh()
 
 	const VertexVector &vertexvector(mesh->getVertexVectorRef());
 
-	FaceGroup &facegroup(mesh->getFaceGroupRef());
-
 	int facesize;
 	int istri = -1; // to remember which type was the latest drawn geometry and
 	                // avoid too many glBegin
@@ -1784,21 +1782,20 @@ void renderMesh()
 	cgutils::enableBlend();
 	
 	glUseProgram(g_bodyShader);
+	
+	for(auto & [goupName, groupValue]: mesh->getFaceGroupRef()) {
 
-	for (FaceGroup::iterator facegroup_it = facegroup.begin();
-	     facegroup_it != facegroup.end(); facegroup_it++) {
-
-		if ((*facegroup_it).second.visible == false)
+		if (groupValue.visible == false)
 			continue;
 
 		if(g_global.m_canTexture && g_global.m_enableTexture) {
 			glActiveTexture(GL_TEXTURE0);
 			::glBindTexture(GL_TEXTURE_2D, g_global
-			                                   .getTexture((*facegroup_it).first)
+			                                   .getTexture(goupName)
 			                                   ->getTextureIdOfXY(0, 0));
 		}
 
-		FGroupData &groupdata = (*facegroup_it).second.facesIndexes;
+		FGroupData &groupdata = groupValue.facesIndexes;
 
 		for (unsigned int i = 0; i < groupdata.size(); i++) {
 			const Face &face(facevector[groupdata[i]]);
@@ -1863,11 +1860,7 @@ void renderMesh()
 
 bool loadTextures()
 {
-	FaceGroup &facegroup(mesh->getFaceGroupRef());
-
-	for (FaceGroup::iterator facegroup_it = facegroup.begin();
-	     facegroup_it != facegroup.end(); facegroup_it++) {
-		string name((*facegroup_it).first);
+	for(auto & [name, value]: mesh->getFaceGroupRef()) {
 		g_global.setTexture(name, new Texture());
 		if (!g_global.getTexture(name)->load(
 		        searchPixmapFile("ui/" + name + "_color.png"))) {
@@ -1876,6 +1869,5 @@ bool loadTextures()
 			return false;
 		}
 	}
-
 	return true;
 }

@@ -31,11 +31,10 @@ void FaceGroup::calcVertexes(const FaceVector &facevector)
 	loaded = true;
 
 	int vertexCounter;
-
-	for (FaceGroup::iterator facegroup_it = (*this).begin();
-	     facegroup_it != (*this).end(); facegroup_it++) {
-		string partname = (*facegroup_it).first;
-		FGroupData &groupdata = (*facegroup_it).second.facesIndexes;
+	
+	for(auto & [partname, groupValue]: (*this)) {
+		
+		FGroupData &groupdata = groupValue.facesIndexes;
 		vertexCounter = 0;
 
 		for (unsigned int i = 0; i < groupdata.size(); i++) {
@@ -130,10 +129,8 @@ bool FaceGroup::loadVisibilities(const std::string &filename)
 
 void FaceGroup::createStreamVisibilities(std::ostringstream &out_stream)
 {
-	for (FaceGroup::iterator facegroup_it = (*this).begin();
-	     facegroup_it != (*this).end(); facegroup_it++) {
-		string partname = (*facegroup_it).first;
-		bool visible = (*facegroup_it).second.visible;
+	for(const auto & [partname, groupValue]: (*this)) {
+		bool visible = groupValue.visible;
 
 		if (visible) {
 			out_stream << "#v," << partname << endl;
