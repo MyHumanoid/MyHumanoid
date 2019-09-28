@@ -307,20 +307,6 @@ void ImageListener::hidePoses()
 	delete p;
 }
 
-void ImageListener::hideUtilities()
-{
-	Window &mainWindow = *g_mainWindow;
-	Panel *p = mainWindow.getPanel(kComponentID_UtilitiesPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	ToolbarPanel *tp =
-	    (ToolbarPanel *)mainWindow.getPanel(kComponentID_ToolbarPanel);
-
-	Image *img =
-	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_MorphingList));
-	img->setEnabled(true);
-}
 void ImageListener::hideBsCategory()
 {
 	Window &mainWindow = *g_mainWindow;

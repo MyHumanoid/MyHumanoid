@@ -54,7 +54,6 @@ private:
 	void hideBodyDetails();
 	void hidePoses();
 	void hideCharacterSetting();
-	void hideUtilities();
 	void hideBsCategory();
 	void hidePosesBsCategory();
 	void hidePanels(const Modes newMode);
