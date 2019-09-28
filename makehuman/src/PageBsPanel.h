@@ -34,7 +34,6 @@
 
 #include "ImageButton.h"
 #include "ImageListener.h"
-#include "PosesBsPanelSelectionListener.h"
 #include "TargetSlider.h"
 #include "util.h"
 #include <algorithm>

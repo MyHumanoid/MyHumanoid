@@ -28,11 +28,6 @@
 #ifndef CHARACTERSETTINGPANEL_H
 #define CHARACTERSETTINGPANEL_H 1
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include "BsSelectionListener.h"
 #include "ImageListener.h"
 #include "SelectorListener.h"
 #include "TargetSlider.h"

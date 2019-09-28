@@ -97,27 +97,7 @@ void ToolbarPanel::createWidgets()
 	addWidget(image);
 
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_BodySettings,
-	                  searchPixmapFile("ui/toolbar_body_settings.png"),
-	                  Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Characters Library", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_PoseBodySettings,
-	                  searchPixmapFile("ui/toolbar_pose_body_settings.png"),
-	                  Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Poses Library", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_MorphingList,
 	                  searchPixmapFile("ui/toolbar_morph_list.png"),

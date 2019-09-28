@@ -124,14 +124,6 @@ set(log_sources
 set(makehuman_sources
 	src/BodyPanel.cpp
 	src/BodyPanel.h
-	src/BsCategoryPanel.cpp
-	src/BsCategoryPanel.h
-	src/BsPanel.cpp
-	src/BsPanel.h
-	src/BsPanelSelectionListener.cpp
-	src/BsPanelSelectionListener.h
-	src/BsSelectionListener.cpp
-	src/BsSelectionListener.h
 	src/CharacterSettingPanel.cpp
 	src/CharacterSettingPanel.h
 	src/ComponentID.h
@@ -155,14 +147,6 @@ set(makehuman_sources
 	src/PageTargetPanel.h
 	src/PosesBodyPanel.cpp
 	src/PosesBodyPanel.h
-	src/PosesBsCategoryPanel.cpp
-	src/PosesBsCategoryPanel.h
-	src/PosesBsPanel.cpp
-	src/PosesBsPanel.h
-	src/PosesBsPanelSelectionListener.cpp
-	src/PosesBsPanelSelectionListener.h
-	src/PosesBsSelectionListener.cpp
-	src/PosesBsSelectionListener.h
 	src/PoseTargetPanel.cpp
 	src/PoseTargetPanel.h
 	src/PoseTargetSelectionListener.cpp

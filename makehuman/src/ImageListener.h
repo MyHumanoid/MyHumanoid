@@ -50,8 +50,6 @@ private:
 	void showBodyDetails();
 	void showCharacterSetting();
 	void showUtilities();
-	void showBsCategory();
-	void showPosesBsCategory();
 
 	void hideBodyDetails();
 	void hidePoses();

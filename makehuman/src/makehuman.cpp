@@ -181,14 +181,14 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
 }
 
 
+using IconMap = std::unordered_map<std::string, GLuint>;
 
-static std::unordered_map<std::string, GLuint> g_targetImageTextures;
-static std::unordered_map<std::string, GLuint> g_poseImageTextures;
+static IconMap g_targetImageTextures;
+static IconMap g_poseImageTextures;
+static IconMap g_charactersIconTextures;
 
-static void CreateTargetImageTextures() {
-	
-	fs::path baseDir = "pixmaps/tgimg/";
-	
+void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
+{
 	auto files = filesInDirRecursive(baseDir);
 	
 	for(auto & file: files) {
@@ -206,42 +206,32 @@ static void CreateTargetImageTextures() {
 			fs::path foobar = foo;
 			foobar.replace_extension();
 			
-			g_targetImageTextures[foobar] = my_image_texture;
+			logger("Loaded {} as {}", std::string(file), std::string(foobar));
+			target[foobar] = my_image_texture;
 		} else {
 			std::cout <<
 			    fmt::format("Failed to load file {}\n", file) << std::endl;
 		}
-	}
+	}	
+}
+
+static void CreateTargetImageTextures() {
+	
+	fs::path baseDir = "pixmaps/tgimg/";
+	loadTexturesFromDir(g_targetImageTextures, baseDir);
 }
 
 static void CreatePoseImageTextures() {
 	
 	fs::path baseDir = "pixmaps/rotimg/";
-	
-	auto files = filesInDirRecursive(baseDir);
-	
-	for(auto & file: files) {
-		int my_image_width = 0;
-		int my_image_height = 0;
-		GLuint my_image_texture = 0;
-		bool ret = LoadTextureFromFile(file.c_str(),
-		                               &my_image_texture,
-		                               &my_image_width,
-		                               &my_image_height);
-		
-		if(ret) {
-			auto foo = file;
-			foo.erase(0, baseDir.string().length());
-			fs::path foobar = foo;
-			foobar.replace_extension();
-			
-			g_poseImageTextures[foobar] = my_image_texture;
-		} else {
-			std::cout <<
-			    fmt::format("Failed to load file {}\n", file) << std::endl;
-		}
-	}
+	loadTexturesFromDir(g_poseImageTextures, baseDir);
 }
+
+static void CreateCaractersIconTextures() {
+	fs::path baseDir = "pixmaps/bsimg/";
+	loadTexturesFromDir(g_charactersIconTextures, baseDir);
+}
+
 
 // ================================================================================================
 
@@ -654,6 +644,121 @@ void DisplayPoseTargetsApplied()
 	ImGui::End();
 }
 
+// ================================================================================================
+
+void DisplayLibraryCharacters() {
+	
+	const static string kFilePrefixTarget(".bs");
+	const static string kFilePrefixPNG(".png");
+	
+	CharactersMap &charactersmap = mesh->getCharactersMapRef();
+	for (CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
+	     charactersmap_it != charactersmap.end(); charactersmap_it++) {
+		const string &character_name((*charactersmap_it).first);
+		
+		string::size_type loc = character_name.find("/", 0);
+		if (loc == string::npos)
+			continue;
+		
+		string sub = character_name.substr(0, loc);
+		
+		if(sub != "characters1")
+			continue;
+		
+		
+		fs::path foobar = character_name;
+		foobar.replace_extension();
+		
+		// remove ".bs"
+		string character_image(character_name);
+			character_image.replace(character_image.length() -
+										kFilePrefixTarget.length(),
+									kFilePrefixTarget.length(), kFilePrefixPNG);
+		    
+		    logger("asd {}", std::string(foobar));
+		
+		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
+		if(icon != g_charactersIconTextures.end()) {
+			const auto & tex = icon->second;
+			if(ImGui::ImageButton((void*)(intptr_t)tex, ImVec2(48, 48))){
+				
+				
+				{ // not copy-paste
+				Mesh *mesh = g_global.getMesh();
+				
+				if(g_global.getAppMode() == POSES) {
+					g_global.setAppMode(BODY_SETTINGS);
+					mesh->bodyDetailsMode();
+				}
+				
+				CharactersMap &charactersmap = mesh->getCharactersMapRef();
+				mesh->doMorph(charactersmap[character_name], 1.0, true);
+				mesh->calcNormals();
+				
+				loadSelectorsPositions(
+				    charactersmap[character_name].cursorPositions);
+				}
+			}
+		}
+	}
+}
+
+void DisplayLibraryPoses() {
+	
+	const static string kFilePrefixTarget(".bs");
+	const static string kFilePrefixPNG(".png");
+	
+	CharactersMap &charactersmap = mesh->getCharactersMapRef();
+	for (CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
+	     charactersmap_it != charactersmap.end(); charactersmap_it++) {
+		const string &character_name((*charactersmap_it).first);
+		
+		string::size_type loc = character_name.find("/", 0);
+		if (loc == string::npos)
+			continue;
+		
+		string sub = character_name.substr(0, loc);
+		
+		if(sub != "poses1")
+			continue;
+		
+		
+		fs::path foobar = character_name;
+		foobar.replace_extension();
+		
+		// remove ".bs"
+		string character_image(character_name);
+		character_image.replace(character_image.length() -
+		                            kFilePrefixTarget.length(),
+		                        kFilePrefixTarget.length(), kFilePrefixPNG);
+		
+		logger("asd {}", std::string(foobar));
+		
+		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
+		if(icon != g_charactersIconTextures.end()) {
+			const auto & tex = icon->second;
+			if(ImGui::ImageButton((void*)(intptr_t)tex, ImVec2(48, 48))){
+				
+				
+				{ // not copy-paste
+				
+				if(g_global.getAppMode() != POSES) {
+					g_global.setAppMode(POSES);
+					mesh->poseMode();
+				}
+				
+				CharactersMap &charactersmap = mesh->getCharactersMapRef();
+				
+				mesh->doPose(charactersmap[character_name], 1.0, true);
+				// mesh->doPose (charactersmap[imgSource->getTargetName ()], false);
+				mesh->calcNormals();
+				}
+			}
+		}
+	}
+}
+
+
 
 // ================================================================================================
 
@@ -819,6 +924,18 @@ void DisplayMainMenu()
 		if(ImGui::BeginMenu("Pose")) {
 			ImGui::Checkbox("Pose Rotations", &g_displayPoseTargets);
 			ImGui::Checkbox("Used pose list", &g_displayPoseTargetsApplied);
+			ImGui::EndMenu();
+		}
+		ImGui::Separator();
+		if(ImGui::BeginMenu("Library")) {
+			if(ImGui::BeginMenu("Characters")) {
+				DisplayLibraryCharacters();
+				ImGui::EndMenu();
+			}
+			if(ImGui::BeginMenu("Poses")) {
+				DisplayLibraryPoses();
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
@@ -1380,7 +1497,7 @@ int main(int argc, char **argv)
 	
 	CreateTargetImageTextures();
 	CreatePoseImageTextures();
-	
+	CreateCaractersIconTextures();
 	
 	
 	

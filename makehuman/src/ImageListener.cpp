@@ -27,8 +27,6 @@
 
 #include "ImageListener.h"
 #include "BodyPanel.h"
-#include "BsCategoryPanel.h"
-#include "BsPanel.h"
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "FacePanel.h"
@@ -36,8 +34,6 @@
 #include "HandsPanel.h"
 #include "PoseTargetPanel.h"
 #include "PosesBodyPanel.h"
-#include "PosesBsCategoryPanel.h"
-#include "PosesBsPanel.h"
 #include "SplashPanel.h"
 #include "TargetPanel.h"
 #include "TeethPanel.h"
@@ -186,39 +182,6 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 
 				g_global.setAppMode(POSES);
 				showPoses();
-			} break;
-			case kComponentID_ImageToolbarPanel_BodySettings: {
-				if (g_global.getAppMode() == BODY_SETTINGS)
-					return true;
-
-				hidePanels(g_global.getAppMode());
-
-				if (g_global.getAppMode() != CHARACTER_SETTING &&
-				    g_global.getAppMode() != BODY_DETAILS) {
-					Mesh *mesh = g_global.getMesh();
-					assert(mesh);
-
-					mesh->bodyDetailsMode();
-				}
-
-				g_global.setAppMode(BODY_SETTINGS);
-				showBsCategory();
-			} break;
-			case kComponentID_ImageToolbarPanel_PoseBodySettings: {
-				if (g_global.getAppMode() == POSES_BODY_SETTINGS)
-					return true;
-
-				hidePanels(g_global.getAppMode());
-
-				if (g_global.getAppMode() != POSES) {
-					Mesh *mesh = g_global.getMesh();
-					assert(mesh);
-
-					mesh->poseMode();
-				}
-
-				g_global.setAppMode(POSES_BODY_SETTINGS);
-				showPosesBsCategory();
 			} break;
 			case kComponentID_ImageToolbarPanel_MorphingList: {
 				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
@@ -437,22 +400,4 @@ void ImageListener::showUtilities()
 	Image *img =
 	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_MorphingList));
 	img->setEnabled(false);
-}
-
-void ImageListener::showBsCategory()
-{
-	Window &mainWindow = *g_mainWindow;
-	BsCategoryPanel *bsPanel = new BsCategoryPanel();
-	mainWindow.addPanel(bsPanel);
-	bsPanel->createWidgets();
-	bsPanel->show_all();
-}
-
-void ImageListener::showPosesBsCategory()
-{
-	Window &mainWindow = *g_mainWindow;
-	PosesBsCategoryPanel *posesBsPanel = new PosesBsCategoryPanel();
-	mainWindow.addPanel(posesBsPanel);
-	posesBsPanel->createWidgets();
-	posesBsPanel->show_all();
 }
