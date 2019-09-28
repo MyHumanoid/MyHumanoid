@@ -245,7 +245,6 @@ class Mesh
 	TargetMap targetmap;
 	MaterialVector materialvector;
 	Centeroid centeroid;
-	TextureVector texture_vector;
 	BodySettings poses; ///< Currently active PoseTargets
 	PoseMap posemap;    ///< Possible pose transformations
 	CharactersMap charactersmap;
@@ -260,6 +259,7 @@ class Mesh
 	vector<glm::vec3> jointvector;
 	
 public:
+	TextureVector texture_vector;
 	FaceGroup facegroup;
 	
 	
@@ -376,11 +376,6 @@ public:
 	 * \return a reference to the TargetMap of this Mesh
 	 */
 	TargetMap &getTargetMapRef() { return targetmap; }
-
-	/*!
-	 * \return TODO
-	 */
-	TextureVector &getTextureVectorRef() { return texture_vector; }
 
 	/*!
 	 * \return a reference to the PoseMap of this Mesh

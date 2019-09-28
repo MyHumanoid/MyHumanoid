@@ -11,7 +11,7 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 
 	const VertexVector &vertexvector(mesh.getVertexVectorRef());
 	const FaceVector &facevector(mesh.getFaceVectorRef());
-	const TextureVector &texturevector(mesh.getTextureVectorRef());
+	const TextureVector &texturevector(mesh.texture_vector);
 	const MaterialVector &materialvector = mesh.getMaterialVectorRef();
 
 	// write header
@@ -125,7 +125,7 @@ void ObjExporter::createFullOBJStream(ostringstream &out_stream,
 	VertexVector &vertexvector(mesh.getVertexVectorRef());
 	FaceVector &facevector(mesh.getFaceVectorRef());
 	MaterialVector &materialvector(mesh.getMaterialVectorRef());
-	TextureVector &texturevector(mesh.getTextureVectorRef());
+	TextureVector &texturevector(mesh.texture_vector);
 
 	// TODO: decide how much accracy we need
 	// out_stream << setprecision (12);

@@ -155,7 +155,7 @@ void ColladaExporter::AddGeometry(XMLNode *xNode_geometry, string temp)
 	XMLNode xNode_source_normals, xNode_source_uv, xNode_vertices, xNode_input;
 
 	VertexVector &vertexvector(mesh.getVertexVectorMorphOnlyRef());
-	TextureVector &texturevector(mesh.getTextureVectorRef());
+	TextureVector &texturevector(mesh.texture_vector);
 	FaceVector &facevector(mesh.getFaceVectorRef());
 	MaterialVector &materialvector = mesh.getMaterialVectorRef();
 	// number << "_" << index_material <<"_";

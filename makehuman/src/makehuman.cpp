@@ -1434,8 +1434,7 @@ int main(int argc, char **argv)
 	}
 
 	// load UV texture data, currently no Factory function
-	TextureVector &texturevector = mesh->getTextureVectorRef();
-	texturevector.load(searchDataFile("base.uv"));
+	mesh->texture_vector.load(searchDataFile("base.uv"));
 
 	// load face groups with factory function
 	bool groups_loaded = mesh->loadGroupsFactory(searchDataFile("base.parts"));
@@ -1741,7 +1740,7 @@ void drawBackground()
 void renderMesh()
 {
 	const MaterialVector &materialvector(mesh->getMaterialVectorRef());
-	const TextureVector &texturevector(mesh->getTextureVectorRef());
+	const TextureVector &texturevector(mesh->texture_vector);
 
 	const FaceVector &facevector(mesh->getFaceVectorRef());
 
