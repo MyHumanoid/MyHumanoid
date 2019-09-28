@@ -58,7 +58,7 @@ The format of FaceGroup file:
 <int> <int> ...
 \endverbatim
 */
-class FaceGroup : public std::map<std::string, FGroup>
+class FaceGroup
 {
 private:
 	void fromStream(std::ifstream &in_stream);
@@ -70,6 +70,8 @@ private:
 	mutable std::map<std::string, VertexData> vertexes;
 
 public:
+	std::map<std::string, FGroup> m_groups;
+	
 	FaceGroup()
 	    : loaded(false)
 	    , vertexes(){};

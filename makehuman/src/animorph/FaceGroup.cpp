@@ -32,7 +32,7 @@ void FaceGroup::calcVertexes(const FaceVector &facevector)
 
 	int vertexCounter;
 	
-	for(auto & [partname, groupValue]: (*this)) {
+	for(auto & [partname, groupValue]: m_groups) {
 		
 		FGroupData &groupdata = groupValue.facesIndexes;
 		vertexCounter = 0;
@@ -63,7 +63,7 @@ void FaceGroup::fromStream(std::ifstream &in_stream)
 	FGroup data;
 	string fgroup_ident;
 
-	clear();
+	m_groups.clear();
 
 	char buffer[MAX_LINE];
 	while (in_stream.getline(buffer, MAX_LINE)) {
@@ -84,15 +84,15 @@ void FaceGroup::fromStream(std::ifstream &in_stream)
 		{
 			data.visible = true;
 			stringTokeni(buffer, " ", data.facesIndexes);
-			(*this)[fgroup_ident] = data;
+			m_groups[fgroup_ident] = data;
 		}
 	}
 }
 
 void FaceGroup::toggleVisible(const std::string &name)
 {
-	if (count(name)) {
-		(*this)[name].visible = !((*this)[name].visible);
+	if (m_groups.count(name)) {
+		m_groups[name].visible = !(m_groups[name].visible);
 	}
 }
 
@@ -129,7 +129,7 @@ bool FaceGroup::loadVisibilities(const std::string &filename)
 
 void FaceGroup::createStreamVisibilities(std::ostringstream &out_stream)
 {
-	for(const auto & [partname, groupValue]: (*this)) {
+	for(const auto & [partname, groupValue]: m_groups) {
 		bool visible = groupValue.visible;
 
 		if (visible) {
@@ -146,7 +146,7 @@ void FaceGroup::fromStreamVisibilities(std::ifstream &in_stream)
 		if (sscanf(buffer, "nv,%s", line) == 1) {
 			// ema     if(find(line) != end())
 			{
-				(*this)[line].visible = false;
+				m_groups[line].visible = false;
 			}
 		}
 	}

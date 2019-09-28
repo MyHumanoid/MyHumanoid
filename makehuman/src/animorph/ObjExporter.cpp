@@ -23,7 +23,7 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 
 	out_stream << "o " << basename << endl; // name of mesh
 	
-	for(auto & [partname, groupValue]: facegroup) {
+	for(auto & [partname, groupValue]: facegroup.m_groups) {
 
 		const VertexData &vertexgroupdata(facegroup.getPartVertexesRef(partname));
 
@@ -37,7 +37,7 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 		}
 	}
 	
-	for(auto & [partname, groupValue]: facegroup) {
+	for(auto & [partname, groupValue]: facegroup.m_groups) {
 	
 		const FGroupData &facegroupdata(groupValue.facesIndexes);
 		// VertexData vertexgroupdata = facegroup.getPartVertexesRef(partname);
@@ -64,7 +64,7 @@ void ObjExporter::createOBJStream(ostringstream &out_stream,
 	int v_offset = 0;
 	int vt_offset = 0;
 	
-	for(const auto & [partname, groupValue]: facegroup) {
+	for(const auto & [partname, groupValue]: facegroup.m_groups) {
 	
 		const FGroupData &facegroupdata(groupValue.facesIndexes);
 		const VertexData &vertexgroupdata(facegroup.getPartVertexesRef(partname));

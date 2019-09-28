@@ -837,7 +837,7 @@ void DisplayMainMenu()
 			ImGui::Separator();
 			
 			if (ImGui::BeginMenu("Toggle Visibility")) {
-				for(auto & g: mesh->getFaceGroupRef()) {
+				for(auto & g: mesh->getFaceGroupRef().m_groups) {
 					if(ImGui::Button(g.first.c_str())) {
 						mesh->getFaceGroupRef().toggleVisible(g.first);
 					}
@@ -1783,7 +1783,7 @@ void renderMesh()
 	
 	glUseProgram(g_bodyShader);
 	
-	for(auto & [goupName, groupValue]: mesh->getFaceGroupRef()) {
+	for(auto & [goupName, groupValue]: mesh->getFaceGroupRef().m_groups) {
 
 		if (groupValue.visible == false)
 			continue;
@@ -1860,7 +1860,7 @@ void renderMesh()
 
 bool loadTextures()
 {
-	for(auto & [name, value]: mesh->getFaceGroupRef()) {
+	for(auto & [name, value]: mesh->getFaceGroupRef().m_groups) {
 		g_global.setTexture(name, new Texture());
 		if (!g_global.getTexture(name)->load(
 		        searchPixmapFile("ui/" + name + "_color.png"))) {
