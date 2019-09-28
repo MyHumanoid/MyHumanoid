@@ -1479,13 +1479,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	// load skin info with factory function
-	bool edges_loaded = mesh->loadEdgeStripFactory(searchDataFile("base.strips"));
-	if (!edges_loaded) {
-		cerr << "couldn't load edges info" << endl;
-		return 1;
-	}
-
 	// load smooth info with factory function
 	bool smooth_loaded =
 	    mesh->loadSmoothVertexFactory(searchDataFile("base.smooth"));
@@ -1849,7 +1842,18 @@ void renderMesh()
 	}
 	
 	glUseProgram(0);
-
+	
+//	glColor3ub( 255, 255, 255 );
+//	for(const auto & strip: mesh->edgestrip) {
+//		glBegin(GL_LINE_STRIP);
+//		for(const auto & index: strip) {
+//			const Vertex &vertex = vertexvector[index];
+//			::glVertex3fv(glm::value_ptr(vertex.co));
+//		}
+//		glEnd();
+//	}
+	
+	
 //	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
 //		::glDisable(GL_TEXTURE_2D);
 //	}

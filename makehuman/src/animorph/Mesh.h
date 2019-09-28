@@ -35,7 +35,6 @@
 
 #include "BodySettings.h"
 #include "DirectoryList.h"
-#include "EdgeStrip.h"
 #include "Euler.h"
 #include "Face.h"
 #include "FaceGroup.h"
@@ -254,7 +253,7 @@ private:
 	FaceGroup facegroup; ///< Access to the faces of body parts by name
 	                     ///< - not affected by posing or morphing
 	Skin skin;
-	EdgeStrip edgestrip;
+	
 	SmoothVertex smoothvertex;
 
 	/// Save with each vertex to which faces it belongs
@@ -466,9 +465,6 @@ public:
 
 	/// Load skin info from file
 	bool loadSkinFactory(const string &filename);
-
-	/// Load edges info from file
-	bool loadEdgeStripFactory(const string &filename);
 
 	/// Load smooth info from file
 	bool loadSmoothVertexFactory(const string &filename);

@@ -273,7 +273,6 @@ Mesh::Mesh()
     , charactersmap() //!< container for all characters
     , facegroup()
     , skin()
-    , edgestrip()
     , smoothvertex()
 {
 }
@@ -373,11 +372,6 @@ bool Mesh::loadGroupsFactory(const string &groups_filename)
 bool Mesh::loadSkinFactory(const string &filename)
 {
 	return skin.load(filename);
-}
-
-bool Mesh::loadEdgeStripFactory(const string &filename)
-{
-	return edgestrip.load(filename);
 }
 
 bool Mesh::loadSmoothVertexFactory(const string &filename)

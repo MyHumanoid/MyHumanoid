@@ -25,8 +25,6 @@ set(animorph_sources
 	src/animorph/xmlParser.cpp
 	src/animorph/ColladaExporter.h
 	src/animorph/ColladaExporter.cpp
-	src/animorph/EdgeStrip.h
-	src/animorph/EdgeStrip.cpp
 	src/animorph/FaceGroup.h
 	src/animorph/FaceGroup.cpp
 	src/animorph/FileWriter.h
