@@ -73,14 +73,10 @@
 #include "render/Shader.h"
 
 #include <time.h>
-#ifdef DEBUG
-#include <StopClock/StopClock.h>
-#endif
 
 #include "BottomPanel.h"
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
-#include "FooterPanel.h"
 #include "Global.h"
 #include "PoseTargetPanel.h"
 #include "SplashPanel.h"
@@ -105,7 +101,6 @@ json g_jsonConfig;
 
 static TooltipPanel *tooltipPanel;
 static ToolbarPanel *toolbarPanel;
-static FooterPanel *footerPanel;
 static BottomPanel *bottomPanel;
 static SplashPanel *splashPanel;
 static Mesh *mesh;
@@ -1330,7 +1325,6 @@ int main(int argc, char **argv)
 
 	tooltipPanel = new TooltipPanel(mainWindow.getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();
-	footerPanel = new FooterPanel(mainWindow.getSize().getHeight());
 	bottomPanel = new BottomPanel();
 	splashPanel = new SplashPanel(mainWindow.getSize());
 	mesh = new Mesh();
@@ -1439,7 +1433,6 @@ int main(int argc, char **argv)
 	// Add panels to mainwindow
 	mainWindow.addPanel(tooltipPanel);
 	mainWindow.addPanel(toolbarPanel);
-	mainWindow.addPanel(footerPanel);
 	mainWindow.addPanel(bottomPanel);
 	mainWindow.addPanel(characterSettingPanel);
 	mainWindow.addPanel(splashPanel);
@@ -1451,7 +1444,6 @@ int main(int argc, char **argv)
 	// create after adding
 	tooltipPanel->createWidgets();
 	toolbarPanel->createWidgets();
-	footerPanel->createWidgets();
 	bottomPanel->createWidgets();
 	characterSettingPanel->createWidgets();
 	splashPanel->createWidgets();
@@ -1461,7 +1453,6 @@ int main(int argc, char **argv)
 	// Activate the images textures
 	// Note it's after context creation
 	toolbarPanel->show_all();
-	footerPanel->show_all();
 	tooltipPanel->show_all();
 	bottomPanel->show_all();
 	characterSettingPanel->show_all();

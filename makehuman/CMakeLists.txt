@@ -141,8 +141,6 @@ set(makehuman_sources
 	src/FacePanel.h
 	src/FileTools.cpp
 	src/FileTools.h
-	src/FooterPanel.cpp
-	src/FooterPanel.h
 	src/Global.cpp
 	src/Global.h
 	src/HandsPanel.cpp

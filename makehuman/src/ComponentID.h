@@ -51,16 +51,6 @@ static const uint32_t kComponentID_TextPanel =
     FOUR_CHAR_CONST('T', 'X', 'P', 'A');
 
 // ------------------------------------------------------------------
-// The Footer Panel
-// ------------------------------------------------------------------
-static const uint32_t kComponentID_FooterPanel =
-    FOUR_CHAR_CONST('p', 'a', 'F', 'o');
-
-// The Image ID's of the FooterPanel (kComponentID_FooterPanel)
-static const uint32_t kComponentID_ImageFooterPanel_Frames_01 =
-    kComponentID_Dummy;
-
-// ------------------------------------------------------------------
 // The Utilitybar Panel
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_UtilitybarPanel =
