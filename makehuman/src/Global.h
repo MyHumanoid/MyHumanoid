@@ -57,11 +57,9 @@ struct Global
 	bool drawGrid = false;
 	bool quotedBox = false;
 	bool m_enableTexture = false;
-	bool m_canTexture = false;
 	bool subdivision = false;
 	Modes appMode = CHARACTER_SETTING;
 	
-	std::map<string, Texture *> textures;
 	std::map<const uint32_t, Point *> fuzzyValues;
 
 public:
@@ -70,9 +68,6 @@ public:
 
 	void setCamera(Camera *camera) { this->camera = camera; }
 	Camera *getCamera() { return camera; }
-
-	void setTexture(string name, Texture *texture) { textures[name] = texture; }
-	Texture *getTexture(string name) { return textures[name]; }
 
 	void setAutozoom(Autozoom *autozoom) { this->autozoom = autozoom; }
 	Autozoom *getAutozoom() { return autozoom; }
@@ -85,9 +80,6 @@ public:
 
 	void setAppMode(Modes mode) { appMode = mode; }
 	Modes getAppMode() { return appMode; }
-
-	void setCanTexture(bool canTexture) { this->m_canTexture = canTexture; }
-	bool getCanTexture() { return m_canTexture; }
 
 	void setFuzzyValue(uint32_t index, const Point &inPoint)
 	{

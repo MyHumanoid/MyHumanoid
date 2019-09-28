@@ -90,9 +90,9 @@ using json = nlohmann::json;
 using namespace std;
 using namespace Animorph;
 
+static void loadTextures();
 static void drawBackground();
 static void renderMesh();
-static bool loadTextures();
 
 json g_jsonConfig;
 
@@ -117,12 +117,9 @@ int tickCount = 0;
 float kTimePerRaster(0.03f);
 bool oldCameraTimerTrigger = false;
 
-static glm::vec3 cameraPos;
-
 const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
-
 
 namespace MhGui {
 
@@ -1467,9 +1464,9 @@ int main(int argc, char **argv)
 	CreatePoseImageTextures();
 	CreateCaractersIconTextures();
 	
+	loadTextures();
+	g_global.m_enableTexture = true;
 	
-	
-
 	// put mesh container into the Global Singleton
 	g_global.setMesh(mesh);
 
@@ -1514,11 +1511,8 @@ int main(int argc, char **argv)
 	tooltipPanel->show_all();
 	characterSettingPanel->show_all();
 	splashPanel->show_all();
+	
 
-	if (loadTextures()) {
-		g_global.m_enableTexture = true;
-		g_global.setCanTexture(true);
-	}
 
 	// Glut callbacks
 	glutDisplayFunc(display);
@@ -1688,6 +1682,18 @@ void calcMinMax(const glm::vec3 &coords)
 	}
 }
 
+void loadTextures()
+{
+	for(auto & [name, value]: mesh->getFaceGroupRef().m_groups) {
+		
+		std::string fileName = "pixmaps/ui/" + name + "_color.png";
+		value.texture = LoadTextureFromFile(fileName.c_str());
+		if(!value.texture) {
+			cerr << "couldn't load base skin_color Texture Data " << name
+			     << "_color.png" << endl;
+		}
+	}
+}
 
 void drawBackground()
 {
@@ -1743,10 +1749,6 @@ void renderMesh()
 		}
 	}
 
-//	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
-//		::glEnable(GL_TEXTURE_2D);
-//	}
-
 	cgutils::enableBlend();
 	
 	glUseProgram(g_bodyShader);
@@ -1756,11 +1758,11 @@ void renderMesh()
 		if (groupValue.visible == false)
 			continue;
 
-		if(g_global.m_canTexture && g_global.m_enableTexture) {
-			glActiveTexture(GL_TEXTURE0);
-			::glBindTexture(GL_TEXTURE_2D, g_global
-			                                   .getTexture(goupName)
-			                                   ->getTextureIdOfXY(0, 0));
+		if(g_global.m_enableTexture) {
+			if(groupValue.texture) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
+			}
 		}
 
 		FGroupData &groupdata = groupValue.facesIndexes;
@@ -1799,10 +1801,7 @@ void renderMesh()
 					const glm::vec2 &uv = texture_face[j];
 					
 					::glNormal3fv(glm::value_ptr(vertex.no));
-					
-					if(g_global.m_canTexture && g_global.m_enableTexture) {
-						::glTexCoord2f(uv.x, uv.y);
-					}
+					::glTexCoord2f(uv.x, uv.y);
 					::glVertex3fv(glm::value_ptr(vertex.co));
 					
 					if (g_global.getQuotedBox()) {
@@ -1828,25 +1827,5 @@ void renderMesh()
 //		glEnd();
 //	}
 	
-	
-//	if(g_global.m_canTexture && g_global.m_enableTexture && !g_global.getLightMesh()) {
-//		::glDisable(GL_TEXTURE_2D);
-//	}
 	glDisable(GL_BLEND);
-	
-	
-}
-
-bool loadTextures()
-{
-	for(auto & [name, value]: mesh->getFaceGroupRef().m_groups) {
-		g_global.setTexture(name, new Texture());
-		if (!g_global.getTexture(name)->load(
-		        searchPixmapFile("ui/" + name + "_color.png"))) {
-			cerr << "couldn't load base skin_color Texture Data " << name
-			     << "_color.png" << endl;
-			return false;
-		}
-	}
-	return true;
 }

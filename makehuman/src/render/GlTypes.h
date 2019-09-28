@@ -1,8 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 #pragma once
 
-#include <GL/glew.h>
-
 namespace mh {
 
 template <typename TAG, typename T>
@@ -13,6 +11,6 @@ struct GlType {
 	{}
 };
 
-using Texture = GlType<struct Texture_TAG, GLuint>;
+using Texture = GlType<struct Texture_TAG, unsigned int>;
 
 }

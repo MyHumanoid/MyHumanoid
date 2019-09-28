@@ -4,6 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#include <GL/glew.h>
+
 std::optional<mh::Texture> LoadTextureFromFile(const char* filename)
 {
 	// Load from file
