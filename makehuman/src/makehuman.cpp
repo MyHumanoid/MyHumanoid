@@ -1784,11 +1784,9 @@ void renderMesh()
 			}
 		}
 
-		FGroupData &groupdata = groupValue.facesIndexes;
-
-		for (unsigned int i = 0; i < groupdata.size(); i++) {
-			const Face &face(facevector[groupdata[i]]);
-			const TextureFace &texture_face = texturevector[groupdata[i]];
+		for(const auto & faceIndex: groupValue.facesIndexes) {
+			const Face &face = facevector[faceIndex];
+			const TextureFace &texture_face = texturevector[faceIndex];
 
 			facesize = face.getSize();
 
