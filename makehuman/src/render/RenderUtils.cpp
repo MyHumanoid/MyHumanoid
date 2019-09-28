@@ -6,8 +6,10 @@
 
 #include <GL/glew.h>
 
-std::optional<mh::Texture> LoadTextureFromFile(const char* filename)
+std::optional<mh::Texture> LoadTextureFromFile(const std::string & file)
 {
+	const char* filename = file.c_str();
+	
 	// Load from file
 	int image_width = 0;
 	int image_height = 0;

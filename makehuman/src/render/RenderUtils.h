@@ -5,4 +5,4 @@
 
 #include "render/GlTypes.h"
 
-std::optional<mh::Texture> LoadTextureFromFile(const char* filename);
+std::optional<mh::Texture> LoadTextureFromFile(const std::string & file);

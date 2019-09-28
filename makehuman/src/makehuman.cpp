@@ -1692,6 +1692,14 @@ void loadTextures()
 			cerr << "couldn't load base skin_color Texture Data " << name
 			     << "_color.png" << endl;
 		}
+		
+		
+		{
+			std::string dir = "data/rib_data/textures_data/";
+			value.specular = LoadTextureFromFile(dir + name +"_specular.png");
+			value.bump = LoadTextureFromFile(dir + name +"_bump.png");
+		}
+		
 	}
 }
 
@@ -1761,7 +1769,18 @@ void renderMesh()
 		if(g_global.m_enableTexture) {
 			if(groupValue.texture) {
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
+				::glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
+				glUniform1i(glGetUniformLocation(g_bodyShader, "texture0"), 0);
+			}
+			if(groupValue.specular) {
+				glActiveTexture(GL_TEXTURE1);
+				::glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
+				glUniform1i(glGetUniformLocation(g_bodyShader, "texture1"), 1);
+			}
+			if(groupValue.bump) {
+				glActiveTexture(GL_TEXTURE2);
+				::glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
+				glUniform1i(glGetUniformLocation(g_bodyShader, "texture2"), 2);
 			}
 		}
 

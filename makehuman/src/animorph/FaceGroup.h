@@ -46,6 +46,9 @@ typedef std::map<int, int> VertexData;
 struct FGroup {
 	bool visible;
 	std::optional<mh::Texture> texture;
+	std::optional<mh::Texture> specular;
+	std::optional<mh::Texture> bump;
+	
 	/// A vector of ints
 	FGroupData facesIndexes;
 };
