@@ -809,9 +809,9 @@ void DisplayMainMenu()
 			ImGui::Separator();
 			
 			if (ImGui::BeginMenu("Toggle Visibility")) {
-				for(auto & g: mesh->getFaceGroupRef().m_groups) {
+				for(auto & g: mesh->facegroup.m_groups) {
 					if(ImGui::Button(g.first.c_str())) {
-						mesh->getFaceGroupRef().toggleVisible(g.first);
+						mesh->facegroup.toggleVisible(g.first);
 					}
 				}
 				ImGui::EndMenu();
@@ -1684,7 +1684,7 @@ void calcMinMax(const glm::vec3 &coords)
 
 void loadTextures()
 {
-	for(auto & [name, value]: mesh->getFaceGroupRef().m_groups) {
+	for(auto & [name, value]: mesh->facegroup.m_groups) {
 		
 		std::string fileName = "pixmaps/ui/" + name + "_color.png";
 		value.texture = LoadTextureFromFile(fileName.c_str());
@@ -1761,7 +1761,7 @@ void renderMesh()
 	
 	glUseProgram(g_bodyShader);
 	
-	for(auto & [goupName, groupValue]: mesh->getFaceGroupRef().m_groups) {
+	for(auto & [goupName, groupValue]: mesh->facegroup.m_groups) {
 
 		if (groupValue.visible == false)
 			continue;

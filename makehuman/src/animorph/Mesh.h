@@ -232,7 +232,6 @@ typedef map<string, BodySettings> CharactersMap;
  */
 class Mesh
 {
-private:
 	FaceVector facevector;
 	// HotspotMap        hotspotmap;
 	VertexVector vertexvector_morph; ///< Modified mesh
@@ -250,8 +249,7 @@ private:
 	BodySettings poses; ///< Currently active PoseTargets
 	PoseMap posemap;    ///< Possible pose transformations
 	CharactersMap charactersmap;
-	FaceGroup facegroup; ///< Access to the faces of body parts by name
-	                     ///< - not affected by posing or morphing
+
 	Skin skin;
 	
 	SmoothVertex smoothvertex;
@@ -260,7 +258,12 @@ private:
 	void calcSharedVertices();
 
 	vector<glm::vec3> jointvector;
-
+	
+public:
+	FaceGroup facegroup;
+	
+	
+private:
 	/*! \brief Releases all targets in targetmap
 	 *
 	 * Used by the destructor.
@@ -388,11 +391,6 @@ public:
 	 * \return a reference to the CharactersMap of this Mesh
 	 */
 	CharactersMap &getCharactersMapRef() { return charactersmap; }
-
-	/*!
-	 * \return a reference to the FaceGroup of the Mesh
-	 */
-	FaceGroup &getFaceGroupRef() { return facegroup; }
 
 	//@}
 
