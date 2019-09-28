@@ -378,20 +378,6 @@ static void exportCollada(string &filename)
 	}
 }
 
-
-
-static void loadWindowBackground(const string &filename)
-{
-	Window &mainWindow(*g_mainWindow);
-	if (mainWindow.loadPNG(filename)) {
-		mainWindow.show();
-		logger("Background image loaded");
-	} else {
-		mainWindow.loadPNG(searchPixmapFile("ui/background.png"));
-		logger_err("Background image load failed");
-	}
-}
-
 static void saveAutozoom(const string &filename)
 {
 	Autozoom *autozoom = g_global.getAutozoom();
@@ -717,12 +703,6 @@ void DisplayMainMenu()
 					
 					loadPoses("foo-Poses");
 				}
-			}
-			
-			ImGui::Separator();
-			
-			if(ImGui::MenuItem("Load Background")) {
-				loadWindowBackground("foo-background.png");
 			}
 			
 			ImGui::Separator();
@@ -1443,8 +1423,6 @@ int main(int argc, char **argv)
 	characterSettingPanel->createWidgets();
 	splashPanel->createWidgets();
 
-	mainWindow.loadPNG(searchPixmapFile("ui/background.png"));
-
 	// Activate the images textures
 	// Note it's after context creation
 	toolbarPanel->show_all();
@@ -1659,11 +1637,6 @@ void drawBackground()
 	glPopMatrix();
 	
 	glUseProgram(0);
-	
-	//glColor3f(c.red(), c.green(), c.blue()); // TODO: wrap this!
-	
-	//if(image_loaded)
-	//	cgutils::drawBackgroundSquare(getSize(), 1.0f, texture);
 }
 
 void renderMesh()

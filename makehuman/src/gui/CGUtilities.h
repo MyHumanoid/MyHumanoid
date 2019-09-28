@@ -73,8 +73,6 @@ void disableOrthographicProjection();
 
 void drawSquareFillTexture(const Rect &inRect, float alpha,
                            const Texture &inTexture);
-void drawBackgroundSquare(const Size &inSize, float alpha,
-                          const Texture &inTexture);
 
 void drawSquareFill(const Rect &inRect, const Color &c);
 

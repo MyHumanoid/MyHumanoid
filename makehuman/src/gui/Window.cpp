@@ -53,12 +53,10 @@ Window::Window(const Rect &rect, const char *t, const Color &inColor)
 	, title(t) //!< The window title bar
 	, fullscreen(false) //!< full screen no
 	, c(inColor)
-	, image_loaded(false)
 	, light0Lum(+1.0) //!< light 0 luminosity
 	, light1Lum(+1.0) //!< light 1 luminosity
 	, light0Pos(+1.0, +1.0, +1.0) //!< light 0 position
 	, light1Pos(-1.0, +1.0, +1.0) //!< light 1 position
-	, texture()
 	, panelList()
 	, panelListChangedCount(0)
 	, inCamera(NULL)
@@ -83,22 +81,6 @@ Panel *Window::getPanel(uint32_t inPanelId)
 	}
 
 	return NULL;
-}
-
-bool Window::loadPNG(const string &filename)
-{
-	if (filename.empty())
-		return false;
-
-	image_loaded = true;
-
-	// read the PNG file using pngLoad
-	// raw data from PNG file is in image buffer
-	if (texture.load(filename) == false) {
-		cerr << "(pngLoad) " << filename << " FAILED" << endl;
-		return false;
-	}
-	return true;
 }
 
 void Window::setCamera(Camera *p_camera) { inCamera = p_camera; }

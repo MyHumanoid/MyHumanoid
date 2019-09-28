@@ -223,32 +223,6 @@ void cgutils::drawSquareFillTexture(const Rect &inRect, float alpha,
 	inTexture.mapToGeometry(inRect, zlayer);
 }
 
-void cgutils::drawBackgroundSquare(const Size &inSize, float alpha,
-                                   const Texture &inTexture)
-{
-	glPushMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, inSize.getWidth(), 0, inSize.getHeight(), -20.0, 20.0);
-	glScalef(1, -1, 1);
-	glTranslatef(0, -inSize.getHeight(), 0.0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	glTranslatef(0, 0, -19.9);
-	glColor4f(1.0, 1.0, 1.0, alpha);
-	glNormal3f(0.0f, 0.0f, 1.0f);
-
-	inTexture.mapToGeometry(Rect(0, 0, inSize.getWidth(), inSize.getHeight()),
-	                        0.0);
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-}
-
 void cgutils::drawSquareFill(const mhgui::Rect &inRect, const Color &c)
 {
 	float zlayer = 0.0;

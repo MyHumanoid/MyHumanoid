@@ -61,13 +61,10 @@ class Window : public Component
 	string title;
 	bool fullscreen;
 	Color c;
-	bool image_loaded;
 	float light0Lum;
 	float light1Lum;
 	glm::vec3 light0Pos;
 	glm::vec3 light1Pos;
-
-	Texture texture;
 
 	list<Panel *> panelList; ///< Panels contain widgets, we contain the panels
 	int panelListChangedCount;
