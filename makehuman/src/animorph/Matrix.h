@@ -34,7 +34,6 @@
 #endif
 
 #include "Euler.h"
-#include "Quaternion.h"
 #include <glm/vec3.hpp>
 #include "util.h"
 #include <assert.h> // define NDEBUG for non debug modus!!
@@ -107,12 +106,6 @@ public:
 
 	// get Euler representation of matrix rotation
 	void fromEuler(Euler &e);
-
-	/// set Quaternion representation of matrix rotation
-	/*!
-	 * \param q the Quaternion rotation to set for the Matrix
-	 */
-	void fromQuaternion(const Quaternion &q);
 
 	/*!
 	 * \param theta rotation around an axis in PI

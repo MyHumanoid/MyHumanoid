@@ -27,31 +27,6 @@ void Matrix::fromEuler(Euler &e)
 	}
 }
 
-void Matrix::fromQuaternion(const Quaternion &q)
-{
-	float xx = q.x * q.x;
-	float yy = q.y * q.y;
-	float zz = q.z * q.z;
-	float xy = q.x * q.y;
-	float wz = q.w * q.z;
-	float xz = q.x * q.z;
-	float wx = q.w * q.x;
-	float yz = q.y * q.z;
-	float wy = q.w * q.y;
-
-	data[0] = 1 - 2 * yy - 2 * zz;
-	data[1] = 2 * xy - 2 * wz;
-	data[2] = 2 * xz + 2 * wy;
-
-	data[4] = 2 * xy + 2 * wz;
-	data[5] = 1 - 2 * xx - 2 * zz;
-	data[6] = 2 * yz - 2 * wx;
-
-	data[8] = 2 * xz - 2 * wy;
-	data[9] = 2 * yz + 2 * wx;
-	data[10] = 1 - 2 * xx - 2 * yy;
-}
-
 void Matrix::setRotation(float theta, RotateAxis axis)
 {
 	float s = sinf(theta);

@@ -15,8 +15,6 @@ set(animorph_sources
 	src/animorph/ObjExporter.cpp
 	src/animorph/PoseSemiTarget.h
 	src/animorph/PoseSemiTarget.cpp
-	src/animorph/Quaternion.h
-	src/animorph/Quaternion.cpp
 	src/animorph/Skin.h
 	src/animorph/Skin.cpp
 	src/animorph/Target.h
