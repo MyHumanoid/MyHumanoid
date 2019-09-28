@@ -124,8 +124,6 @@ set(log_sources
 set(makehuman_sources
 	src/BodyPanel.cpp
 	src/BodyPanel.h
-	src/BottomPanel.cpp
-	src/BottomPanel.h
 	src/BsCategoryPanel.cpp
 	src/BsCategoryPanel.h
 	src/BsPanel.cpp

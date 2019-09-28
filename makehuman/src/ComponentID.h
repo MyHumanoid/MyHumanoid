@@ -61,12 +61,6 @@ static const uint32_t kComponentID_ImageUtilitybar_Frames_01 =
     kComponentID_Dummy;
 
 // ------------------------------------------------------------------
-// The Bottom Panel
-// ------------------------------------------------------------------
-static const uint32_t kComponentID_BottomPanel =
-    FOUR_CHAR_CONST('p', 'a', 'B', 't');
-
-// ------------------------------------------------------------------
 // The View Panel
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_ViewPanel =

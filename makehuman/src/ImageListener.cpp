@@ -27,7 +27,6 @@
 
 #include "ImageListener.h"
 #include "BodyPanel.h"
-#include "BottomPanel.h"
 #include "BsCategoryPanel.h"
 #include "BsPanel.h"
 #include "CharacterSettingPanel.h"
@@ -392,11 +391,6 @@ void ImageListener::showCharacterSetting()
 	mainWindow.addPanel(characterSettingPanel);
 	characterSettingPanel->createWidgets();
 	characterSettingPanel->show_all();
-
-	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
-	assert(p);
-	p->setPosition(kBottomPosition7);
-	p->createWidgets();
 }
 
 void ImageListener::showBodyDetails()
@@ -422,11 +416,6 @@ void ImageListener::showBodyDetails()
 	mainWindow.addPanel(handsPanel);
 	handsPanel->createWidgets();
 	handsPanel->show_all();
-
-	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
-	assert(p);
-	p->setPosition(kBottomPosition4);
-	p->createWidgets();
 }
 
 void ImageListener::showPoses()
@@ -436,21 +425,11 @@ void ImageListener::showPoses()
 	mainWindow.addPanel(posesPanel);
 	posesPanel->createWidgets();
 	posesPanel->show_all();
-
-	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
-	assert(p);
-	p->setPosition(kBottomPosition2);
-	p->createWidgets();
 }
 
 void ImageListener::showUtilities()
 {
 	Window &mainWindow = *g_mainWindow;
-
-	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
-	assert(p);
-	p->setPosition(kBottomPosition5);
-	p->createWidgets();
 
 	ToolbarPanel *tp =
 	    (ToolbarPanel *)mainWindow.getPanel(kComponentID_ToolbarPanel);
@@ -467,11 +446,6 @@ void ImageListener::showBsCategory()
 	mainWindow.addPanel(bsPanel);
 	bsPanel->createWidgets();
 	bsPanel->show_all();
-
-	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
-	assert(p);
-	p->setPosition(kBottomPosition6);
-	p->createWidgets();
 }
 
 void ImageListener::showPosesBsCategory()
@@ -481,9 +455,4 @@ void ImageListener::showPosesBsCategory()
 	mainWindow.addPanel(posesBsPanel);
 	posesBsPanel->createWidgets();
 	posesBsPanel->show_all();
-
-	BottomPanel *p = (BottomPanel *)mainWindow.getPanel(kComponentID_BottomPanel);
-	assert(p);
-	p->setPosition(kBottomPosition6);
-	p->createWidgets();
 }
