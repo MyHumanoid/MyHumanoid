@@ -532,12 +532,10 @@ void DisplayMorphTargets() {
 		return;
 	}
 	
-	TargetMap &targetmap = mesh->getTargetMapRef();
 	BodySettings bodyset = mesh->getBodySettings();
 	
-	for (TargetMap::const_iterator targetmap_it = targetmap.begin();
-	     targetmap_it != targetmap.end(); targetmap_it++) {
-		const string &target_name((*targetmap_it).first);
+	for(const auto & targetEntry: mesh->getTargetMapRef()) {
+		const string &target_name(targetEntry.first);
 		
 		string::size_type loc = target_name.find("/", 0);
 		if (loc == string::npos)
@@ -567,18 +565,15 @@ void DisplayMorphTargetsApplied()
 	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
-	BodySettings bodyset = mesh->getBodySettings();
-	
-	for (BodySettings::iterator bodyset_it = bodyset.begin();
-		 bodyset_it != bodyset.end(); bodyset_it++) {
+	for(const auto & bodyset_it: mesh->getBodySettings()) {
 		
-		string target_name((*bodyset_it).first);
+		string target_name(bodyset_it.first);
 		
 		if(isCompositeMorphTarget(target_name)) {
 			continue;
 		}
 
-		float target_value = (*bodyset_it).second;
+		float target_value = bodyset_it.second;
 		
 		DisplayMorphTargetRow(target_name, target_value, true);
 	}
@@ -635,12 +630,10 @@ void DisplayPoseTargets()
 	
 	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
-	PoseMap &posemap = mesh->getPoseMapRef();
 	BodySettings bodyset = mesh->getBodySettings();
 	
-	for (PoseMap::const_iterator posemap_it = posemap.begin();
-	     posemap_it != posemap.end(); posemap_it++) {
-		const string &target_name(posemap_it->first);
+	for (const auto & posemap_it: mesh->getPoseMapRef()) {
+		const string &target_name(posemap_it.first);
 		
 		PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);
@@ -668,13 +661,10 @@ void DisplayPoseTargetsApplied()
 	Mesh *mesh = g_global.getMesh();
 	assert(mesh);
 	
-	const BodySettings &bodyset(mesh->getPoses());
-	
-	for (BodySettings::const_iterator bodyset_it = bodyset.begin();
-		 bodyset_it != bodyset.end(); bodyset_it++) {
+	for(const auto & bodyset_it: mesh->getPoses()) {
 		
-		const string &target_name(bodyset_it->first);
-		float target_value = bodyset_it->second;
+		const string &target_name(bodyset_it.first);
+		float target_value = bodyset_it.second;
 		
 		PoseTarget *poseTarget = mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);
