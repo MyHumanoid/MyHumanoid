@@ -83,8 +83,6 @@ set(gui_sources
 	src/gui/ImageSliderSysListener.cpp
 	src/gui/ImageSysListener.h
 	src/gui/ImageSysListener.cpp
-	src/gui/Label.h
-	src/gui/Label.cpp
 	src/gui/MultiPanel.h
 	src/gui/MultiPanel.cpp
 	src/gui/Panel.h
