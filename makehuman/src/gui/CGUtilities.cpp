@@ -398,36 +398,6 @@ void cgutils::drawString(const Point &inPoint, FontType font, const string &str,
 	}
 }
 
-void cgutils::drawMultiLineString(Point &inPoint, FontType font,
-                                  const string &str, const Color &c,
-                                  const int32_t lineWidth, const int lineOffset)
-{
-	int32_t currentLength = 0;
-	int i = 0, charLen;
-
-	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glRasterPos2f(inPoint.getX(), inPoint.getY());
-
-	// TODO: anchor text in the upper left corner instead of lower left!
-
-	for (string::const_iterator str_it = str.begin(); str_it != str.end();
-	     str_it++) {
-		char ch = *str_it;
-
-		charLen = glutBitmapLength(
-		    font, (const unsigned char *)(str.substr(i++, 1).c_str()));
-		currentLength += charLen;
-
-		if (currentLength > lineWidth) {
-			currentLength = charLen;
-			inPoint.moveBy(Point(0, lineOffset));
-			glRasterPos2f(inPoint.getX(), inPoint.getY());
-		}
-
-		glutBitmapCharacter(font, ch);
-	}
-}
-
 void cgutils::drawString3D(const glm::vec3 &pos, FontType font,
                            const string &str, const Color &c)
 {
@@ -447,19 +417,6 @@ void cgutils::enableBlend()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
-
-void cgutils::enableScissor(const Rect &box)
-{
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	GLint &h = viewport[3];
-
-	glEnable(GL_SCISSOR_TEST);
-	glScissor(box.getX(), h - box.getY() - box.getHeight(), box.getWidth(),
-	          box.getHeight());
-}
-
-void cgutils::disableScissor() { glDisable(GL_SCISSOR_TEST); }
 
 // TODO: temporary broken; fix it!
 int cgutils::getFontWidth(FontType font)
@@ -492,70 +449,6 @@ int cgutils::getFontLength(FontType font, const string &str)
 {
 	return glutBitmapLength(font, (unsigned char *)str.c_str());
 }
-
-/*
-void DrawRoundedSquareFill(float x, float y, float radius, float width, float
-height, float r, float g, float b)
-{
-  float cX = x+radius, cY = y+radius;
-  double i=0;
-  double gap = .05;
-
-  glColor4f(r, g, b, .6);
-  glBegin(GL_POLYGON);
-  glVertex2f(x, y + height - radius);//Left Line
-  glVertex2f(x, y + radius);
-
-  for(i = PI; i <= (1.5*PI); i += gap)
-  {
-    glVertex2d(radius* cos(i) + cX, radius * sin(i) + cY); //Top Left
-  }
-
-  glVertex2f(x + radius, y);
-  glVertex2f(x + width - radius, y);//Top Line
-
-  cX = x+width-radius;
-  for(i = (1.5*PI); i <= (2 * PI); i += gap)
-  {
-    glVertex2d(radius* cos(i) + cX, radius * sin(i) + cY); //Top Right
-  }
-
-  glVertex2f(x + width, y + radius);
-  glVertex2f(x + width, y + height - radius);//Right Line
-
-  cY = y+height-radius;
-  for(i = 0; i <= (0.5*PI); i+=gap)
-  {
-    glVertex2d(radius* cos(i) + cX, radius * sin(i) + cY); //Bottom Right
-  }
-  glVertex2f(x + width - radius, y + height);//Bottom Line
-  glVertex2f(x + radius, y + height);
-
-
-  cX = x+radius;
-  for(i = (0.5*PI); i <= PI; i += gap)
-  {
-    glVertex2d(radius* cos(i) + cX, radius * sin(i) + cY);//Bottom Left
-  }
-  glEnd();
-}
-*/
-/*
-void DrawCircle (){
-  float angle;
-  int i;
-  GLint circle_points = 100;
-  glColor4f(1, 0, 0, .8);
-  glBegin(GL_LINE_LOOP);
-
-  for (i = 0; i < circle_points; i++) {
-    angle = 2*PI*i/circle_points;
-    glVertex2f(cos(angle), sin(angle));
-  }
-
-  glEnd();
-}
-*/
 
 // function which draws an axis aligned wireframe bounding box, given two
 // points.

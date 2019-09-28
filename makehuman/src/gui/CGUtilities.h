@@ -85,20 +85,12 @@ int initWindow(const Rect &rect, const char *title, const glm::vec3 &light0Pos,
 void drawString(const Point &inPoint, FontType font, const string &str,
                 const Color &c);
 
-void drawMultiLineString(Point &inPoint, FontType font, const string &str,
-                         const Color &c, const int32_t lineWidth,
-                         const int lineOffset);
-
 void drawString3D(const glm::vec3 &pos, FontType font, const string &str,
                   const Color &c);
 
 void redisplay();
 
 void enableBlend();
-
-void enableScissor(const Rect &box);
-
-void disableScissor();
 
 int getFontWidth(FontType font);
 
