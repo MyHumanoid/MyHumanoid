@@ -49,13 +49,10 @@ private:
 	void showPoses();
 	void showBodyDetails();
 	void showCharacterSetting();
-	void showUtilities();
 
 	void hideBodyDetails();
 	void hidePoses();
 	void hideCharacterSetting();
-	void hideBsCategory();
-	void hidePosesBsCategory();
 	void hidePanels(const Modes newMode);
 
 public:

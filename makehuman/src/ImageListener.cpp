@@ -252,10 +252,6 @@ void ImageListener::hidePanels(const Modes currentMode)
 		hideBodyDetails();
 	} else if (currentMode == CHARACTER_SETTING) {
 		hideCharacterSetting();
-	} else if (currentMode == BODY_SETTINGS) {
-		hideBsCategory();
-	} else if (currentMode == POSES_BODY_SETTINGS) {
-		hidePosesBsCategory();
 	}
 }
 
@@ -299,29 +295,6 @@ void ImageListener::hidePoses()
 {
 	Window &mainWindow = *g_mainWindow;
 	Panel *p = mainWindow.getPanel(kComponentID_BodyPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_TargetPanel);
-	mainWindow.removePanel(p);
-	delete p;
-}
-
-void ImageListener::hideBsCategory()
-{
-	Window &mainWindow = *g_mainWindow;
-	Panel *p = mainWindow.getPanel(kComponentID_BsCategoryPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_TargetPanel);
-	mainWindow.removePanel(p);
-	delete p;
-}
-void ImageListener::hidePosesBsCategory()
-{
-	Window &mainWindow = *g_mainWindow;
-	Panel *p = mainWindow.getPanel(kComponentID_PosesBsCategoryPanel);
 	mainWindow.removePanel(p);
 	delete p;
 
@@ -374,16 +347,4 @@ void ImageListener::showPoses()
 	mainWindow.addPanel(posesPanel);
 	posesPanel->createWidgets();
 	posesPanel->show_all();
-}
-
-void ImageListener::showUtilities()
-{
-	Window &mainWindow = *g_mainWindow;
-
-	ToolbarPanel *tp =
-	    (ToolbarPanel *)mainWindow.getPanel(kComponentID_ToolbarPanel);
-
-	Image *img =
-	    (Image *)(tp->getWidget(kComponentID_ImageToolbarPanel_MorphingList));
-	img->setEnabled(false);
 }
