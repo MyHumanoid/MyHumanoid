@@ -198,7 +198,7 @@ add_executable(makehuman
 set_target_properties(makehuman PROPERTIES
 	CXX_STANDARD 17
 #	CXX_EXTENSIONS OFF
-	INTERPROCEDURAL_OPTIMIZATION TRUE
+#	INTERPROCEDURAL_OPTIMIZATION TRUE
 )
 
 #target_compile_options(makehuman PRIVATE -Wall -Wextra -pedantic)
