@@ -108,6 +108,7 @@ set(gui_sources
 set(render_sources
 	src/render/DebugGl.h
 	src/render/DebugGl.cpp
+	src/render/GlTypes.h
 	src/render/RenderUtils.h
 	src/render/RenderUtils.cpp
 	src/render/Shader.h

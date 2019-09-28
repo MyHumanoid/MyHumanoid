@@ -123,6 +123,17 @@ const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
+
+namespace MhGui {
+
+template <typename... T>
+void Image(mh::Texture texture, T&&... p)
+{
+	ImGui::Image((void*)(intptr_t)texture.handle, std::forward<T>(p)...);
+}
+
+}
+
 // ================================================================================================
 
 std::vector<std::string> filesInDirRecursive(const fs::path& directoryPath)
@@ -151,7 +162,7 @@ std::vector<std::string> filesInDirRecursive(const fs::path& directoryPath)
 
 
 
-using IconMap = std::unordered_map<std::string, GLuint>;
+using IconMap = std::unordered_map<std::string, mh::Texture>;
 
 static IconMap g_targetImageTextures;
 static IconMap g_poseImageTextures;
@@ -162,13 +173,7 @@ void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
 	auto files = filesInDirRecursive(baseDir);
 	
 	for(auto & file: files) {
-		int my_image_width = 0;
-		int my_image_height = 0;
-		GLuint my_image_texture = 0;
-		bool ret = LoadTextureFromFile(file.c_str(),
-		                               &my_image_texture,
-		                               &my_image_width,
-		                               &my_image_height);
+		auto ret = LoadTextureFromFile(file.c_str());
 		
 		if(ret) {
 			auto foo = file;
@@ -177,7 +182,7 @@ void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
 			foobar.replace_extension();
 			
 			logger("Loaded {} as {}", std::string(file), std::string(foobar));
-			target[foobar] = my_image_texture;
+			target.insert(IconMap::value_type(foobar, ret.value()));
 		} else {
 			std::cout <<
 			    fmt::format("Failed to load file {}\n", file) << std::endl;
@@ -427,10 +432,10 @@ void DisplayMorphTargetRow(const string & target_name, float & target_value, boo
 	if(texIdIt != g_targetImageTextures.end()) {
 		auto texId = texIdIt->second;
 		
-		ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
+		MhGui::Image(texId, ImVec2(16, 16));
 		if(ImGui::IsItemHovered()) {
 			ImGui::BeginTooltip();
-			ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
+			MhGui::Image(texId, ImVec2(128, 128));
 			ImGui::EndTooltip();
 		}
 	} else {
@@ -532,10 +537,10 @@ void DisplayPoseTargetRow(const std::string & target_name,
 	if(texIdIt != g_poseImageTextures.end()) {
 		auto texId = texIdIt->second;
 		
-		ImGui::Image((void*)(intptr_t)texId, ImVec2(16, 16));
+		MhGui::Image(texId, ImVec2(16, 16));
 		if(ImGui::IsItemHovered()) {
 			ImGui::BeginTooltip();
-			ImGui::Image((void*)(intptr_t)texId, ImVec2(128, 128));
+			MhGui::Image(texId, ImVec2(128, 128));
 			ImGui::EndTooltip();
 		}
 	} else {
@@ -650,7 +655,7 @@ void DisplayLibraryCharacters() {
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
 			const auto & tex = icon->second;
-			if(ImGui::ImageButton((void*)(intptr_t)tex, ImVec2(48, 48))){
+			if(ImGui::ImageButton((void*)(intptr_t)tex.handle, ImVec2(48, 48))){
 				
 				
 				{ // not copy-paste
@@ -707,7 +712,7 @@ void DisplayLibraryPoses() {
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
 			const auto & tex = icon->second;
-			if(ImGui::ImageButton((void*)(intptr_t)tex, ImVec2(48, 48))){
+			if(ImGui::ImageButton((void*)(intptr_t)tex.handle, ImVec2(48, 48))){
 				
 				
 				{ // not copy-paste

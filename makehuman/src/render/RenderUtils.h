@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #pragma once
 
-#include <GL/glew.h>
+#include <optional>
 
-bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
+#include "render/GlTypes.h"
+
+std::optional<mh::Texture> LoadTextureFromFile(const char* filename);
