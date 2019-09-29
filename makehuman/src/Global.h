@@ -93,3 +93,18 @@ public:
 };
 
 extern Global g_global;
+
+struct WindowVisibility {
+	bool characterSettings   = false;
+	bool performance         = false;
+	bool morphTargets        = false;
+	bool morphTargetsApplied = false;
+	bool poseTargetFoo       = true;
+	bool poseTargets         = false;
+	bool poseTargetsApplied  = false;
+	bool about               = false;
+};
+
+extern WindowVisibility g_displayWin;
+
+

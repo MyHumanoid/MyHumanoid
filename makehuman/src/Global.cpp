@@ -28,3 +28,5 @@
 #include "Global.h"
 
 Global g_global;
+
+WindowVisibility g_displayWin;
