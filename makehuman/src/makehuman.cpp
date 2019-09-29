@@ -803,9 +803,6 @@ void DisplayMainMenu()
 	if(g_displayWin.morphTargetsApplied) {
 		DisplayMorphTargetsApplied();
 	}
-	if(g_displayWin.poseTargetFoo) {
-		DisplayPoseTargetSelector();
-	}
 	if(g_displayWin.poseTargets) {
 		DisplayPoseTargets();
 	}

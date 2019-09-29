@@ -99,7 +99,6 @@ struct WindowVisibility {
 	bool performance         = false;
 	bool morphTargets        = false;
 	bool morphTargetsApplied = false;
-	bool poseTargetFoo       = true;
 	bool poseTargets         = false;
 	bool poseTargetsApplied  = false;
 	bool about               = false;
