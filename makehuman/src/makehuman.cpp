@@ -414,19 +414,21 @@ void doPoseFromGui(std::string targetName, float value)
 
 // ================================================================================================
 
+struct WindowVisibility {
+	bool characterSettings   = true;
+	bool performance         = false;
+	bool morphTargets        = false;
+	bool morphTargetsApplied = false;
+	bool poseTargets         = false;
+	bool poseTargetsApplied  = false;
+};
+
+static WindowVisibility g_displayWin;
+
 static bool show_demo_window = false;
 
 static bool g_userRequestedQuit = false;
 static bool g_displayAxis       = false;
-
-static bool g_displayCharacterSettings = true;
-static bool g_displayPerformance       = false;
-
-static bool g_displayMorphTargets        = false;
-static bool g_displayMorphTargetsApplied = false;
-
-static bool g_displayPoseTargets        = false;
-static bool g_displayPoseTargetsApplied = false;
 
 static bool g_requestShaderReload  = false;
 static int  g_requestShaderVersion = 1;
@@ -530,7 +532,7 @@ bool isCompositeMorphTarget(const std::string & target_name)
 void DisplayMorphTargets()
 {
 
-	if(!ImGui::Begin("Morph Targets", &g_displayMorphTargets)) {
+	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets)) {
 		ImGui::End();
 		return;
 	}
@@ -560,7 +562,7 @@ void DisplayMorphTargets()
 
 void DisplayMorphTargetsApplied()
 {
-	if(!ImGui::Begin("Applied Morph Targets", &g_displayMorphTargetsApplied)) {
+	if(!ImGui::Begin("Applied Morph Targets", &g_displayWin.morphTargetsApplied)) {
 		ImGui::End();
 		return;
 	}
@@ -623,7 +625,7 @@ void DisplayPoseTargetRow(const std::string & target_name, const PoseTarget * po
 
 void DisplayPoseTargets()
 {
-	if(!ImGui::Begin("Pose Rotations", &g_displayPoseTargets)) {
+	if(!ImGui::Begin("Pose Rotations", &g_displayWin.poseTargets)) {
 		ImGui::End();
 		return;
 	}
@@ -652,7 +654,7 @@ void DisplayPoseTargets()
 
 void DisplayPoseTargetsApplied()
 {
-	if(!ImGui::Begin("Applied Pose Rotations", &g_displayPoseTargetsApplied)) {
+	if(!ImGui::Begin("Applied Pose Rotations", &g_displayWin.poseTargetsApplied)) {
 		ImGui::End();
 		return;
 	}
@@ -900,7 +902,7 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Edit")) {
-			ImGui::Checkbox("CharacterSettings", &g_displayCharacterSettings);
+			ImGui::Checkbox("CharacterSettings", &g_displayWin.characterSettings);
 			ImGui::Separator();
 			if(ImGui::MenuItem("Reset Mesh")) {
 				switch(g_global.getAppMode()) {
@@ -948,13 +950,13 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Morph")) {
-			ImGui::Checkbox("Morph Targets", &g_displayMorphTargets);
-			ImGui::Checkbox("Used Morph Targets", &g_displayMorphTargetsApplied);
+			ImGui::Checkbox("Morph Targets", &g_displayWin.morphTargets);
+			ImGui::Checkbox("Used Morph Targets", &g_displayWin.morphTargetsApplied);
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Pose")) {
-			ImGui::Checkbox("Pose Rotations", &g_displayPoseTargets);
-			ImGui::Checkbox("Used pose list", &g_displayPoseTargetsApplied);
+			ImGui::Checkbox("Pose Rotations", &g_displayWin.poseTargets);
+			ImGui::Checkbox("Used pose list", &g_displayWin.poseTargetsApplied);
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
@@ -995,7 +997,7 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Help")) {
-			ImGui::Checkbox("Performance", &g_displayPerformance);
+			ImGui::Checkbox("Performance", &g_displayWin.performance);
 			ImGui::Separator();
 			if(ImGui::Button("About")) {
 				SplashPanel * splashScreen = (SplashPanel *)g_mainWindow->getPanel(
@@ -1014,16 +1016,16 @@ void DisplayMainMenu()
 		ImGui::EndMainMenuBar();
 	}
 
-	if(g_displayMorphTargets) {
+	if(g_displayWin.morphTargets) {
 		DisplayMorphTargets();
 	}
-	if(g_displayMorphTargetsApplied) {
+	if(g_displayWin.morphTargetsApplied) {
 		DisplayMorphTargetsApplied();
 	}
-	if(g_displayPoseTargets) {
+	if(g_displayWin.poseTargets) {
 		DisplayPoseTargets();
 	}
-	if(g_displayPoseTargetsApplied) {
+	if(g_displayWin.poseTargetsApplied) {
 		DisplayPoseTargetsApplied();
 	}
 }
@@ -1128,11 +1130,11 @@ void DisplayGui()
 {
 	DisplayMainMenu();
 
-	if(g_displayCharacterSettings) {
+	if(g_displayWin.characterSettings) {
 		DisplayCharacterSettings();
 	}
 
-	if(g_displayPerformance) {
+	if(g_displayWin.performance) {
 		DisplayPerformance();
 	}
 
