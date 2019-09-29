@@ -141,6 +141,8 @@ set(makehuman_sources
 	src/MhGui.h
 	src/MhGuiData.h
 	src/MhGuiData.cpp
+	src/MhMorph.h
+	src/MhMorph.cpp
 	src/MhPose.h
 	src/MhPose.cpp
 	src/PageTargetPanel.cpp
