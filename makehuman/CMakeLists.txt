@@ -138,6 +138,7 @@ set(makehuman_sources
 	src/ImageListener.cpp
 	src/ImageListener.h
 	src/makehuman.cpp
+	src/MhGui.h
 	src/PageTargetPanel.cpp
 	src/PageTargetPanel.h
 	src/PosesBodyPanel.cpp
