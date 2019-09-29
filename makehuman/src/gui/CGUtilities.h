@@ -51,7 +51,7 @@ using std::string;
 using namespace Animorph;
 using namespace mhgui;
 
-typedef void *FontType;
+typedef void * FontType;
 
 /** \brief Computer Graphics Utilities
  *
@@ -60,33 +60,29 @@ typedef void *FontType;
  */
 namespace cgutils
 {
-void drawGrid(const Size &inSize, const int xMargin, const int yMargin,
-              const Color &c, const Color &b, int squareSize);
+void drawGrid(const Size & inSize, const int xMargin, const int yMargin, const Color & c,
+              const Color & b, int squareSize);
 
 void drawAxis();
 
-void reshape(const Size &inSize, const Camera &inCamera);
+void reshape(const Size & inSize, const Camera & inCamera);
 
 void enableOrthographicProjection();
 
 void disableOrthographicProjection();
 
-void drawSquareFillTexture(const Rect &inRect, float alpha,
-                           const Texture &inTexture);
+void drawSquareFillTexture(const Rect & inRect, float alpha, const Texture & inTexture);
 
-void drawSquareFill(const Rect &inRect, const Color &c);
+void drawSquareFill(const Rect & inRect, const Color & c);
 
-void drawSquare(const Rect &inRect, const Color &c);
+void drawSquare(const Rect & inRect, const Color & c);
 
-int initWindow(const Rect &rect, const char *title, const glm::vec3 &light0Pos,
-               const glm::vec3 &light1Pos, float light0Lum, float light1Lum,
-               const Color &c);
+int initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
+               const glm::vec3 & light1Pos, float light0Lum, float light1Lum, const Color & c);
 
-void drawString(const Point &inPoint, FontType font, const string &str,
-                const Color &c);
+void drawString(const Point & inPoint, FontType font, const string & str, const Color & c);
 
-void drawString3D(const glm::vec3 &pos, FontType font, const string &str,
-                  const Color &c);
+void drawString3D(const glm::vec3 & pos, FontType font, const string & str, const Color & c);
 
 void redisplay();
 
@@ -94,11 +90,11 @@ void enableBlend();
 
 int getFontWidth(FontType font);
 
-int getFontLength(FontType font, const string &str);
+int getFontLength(FontType font, const string & str);
 
 void mhWireCube(const float twoxyz[6]);
 
-void drawLine2D(const Point &start, const Point &end, const Color &c);
+void drawLine2D(const Point & start, const Point & end, const Color & c);
 
 } // namespace cgutils
 

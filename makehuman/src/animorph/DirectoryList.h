@@ -62,22 +62,21 @@ class DirectoryList
 {
 private:
 	/// recursive function to read directory list
-	void readDirRecursive(const string &dir_str);
-	bool hasFileFilterEnding(const string &file) const;
+	void readDirRecursive(const string & dir_str);
+	bool hasFileFilterEnding(const string & file) const;
 
 	StringList file_list;
-	string file_filter;
-	string path;
-	int recursive_level;
-	int recursive_counter;
-	int file_type;
+	string     file_filter;
+	string     path;
+	int        recursive_level;
+	int        recursive_counter;
+	int        file_type;
 
 public:
 	DirectoryList();
 
-	enum {
-		NO_LIMIT = -1,   /*!< read directories recursive without limit */
-		NO_RECURSIVE = 0 /*!< read only the base directory without recursion */
+	enum { NO_LIMIT     = -1, /*!< read directories recursive without limit */
+	       NO_RECURSIVE = 0   /*!< read only the base directory without recursion */
 	};
 
 	enum FileType {
@@ -92,13 +91,13 @@ public:
 	 *                    dot is in the extension, it need to be included.
 	 *			(e.g. ".target")
 	 */
-	void setFileFilter(const string &file_filter);
+	void setFileFilter(const string & file_filter);
 
 	/// set the root path where to start file listing
 	/*!
 	 * \param path the root path
 	 */
-	void setRootPath(const string &path);
+	void setRootPath(const string & path);
 
 	/// set the recursive level
 	/*!
@@ -113,7 +112,7 @@ public:
 	/*!
 	 * \return the complete list of all matching files
 	 */
-	const StringList &getDirectoryList();
+	const StringList & getDirectoryList();
 
 	/// set the file types of interest (default: REGULAR_FILE)
 	/*!

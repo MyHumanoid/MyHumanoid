@@ -47,22 +47,22 @@ class Point
 {
 public:
 	Point(int32_t inX, int32_t inY);
-	Point(const Point &inPoint);
+	Point(const Point & inPoint);
 	~Point();
 
-	Point &operator=(const Point &inPoint)
+	Point & operator=(const Point & inPoint)
 	{
 		x = inPoint.x;
 		y = inPoint.y;
 		return *this;
 	}
 
-	bool operator==(const Point &inPoint) const;
+	bool operator==(const Point & inPoint) const;
 
 	int32_t getX() const { return x; }
 	int32_t getY() const { return y; }
 
-	void moveBy(const Point &inPoint);
+	void moveBy(const Point & inPoint);
 
 	const string dump() const;
 
@@ -70,28 +70,28 @@ public:
 }; // class Point
 
 inline Point::Point(int32_t inX, int32_t inY)
-    : x(inX)
-    , y(inY)
+        : x(inX)
+        , y(inY)
 {
 }
 
-inline Point::Point(const Point &inPoint)
-    : x(inPoint.x)
-    , y(inPoint.y)
+inline Point::Point(const Point & inPoint)
+        : x(inPoint.x)
+        , y(inPoint.y)
 {
 }
 
 inline Point::~Point() {}
 
-inline bool Point::operator==(const Point &inPoint) const
+inline bool Point::operator==(const Point & inPoint) const
 {
-	if (this == &inPoint) // The same object?
+	if(this == &inPoint) // The same object?
 		return true;
 
 	return (x == inPoint.x && y == inPoint.y);
 }
 
-inline void Point::moveBy(const Point &inPoint)
+inline void Point::moveBy(const Point & inPoint)
 {
 	x += inPoint.x;
 	y += inPoint.y;

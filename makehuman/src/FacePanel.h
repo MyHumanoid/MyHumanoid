@@ -50,11 +50,11 @@ public:
 
 private: // intentionally not implemented
 	FacePanel(const FacePanel &);
-	FacePanel &operator=(const FacePanel &);
+	FacePanel & operator=(const FacePanel &);
 
 private:
 	TargetSelectionListener imgListener1;
-	vector<Image *> imageVector;
+	vector<Image *>         imageVector;
 };
 
 #endif // FACEPANEL_H

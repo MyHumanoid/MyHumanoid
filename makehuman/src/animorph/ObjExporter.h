@@ -52,7 +52,7 @@ namespace Animorph
 class ObjExporter
 {
 protected:
-	Mesh &mesh;
+	Mesh & mesh;
 	Matrix tm;
 	/*
 	  void createOBJStream (ostringstream &out_stream,
@@ -60,17 +60,17 @@ protected:
 	                        const FGroupData &facegroupdata,
 	                        VertexData &vertexgroupdata);
 	*/
-	void createOBJStream(ostringstream &out_stream, const string &basename);
+	void createOBJStream(ostringstream & out_stream, const string & basename);
 
-	void createFullOBJStream(ostringstream &out_stream, const string &basename);
-	void createMTLStream(ostringstream &out_stream, const string &basename);
+	void createFullOBJStream(ostringstream & out_stream, const string & basename);
+	void createMTLStream(ostringstream & out_stream, const string & basename);
 
 public:
 	/*!
 	 * \param _mesh construct ObjExporter from a Mesh object
 	 */
-	ObjExporter(Animorph::Mesh &_mesh)
-	    : mesh(_mesh)
+	ObjExporter(Animorph::Mesh & _mesh)
+	        : mesh(_mesh)
 	{
 		tm.identity();
 	}
@@ -78,7 +78,7 @@ public:
 	/*!
 	 * \param tm the Matrix which transforms the Mesh before exporting
 	 */
-	void setTransformationMatrix(Matrix &tm) { this->tm = tm; }
+	void setTransformationMatrix(Matrix & tm) { this->tm = tm; }
 
 	/// Export the Mesh in OBJ file and MTL file with same name, but ending .mtl
 	/*!
@@ -88,7 +88,7 @@ public:
 	 * \return true if file was saved
 	 * \return false if file couldn't be saved
 	 */
-	bool exportFile(const string &exportpath, bool full = false);
+	bool exportFile(const string & exportpath, bool full = false);
 };
 
 } // namespace Animorph

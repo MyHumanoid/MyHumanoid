@@ -46,16 +46,15 @@ using namespace Animorph;
 using namespace std;
 
 TargetSelectionListener::TargetSelectionListener()
-    : AbstractListener()
+        : AbstractListener()
 {
 }
 
 TargetSelectionListener::~TargetSelectionListener() {}
 
-bool TargetSelectionListener::mouseOver(const Point &inMousePos,
-                                        Component *source)
+bool TargetSelectionListener::mouseOver(const Point & inMousePos, Component * source)
 {
-	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 	assert(imgSource); // Check if this is really an Image object?
 
 	imgSource->setOverlayRectangle(Color(1, 0, 0, 0.5));
@@ -63,10 +62,9 @@ bool TargetSelectionListener::mouseOver(const Point &inMousePos,
 	return false;
 }
 
-bool TargetSelectionListener::mouseOut(const Point &inMousePos,
-                                       Component *source)
+bool TargetSelectionListener::mouseOut(const Point & inMousePos, Component * source)
 {
-	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 	assert(imgSource); // Check if this is really an Image object?
 
 	imgSource->setOverlayRectangle(false);
@@ -74,23 +72,20 @@ bool TargetSelectionListener::mouseOut(const Point &inMousePos,
 	return false;
 }
 
-bool TargetSelectionListener::mouseDragged(const Point &inMousePos,
-                                           Component *source)
+bool TargetSelectionListener::mouseDragged(const Point & inMousePos, Component * source)
 {
 	return true;
 }
 
-bool TargetSelectionListener::mouseWheel(const Point &inMousePos, int inButton,
-                                         Component *source)
+bool TargetSelectionListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
 {
 	return false;
 }
 
-bool TargetSelectionListener::mousePressed(const Point &inMousePos, int button,
-                                           Component *source)
+bool TargetSelectionListener::mousePressed(const Point & inMousePos, int button, Component * source)
 {
-	if (button == GLUT_LEFT_BUTTON) {
-		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	if(button == GLUT_LEFT_BUTTON) {
+		Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 		assert(imgSource); // Check if this is really an Image object?
 		imgSource->setOverlayRectangle(Color(1, 1, 1, 0.5));
 
@@ -99,21 +94,21 @@ bool TargetSelectionListener::mousePressed(const Point &inMousePos, int button,
 	return false;
 }
 
-bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
-                                            Component *source)
+bool TargetSelectionListener::mouseReleased(const Point & inMousePos, int button,
+                                            Component * source)
 {
-	if (button == GLUT_LEFT_BUTTON) {
-		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	if(button == GLUT_LEFT_BUTTON) {
+		Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 		assert(imgSource); // Check if this is really an Image object?
 
 		imgSource->setOverlayRectangle(false);
 
-		if (!imgSource->getAbsoluteRect().isHitBy(inMousePos))
+		if(!imgSource->getAbsoluteRect().isHitBy(inMousePos))
 			return false;
 
 		string target;
 
-		switch (imgSource->getID()) {
+		switch(imgSource->getID()) {
 			// The Image ID's of the  BodyPanel (kComponentID_BodyPanel)
 		case kComponentID_ImageBody_HeadParams:
 			target = "head";
@@ -350,13 +345,13 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 			break;
 		}
 
-		Window &mainWindow = *g_mainWindow;
+		Window & mainWindow = *g_mainWindow;
 
-		TargetPanel *targetPanel = dynamic_cast<TargetPanel *>(
-		    mainWindow.getPanel(kComponentID_TargetPanel));
+		TargetPanel * targetPanel =
+		        dynamic_cast<TargetPanel *>(mainWindow.getPanel(kComponentID_TargetPanel));
 
 		// Check if this Target Panel is not the current one?
-		if ((targetPanel == NULL) || (targetPanel->getCategory() != target)) {
+		if((targetPanel == NULL) || (targetPanel->getCategory() != target)) {
 			// No? The create it
 			int x = mainWindow.getSize().getWidth() - 210;
 
@@ -369,17 +364,17 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 			targetPanel->createWidgets();
 		}
 
-		Autozoom *autozoom = g_global.getAutozoom();
-		Camera *camera = g_global.getCamera();
+		Autozoom * autozoom = g_global.getAutozoom();
+		Camera *   camera   = g_global.getCamera();
 		assert(autozoom);
 
-		Mesh *mesh = g_global.getMesh();
+		Mesh * mesh = g_global.getMesh();
 		assert(mesh);
-		VertexVector &vertexvector(mesh->getVertexVectorRef());
+		VertexVector & vertexvector(mesh->getVertexVectorRef());
 
 		std::string pathAutozoom_data =
-		    searchDataDir("targets") + "/" + target + "/" + target + ".camera";
-		if (autozoom->lazyLoadData(pathAutozoom_data)) {
+		        searchDataDir("targets") + "/" + target + "/" + target + ".camera";
+		if(autozoom->lazyLoadData(pathAutozoom_data)) {
 			camera->moveCameraAnimated(pathAutozoom_data,
 			                           autozoom->getAutozoomData(pathAutozoom_data),
 			                           vertexvector);
@@ -394,7 +389,4 @@ bool TargetSelectionListener::mouseReleased(const Point &inMousePos, int button,
 	return false;
 }
 
-bool TargetSelectionListener::keyType(unsigned char key, Component *source)
-{
-	return false;
-}
+bool TargetSelectionListener::keyType(unsigned char key, Component * source) { return false; }

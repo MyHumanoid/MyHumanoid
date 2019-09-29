@@ -61,15 +61,15 @@ const static Point kBottomPosition6(0, 400);
 const static Point kBottomPosition7(0, 472);
 
 ImageListener::ImageListener()
-    : AbstractListener()
+        : AbstractListener()
 {
 }
 
 ImageListener::~ImageListener() {}
 
-bool ImageListener::mouseOver(const Point &inMousePos, Component *source)
+bool ImageListener::mouseOver(const Point & inMousePos, Component * source)
 {
-	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 	assert(imgSource); // Check if this is really an Image object?
 
 	imgSource->setOverlayRectangle(Color(1, 0, 0, 0.5));
@@ -77,9 +77,9 @@ bool ImageListener::mouseOver(const Point &inMousePos, Component *source)
 	return false;
 }
 
-bool ImageListener::mouseOut(const Point &inMousePos, Component *source)
+bool ImageListener::mouseOut(const Point & inMousePos, Component * source)
 {
-	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 	assert(imgSource); // Check if this is really an Image object?
 
 	imgSource->setOverlayRectangle(false);
@@ -87,10 +87,10 @@ bool ImageListener::mouseOut(const Point &inMousePos, Component *source)
 	return false;
 }
 
-bool ImageListener::mouseDragged(const Point &inMousePos, Component *source)
+bool ImageListener::mouseDragged(const Point & inMousePos, Component * source)
 {
 
-	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 	assert(imgSource); // Check if this is really an Image object?
 
 	imgSource->setOverlayRectangle(false);
@@ -98,17 +98,15 @@ bool ImageListener::mouseDragged(const Point &inMousePos, Component *source)
 	return true;
 }
 
-bool ImageListener::mouseWheel(const Point &inMousePos, int inButton,
-                               Component *source)
+bool ImageListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
 {
 	return false;
 }
 
-bool ImageListener::mousePressed(const Point &inMousePos, int button,
-                                 Component *source)
+bool ImageListener::mousePressed(const Point & inMousePos, int button, Component * source)
 {
-	if (button == GLUT_LEFT_BUTTON) {
-		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	if(button == GLUT_LEFT_BUTTON) {
+		Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 		assert(imgSource); // Check if this is really an Image object?
 		imgSource->setOverlayRectangle(Color(1, 1, 1, 0.5));
 
@@ -117,32 +115,31 @@ bool ImageListener::mousePressed(const Point &inMousePos, int button,
 	return false;
 }
 
-bool ImageListener::mouseReleased(const Point &inMousePos, int button,
-                                  Component *source)
+bool ImageListener::mouseReleased(const Point & inMousePos, int button, Component * source)
 {
 
-	if (button == GLUT_LEFT_BUTTON) {
-		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	if(button == GLUT_LEFT_BUTTON) {
+		Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 		assert(imgSource); // Check if this is really an Image object?
 
-		if (imgSource->getAbsoluteRect().isHitBy(inMousePos)) {
+		if(imgSource->getAbsoluteRect().isHitBy(inMousePos)) {
 
 			// DialogPanel *dialogPanel;// = new DialogPanel (imgSource->getID ());
 
-			Window &mainWindow = *g_mainWindow;
+			Window & mainWindow = *g_mainWindow;
 			imgSource->setOverlayRectangle(false);
 
-			switch (imgSource->getID()) {
+			switch(imgSource->getID()) {
 			// toolbar buttons
 			case kComponentID_ImageToolbarPanel_CharacterSettings: {
-				if (g_global.getAppMode() == CHARACTER_SETTING)
+				if(g_global.getAppMode() == CHARACTER_SETTING)
 					return true;
 
 				hidePanels(g_global.getAppMode());
 
-				if (g_global.getAppMode() != BODY_DETAILS &&
-				    g_global.getAppMode() != BODY_SETTINGS) {
-					Mesh *mesh = g_global.getMesh();
+				if(g_global.getAppMode() != BODY_DETAILS &&
+				   g_global.getAppMode() != BODY_SETTINGS) {
+					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
@@ -152,14 +149,14 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				showCharacterSetting();
 			} break;
 			case kComponentID_ImageToolbarPanel_BodyDetailsRealistic: {
-				if (g_global.getAppMode() == BODY_DETAILS)
+				if(g_global.getAppMode() == BODY_DETAILS)
 					return true;
 
 				hidePanels(g_global.getAppMode());
 
-				if (g_global.getAppMode() != CHARACTER_SETTING &&
-				    g_global.getAppMode() != BODY_SETTINGS) {
-					Mesh *mesh = g_global.getMesh();
+				if(g_global.getAppMode() != CHARACTER_SETTING &&
+				   g_global.getAppMode() != BODY_SETTINGS) {
+					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
 
 					mesh->bodyDetailsMode();
@@ -169,13 +166,13 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				showBodyDetails();
 			} break;
 			case kComponentID_ImageToolbarPanel_Poses: {
-				if (g_global.getAppMode() == POSES)
+				if(g_global.getAppMode() == POSES)
 					return true;
 
 				hidePanels(g_global.getAppMode());
 
-				if (g_global.getAppMode() != POSES_BODY_SETTINGS) {
-					Mesh *mesh = g_global.getMesh();
+				if(g_global.getAppMode() != POSES_BODY_SETTINGS) {
+					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
 					mesh->poseMode();
 				}
@@ -184,26 +181,26 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 				showPoses();
 			} break;
 			case kComponentID_ImageToolbarPanel_MorphingList: {
-				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
+				Panel * p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);
 				delete p;
 
-				if (g_global.getAppMode() == BODY_DETAILS ||
-				    g_global.getAppMode() == CHARACTER_SETTING) {
-					TargetPanel *targetPanel;
+				if(g_global.getAppMode() == BODY_DETAILS ||
+				   g_global.getAppMode() == CHARACTER_SETTING) {
+					TargetPanel * targetPanel;
 
-					int x = mainWindow.getSize().getWidth() - 210;
-					targetPanel =
-					    new TargetPanel(applied_target_list, Rect(x, 104, 160, 460));
+					int x       = mainWindow.getSize().getWidth() - 210;
+					targetPanel = new TargetPanel(applied_target_list,
+					                              Rect(x, 104, 160, 460));
 					mainWindow.addPanel(targetPanel);
 					targetPanel->createWidgets();
 					targetPanel->show();
-				} else if (g_global.getAppMode() == POSES) {
-					PoseTargetPanel *targetPanel;
+				} else if(g_global.getAppMode() == POSES) {
+					PoseTargetPanel * targetPanel;
 
-					int x = mainWindow.getSize().getWidth() - 210;
-					targetPanel =
-					    new PoseTargetPanel(applied_target_list, Rect(x, 40, 210, 517));
+					int x       = mainWindow.getSize().getWidth() - 210;
+					targetPanel = new PoseTargetPanel(applied_target_list,
+					                                  Rect(x, 40, 210, 517));
 					mainWindow.addPanel(targetPanel);
 					targetPanel->createWidgets();
 					targetPanel->show_all();
@@ -211,25 +208,26 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 			} break;
 			// utilitybar buttons
 			case kComponentID_CloseTargetPanel: {
-				Panel *p = mainWindow.getPanel(kComponentID_TargetPanel);
+				Panel * p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);
 			} break;
 			case kComponentID_NextTargetPanel: {
-				MultiPanel *p = dynamic_cast<MultiPanel *>(
-				    mainWindow.getPanel(kComponentID_TargetPanel));
+				MultiPanel * p = dynamic_cast<MultiPanel *>(
+				        mainWindow.getPanel(kComponentID_TargetPanel));
 				assert(p);
 				p->pageNext();
 				break;
 			}
 			case kComponentID_PrevTargetPanel: {
-				MultiPanel *p = dynamic_cast<MultiPanel *>(
-				    mainWindow.getPanel(kComponentID_TargetPanel));
+				MultiPanel * p = dynamic_cast<MultiPanel *>(
+				        mainWindow.getPanel(kComponentID_TargetPanel));
 				assert(p);
 				p->pageBack();
 				break;
 			}
 			default:
-				cerr << "Unknown widget handler!" << imgSource->getIDAsString() << endl;
+				cerr << "Unknown widget handler!" << imgSource->getIDAsString()
+				     << endl;
 			}
 
 			return true;
@@ -239,26 +237,23 @@ bool ImageListener::mouseReleased(const Point &inMousePos, int button,
 	return false;
 }
 
-bool ImageListener::keyType(unsigned char key, Component *source)
-{
-	return false;
-}
+bool ImageListener::keyType(unsigned char key, Component * source) { return false; }
 
 void ImageListener::hidePanels(const Modes currentMode)
 {
-	if (currentMode == POSES) {
+	if(currentMode == POSES) {
 		hidePoses();
-	} else if (currentMode == BODY_DETAILS) {
+	} else if(currentMode == BODY_DETAILS) {
 		hideBodyDetails();
-	} else if (currentMode == CHARACTER_SETTING) {
+	} else if(currentMode == CHARACTER_SETTING) {
 		hideCharacterSetting();
 	}
 }
 
 void ImageListener::hideBodyDetails()
 {
-	Window &mainWindow = *g_mainWindow;
-	Panel *p = mainWindow.getPanel(kComponentID_BodyPanel);
+	Window & mainWindow = *g_mainWindow;
+	Panel *  p          = mainWindow.getPanel(kComponentID_BodyPanel);
 	mainWindow.removePanel(p);
 	delete p;
 
@@ -281,8 +276,8 @@ void ImageListener::hideBodyDetails()
 
 void ImageListener::hideCharacterSetting()
 {
-	Window &mainWindow = *g_mainWindow;
-	Panel *p = mainWindow.getPanel(kComponentID_CharacterSettingPanel);
+	Window & mainWindow = *g_mainWindow;
+	Panel *  p          = mainWindow.getPanel(kComponentID_CharacterSettingPanel);
 	mainWindow.removePanel(p);
 	delete p;
 
@@ -293,8 +288,8 @@ void ImageListener::hideCharacterSetting()
 
 void ImageListener::hidePoses()
 {
-	Window &mainWindow = *g_mainWindow;
-	Panel *p = mainWindow.getPanel(kComponentID_BodyPanel);
+	Window & mainWindow = *g_mainWindow;
+	Panel *  p          = mainWindow.getPanel(kComponentID_BodyPanel);
 	mainWindow.removePanel(p);
 	delete p;
 
@@ -307,9 +302,9 @@ void ImageListener::hidePoses()
 
 void ImageListener::showCharacterSetting()
 {
-	Window &mainWindow = *g_mainWindow;
+	Window & mainWindow = *g_mainWindow;
 
-	CharacterSettingPanel *characterSettingPanel = new CharacterSettingPanel();
+	CharacterSettingPanel * characterSettingPanel = new CharacterSettingPanel();
 	mainWindow.addPanel(characterSettingPanel);
 	characterSettingPanel->createWidgets();
 	characterSettingPanel->show_all();
@@ -317,24 +312,24 @@ void ImageListener::showCharacterSetting()
 
 void ImageListener::showBodyDetails()
 {
-	Window &mainWindow = *g_mainWindow;
+	Window & mainWindow = *g_mainWindow;
 
-	BodyPanel *bodyPanel = new BodyPanel();
+	BodyPanel * bodyPanel = new BodyPanel();
 	mainWindow.addPanel(bodyPanel);
 	bodyPanel->createWidgets();
 	bodyPanel->show_all();
 
-	FacePanel *facePanel = new FacePanel();
+	FacePanel * facePanel = new FacePanel();
 	mainWindow.addPanel(facePanel);
 	facePanel->createWidgets();
 	facePanel->show_all();
 
-	TeethPanel *teethPanel = new TeethPanel();
+	TeethPanel * teethPanel = new TeethPanel();
 	mainWindow.addPanel(teethPanel);
 	teethPanel->createWidgets();
 	teethPanel->show_all();
 
-	HandsPanel *handsPanel = new HandsPanel();
+	HandsPanel * handsPanel = new HandsPanel();
 	mainWindow.addPanel(handsPanel);
 	handsPanel->createWidgets();
 	handsPanel->show_all();
@@ -342,8 +337,8 @@ void ImageListener::showBodyDetails()
 
 void ImageListener::showPoses()
 {
-	Window &mainWindow = *g_mainWindow;
-	PosesBodyPanel *posesPanel = new PosesBodyPanel();
+	Window &         mainWindow = *g_mainWindow;
+	PosesBodyPanel * posesPanel = new PosesBodyPanel();
 	mainWindow.addPanel(posesPanel);
 	posesPanel->createWidgets();
 	posesPanel->show_all();

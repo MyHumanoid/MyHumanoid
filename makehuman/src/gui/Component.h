@@ -43,7 +43,7 @@ using std::endl;
 // FOUR_CHAR_CONST('D','U','M','Y'); is a substitute of the uint32_t literal
 // 'DUMY'
 #ifndef FOUR_CHAR_CONST
-#define FOUR_CHAR_CONST(a, b, c, d)                                            \
+#define FOUR_CHAR_CONST(a, b, c, d)                                                                \
 	(((char)(a)) << 24 | ((char)(b)) << 16 | ((char)(c)) << 8 | ((char)(d)))
 #endif
 
@@ -55,42 +55,39 @@ class AbstractListener;
 class Component
 {
 private:
-	uint32_t id;
-	Rect geometry;
-	Rect absoluteGeometry;
-	Point zeroPoint;
-	AbstractListener *listener;
-	AbstractListener *sysListener;
+	uint32_t           id;
+	Rect               geometry;
+	Rect               absoluteGeometry;
+	Point              zeroPoint;
+	AbstractListener * listener;
+	AbstractListener * sysListener;
 
 	// On mouse pressed -> true; on mouse released -> false
 	mutable bool active;
 	mutable bool visible;
 
-	bool clickConsumed;
+	bool         clickConsumed;
 	mutable bool mouseOver;
 
 public:
-	Component(uint32_t inId, const Rect &inGeometry);
+	Component(uint32_t inId, const Rect & inGeometry);
 
 	virtual ~Component();
 
-	void setListener(AbstractListener *inListener) { listener = inListener; }
-	void setSysListener(AbstractListener *inListener)
-	{
-		sysListener = inListener;
-	}
+	void setListener(AbstractListener * inListener) { listener = inListener; }
+	void setSysListener(AbstractListener * inListener) { sysListener = inListener; }
 
-	void setPosition(const Point &inPos);
+	void setPosition(const Point & inPos);
 
-	const Point &getPosition() const { return geometry.getPos(); }
+	const Point & getPosition() const { return geometry.getPos(); }
 
-	void setSize(const Size &inSize);
+	void setSize(const Size & inSize);
 
-	const Size &getSize() const { return geometry.getSize(); }
+	const Size & getSize() const { return geometry.getSize(); }
 
-	void setRect(const Rect &inRect);
+	void setRect(const Rect & inRect);
 
-	const Rect &getRect() const { return geometry; }
+	const Rect & getRect() const { return geometry; }
 
 	bool isClickConsumed() const { return clickConsumed; }
 	void setClickConsumed(bool value) { clickConsumed = value; }
@@ -102,33 +99,33 @@ public:
 	void setVisible(bool inVisible) { visible = inVisible; }
 
 	const uint32_t getID() const { return id; }
-	const string getIDAsString() const;
+	const string   getIDAsString() const;
 
 	bool isLastMouseOver() const { return mouseOver; }
 
-	virtual bool isMouseOver(const Point &inMousePos);
-	virtual bool isMouseClick(const Point &inMousePos, int button, int state);
-	virtual bool isMouseDragged(const Point &inMousePos);
+	virtual bool isMouseOver(const Point & inMousePos);
+	virtual bool isMouseClick(const Point & inMousePos, int button, int state);
+	virtual bool isMouseDragged(const Point & inMousePos);
 	virtual bool isKeyType(unsigned char);
 
 protected:
-	const Point &getAbsolutePosition() const { return absoluteGeometry.getPos(); }
-	void setZeroPoint(const Point &inZero);
-	const Point &getZeroPoint() { return zeroPoint; }
+	const Point & getAbsolutePosition() const { return absoluteGeometry.getPos(); }
+	void          setZeroPoint(const Point & inZero);
+	const Point & getZeroPoint() { return zeroPoint; }
 
 private: // intentionally not implemented
 	Component(const Component &);
-	Component &operator=(const Component &);
+	Component & operator=(const Component &);
 
 public:
 	virtual void draw() = 0;
 	virtual void show();
 	virtual void hide();
 
-	const Rect &getAbsoluteRect() const { return absoluteGeometry; }
+	const Rect & getAbsoluteRect() const { return absoluteGeometry; }
 
 	// Operators
-	bool operator==(const Component &inRHS) const;
+	bool operator==(const Component & inRHS) const;
 };
 
 } // namespace mhgui

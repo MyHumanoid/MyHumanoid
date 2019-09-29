@@ -40,7 +40,7 @@ using namespace std;
 using namespace Animorph;
 
 FacePanel::FacePanel()
-    : Panel(kComponentID_FacePanel, Rect(64, 16, 128, 192))
+        : Panel(kComponentID_FacePanel, Rect(64, 16, 128, 192))
 
 {
 }
@@ -52,15 +52,15 @@ FacePanel::~FacePanel()
 
 void FacePanel::createWidgets()
 {
-	Window &mainWindow = *g_mainWindow;
-	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
+	Window & mainWindow   = *g_mainWindow;
+	Panel *  tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
 	const Color color_red(1.0, 0.0, 0.0);
 	const float alpha = 1.0;
 	const Point kTooltipPos(70, 12);
 
-	Image *face;
+	Image * face;
 
 	// -------------------------------------------------------------------------
 	face = new Image(kComponentID_Dummy, searchPixmapFile("ui/face_01.png"),
@@ -98,11 +98,10 @@ void FacePanel::createWidgets()
 	addWidget(face);
 
 	// -------------------------------------------------------------------------
-	face = new Image(kComponentID_FacePanel_ForeheadParams,
-	                 searchPixmapFile("ui/face_06.png"), Rect(0, 0, 32, 32));
+	face = new Image(kComponentID_FacePanel_ForeheadParams, searchPixmapFile("ui/face_06.png"),
+	                 Rect(0, 0, 32, 32));
 	face->setListener(&imgListener1);
-	face->setTooltip(
-	    Tooltip("Forehead parameters", kTooltipPos, color_red, tooltipPanel));
+	face->setTooltip(Tooltip("Forehead parameters", kTooltipPos, color_red, tooltipPanel));
 	face->setAlpha(alpha);
 	imageVector.push_back(face);
 	addWidget(face);
@@ -129,11 +128,10 @@ void FacePanel::createWidgets()
 	addWidget(face);
 
 	// -------------------------------------------------------------------------
-	face = new Image(kComponentID_FacePanel_EyesParams,
-	                 searchPixmapFile("ui/face_10.png"), Rect(0, 0, 32, 32));
+	face = new Image(kComponentID_FacePanel_EyesParams, searchPixmapFile("ui/face_10.png"),
+	                 Rect(0, 0, 32, 32));
 	face->setListener(&imgListener1);
-	face->setTooltip(
-	    Tooltip("Eyes parameters", kTooltipPos, color_red, tooltipPanel));
+	face->setTooltip(Tooltip("Eyes parameters", kTooltipPos, color_red, tooltipPanel));
 	face->setAlpha(alpha);
 	imageVector.push_back(face);
 	addWidget(face);
@@ -153,31 +151,28 @@ void FacePanel::createWidgets()
 	addWidget(face);
 
 	// -------------------------------------------------------------------------
-	face = new Image(kComponentID_FacePanel_NoseParams,
-	                 searchPixmapFile("ui/face_13.png"), Rect(0, 0, 32, 32));
+	face = new Image(kComponentID_FacePanel_NoseParams, searchPixmapFile("ui/face_13.png"),
+	                 Rect(0, 0, 32, 32));
 	face->setListener(&imgListener1);
-	face->setTooltip(
-	    Tooltip("Nose parameters", kTooltipPos, color_red, tooltipPanel));
+	face->setTooltip(Tooltip("Nose parameters", kTooltipPos, color_red, tooltipPanel));
 	face->setAlpha(alpha);
 	imageVector.push_back(face);
 	addWidget(face);
 
 	// -------------------------------------------------------------------------
-	face = new Image(kComponentID_FacePanel_Cheek,
-	                 searchPixmapFile("ui/face_14.png"), Rect(0, 0, 32, 32));
+	face = new Image(kComponentID_FacePanel_Cheek, searchPixmapFile("ui/face_14.png"),
+	                 Rect(0, 0, 32, 32));
 	face->setListener(&imgListener1);
-	face->setTooltip(
-	    Tooltip("Cheek parameters", kTooltipPos, color_red, tooltipPanel));
+	face->setTooltip(Tooltip("Cheek parameters", kTooltipPos, color_red, tooltipPanel));
 	face->setAlpha(alpha);
 	imageVector.push_back(face);
 	addWidget(face);
 
 	// -------------------------------------------------------------------------
-	face = new Image(kComponentID_FacePanel_EarsParams,
-	                 searchPixmapFile("ui/face_15.png"), Rect(0, 0, 32, 32));
+	face = new Image(kComponentID_FacePanel_EarsParams, searchPixmapFile("ui/face_15.png"),
+	                 Rect(0, 0, 32, 32));
 	face->setListener(&imgListener1);
-	face->setTooltip(
-	    Tooltip("Ears parameters", kTooltipPos, color_red, tooltipPanel));
+	face->setTooltip(Tooltip("Ears parameters", kTooltipPos, color_red, tooltipPanel));
 	face->setAlpha(alpha);
 	imageVector.push_back(face);
 	addWidget(face);
@@ -190,11 +185,10 @@ void FacePanel::createWidgets()
 	addWidget(face);
 
 	// -------------------------------------------------------------------------
-	face = new Image(kComponentID_FacePanel_MouthParams,
-	                 searchPixmapFile("ui/face_17.png"), Rect(0, 0, 32, 32));
+	face = new Image(kComponentID_FacePanel_MouthParams, searchPixmapFile("ui/face_17.png"),
+	                 Rect(0, 0, 32, 32));
 	face->setListener(&imgListener1);
-	face->setTooltip(
-	    Tooltip("Mouth parameters", kTooltipPos, color_red, tooltipPanel));
+	face->setTooltip(Tooltip("Mouth parameters", kTooltipPos, color_red, tooltipPanel));
 	face->setAlpha(alpha);
 	imageVector.push_back(face);
 	addWidget(face);
@@ -221,11 +215,10 @@ void FacePanel::createWidgets()
 	addWidget(face);
 
 	// -------------------------------------------------------------------------
-	face = new Image(kComponentID_FacePanel_ChinJawParams,
-	                 searchPixmapFile("ui/face_21.png"), Rect(0, 0, 32, 32));
+	face = new Image(kComponentID_FacePanel_ChinJawParams, searchPixmapFile("ui/face_21.png"),
+	                 Rect(0, 0, 32, 32));
 	face->setListener(&imgListener1);
-	face->setTooltip(
-	    Tooltip("Chin Jaw parameters", kTooltipPos, color_red, tooltipPanel));
+	face->setTooltip(Tooltip("Chin Jaw parameters", kTooltipPos, color_red, tooltipPanel));
 	face->setAlpha(alpha);
 	imageVector.push_back(face);
 	addWidget(face);

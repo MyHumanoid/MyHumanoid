@@ -19,12 +19,12 @@ namespace mhgui
  */
 /* ========================================================================== */
 ImageData::ImageData()
-    : image_data(NULL)
-    , end_bufferPtr(NULL)
-    , width(0)
-    , height(0)
-    , bytesPerRow(0)
-    , alpha(false)
+        : image_data(NULL)
+        , end_bufferPtr(NULL)
+        , width(0)
+        , height(0)
+        , bytesPerRow(0)
+        , alpha(false)
 {
 }
 
@@ -54,7 +54,7 @@ unsigned long ImageData::getHeight() const { return height; }
 /**
  */
 /* ========================================================================== */
-const void *ImageData::getData() const { return image_data; }
+const void * ImageData::getData() const { return image_data; }
 
 /* ========================================================================== */
 /**
@@ -68,16 +68,13 @@ bool ImageData::hasAlpha() const { return alpha; }
  * @param filename The name of the PNG file to load to.
  * @return true if successful, false otherwise
  */
-bool ImageData::pngLoad(const string &filename)
-{
-	return pngLoadPNGLib(filename);
-}
+bool ImageData::pngLoad(const string & filename) { return pngLoadPNGLib(filename); }
 
-bool ImageData::pngLoadPNGLib(const string &filename)
+bool ImageData::pngLoadPNGLib(const string & filename)
 {
-	FILE *infile;        /* PNG file pointer */
-	png_structp png_ptr; /* internally used by libpng */
-	png_infop info_ptr;  /* user requested transforms */
+	FILE *      infile;   /* PNG file pointer */
+	png_structp png_ptr;  /* internally used by libpng */
+	png_infop   info_ptr; /* user requested transforms */
 
 	char sig[8]; /* PNG signature array */
 
@@ -85,7 +82,7 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 	int color_type;
 
 	unsigned int i;
-	png_bytepp row_pointers = NULL;
+	png_bytepp   row_pointers = NULL;
 
 	// clear the image Data buffer first
 	delete[] image_data;
@@ -93,7 +90,7 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 
 	/* Open the file. */
 	infile = fopen(filename.c_str(), "rb");
-	if (!infile) {
+	if(!infile) {
 		return false; // indicate an error
 	}
 
@@ -104,7 +101,7 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 	/* Check for the 8-byte signature */
 	fread(sig, 1, 8, infile);
 
-	if (!png_check_sig((unsigned char *)sig, 8)) {
+	if(!png_check_sig((unsigned char *)sig, 8)) {
 		fclose(infile);
 		return false; // seems not to be a valid png file
 	}
@@ -113,13 +110,13 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 	 * Set up the PNG structs
 	 */
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (!png_ptr) {
+	if(!png_ptr) {
 		fclose(infile);
 		return false; // out of memory
 	}
 
 	info_ptr = png_create_info_struct(png_ptr);
-	if (!info_ptr) {
+	if(!info_ptr) {
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		fclose(infile);
 		return false; // out of memory
@@ -129,7 +126,7 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 	 * block to handle libpng errors,
 	 * then check whether the PNG file had a bKGD chunk
 	 */
-	if (setjmp(png_jmpbuf(png_ptr))) {
+	if(setjmp(png_jmpbuf(png_ptr))) {
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		fclose(infile);
 		return false; // could not install error handler
@@ -160,22 +157,20 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 	// read all the info up to the image data
 	png_read_info(png_ptr, info_ptr);
 
-	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
-	             NULL, NULL, NULL);
+	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, NULL, NULL, NULL);
 
 	// Set up some transforms.
-	if (color_type & PNG_COLOR_MASK_ALPHA) {
+	if(color_type & PNG_COLOR_MASK_ALPHA) {
 		alpha = true;
 		// png_set_strip_alpha(png_ptr);
 	}
-	if (bit_depth > 8) {
+	if(bit_depth > 8) {
 		png_set_strip_16(png_ptr);
 	}
-	if (color_type == PNG_COLOR_TYPE_GRAY ||
-	    color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
+	if(color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
 		png_set_gray_to_rgb(png_ptr);
 	}
-	if (color_type == PNG_COLOR_TYPE_PALETTE) {
+	if(color_type == PNG_COLOR_TYPE_PALETTE) {
 		png_set_palette_to_rgb(png_ptr);
 	}
 
@@ -186,14 +181,13 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 	bytesPerRow = png_get_rowbytes(png_ptr, info_ptr);
 
 	// Allocate the image_data buffer.
-	if ((image_data = (char *)new (std::nothrow) char[bytesPerRow * height]) ==
-	    NULL) {
+	if((image_data = (char *)new(std::nothrow) char[bytesPerRow * height]) == NULL) {
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		return false; // could not get memory
 	}
 
-	if ((row_pointers = (png_bytepp) new (
-	         std::nothrow) char[height * sizeof(png_bytep)]) == NULL) {
+	if((row_pointers = (png_bytepp) new(std::nothrow) char[height * sizeof(png_bytep)]) ==
+	   NULL) {
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		delete[] image_data;
 		image_data = NULL;
@@ -204,7 +198,7 @@ bool ImageData::pngLoadPNGLib(const string &filename)
 
 	// cerr << "height: " << height << endl;
 
-	for (i = 0; i < height; ++i)
+	for(i = 0; i < height; ++i)
 		row_pointers[i] = (png_byte *)image_data + i * bytesPerRow;
 
 	// now we can go ahead and just read the whole image

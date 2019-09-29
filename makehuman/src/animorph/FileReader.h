@@ -48,16 +48,16 @@ namespace Animorph
 class FileReader : public std::ifstream
 {
 private:
-	char *locale;
+	char * locale;
 
 	// Intentionally declared as private because not implemented yet
 private:
 	FileReader(const FileReader &);
-	FileReader &operator=(const FileReader &);
+	FileReader & operator=(const FileReader &);
 
 public:
 	FileReader()
-	    : locale(NULL)
+	        : locale(NULL)
 	{
 	}
 
@@ -68,7 +68,7 @@ public:
 	 * \param filename the file to open for reading
 	 * \return 0 if the file could be opened.
 	 */
-	virtual int open(const std::string &filename);
+	virtual int open(const std::string & filename);
 
 	/// closes the currently opened file
 	virtual void close();

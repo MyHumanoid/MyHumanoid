@@ -37,22 +37,22 @@ using namespace std;
 namespace mhgui
 {
 
-Widget::Widget(uint32_t inId, const Rect &inGeometry)
-    : Component(inId, inGeometry)
-    , parentPanel(NULL)
-    , tooltip(NULL)
+Widget::Widget(uint32_t inId, const Rect & inGeometry)
+        : Component(inId, inGeometry)
+        , parentPanel(NULL)
+        , tooltip(NULL)
 {
 }
 
 Widget::~Widget()
 {
-	if (parentPanel)
+	if(parentPanel)
 		parentPanel->removeWidget(this);
 
 	delete tooltip;
 }
 
-void Widget::setTooltip(const Tooltip &inTooltip)
+void Widget::setTooltip(const Tooltip & inTooltip)
 {
 	delete tooltip;
 	tooltip = new Tooltip(inTooltip);
@@ -64,7 +64,7 @@ void Widget::drawOverlay() {}
 
 void Widget::draw_wrapper()
 {
-	if (isVisible() && tooltip && isLastMouseOver()) {
+	if(isVisible() && tooltip && isLastMouseOver()) {
 		tooltip->draw();
 	}
 	draw();

@@ -86,26 +86,26 @@ public:
 	inline void identity()
 	{
 		// set values for identity matrix
-		data[0] = 1.0;
-		data[4] = 0.0;
-		data[8] = 0.0;
+		data[0]  = 1.0;
+		data[4]  = 0.0;
+		data[8]  = 0.0;
 		data[12] = 0.0;
-		data[1] = 0.0;
-		data[5] = 1.0;
-		data[9] = 0.0;
+		data[1]  = 0.0;
+		data[5]  = 1.0;
+		data[9]  = 0.0;
 		data[13] = 0.0;
-		data[2] = 0.0;
-		data[6] = 0.0;
+		data[2]  = 0.0;
+		data[6]  = 0.0;
 		data[10] = 1.0;
 		data[14] = 0.0;
-		data[3] = 0.0;
-		data[7] = 0.0;
+		data[3]  = 0.0;
+		data[7]  = 0.0;
 		data[11] = 0.0;
 		data[15] = 1.0;
 	}
 
 	// get Euler representation of matrix rotation
-	void fromEuler(Euler &e);
+	void fromEuler(Euler & e);
 
 	/*!
 	 * \param theta rotation around an axis in PI
@@ -113,12 +113,12 @@ public:
 	 */
 	void setRotation(float theta, RotateAxis axis);
 
-	void setRotation(float theta, const glm::vec3 &axis);
+	void setRotation(float theta, const glm::vec3 & axis);
 
 	/*!
 	 * \param s a Vector3 to scale the matrix
 	 */
-	void setScale(const glm::vec3 &s);
+	void setScale(const glm::vec3 & s);
 
 	/*!
 	 * \param x the x value of the scale vector
@@ -130,7 +130,7 @@ public:
 	/*!
 	 * \param t a Vector3 to translate the matrix
 	 */
-	void setTranslation(const glm::vec3 &t);
+	void setTranslation(const glm::vec3 & t);
 
 	/*!
 	 * \param x the x value of the translation vector
@@ -147,13 +147,13 @@ public:
 
 /// Notation for matrix multiplication is from left to right.
 /// Use [M] = [T] * [M] to transform a matrix.
-Matrix operator*(const Matrix &a, const Matrix &b);
+Matrix operator*(const Matrix & a, const Matrix & b);
 
 /// multiply vector with Matrix
-glm::vec3 operator*(const glm::vec3 &v, const Matrix &m);
+glm::vec3 operator*(const glm::vec3 & v, const Matrix & m);
 
 /// write the Matrix elements into a stream
-std::ostream &operator<<(std::ostream &s, const Matrix &m);
+std::ostream & operator<<(std::ostream & s, const Matrix & m);
 
 } // namespace Animorph
 

@@ -44,22 +44,19 @@ class PoseTargetSliderListener : public AbstractListener
 {
 private:
 	string lastTargetName;
-	float lastTargetValue;
+	float  lastTargetValue;
 
 public:
 	PoseTargetSliderListener();
 	virtual ~PoseTargetSliderListener();
 
-	virtual bool mouseOver(const Point &inMousePos, Component *source);
-	virtual bool mouseOut(const Point &inMousePos, Component *source);
-	virtual bool mousePressed(const Point &inMousePos, int inButton,
-	                          Component *source);
-	virtual bool mouseReleased(const Point &inMousePos, int inButton,
-	                           Component *source);
-	virtual bool mouseDragged(const Point &inMousePos, Component *source);
-	virtual bool mouseWheel(const Point &inMousePos, int inButton,
-	                        Component *source);
-	virtual bool keyType(unsigned char inKey, Component *source);
+	virtual bool mouseOver(const Point & inMousePos, Component * source);
+	virtual bool mouseOut(const Point & inMousePos, Component * source);
+	virtual bool mousePressed(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseReleased(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseDragged(const Point & inMousePos, Component * source);
+	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source);
+	virtual bool keyType(unsigned char inKey, Component * source);
 };
 
 #endif // POSETARGETSLIDERLISTENER_H

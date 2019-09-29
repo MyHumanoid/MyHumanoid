@@ -12,10 +12,10 @@ using namespace std;
 using namespace Animorph;
 
 RawMesh::RawMesh()
-    : facevector()
-    , vertexvector()
-    , bodyfaces()
-    , name()
+        : facevector()
+        , vertexvector()
+        , bodyfaces()
+        , name()
 {
 }
 

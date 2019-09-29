@@ -62,7 +62,7 @@ private:
 
 	string imageFilenameOver;
 
-	string imageFilenameDisabled;
+	string  imageFilenameDisabled;
 	Texture textureDisabled;
 	Texture texture;
 	Texture textureOver;
@@ -71,22 +71,22 @@ private:
 	bool textureOverIsInited;
 	bool textureDisabledIsInited;
 
-	ImageSysListener *imageSysListener;
-	float alpha;
-	Color overlay;
-	bool overlayEffect;
+	ImageSysListener * imageSysListener;
+	float              alpha;
+	Color              overlay;
+	bool               overlayEffect;
 
 	bool enabled;
 	bool kill_mouse_drag;
 	// intentionally not implemented
 	Image(const Image &);
-	Image &operator=(const Image &);
+	Image & operator=(const Image &);
 
 public:
-	Image(uint32_t inId, const string &inFilename, const Rect &inGeometry);
+	Image(uint32_t inId, const string & inFilename, const Rect & inGeometry);
 	virtual ~Image();
 
-	void setAlpha(float);
+	void  setAlpha(float);
 	float getAlpha() const { return alpha; }
 
 	void setEnabled(bool inEnabled) { enabled = inEnabled; }
@@ -99,22 +99,22 @@ public:
 	 * @param c The color for the overlay. Transparency is set by the alpha
 	 * component.
 	 */
-	void setOverlayRectangle(const Color &c);
+	void setOverlayRectangle(const Color & c);
 	void setOverlayRectangle(bool overlayEffect);
 
-	void setOverlayTexture(const string &inFilename);
-	void setDisabledTexture(const string &inFilename);
+	void setOverlayTexture(const string & inFilename);
+	void setDisabledTexture(const string & inFilename);
 
-	const Texture &getTextures();     // return the textureID
-	const Texture &getTexturesOver(); // return the textureID
+	const Texture & getTextures();     // return the textureID
+	const Texture & getTexturesOver(); // return the textureID
 
 	virtual void show();
 	virtual void hide();
 	virtual void draw();
 	virtual void drawOverlay();
 
-	bool isMouseDragged(const Point &inMousePos);
-	bool isMouseClick(const Point &inMousePos, int button, int state);
+	bool isMouseDragged(const Point & inMousePos);
+	bool isMouseClick(const Point & inMousePos, int button, int state);
 
 protected:
 	bool lazyLoadTexture(bool over = false);

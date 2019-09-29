@@ -40,7 +40,7 @@ using namespace std;
 using namespace Animorph;
 
 TeethPanel::TeethPanel()
-    : Panel(kComponentID_TeethPanel, Rect(0, 304, 192, 32))
+        : Panel(kComponentID_TeethPanel, Rect(0, 304, 192, 32))
 {
 }
 
@@ -51,32 +51,30 @@ TeethPanel::~TeethPanel()
 
 void TeethPanel::createWidgets()
 {
-	Window &mainWindow = *g_mainWindow;
+	Window & mainWindow = *g_mainWindow;
 
-	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
+	Panel * tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
 	const Color color_red(1.0, 0.0, 0.0);
 	const Point kTooltipPos(70, 12);
 	const float alpha = 1.0;
-	Image *body;
+	Image *     body;
 
 	// -------------------------------------------------------------------------
-	body = new Image(kComponentID_TeethPanel_TongueParams,
-	                 searchPixmapFile("ui/teeth_01.png"), Rect(0, 0, 32, 32));
+	body = new Image(kComponentID_TeethPanel_TongueParams, searchPixmapFile("ui/teeth_01.png"),
+	                 Rect(0, 0, 32, 32));
 	body->setListener(&imgListener);
-	body->setTooltip(
-	    Tooltip("Tongue parameters", kTooltipPos, color_red, tooltipPanel));
+	body->setTooltip(Tooltip("Tongue parameters", kTooltipPos, color_red, tooltipPanel));
 	body->setAlpha(alpha);
 	imageVector.push_back(body);
 	addWidget(body);
 
 	// -------------------------------------------------------------------------
-	body = new Image(kComponentID_TeethPanel_TeethParams,
-	                 searchPixmapFile("ui/teeth_02.png"), Rect(0, 0, 32, 32));
+	body = new Image(kComponentID_TeethPanel_TeethParams, searchPixmapFile("ui/teeth_02.png"),
+	                 Rect(0, 0, 32, 32));
 	body->setListener(&imgListener);
-	body->setTooltip(
-	    Tooltip("Teeth parameters", kTooltipPos, color_red, tooltipPanel));
+	body->setTooltip(Tooltip("Teeth parameters", kTooltipPos, color_red, tooltipPanel));
 	body->setAlpha(alpha);
 	imageVector.push_back(body);
 	addWidget(body);

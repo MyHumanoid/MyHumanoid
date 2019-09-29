@@ -58,61 +58,61 @@ class Point;
 /// Object oriented interface to a GLUT window
 class Window : public Component
 {
-	string title;
-	bool fullscreen;
-	Color c;
-	float light0Lum;
-	float light1Lum;
+	string    title;
+	bool      fullscreen;
+	Color     c;
+	float     light0Lum;
+	float     light1Lum;
 	glm::vec3 light0Pos;
 	glm::vec3 light1Pos;
 
 	list<Panel *> panelList; ///< Panels contain widgets, we contain the panels
-	int panelListChangedCount;
+	int           panelListChangedCount;
 
-	Camera *inCamera;
-	int mWindowId; ///< The GLUT Window ID;
-	
+	Camera * inCamera;
+	int      mWindowId; ///< The GLUT Window ID;
+
 public:
-	Window(const Rect &rect, const char *t, const Color &c);
+	Window(const Rect & rect, const char * t, const Color & c);
 	virtual ~Window();
-	
-	Window &operator=(Window &) = delete;
-	Window(const Window &) = delete;
+
+	Window & operator=(Window &) = delete;
+	Window(const Window &)       = delete;
 
 	void drawPanels();
 
-	void setTitle(const string &t);
+	void setTitle(const string & t);
 
 	// Some "shortcut functions" that wrap a series of OpenGL lines
 	void initWindow();
 	// void toggleFullscreen (); --> this needs to be implemented!
 
 	/// For a GLUT callback
-	void reshape(const Size &inSize, const Camera &inCamera);
+	void reshape(const Size & inSize, const Camera & inCamera);
 
-	void setCamera(Camera *p_camera);
+	void setCamera(Camera * p_camera);
 
 	// main functions
-	bool addPanel(Panel *p /*, bool now = true*/);
-	void removePanel(Panel *p);
-	Panel *getPanel(uint32_t inPanelId);
+	bool    addPanel(Panel * p /*, bool now = true*/);
+	void    removePanel(Panel * p);
+	Panel * getPanel(uint32_t inPanelId);
 
-	bool isMouseOverPanel(const Point &inMousePos);
-	bool isMouseClickPanel(const Point &inMousePos, int button, int state);
-	bool isMouseDraggedPanel(const Point &inMousePos);
+	bool isMouseOverPanel(const Point & inMousePos);
+	bool isMouseClickPanel(const Point & inMousePos, int button, int state);
+	bool isMouseDraggedPanel(const Point & inMousePos);
 	bool isKeyTypePanel(unsigned char key);
 
 	void defaultDisplay();
 
 	// texture functions
-	bool loadPNG(const string &filename);
+	bool loadPNG(const string & filename);
 
 	virtual void draw();
 	virtual void show();
 	virtual void hide();
 };
 
-extern Window *g_mainWindow;
+extern Window * g_mainWindow;
 
 } // namespace mhgui
 

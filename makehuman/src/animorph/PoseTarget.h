@@ -45,9 +45,9 @@
 namespace Animorph
 {
 
-typedef std::set<int> UsedVertex;
+typedef std::set<int>              UsedVertex;
 typedef std::list<PoseTranslation> PoseTranslationVector;
-typedef std::list<PoseRotation> PoseRotationVector;
+typedef std::list<PoseRotation>    PoseRotationVector;
 
 /*! \brief Represents the final position and deformation of the body parts
  * attached to a joint
@@ -77,61 +77,55 @@ class PoseTarget
 	bool negative;
 	bool positive;
 	/// flag for calcNormalizations()
-	bool normalizationInited;
+	bool         normalizationInited;
 	const string fullPath;
-	UsedVertex modVertex;
-	float minAngle;
-	float maxAngle;
+	UsedVertex   modVertex;
+	float        minAngle;
+	float        maxAngle;
 
 	/// Initializes the center of all rotations with the controid of their
 	/// centerVertexNumbers
-	void calcRotationsCenteroids(const VertexVector &vertexvector,
-	                             PoseRotationVector &rotations);
-	void calcTranslationsFormFactors(const VertexVector &vertexvector,
-	                                 PoseTranslationVector &translations);
+	void calcRotationsCenteroids(const VertexVector & vertexvector,
+	                             PoseRotationVector & rotations);
+	void calcTranslationsFormFactors(const VertexVector &    vertexvector,
+	                                 PoseTranslationVector & translations);
 
 public:
-	PoseTarget(const string *inTargetName, const string *inFullPath)
-	    : positiveTranslations()
-	    , negativeTranslations()
-	    , positiveRotations()
-	    , negativeRotations()
-	    , targetName(*inTargetName)
-	    , negative(false)
-	    , positive(false)
-	    , normalizationInited(false)
-	    , fullPath(*inFullPath)
-	    , modVertex()
-	    , minAngle(0.0f)
-	    , maxAngle(0.0f)
+	PoseTarget(const string * inTargetName, const string * inFullPath)
+	        : positiveTranslations()
+	        , negativeTranslations()
+	        , positiveRotations()
+	        , negativeRotations()
+	        , targetName(*inTargetName)
+	        , negative(false)
+	        , positive(false)
+	        , normalizationInited(false)
+	        , fullPath(*inFullPath)
+	        , modVertex()
+	        , minAngle(0.0f)
+	        , maxAngle(0.0f)
 	{
 	}
 
 	/// Initializes the center of all rotations with the controid of their
 	/// centerVertexNumbers
-	void calcRotationsCenteroids(const VertexVector &vertexvector);
-	void calcTranslationsFormFactors(const VertexVector &vertexvector);
+	void            calcRotationsCenteroids(const VertexVector & vertexvector);
+	void            calcTranslationsFormFactors(const VertexVector & vertexvector);
 	const glm::vec3 getFirstRotationCenteroid();
 
 	/// Determines, whether normalizations of the rotations or translations are
 	/// required
-	void calcNormalizations();
-	bool hasNegative() const { return negative; }
-	bool hasPositive() const { return positive; }
-	PoseTranslationVector &getPositiveTranslations()
-	{
-		return positiveTranslations;
-	}
-	PoseTranslationVector &getNegativeTranslations()
-	{
-		return negativeTranslations;
-	}
-	PoseRotationVector &getPositiveRotations() { return positiveRotations; }
-	PoseRotationVector &getNegativeRotations() { return negativeRotations; }
+	void                    calcNormalizations();
+	bool                    hasNegative() const { return negative; }
+	bool                    hasPositive() const { return positive; }
+	PoseTranslationVector & getPositiveTranslations() { return positiveTranslations; }
+	PoseTranslationVector & getNegativeTranslations() { return negativeTranslations; }
+	PoseRotationVector &    getPositiveRotations() { return positiveRotations; }
+	PoseRotationVector &    getNegativeRotations() { return negativeRotations; }
 
-	UsedVertex &getModVertex() { return modVertex; }
-	float getMinAngle() const { return minAngle; }
-	float getMaxAngle() const { return maxAngle; }
+	UsedVertex & getModVertex() { return modVertex; }
+	float        getMinAngle() const { return minAngle; }
+	float        getMaxAngle() const { return maxAngle; }
 
 	bool load();
 };

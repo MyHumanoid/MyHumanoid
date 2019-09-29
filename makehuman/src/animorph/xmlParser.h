@@ -138,17 +138,17 @@ typedef enum XMLError {
 // Enumeration used to manage type of data. Use in conjunction with structure
 // XMLNodeContents
 typedef enum XMLElementType {
-	eNodeChild = 0,
+	eNodeChild     = 0,
 	eNodeAttribute = 1,
-	eNodeText = 2,
-	eNodeClear = 3,
-	eNodeNULL = 4
+	eNodeText      = 2,
+	eNodeClear     = 3,
+	eNodeNULL      = 4
 } XMLElementType;
 
 // Structure used to obtain error details if the parse fails.
 typedef struct XMLResults {
 	enum XMLError error;
-	int nLine, nColumn;
+	int           nLine, nColumn;
 } XMLResults;
 
 // Structure for XML clear (unformatted) node (usually comments)
@@ -169,7 +169,7 @@ typedef struct {
 // "xmlParser.cpp" file to change the clearTags that are currently recognized.
 typedef struct {
 	XMLCSTR lpszOpen;
-	int openTagLen;
+	int     openTagLen;
 	XMLCSTR lpszClose;
 } ALLXMLClearTag;
 extern ALLXMLClearTag XMLClearTags[];
@@ -186,8 +186,8 @@ private:
 	//  - parseFile
 	//  - openFileHelper
 	//  - createXMLTopNode
-	XMLNode(struct XMLNodeDataTag *pParent, XMLCSTR lpszName, int isDeclaration);
-	XMLNode(struct XMLNodeDataTag *p);
+	XMLNode(struct XMLNodeDataTag * pParent, XMLCSTR lpszName, int isDeclaration);
+	XMLNode(struct XMLNodeDataTag * p);
 
 public:
 	// You can create your first instance of XMLNode with these 4 functions:
@@ -195,9 +195,9 @@ public:
 
 	static XMLNode createXMLTopNode(XMLCSTR lpszName, int isDeclaration = FALSE);
 	static XMLNode parseString(XMLCSTR lpXMLString, XMLCSTR tag = NULL,
-	                           XMLResults *pResults = NULL);
+	                           XMLResults * pResults = NULL);
 	static XMLNode parseFile(XMLCSTR filename, XMLCSTR tag = NULL,
-	                         XMLResults *pResults = NULL);
+	                         XMLResults * pResults = NULL);
 	static XMLNode openFileHelper(XMLCSTR filename, XMLCSTR tag = NULL);
 
 	// The tag parameter should be the name of the first tag inside the XML file.
@@ -229,74 +229,69 @@ public:
 
 	XMLCSTR getName();               // name of the node
 	XMLCSTR getText(int i = 0);      // return ith text field
-	int nText();                     // nbr of text field
+	int     nText();                 // nbr of text field
 	XMLNode getParentNode();         // return the parent node
 	XMLNode getChildNode(int i = 0); // return ith child node
 	XMLNode getChildNode(XMLCSTR name,
-	                     int i); // return ith child node with specific name
+	                     int     i); // return ith child node with specific name
 	                             //     (return an empty node if failing)
+	XMLNode getChildNode(XMLCSTR name,
+	                     int *   i = NULL); // return next child node with specific name
+	                                      //     (return an empty node if failing)
 	XMLNode
-	getChildNode(XMLCSTR name,
-	             int *i = NULL); // return next child node with specific name
-	                             //     (return an empty node if failing)
-	XMLNode getChildNodeWithAttribute(
-	    XMLCSTR tagName,       // return child node with specific name/attribute
-	    XMLCSTR attributeName, //     (return an empty node if failing)
-	    XMLCSTR attributeValue = NULL, //
-	    int *i = NULL);                //
-	int nChildNode(
-	    XMLCSTR name); // return the number of child node with specific name
-	int nChildNode();  // nbr of child node
-	XMLAttribute getAttribute(int i = 0); // return ith attribute
-	XMLCSTR getAttributeName(int i = 0);  // return ith attribute name
-	XMLCSTR getAttributeValue(int i = 0); // return ith attribute value
-	char isAttributeSet(
-	    XMLCSTR name); // test if an attribute with a specific name is given
+	             getChildNodeWithAttribute(XMLCSTR tagName, // return child node with specific name/attribute
+	                                       XMLCSTR attributeName, //     (return an empty node if failing)
+	                                       XMLCSTR attributeValue = NULL, //
+	                                       int *   i              = NULL);               //
+	int          nChildNode(XMLCSTR name); // return the number of child node with specific name
+	int          nChildNode();             // nbr of child node
+	XMLAttribute getAttribute(int i = 0);  // return ith attribute
+	XMLCSTR      getAttributeName(int i = 0);  // return ith attribute name
+	XMLCSTR      getAttributeValue(int i = 0); // return ith attribute value
+	char isAttributeSet(XMLCSTR name); // test if an attribute with a specific name is given
 	XMLCSTR
 	getAttribute(XMLCSTR name,
-	             int i); // return ith attribute content with specific name
+	             int     i); // return ith attribute content with specific name
 	                     //     (return a NULL if failing)
-	XMLCSTR getAttribute(
-	    XMLCSTR name,
-	    int *i = NULL); // return next attribute content with specific name
-	                    //     (return a NULL if failing)
-	int nAttribute();   // nbr of attribute
-	XMLClear getClear(int i = 0); // return ith clear field (comments)
-	int nClear();                 // nbr of clear field
-	XMLSTR createXMLString(
-	    int nFormat = 1,
-	    int *pnSize = NULL); // create XML string starting from current XMLNode
-	                         // if nFormat==0, no formatting is required
-	                         // otherwise this returns an user friendly XML string
-	                         // from a given element with appropriate white spaces
-	                         // and carriage returns. if pnSize is given it
-	                         // returns the size in character of the string.
-	XMLError writeToFile(XMLCSTR filename, const char *encoding = NULL,
-	                     char nFormat = 1);
+	XMLCSTR getAttribute(XMLCSTR name,
+	                     int *   i = NULL); // return next attribute content with specific name
+	                                      //     (return a NULL if failing)
+	int      nAttribute();                // nbr of attribute
+	XMLClear getClear(int i = 0);         // return ith clear field (comments)
+	int      nClear();                    // nbr of clear field
+	XMLSTR
+	createXMLString(int   nFormat = 1,
+	                int * pnSize  = NULL); // create XML string starting from current XMLNode
+	                                      // if nFormat==0, no formatting is required
+	                                      // otherwise this returns an user friendly XML string
+	                                      // from a given element with appropriate white spaces
+	                                      // and carriage returns. if pnSize is given it
+	                                      // returns the size in character of the string.
+	XMLError writeToFile(XMLCSTR filename, const char * encoding = NULL, char nFormat = 1);
 	// save the content of an xmlNode inside a file.
 	// the nFormat parameter has the same meaning as in the
 	// createXMLString function. If "strictUTF8Parsing=1", the
 	// the encoding parameter is ignored and always set to
 	// "utf-8". If "_XMLUNICODE=1", the encoding parameter is
 	// ignored and always set to "utf-16".
-	XMLNodeContents enumContents(
-	    int i);     // enumerate all the different contents (attribute,child,text,
-	                //     clear) of the current XMLNode. The order is reflecting
-	                //     the order of the original file/string.
-	                //     NOTE: 0 <= i < nElement();
-	int nElement(); // nbr of different contents for current node
-	char isEmpty(); // is this node Empty?
+	XMLNodeContents
+	enumContents(int i);  // enumerate all the different contents (attribute,child,text,
+	                      //     clear) of the current XMLNode. The order is reflecting
+	                      //     the order of the original file/string.
+	                      //     NOTE: 0 <= i < nElement();
+	int  nElement();      // nbr of different contents for current node
+	char isEmpty();       // is this node Empty?
 	char isDeclaration(); // is this node a declaration <? .... ?>
 
 	// to allow shallow/fast copy:
 	~XMLNode();
-	XMLNode(const XMLNode &A);
-	XMLNode &operator=(const XMLNode &A);
+	XMLNode(const XMLNode & A);
+	XMLNode & operator=(const XMLNode & A);
 
 	XMLNode()
-	    : d(NULL){};
-	static XMLNode emptyXMLNode;
-	static XMLClear emptyXMLClear;
+	        : d(NULL){};
+	static XMLNode      emptyXMLNode;
+	static XMLClear     emptyXMLClear;
 	static XMLAttribute emptyXMLAttribute;
 
 	// The following functions allows you to create from scratch (or update) a
@@ -307,63 +302,57 @@ public:
 	// inserts at the end. The value (pos=0) insert at the beginning (Insertion at
 	// the beginning is slower than at the end). REMARK: 0 <= pos <
 	// nChild()+nText()+nClear()
-	XMLNode addChild(XMLCSTR lpszName, int isDeclaration = FALSE, int pos = -1);
-	XMLAttribute *addAttribute(XMLCSTR lpszName, XMLCSTR lpszValuev);
-	XMLCSTR addText(XMLCSTR lpszValue, int pos = -1);
-	XMLClear *addClear(XMLCSTR lpszValue,
-	                   XMLCSTR lpszOpen = XMLClearTags[0].lpszOpen,
-	                   XMLCSTR lpszClose = XMLClearTags[0].lpszClose,
-	                   int pos = -1);
-	XMLNode addChild(XMLNode nodeToAdd,
-	                 int pos = -1); // If the "nodeToAdd" has some parents, it
-	                                // will be detached from it's parents before
-	                                // being attached to the current XMLNode
+	XMLNode        addChild(XMLCSTR lpszName, int isDeclaration = FALSE, int pos = -1);
+	XMLAttribute * addAttribute(XMLCSTR lpszName, XMLCSTR lpszValuev);
+	XMLCSTR        addText(XMLCSTR lpszValue, int pos = -1);
+	XMLClear *     addClear(XMLCSTR lpszValue, XMLCSTR lpszOpen = XMLClearTags[0].lpszOpen,
+	                        XMLCSTR lpszClose = XMLClearTags[0].lpszClose, int pos = -1);
+	XMLNode        addChild(XMLNode nodeToAdd,
+	                        int     pos = -1); // If the "nodeToAdd" has some parents, it
+	                                       // will be detached from it's parents before
+	                                       // being attached to the current XMLNode
 	// Some update functions:
 	XMLCSTR updateName(XMLCSTR lpszName); // change node's name
-	XMLAttribute *updateAttribute(
-	    XMLAttribute *newAttribute,
-	    XMLAttribute *oldAttribute); // if the attribute to update is missing, a
-	                                 // new one will be added
-	XMLAttribute *updateAttribute(
-	    XMLCSTR lpszNewValue, XMLCSTR lpszNewName = NULL,
-	    int i =
-	        0); // if the attribute to update is missing, a new one will be added
-	XMLAttribute *updateAttribute(
-	    XMLCSTR lpszNewValue, XMLCSTR lpszNewName,
-	    XMLCSTR lpszOldName); // set lpszNewName=NULL if you don't want to change
-	                          // the name of the attribute if the attribute to
-	                          // update is missing, a new one will be added
-	XMLCSTR updateText(
-	    XMLCSTR lpszNewValue,
-	    int i = 0); // if the text to update is missing, a new one will be added
+	XMLAttribute *
+	updateAttribute(XMLAttribute * newAttribute,
+	                XMLAttribute * oldAttribute); // if the attribute to update is missing, a
+	                                              // new one will be added
+	XMLAttribute * updateAttribute(
+	        XMLCSTR lpszNewValue, XMLCSTR lpszNewName = NULL,
+	        int i = 0); // if the attribute to update is missing, a new one will be added
+	XMLAttribute *
+	updateAttribute(XMLCSTR lpszNewValue, XMLCSTR lpszNewName,
+	                XMLCSTR lpszOldName); // set lpszNewName=NULL if you don't want to change
+	                                      // the name of the attribute if the attribute to
+	                                      // update is missing, a new one will be added
+	XMLCSTR updateText(XMLCSTR lpszNewValue,
+	                   int i = 0); // if the text to update is missing, a new one will be added
 	XMLCSTR updateText(XMLCSTR lpszNewValue,
 	                   XMLCSTR lpszOldValue); // if the text to update is missing,
 	                                          // a new one will be added
-	XMLClear *updateClear(XMLCSTR lpszNewContent,
-	                      int i = 0); // if the clearTag to update is missing, a
-	                                  // new one will be added
-	XMLClear *updateClear(XMLClear *newP,
-	                      XMLClear *oldP); // if the clearTag to update is
-	                                       // missing, a new one will be added
-	XMLClear *
-	updateClear(XMLCSTR lpszNewValue,
-	            XMLCSTR lpszOldValue); // if the clearTag to update is missing, a
+	XMLClear * updateClear(XMLCSTR lpszNewContent,
+	                       int     i = 0); // if the clearTag to update is missing, a
 	                                   // new one will be added
+	XMLClear * updateClear(XMLClear * newP,
+	                       XMLClear * oldP); // if the clearTag to update is
+	                                         // missing, a new one will be added
+	XMLClear * updateClear(XMLCSTR lpszNewValue,
+	                       XMLCSTR lpszOldValue); // if the clearTag to update is missing, a
+	                                              // new one will be added
 
 	// Some deletion functions:
 	void deleteNodeContent(
-	    char force =
-	        0); // delete the content of this XMLNode and the subtree.
-	            // if force=0, while (references to this node still exist), no
-	            // memory free occurs if force=1, always delete the content of
-	            // this XMLNode and the subtree and free associated memory
+	        char force = 0); // delete the content of this XMLNode and the subtree.
+	                         // if force=0, while (references to this node still exist), no
+	                         // memory free occurs if force=1, always delete the content of
+	                         // this XMLNode and the subtree and free associated memory
 	void deleteAttribute(XMLCSTR lpszName);
 	void deleteAttribute(int i = 0);
-	void deleteAttribute(XMLAttribute *anAttribute);
+	void deleteAttribute(XMLAttribute * anAttribute);
 	void deleteText(int i = 0);
 	void deleteText(XMLCSTR lpszValue);
 	void deleteClear(int i = 0);
-	void deleteClear(XMLClear *p);
+	void deleteClear(XMLClear * p);
 	void deleteClear(XMLCSTR lpszValue);
 
 	// The strings given as parameters for the following add and update methods
@@ -386,29 +375,25 @@ public:
 	//    xNode.addText_WOSD(b);
 	//    ('free(b)' is performed by the XMLNode class)
 
-	static XMLNode createXMLTopNode_WOSD(XMLCSTR lpszName,
-	                                     int isDeclaration = FALSE);
-	XMLNode addChild_WOSD(XMLCSTR lpszName, int isDeclaration = FALSE,
-	                      int pos = -1);
-	XMLAttribute *addAttribute_WOSD(XMLCSTR lpszName, XMLCSTR lpszValue);
-	XMLCSTR addText_WOSD(XMLCSTR lpszValue, int pos = -1);
-	XMLClear *addClear_WOSD(XMLCSTR lpszValue,
-	                        XMLCSTR lpszOpen = XMLClearTags[0].lpszOpen,
-	                        XMLCSTR lpszClose = XMLClearTags[0].lpszClose,
-	                        int pos = -1);
+	static XMLNode createXMLTopNode_WOSD(XMLCSTR lpszName, int isDeclaration = FALSE);
+	XMLNode        addChild_WOSD(XMLCSTR lpszName, int isDeclaration = FALSE, int pos = -1);
+	XMLAttribute * addAttribute_WOSD(XMLCSTR lpszName, XMLCSTR lpszValue);
+	XMLCSTR        addText_WOSD(XMLCSTR lpszValue, int pos = -1);
+	XMLClear *     addClear_WOSD(XMLCSTR lpszValue, XMLCSTR lpszOpen = XMLClearTags[0].lpszOpen,
+	                             XMLCSTR lpszClose = XMLClearTags[0].lpszClose, int pos = -1);
 
-	XMLCSTR updateName_WOSD(XMLCSTR lpszName);
-	XMLAttribute *updateAttribute_WOSD(XMLAttribute *newAttribute,
-	                                   XMLAttribute *oldAttribute);
-	XMLAttribute *updateAttribute_WOSD(XMLCSTR lpszNewValue,
-	                                   XMLCSTR lpszNewName = NULL, int i = 0);
-	XMLAttribute *updateAttribute_WOSD(XMLCSTR lpszNewValue, XMLCSTR lpszNewName,
-	                                   XMLCSTR lpszOldName);
-	XMLCSTR updateText_WOSD(XMLCSTR lpszNewValue, int i = 0);
-	XMLCSTR updateText_WOSD(XMLCSTR lpszNewValue, XMLCSTR lpszOldValue);
-	XMLClear *updateClear_WOSD(XMLCSTR lpszNewContent, int i = 0);
-	XMLClear *updateClear_WOSD(XMLClear *newP, XMLClear *oldP);
-	XMLClear *updateClear_WOSD(XMLCSTR lpszNewValue, XMLCSTR lpszOldValue);
+	XMLCSTR        updateName_WOSD(XMLCSTR lpszName);
+	XMLAttribute * updateAttribute_WOSD(XMLAttribute * newAttribute,
+	                                    XMLAttribute * oldAttribute);
+	XMLAttribute * updateAttribute_WOSD(XMLCSTR lpszNewValue, XMLCSTR lpszNewName = NULL,
+	                                    int i = 0);
+	XMLAttribute * updateAttribute_WOSD(XMLCSTR lpszNewValue, XMLCSTR lpszNewName,
+	                                    XMLCSTR lpszOldName);
+	XMLCSTR        updateText_WOSD(XMLCSTR lpszNewValue, int i = 0);
+	XMLCSTR        updateText_WOSD(XMLCSTR lpszNewValue, XMLCSTR lpszOldValue);
+	XMLClear *     updateClear_WOSD(XMLCSTR lpszNewContent, int i = 0);
+	XMLClear *     updateClear_WOSD(XMLClear * newP, XMLClear * oldP);
+	XMLClear *     updateClear_WOSD(XMLCSTR lpszNewValue, XMLCSTR lpszOldValue);
 
 	// These are some useful functions when you want to insert a childNode, a text
 	// or a XMLClearTag in the middle (at a specified position) of a XMLNode tree
@@ -418,14 +403,13 @@ public:
 	int positionOfText(XMLCSTR lpszValue);
 	int positionOfClear(int i = 0);
 	int positionOfClear(XMLCSTR lpszValue);
-	int positionOfClear(XMLClear *a);
+	int positionOfClear(XMLClear * a);
 	int positionOfChildNode(int i = 0);
 	int positionOfChildNode(XMLNode x);
 	int positionOfChildNode(
-	    XMLCSTR name,
-	    int i =
-	        0); // return the position of the ith childNode with the specified
-	            // name if (name==NULL) return the position of the ith childNode
+	        XMLCSTR name,
+	        int     i = 0); // return the position of the ith childNode with the specified
+	                    // name if (name==NULL) return the position of the ith childNode
 
 	// The setGlobalOptions function allows you to change two global parameters
 	// that affect string&file parsing. First of all, you most-probably will never
@@ -453,8 +437,7 @@ public:
 	//     have different lengths (from 1 byte to 4 bytes) depending on the
 	//     content of the first byte of the character.
 
-	static void setGlobalOptions(char guessUnicodeChars = 1,
-	                             char strictUTF8Parsing = 1);
+	static void setGlobalOptions(char guessUnicodeChars = 1, char strictUTF8Parsing = 1);
 
 	// The next function try to guess if the character encoding is UTF-8. You
 	// most-probably will never have to use this function. It then returns the
@@ -469,7 +452,7 @@ public:
 	// still use it if you set "useXMLEncodingAttribute" to 1 (this is the default
 	// behavior).
 
-	static char guessUTF8ParsingParameterValue(void *buffer, int bufLen,
+	static char guessUTF8ParsingParameterValue(void * buffer, int bufLen,
 	                                           char useXMLEncodingAttribute = 1);
 
 private:
@@ -479,34 +462,32 @@ private:
 	typedef struct XMLNodeDataTag // to allow shallow copy and "intelligent/smart"
 	                              // pointers (automatic delete):
 	{
-		XMLCSTR lpszName;  // Element name (=NULL if root)
-		int nChild,        // Number of child nodes
-		    nText,         // Number of text fields
-		    nClear,        // Number of Clear fields (comments)
-		    nAttribute,    // Number of attributes
-		    isDeclaration; // Whether node is an XML declaration - '<?xml ?>'
-		struct XMLNodeDataTag *pParent; // Pointer to parent element (=NULL if root)
-		XMLNode *pChild;                // Array of child nodes
-		XMLCSTR *pText;                 // Array of text fields
-		XMLClear *pClear;               // Array of clear fields
-		XMLAttribute *pAttribute;       // Array of attributes
-		int *pOrder;   // order of the child_nodes,text_fields,clear_fields
-		int ref_count; // for garbage collection (smart pointers)
+		XMLCSTR lpszName;                // Element name (=NULL if root)
+		int     nChild,                  // Number of child nodes
+		        nText,                   // Number of text fields
+		        nClear,                  // Number of Clear fields (comments)
+		        nAttribute,              // Number of attributes
+		        isDeclaration;           // Whether node is an XML declaration - '<?xml ?>'
+		struct XMLNodeDataTag * pParent; // Pointer to parent element (=NULL if root)
+		XMLNode *               pChild;  // Array of child nodes
+		XMLCSTR *               pText;   // Array of text fields
+		XMLClear *              pClear;  // Array of clear fields
+		XMLAttribute *          pAttribute; // Array of attributes
+		int *                   pOrder; // order of the child_nodes,text_fields,clear_fields
+		int                     ref_count; // for garbage collection (smart pointers)
 	} XMLNodeData;
-	XMLNodeData *d;
+	XMLNodeData * d;
 
-	int ParseClearTag(void *pXML, void *pClear);
-	int ParseXMLElement(void *pXML);
-	void *addToOrder(int *_pos, int nc, void *p, int size, XMLElementType xtype);
-	int indexText(XMLCSTR lpszValue);
-	int indexClear(XMLCSTR lpszValue);
-	static inline int findPosition(XMLNodeData *d, int index,
-	                               XMLElementType xtype);
-	static int CreateXMLStringR(XMLNodeData *pEntry, XMLSTR lpszMarker,
-	                            int nFormat);
-	static void removeOrderElement(XMLNodeData *d, XMLElementType t, int index);
-	static void exactMemory(XMLNodeData *d);
-	static void detachFromParent(XMLNodeData *d);
+	int               ParseClearTag(void * pXML, void * pClear);
+	int               ParseXMLElement(void * pXML);
+	void *            addToOrder(int * _pos, int nc, void * p, int size, XMLElementType xtype);
+	int               indexText(XMLCSTR lpszValue);
+	int               indexClear(XMLCSTR lpszValue);
+	static inline int findPosition(XMLNodeData * d, int index, XMLElementType xtype);
+	static int        CreateXMLStringR(XMLNodeData * pEntry, XMLSTR lpszMarker, int nFormat);
+	static void       removeOrderElement(XMLNodeData * d, XMLElementType t, int index);
+	static void       exactMemory(XMLNodeData * d);
+	static void       detachFromParent(XMLNodeData * d);
 } XMLNode;
 
 // This structure is given by the function "enumContents".
@@ -515,10 +496,10 @@ typedef struct XMLNodeContents {
 	enum XMLElementType type;
 	// should be an union to access the appropriate data.
 	// compiler does not allow union of object with constructor... too bad.
-	XMLNode child;
+	XMLNode      child;
 	XMLAttribute attrib;
-	XMLCSTR text;
-	XMLClear clear;
+	XMLCSTR      text;
+	XMLClear     clear;
 
 } XMLNodeContents;
 
@@ -538,7 +519,7 @@ XMLSTR stringDup(XMLCSTR source, int cbData = 0);
 // allocations are performed. If the output buffer is too small to contain the
 // resulting string, it will be enlarged.
 XMLSTR toXMLString(XMLCSTR source);
-XMLSTR toXMLStringFast(XMLSTR *destBuffer, int *destSz, XMLCSTR source);
+XMLSTR toXMLStringFast(XMLSTR * destBuffer, int * destSz, XMLCSTR source);
 
 // you should not use this one (there is a possibility of
 // "destination-buffer-overflow"):
@@ -557,8 +538,8 @@ class XMLParserBase64Tool
 {
 public:
 	XMLParserBase64Tool()
-	    : buf(NULL)
-	    , buflen(0)
+	        : buf(NULL)
+	        , buflen(0)
 	{
 	}
 	~XMLParserBase64Tool();
@@ -568,39 +549,36 @@ public:
 	// returns the length of the base64 string that encodes inbuf.
 	// If "formatted" parameter is true, some space will be reserved for a
 	// carriage-return every 72 chars.
-	static int encodeLength(unsigned char *inbuf, int inBufLen,
-	                        char formatted = 0);
+	static int encodeLength(unsigned char * inbuf, int inBufLen, char formatted = 0);
 
 	// The "base64Encode" function returns a string containing the base64 encoding
 	// of "inByteLen" bytes from "inByteBuf". If "formatted" parameter is true,
 	// then there will be a carriage-return every 72 chars. The string will be
 	// free'd when the XMLParserBase64Tool object is deleted. All returned strings
 	// are sharing the same memory space.
-	XMLSTR encode(unsigned char *inByteBuf, unsigned int inByteLen,
-	              char formatted = 0);
+	XMLSTR encode(unsigned char * inByteBuf, unsigned int inByteLen, char formatted = 0);
 
 	// returns the number of bytes which will be decoded from "inString".
-	static unsigned int decodeSize(XMLCSTR inString, XMLError *xe = NULL);
+	static unsigned int decodeSize(XMLCSTR inString, XMLError * xe = NULL);
 
 	// returns a pointer to a buffer containing the binary data decoded from
 	// "inString" If "inString" is malformed NULL will be returned The output
 	// buffer will be free'd when the XMLParserBase64Tool object is deleted. All
 	// output buffer are sharing the same memory space.
-	unsigned char *decode(XMLCSTR inString, int *outByteLen = NULL,
-	                      XMLError *xe = NULL);
+	unsigned char * decode(XMLCSTR inString, int * outByteLen = NULL, XMLError * xe = NULL);
 
 	// The next function is deprecated.
 	// decodes data from "inString" to "outByteBuf". You need to provide the size
 	// (in byte) of "outByteBuf" in "inMaxByteOutBuflen". If "outByteBuf" is not
 	// large enough or if data is malformed, then "FALSE" will be returned;
 	// otherwise "TRUE".
-	static unsigned char decode(XMLCSTR inString, unsigned char *outByteBuf,
-	                            int inMaxByteOutBuflen, XMLError *xe = NULL);
+	static unsigned char decode(XMLCSTR inString, unsigned char * outByteBuf,
+	                            int inMaxByteOutBuflen, XMLError * xe = NULL);
 
 private:
-	void *buf;
-	int buflen;
-	void alloc(int newsize);
+	void * buf;
+	int    buflen;
+	void   alloc(int newsize);
 };
 
 #endif

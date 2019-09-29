@@ -5,9 +5,9 @@
 using namespace std;
 using namespace Animorph;
 
-int FileWriter::open(const std::string &filename, std::ios_base::openmode mode)
+int FileWriter::open(const std::string & filename, std::ios_base::openmode mode)
 {
-	ofstream &of_stream = (*this);
+	ofstream & of_stream = (*this);
 
 	// Because float-values should be 0.1 instead of 0,1
 	// in non-english if read from file. Later reset the locale
@@ -15,7 +15,7 @@ int FileWriter::open(const std::string &filename, std::ios_base::openmode mode)
 	setlocale(LC_NUMERIC, "C");
 
 	of_stream.open(filename.c_str(), mode);
-	if (!of_stream) {
+	if(!of_stream) {
 		cerr << "Couldn't open file:" << filename << endl;
 		return -1;
 	}
@@ -25,7 +25,7 @@ int FileWriter::open(const std::string &filename, std::ios_base::openmode mode)
 
 void FileWriter::close()
 {
-	ofstream &of_stream = (*this);
+	ofstream & of_stream = (*this);
 
 	// reset locale after file was written
 	setlocale(LC_NUMERIC, locale);

@@ -49,7 +49,7 @@ class Widget;
 class Panel : public Component
 {
 public:
-	Panel(uint32_t inPanelId, const Rect &inGeometry);
+	Panel(uint32_t inPanelId, const Rect & inGeometry);
 	virtual ~Panel();
 
 	enum Alignment { HORIZONTAL, VERTICAL, FREE };
@@ -58,14 +58,13 @@ public:
 	virtual void hide();
 	virtual void draw();
 
-	bool addWidget(Widget *w);
-	void removeWidget(Widget *w);
-	Widget *getWidget(uint32_t inWidgetId);
+	bool     addWidget(Widget * w);
+	void     removeWidget(Widget * w);
+	Widget * getWidget(uint32_t inWidgetId);
 
-	virtual bool isMouseOverWidgets(const Point &inMousePos);
-	virtual bool isMouseClickWidgets(const Point &inMousePos, int button,
-	                                 int state);
-	virtual bool isMouseDraggedWidgets(const Point &inMousePos);
+	virtual bool isMouseOverWidgets(const Point & inMousePos);
+	virtual bool isMouseClickWidgets(const Point & inMousePos, int button, int state);
+	virtual bool isMouseDraggedWidgets(const Point & inMousePos);
 	virtual bool isKeyTypeWidgets(unsigned char key);
 
 	void show_all();
@@ -76,45 +75,45 @@ public:
 	void setRightAnchor(bool anchor) { rightAnchor = anchor; }
 	bool getRightAnchor() { return rightAnchor; }
 
-	void setAlignment(Alignment align) { this->align = align; }
+	void      setAlignment(Alignment align) { this->align = align; }
 	Alignment getAlignment() { return align; }
 
-	void setBackgroundColor(const Color &c) { backColor = c; }
-	const Color &getBackgroundColor() { return backColor; }
+	void          setBackgroundColor(const Color & c) { backColor = c; }
+	const Color & getBackgroundColor() { return backColor; }
 
 	// TODO: maximize couldn't been unset!
 	void setMaximize(bool maximize) { this->maximize = maximize; }
 	bool getMaximize() { return maximize; }
 
 	void setRowSpacing(int space) { rowSpacing = space; }
-	int getRowSpacing() { return rowSpacing; }
+	int  getRowSpacing() { return rowSpacing; }
 
 	void setColumnSpacing(int space) { columnSpacing = space; }
-	int getColumnSpacing() { return columnSpacing; }
+	int  getColumnSpacing() { return columnSpacing; }
 
 	virtual void calcWidgetPosition();
 
 	// this is not really needed, as there's only one top-level-window,
 	// but it's easier to access this way...
-	const Window *getParentWindow() const;
-	void setParentWindow(Window *w);
+	const Window * getParentWindow() const;
+	void           setParentWindow(Window * w);
 
 protected:
 	list<Widget *> widgetList;
-	int widgetListChangedCount;
+	int            widgetListChangedCount;
 
-	bool rightAnchor;
-	bool bottomAnchor;
-	Window *parentWindow;
+	bool     rightAnchor;
+	bool     bottomAnchor;
+	Window * parentWindow;
 
 	Alignment align;
-	bool maximize;
-	int rowSpacing;
-	int columnSpacing;
+	bool      maximize;
+	int       rowSpacing;
+	int       columnSpacing;
 
 private: // intentionally not implemeted
 	Panel(const Panel &);
-	Panel &operator=(const Panel &);
+	Panel & operator=(const Panel &);
 
 	Color backColor;
 

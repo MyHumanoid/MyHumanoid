@@ -48,47 +48,47 @@ namespace Animorph
 class Material
 {
 private:
-	Color rgbCol;
-	Color edgeCol;
+	Color  rgbCol;
+	Color  edgeCol;
 	string name;
 
 public:
 	Material()
-	    : rgbCol()
-	    , edgeCol()
-	    , name()
+	        : rgbCol()
+	        , edgeCol()
+	        , name()
 	{
 	}
 	~Material() {}
 	/*!
 	 * \return rgbCol the RGB Color values from this Material
 	 */
-	const Color &getRGBCol() const { return rgbCol; }
+	const Color & getRGBCol() const { return rgbCol; }
 
 	/*!
 	 * \return edgeCol the RGB edge color values from this Material
 	 */
-	const Color &getEdgeCol() const { return edgeCol; }
+	const Color & getEdgeCol() const { return edgeCol; }
 
 	/*!
 	 * \param rgbCol set the RGB Color values for this Material
 	 */
-	void setRGBCol(const Color &rgbCol) { this->rgbCol = rgbCol; }
+	void setRGBCol(const Color & rgbCol) { this->rgbCol = rgbCol; }
 
 	/*!
 	 * \param edgeCol set the RGB edge color values for this Material
 	 */
-	void setEdgeCol(const Color &edgeCol) { this->edgeCol = edgeCol; }
+	void setEdgeCol(const Color & edgeCol) { this->edgeCol = edgeCol; }
 
 	/*!
 	 * \return name the name of this Material
 	 */
-	const string &getName() const { return name; }
+	const string & getName() const { return name; }
 
 	/*!
 	 * \param name set the name the name for this Material
 	 */
-	void setName(const std::string &name) { this->name = name; }
+	void setName(const std::string & name) { this->name = name; }
 };
 
 /*! \brief A loadable vector of materials
@@ -102,7 +102,7 @@ The format of Material file:
 class MaterialVector : public std::vector<Material>
 {
 private:
-	void fromStream(std::ifstream &in_stream);
+	void fromStream(std::ifstream & in_stream);
 
 public:
 	/// load a Material file
@@ -111,7 +111,7 @@ public:
 	 * \return true if file is found
 	 * \return false if file isn't found
 	 */
-	bool loadMaterials(const std::string &filename);
+	bool loadMaterials(const std::string & filename);
 };
 
 } // namespace Animorph

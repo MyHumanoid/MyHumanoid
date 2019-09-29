@@ -39,11 +39,10 @@ using namespace mhgui;
 
 #include "ComponentID.h"
 
-SplashPanel::SplashPanel(const Size &winSize)
-    //: Panel (kComponentID_SplashPanel, Rect(220,70,360,460))
-    : Panel(kComponentID_SplashPanel,
-            Rect((winSize.getWidth() / 2 - 240),
-                 (winSize.getHeight() / 2 - 180), 480, 360))
+SplashPanel::SplashPanel(const Size & winSize)
+        //: Panel (kComponentID_SplashPanel, Rect(220,70,360,460))
+        : Panel(kComponentID_SplashPanel,
+                Rect((winSize.getWidth() / 2 - 240), (winSize.getHeight() / 2 - 180), 480, 360))
 {
 }
 

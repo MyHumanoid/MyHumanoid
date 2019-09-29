@@ -48,7 +48,7 @@ public:
 	std::vector<string> breastLabels;
 	std::vector<string> shapeLabels;
 
-	void calcWidgetTargets(Selector &selectorSource);
+	void calcWidgetTargets(Selector & selectorSource);
 	void calcWidgetTargetsFOO();
 
 	Point oldPos;
@@ -57,16 +57,13 @@ public:
 	SelectorListener();
 	virtual ~SelectorListener();
 
-	virtual bool mouseOver(const Point &inMousePos, Component *source);
-	virtual bool mouseOut(const Point &inMousePos, Component *source);
-	virtual bool mousePressed(const Point &inMousePos, int inButton,
-	                          Component *source);
-	virtual bool mouseReleased(const Point &inMousePos, int inButton,
-	                           Component *source);
-	virtual bool mouseDragged(const Point &inMousePos, Component *source);
-	virtual bool mouseWheel(const Point &inMousePos, int inButton,
-	                        Component *source);
-	virtual bool keyType(unsigned char inKey, Component *source);
+	virtual bool mouseOver(const Point & inMousePos, Component * source);
+	virtual bool mouseOut(const Point & inMousePos, Component * source);
+	virtual bool mousePressed(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseReleased(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseDragged(const Point & inMousePos, Component * source);
+	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source);
+	virtual bool keyType(unsigned char inKey, Component * source);
 
 	std::vector<float> ageDists;
 	std::vector<float> muscleSizeDists;

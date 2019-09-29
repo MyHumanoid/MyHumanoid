@@ -43,7 +43,7 @@ namespace Animorph
 class Skin : public std::vector<SkinVertex>
 {
 public:
-	bool load(const std::string &filename);
+	bool load(const std::string & filename);
 };
 
 } // namespace Animorph

@@ -41,39 +41,36 @@ namespace mhgui
 {
 
 // constructor
-Image::Image(uint32_t inId, const std::string &inFilename,
-             const Rect &inGeometry)
-    : Widget(inId, inGeometry)
-    , imageFilename(inFilename)
-    , imageFilenameOver()
-    , imageFilenameDisabled()
-    ,
+Image::Image(uint32_t inId, const std::string & inFilename, const Rect & inGeometry)
+        : Widget(inId, inGeometry)
+        , imageFilename(inFilename)
+        , imageFilenameOver()
+        , imageFilenameDisabled()
+        ,
 
-    textureDisabled()
-    , texture()
-    , textureOver()
-    ,
+        textureDisabled()
+        , texture()
+        , textureOver()
+        ,
 
-    textureIsInited(false)
-    , textureOverIsInited(false)
-    , textureDisabledIsInited(false)
-    ,
+        textureIsInited(false)
+        , textureOverIsInited(false)
+        , textureDisabledIsInited(false)
+        ,
 
-    imageSysListener(new ImageSysListener())
-    , alpha(1.0)
-    , overlay(0, 0, 0, 0)
-    , overlayEffect(false)
-    , enabled(true)
-    , kill_mouse_drag(false)
+        imageSysListener(new ImageSysListener())
+        , alpha(1.0)
+        , overlay(0, 0, 0, 0)
+        , overlayEffect(false)
+        , enabled(true)
+        , kill_mouse_drag(false)
 {
 
 	setSysListener(imageSysListener);
 
-	if (inFilename.length() > 4) {
-		imageFilenameOver =
-		    inFilename.substr(0, inFilename.length() - 4) + "_over.png";
-		imageFilenameDisabled =
-		    inFilename.substr(0, inFilename.length() - 4) + "_disa.png";
+	if(inFilename.length() > 4) {
+		imageFilenameOver     = inFilename.substr(0, inFilename.length() - 4) + "_over.png";
+		imageFilenameDisabled = inFilename.substr(0, inFilename.length() - 4) + "_disa.png";
 	}
 }
 
@@ -82,12 +79,9 @@ Image::~Image()
 	delete imageSysListener; // remove the listener again
 }
 
-void Image::setOverlayTexture(const std::string &inFilename)
-{
-	imageFilenameOver = inFilename;
-}
+void Image::setOverlayTexture(const std::string & inFilename) { imageFilenameOver = inFilename; }
 
-void Image::setDisabledTexture(const std::string &inFilename)
+void Image::setDisabledTexture(const std::string & inFilename)
 {
 	imageFilenameDisabled = inFilename;
 }
@@ -104,35 +98,32 @@ void Image::show()
 void Image::hide() { setVisible(false); }
 
 // Return the ID assigned
-const Texture &Image::getTextures()
+const Texture & Image::getTextures()
 {
 	lazyLoadTexture();
 	return enabled ? texture : textureDisabled;
 }
 
 // Return the ID assigned
-const Texture &Image::getTexturesOver()
+const Texture & Image::getTexturesOver()
 {
 	lazyLoadTexture(true);
 	return textureOver;
 }
 
-void Image::setOverlayRectangle(const Color &c)
+void Image::setOverlayRectangle(const Color & c)
 {
-	overlay = c;
+	overlay       = c;
 	overlayEffect = true;
 }
 
-void Image::setOverlayRectangle(bool overlayEffect)
-{
-	this->overlayEffect = overlayEffect;
-}
+void Image::setOverlayRectangle(bool overlayEffect) { this->overlayEffect = overlayEffect; }
 
 void Image::drawOverlay()
 {
-	if (isVisible()) {
-		if (overlayEffect && enabled) {
-			if (lazyLoadTexture(true)) {
+	if(isVisible()) {
+		if(overlayEffect && enabled) {
+			if(lazyLoadTexture(true)) {
 				cgutils::enableBlend();
 				cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, textureOver);
 				glDisable(GL_BLEND);
@@ -148,35 +139,35 @@ void Image::drawOverlay()
 // draw function
 void Image::draw()
 {
-	if (isVisible()) {
-		if (lazyLoadTexture()) {
+	if(isVisible()) {
+		if(lazyLoadTexture()) {
 			cgutils::enableBlend();
 			cgutils::drawSquareFillTexture(getAbsoluteRect(), alpha, getTextures());
 			glDisable(GL_BLEND);
 		} else {
 			cgutils::enableBlend();
-			cgutils::drawSquareFill(
-			    getAbsoluteRect(), Color(1.0, 1.0, 1.0, enabled ? alpha : alpha / 2));
+			cgutils::drawSquareFill(getAbsoluteRect(),
+			                        Color(1.0, 1.0, 1.0, enabled ? alpha : alpha / 2));
 			glDisable(GL_BLEND);
 		}
 	}
 }
 
-bool Image::isMouseDragged(const Point &inMousePos)
+bool Image::isMouseDragged(const Point & inMousePos)
 {
 	bool drag = false;
 
-	if (this->kill_mouse_drag == true && isActive()) {
+	if(this->kill_mouse_drag == true && isActive()) {
 		drag = true;
 		return drag;
 	}
 	return Component::isMouseDragged(inMousePos);
 }
 
-bool Image::isMouseClick(const Point &inMousePos, int button, int state)
+bool Image::isMouseClick(const Point & inMousePos, int button, int state)
 {
 
-	if (isEnabled() == false) {
+	if(isEnabled() == false) {
 		return false;
 	}
 	return Component::isMouseClick(inMousePos, button, state);
@@ -198,24 +189,23 @@ bool Image::isMouseClick(const Point &inMousePos, int button, int state)
 /* ========================================================================== */
 bool Image::lazyLoadTexture(bool over)
 {
-	bool &isInited =
-	    (over ? textureOverIsInited
-	          : (enabled ? textureIsInited : textureDisabledIsInited));
-	string &filename = (over ? imageFilenameOver
-	                         : (enabled ? imageFilename : imageFilenameDisabled));
-	Texture &text = (over ? textureOver : (enabled ? texture : textureDisabled));
+	bool &   isInited = (over ? textureOverIsInited
+                                : (enabled ? textureIsInited : textureDisabledIsInited));
+	string & filename =
+	        (over ? imageFilenameOver : (enabled ? imageFilename : imageFilenameDisabled));
+	Texture & text = (over ? textureOver : (enabled ? texture : textureDisabled));
 
-	if (filename.empty())
+	if(filename.empty())
 		return false;
 
-	if (isInited) // already loaded?
+	if(isInited) // already loaded?
 		return true;
 
 	isInited = true;
 
 	// read the PNG file using pngLoad
 	// raw data from PNG file is in image buffer
-	if (text.load(filename) == false) {
+	if(text.load(filename) == false) {
 		cerr << "(pngLoad) " << filename << " FAILED" << endl;
 		;
 		return false;

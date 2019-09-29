@@ -42,19 +42,15 @@ using namespace Animorph;
 using namespace std;
 
 TargetSliderListener::TargetSliderListener()
-    : AbstractListener()
+        : AbstractListener()
 {
 }
 
 TargetSliderListener::~TargetSliderListener() {}
 
-bool TargetSliderListener::mouseOver(const Point &inMousePos, Component *source)
-{
-	return false;
-}
+bool TargetSliderListener::mouseOver(const Point & inMousePos, Component * source) { return false; }
 
-bool TargetSliderListener::mouseWheel(const Point &inMousePos, int inButton,
-                                      Component *source)
+bool TargetSliderListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
 {
 #ifdef GLUT_WHEEL_UP
 	return mouseDragged(inMousePos, source);
@@ -63,7 +59,7 @@ bool TargetSliderListener::mouseWheel(const Point &inMousePos, int inButton,
 #endif
 }
 
-bool TargetSliderListener::mouseOut(const Point &inMousePos, Component *source)
+bool TargetSliderListener::mouseOut(const Point & inMousePos, Component * source)
 {
 	// TODO: the mouseOut event is perhaps a little wrong for this.
 	// better is mouseReleased, but this should generate an event also
@@ -72,17 +68,14 @@ bool TargetSliderListener::mouseOut(const Point &inMousePos, Component *source)
 	return false;
 }
 
-bool TargetSliderListener::mouseDragged(const Point &inMousePos,
-                                        Component *source)
+bool TargetSliderListener::mouseDragged(const Point & inMousePos, Component * source)
 {
-	TargetSlider *imgSliderSource =
-	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	TargetSlider * imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 
-	mesh->doMorph(imgSliderSource->getTargetName(),
-	              imgSliderSource->getSliderValue());
+	mesh->doMorph(imgSliderSource->getTargetName(), imgSliderSource->getSliderValue());
 
 	/* TODO:
 	 * It's a little slow to calc normals in realtime while morphing.
@@ -96,30 +89,23 @@ bool TargetSliderListener::mouseDragged(const Point &inMousePos,
 	return true;
 }
 
-bool TargetSliderListener::mousePressed(const Point &inMousePos, int button,
-                                        Component *source)
+bool TargetSliderListener::mousePressed(const Point & inMousePos, int button, Component * source)
 {
 	return false;
 }
 
-bool TargetSliderListener::mouseReleased(const Point &inMousePos, int button,
-                                         Component *source)
+bool TargetSliderListener::mouseReleased(const Point & inMousePos, int button, Component * source)
 {
-	TargetSlider *imgSliderSource =
-	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	TargetSlider * imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 
-	mesh->doMorph(imgSliderSource->getTargetName(),
-	              imgSliderSource->getSliderValue());
+	mesh->doMorph(imgSliderSource->getTargetName(), imgSliderSource->getSliderValue());
 
 	mesh->calcNormals();
 
 	return false;
 }
 
-bool TargetSliderListener::keyType(unsigned char key, Component *source)
-{
-	return false;
-}
+bool TargetSliderListener::keyType(unsigned char key, Component * source) { return false; }

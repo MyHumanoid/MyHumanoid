@@ -59,8 +59,8 @@ The format of Face colors file:
 class FaceVector : public std::vector<Face>
 {
 private:
-	void fromGeometryStream(std::ifstream &in_stream);
-	void fromColorsStream(std::ifstream &in_stream);
+	void fromGeometryStream(std::ifstream & in_stream);
+	void fromColorsStream(std::ifstream & in_stream);
 
 public:
 	/// load the Face data from a file
@@ -69,7 +69,7 @@ public:
 	 * \return true if file is found
 	 * \return false if file isn't found
 	 */
-	bool loadGeometry(const std::string &filename);
+	bool loadGeometry(const std::string & filename);
 
 	/// load the Face Color data from a file
 	/*!
@@ -77,7 +77,7 @@ public:
 	 * \return true if file was found
 	 * \return false if file wasn't found
 	 */
-	bool loadColors(const std::string &filename);
+	bool loadColors(const std::string & filename);
 };
 
 } // namespace Animorph

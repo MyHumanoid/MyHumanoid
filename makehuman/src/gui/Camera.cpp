@@ -38,76 +38,76 @@ namespace mhgui
 {
 
 Camera::Camera()
-    : last_mouse_pos(0.0f, 0.0f)
-    , last_pos_camera(0.0f, 0.0f, 0.0f)
-    , width(0)
-    , height(0)
-    , angle(0.0f)
-    , axis(0.0f, 0.0f, 0.0f)
-    , cam_pos()
-    , cam_center()
-    , mode(false)
-    ,
+        : last_mouse_pos(0.0f, 0.0f)
+        , last_pos_camera(0.0f, 0.0f, 0.0f)
+        , width(0)
+        , height(0)
+        , angle(0.0f)
+        , axis(0.0f, 0.0f, 0.0f)
+        , cam_pos()
+        , cam_center()
+        , mode(false)
+        ,
 
-    mCameraPos(0.0f, 0.0f, 0.0f)
-    , mAngleX(0)
-    , mAngleY(0)
-    , mAngleZ(0)
-    , startVector(0.0f, 0.0f, -30.0f)
-    , endVector(0.0f, -7.0f, -3.0f)
-    ,
+        mCameraPos(0.0f, 0.0f, 0.0f)
+        , mAngleX(0)
+        , mAngleY(0)
+        , mAngleZ(0)
+        , startVector(0.0f, 0.0f, -30.0f)
+        , endVector(0.0f, -7.0f, -3.0f)
+        ,
 
-    startAngleX((0.0 * M_PI) / 180.0f)
-    , endAngleX((-90.0 * M_PI) / 180.0f)
-    ,
+        startAngleX((0.0 * M_PI) / 180.0f)
+        , endAngleX((-90.0 * M_PI) / 180.0f)
+        ,
 
-    startAngleY((0.0 * M_PI) / 180.0f)
-    , endAngleY((00.0 * M_PI) / 180.0f)
-    ,
+        startAngleY((0.0 * M_PI) / 180.0f)
+        , endAngleY((00.0 * M_PI) / 180.0f)
+        ,
 
-    timeForMorph(1.0)
-    , // in Seconds
-    step(-1)
+        timeForMorph(1.0)
+        , // in Seconds
+        step(-1)
 {
 }
 
-Camera::Camera(const Camera &inRHS)
-    : last_mouse_pos(inRHS.last_mouse_pos)
-    , last_pos_camera(inRHS.last_pos_camera)
-    , width(inRHS.width)
-    , height(inRHS.height)
-    , angle(inRHS.angle)
-    , axis(inRHS.axis)
-    , cam_pos(inRHS.cam_pos)
-    , cam_center(inRHS.cam_center)
-    , mode(inRHS.mode)
-    ,
+Camera::Camera(const Camera & inRHS)
+        : last_mouse_pos(inRHS.last_mouse_pos)
+        , last_pos_camera(inRHS.last_pos_camera)
+        , width(inRHS.width)
+        , height(inRHS.height)
+        , angle(inRHS.angle)
+        , axis(inRHS.axis)
+        , cam_pos(inRHS.cam_pos)
+        , cam_center(inRHS.cam_center)
+        , mode(inRHS.mode)
+        ,
 
-    // Ugly Test code following - just for test purposes!
-    mCameraPos(inRHS.mCameraPos)
-    , mAngleX(inRHS.mAngleX)
-    , mAngleY(inRHS.mAngleY)
-    , mAngleZ(inRHS.mAngleZ)
+        // Ugly Test code following - just for test purposes!
+        mCameraPos(inRHS.mCameraPos)
+        , mAngleX(inRHS.mAngleX)
+        , mAngleY(inRHS.mAngleY)
+        , mAngleZ(inRHS.mAngleZ)
 {
 }
 
-Camera &Camera::operator=(const Camera &inRHS)
+Camera & Camera::operator=(const Camera & inRHS)
 {
-	if (&inRHS != this) {
-		last_mouse_pos = inRHS.last_mouse_pos;
+	if(&inRHS != this) {
+		last_mouse_pos  = inRHS.last_mouse_pos;
 		last_pos_camera = inRHS.last_pos_camera;
-		width = inRHS.width;
-		height = inRHS.height;
-		angle = inRHS.angle;
-		axis = inRHS.axis;
-		cam_pos = inRHS.cam_pos;
-		cam_center = inRHS.cam_center;
+		width           = inRHS.width;
+		height          = inRHS.height;
+		angle           = inRHS.angle;
+		axis            = inRHS.axis;
+		cam_pos         = inRHS.cam_pos;
+		cam_center      = inRHS.cam_center;
 
 		// Ugly Test code following - just for test purposes!
 		mCameraPos = inRHS.mCameraPos;
-		mAngleX = inRHS.mAngleX;
-		mAngleY = inRHS.mAngleY;
-		mAngleZ = inRHS.mAngleZ;
+		mAngleX    = inRHS.mAngleX;
+		mAngleY    = inRHS.mAngleY;
+		mAngleZ    = inRHS.mAngleZ;
 	}
 	return *this;
 }
@@ -116,7 +116,7 @@ Camera &Camera::operator=(const Camera &inRHS)
  * callbacks when it is resized.*/
 void Camera::reshape(int width, int height)
 {
-	this->width = width;
+	this->width  = width;
 	this->height = height;
 }
 
@@ -126,11 +126,11 @@ void Camera::rotate(float theta, Animorph::RotateAxis axis)
 {
 	Matrix rotate;
 
-	if (axis == X_AXIS)
+	if(axis == X_AXIS)
 		mAngleX += theta;
-	else if (axis == Y_AXIS)
+	else if(axis == Y_AXIS)
 		mAngleY += theta;
-	else if (axis == Z_AXIS)
+	else if(axis == Z_AXIS)
 		mAngleZ += theta;
 
 	rotate.setRotation(mAngleY, Y_AXIS);
@@ -181,12 +181,11 @@ void Camera::moveMouse(int x, int y)
 {
 	float moveRate = 4500;
 
-	if (mCameraPos.z != 0) {
+	if(mCameraPos.z != 0) {
 		moveRate /= abs(mCameraPos.z);
 	}
 
-	move((x - last_mouse_pos.x) / moveRate, -(y - last_mouse_pos.y) / moveRate,
-	     0.0f);
+	move((x - last_mouse_pos.x) / moveRate, -(y - last_mouse_pos.y) / moveRate, 0.0f);
 
 	last_mouse_pos.x = x;
 	last_mouse_pos.y = y;
@@ -216,7 +215,7 @@ void Camera::applyMatrix()
 	Matrix m_tmp;
 
 	m_tmp = cam_center * cam_pos;
-	
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -246,15 +245,15 @@ void Camera::calcForStepAnimate(float inX)
 	float s = getYForX(inX);
 
 	static glm::vec3 currentVector;
-	static float currentAngleX;
-	static float currentAngleY;
+	static float     currentAngleX;
+	static float     currentAngleY;
 
 	currentAngleX = startAngleX + s * (endAngleX - startAngleX);
 	currentAngleY = startAngleY + s * (endAngleY - startAngleY);
 
 	currentVector = glm::vec3(startVector.x + s * (endVector.x - startVector.x),
-	                         startVector.y + s * (endVector.y - startVector.y),
-	                         startVector.z + s * (endVector.z - startVector.z));
+	                          startVector.y + s * (endVector.y - startVector.y),
+	                          startVector.z + s * (endVector.z - startVector.z));
 
 	rotate(currentAngleX, X_AXIS);
 	rotate(currentAngleY, Y_AXIS);
@@ -264,7 +263,7 @@ void Camera::calcForStepAnimate(float inX)
 
 bool Camera::timerTrigger()
 {
-	if (step < 0)
+	if(step < 0)
 		return false;
 
 	float currentTime = step * kTimePerRaster;
@@ -274,22 +273,22 @@ bool Camera::timerTrigger()
 
 	++step;
 
-	if (step > steps())
+	if(step > steps())
 		step = -1;
 
 	return true;
 }
 
-void Camera::moveCameraAnimated(const std::string &filename, AutozoomData data,
-                                const VertexVector &vertexvector)
+void Camera::moveCameraAnimated(const std::string & filename, AutozoomData data,
+                                const VertexVector & vertexvector)
 {
 	glm::vec3 delta_camera(calcCenteroid(data.vertsIndexes, vertexvector));
 	delta_camera -= data.vertsCenteroid;
 	endAngleX = data.xyRot_camera.x;
 
-	endAngleY = data.xyRot_camera.y;
-	endVector = data.pos_camera - delta_camera;
-	step = 0;
+	endAngleY   = data.xyRot_camera.y;
+	endVector   = data.pos_camera - delta_camera;
+	step        = 0;
 	startVector = getPosition();
 	startAngleX = getAngleX();
 	startAngleY = getAngleY();
@@ -297,26 +296,26 @@ void Camera::moveCameraAnimated(const std::string &filename, AutozoomData data,
 }
 
 /*! Load of camera data files. */
-void Autozoom::fromStream(std::ifstream &in_stream, const std::string &filename)
+void Autozoom::fromStream(std::ifstream & in_stream, const std::string & filename)
 {
 	AutozoomData data;
 
 	clear();
 
 	float p0, p1, p2, r1, r2, c0, c1, c2;
-	char verts[MAX_LINE];
-	char buffer[MAX_LINE];
+	char  verts[MAX_LINE];
+	char  buffer[MAX_LINE];
 
 	in_stream.getline(buffer, MAX_LINE);
 
 	/// TODO: lettura del file
-	if (sscanf(buffer, "%f,%f,%f,%f,%f,%f,%f,%f,%s", &p0, &p1, &p2, &r1, &r2, &c0,
-	           &c1, &c2, verts) == 9) {
+	if(sscanf(buffer, "%f,%f,%f,%f,%f,%f,%f,%f,%s", &p0, &p1, &p2, &r1, &r2, &c0, &c1, &c2,
+	          verts) == 9) {
 		glm::vec3 pos(p0, p1, p2);
 		glm::vec2 xyRot(r1, r2);
 		glm::vec3 cen(c0, c1, c2);
-		data.pos_camera = pos;
-		data.xyRot_camera = xyRot;
+		data.pos_camera     = pos;
+		data.xyRot_camera   = xyRot;
 		data.vertsCenteroid = cen;
 		stringTokeni(verts, ",", data.vertsIndexes);
 
@@ -326,12 +325,12 @@ void Autozoom::fromStream(std::ifstream &in_stream, const std::string &filename)
 	};
 }
 
-bool Autozoom::lazyLoadData(const std::string &filename)
+bool Autozoom::lazyLoadData(const std::string & filename)
 {
 	std::map<std::string, AutozoomData>::const_iterator isInited;
 	isInited = find(filename);
 
-	if (isInited != end()) // already loaded?
+	if(isInited != end()) // already loaded?
 		return true;
 
 	// read the file
@@ -340,7 +339,7 @@ bool Autozoom::lazyLoadData(const std::string &filename)
 
 	file_reader.open(filename);
 
-	if (!file_reader)
+	if(!file_reader)
 		return false;
 
 	fromStream(file_reader, filename);
@@ -349,19 +348,16 @@ bool Autozoom::lazyLoadData(const std::string &filename)
 }
 
 /*! Return the autozoom data for the body part. */
-AutozoomData Autozoom::getAutozoomData(const std::string &filename)
-{
-	return (*this)[filename];
-}
+AutozoomData Autozoom::getAutozoomData(const std::string & filename) { return (*this)[filename]; }
 
 /*! Save the current camera position to the .camera file of the active target
  * panel. */
-bool Autozoom::save(const std::string &filename, const Camera &camera)
+bool Autozoom::save(const std::string & filename, const Camera & camera)
 {
 	FileWriter file_writer;
 	file_writer.open(filename);
 
-	if (!file_writer)
+	if(!file_writer)
 		return false;
 
 	std::ostringstream out_stream;
@@ -374,20 +370,19 @@ bool Autozoom::save(const std::string &filename, const Camera &camera)
 
 /*! Format the data coming from the current view and the vert list from the file
  * itself. A file must already exist */
-void Autozoom::createStream(std::ostringstream &out_stream,
-                            const std::string &filename, const Camera &camera)
+void Autozoom::createStream(std::ostringstream & out_stream, const std::string & filename,
+                            const Camera & camera)
 {
 	glm::vec3 camVector = camera.getPosition();
-	float camAngleX = camera.getAngleX();
-	float camAngleY = camera.getAngleY();
-	out_stream << camVector.x << "," << camVector.y << "," << camVector.z << ","
-	           << camAngleX << "," << camAngleY << ","
-	           << (*this)[filename].vertsCenteroid.x << ","
+	float     camAngleX = camera.getAngleX();
+	float     camAngleY = camera.getAngleY();
+	out_stream << camVector.x << "," << camVector.y << "," << camVector.z << "," << camAngleX
+	           << "," << camAngleY << "," << (*this)[filename].vertsCenteroid.x << ","
 	           << (*this)[filename].vertsCenteroid.y << ","
 	           << (*this)[filename].vertsCenteroid.z;
 	std::vector<int>::iterator itVectorData;
-	for (itVectorData = (*this)[filename].vertsIndexes.begin();
-	     itVectorData != (*this)[filename].vertsIndexes.end(); itVectorData++) {
+	for(itVectorData = (*this)[filename].vertsIndexes.begin();
+	    itVectorData != (*this)[filename].vertsIndexes.end(); itVectorData++) {
 		out_stream << "," << *(itVectorData);
 	}
 }

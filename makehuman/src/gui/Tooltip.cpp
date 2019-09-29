@@ -37,12 +37,12 @@ namespace mhgui
 /**
  */
 /* ========================================================================== */
-Tooltip::Tooltip(const std::string &inTooltipString, const Point &inPos,
-                 const Color &inColor, const Panel *inAnchor)
-    : label(inTooltipString)
-    , pos(inPos)
-    , color(inColor)
-    , anchorPanel(inAnchor)
+Tooltip::Tooltip(const std::string & inTooltipString, const Point & inPos, const Color & inColor,
+                 const Panel * inAnchor)
+        : label(inTooltipString)
+        , pos(inPos)
+        , color(inColor)
+        , anchorPanel(inAnchor)
 {
 }
 
@@ -50,12 +50,11 @@ Tooltip::Tooltip(const std::string &inTooltipString, const Point &inPos,
 /**
  */
 /* ========================================================================== */
-Tooltip::Tooltip(const std::string &inTooltipString, const Point &inPos,
-                 const Panel *inAnchor)
-    : label(inTooltipString)
-    , pos(inPos)
-    , color(Color(1.0, 0.0, 0.0))
-    , anchorPanel(inAnchor)
+Tooltip::Tooltip(const std::string & inTooltipString, const Point & inPos, const Panel * inAnchor)
+        : label(inTooltipString)
+        , pos(inPos)
+        , color(Color(1.0, 0.0, 0.0))
+        , anchorPanel(inAnchor)
 {
 }
 
@@ -63,11 +62,11 @@ Tooltip::Tooltip(const std::string &inTooltipString, const Point &inPos,
 /**
  */
 /* ========================================================================== */
-Tooltip::Tooltip(const Tooltip &inTooltip)
-    : label(inTooltip.label)
-    , pos(inTooltip.pos)
-    , color(inTooltip.color)
-    , anchorPanel(inTooltip.anchorPanel)
+Tooltip::Tooltip(const Tooltip & inTooltip)
+        : label(inTooltip.label)
+        , pos(inTooltip.pos)
+        , color(inTooltip.color)
+        , anchorPanel(inTooltip.anchorPanel)
 {
 }
 
@@ -75,12 +74,12 @@ Tooltip::Tooltip(const Tooltip &inTooltip)
 /**
  */
 /* ========================================================================== */
-Tooltip &Tooltip::operator=(const Tooltip &inTooltip)
+Tooltip & Tooltip::operator=(const Tooltip & inTooltip)
 {
-	if (&inTooltip != this) {
-		label = inTooltip.label;
-		pos = inTooltip.pos;
-		color = inTooltip.color;
+	if(&inTooltip != this) {
+		label       = inTooltip.label;
+		pos         = inTooltip.pos;
+		color       = inTooltip.color;
 		anchorPanel = inTooltip.anchorPanel;
 	}
 	return *this;
@@ -94,20 +93,20 @@ void Tooltip::draw() const
 {
 	cgutils::drawString(Point(0, 0), GLUT_BITMAP_HELVETICA_12, " ", color);
 
-	if (anchorPanel == NULL) {
+	if(anchorPanel == NULL) {
 		cgutils::drawSquareFill(
-		    Rect(-3, -12,
-		         cgutils::getFontLength(GLUT_BITMAP_HELVETICA_12, label) + 3, 16),
-		    Color(0, 0, 0));
+		        Rect(-3, -12, cgutils::getFontLength(GLUT_BITMAP_HELVETICA_12, label) + 3,
+		             16),
+		        Color(0, 0, 0));
 		cgutils::drawString(pos, GLUT_BITMAP_HELVETICA_12, label.c_str(), color);
 	} else {
 		Point tmpPos(anchorPanel->getPosition());
 		tmpPos.moveBy(pos);
 
 		cgutils::drawSquareFill(
-		    Rect(tmpPos.getX() - 3, tmpPos.getY() - 12,
-		         cgutils::getFontLength(GLUT_BITMAP_HELVETICA_12, label) + 3, 16),
-		    Color(0, 0, 0));
+		        Rect(tmpPos.getX() - 3, tmpPos.getY() - 12,
+		             cgutils::getFontLength(GLUT_BITMAP_HELVETICA_12, label) + 3, 16),
+		        Color(0, 0, 0));
 		cgutils::drawString(tmpPos, GLUT_BITMAP_HELVETICA_12, label.c_str(), color);
 	}
 }

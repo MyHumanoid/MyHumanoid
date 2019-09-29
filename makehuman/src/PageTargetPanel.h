@@ -48,22 +48,22 @@ class PageTargetPanel : public Panel
 {
 private: // intentionally not implemented
 	PageTargetPanel(const PageTargetPanel &);
-	PageTargetPanel &operator=(const PageTargetPanel &);
+	PageTargetPanel & operator=(const PageTargetPanel &);
 
 	TargetSliderListener imgSliderListener;
-	ImageListener imgListener;
-	string category;
+	ImageListener        imgListener;
+	string               category;
 
 public:
-	PageTargetPanel(const string &category, const Rect &rect);
+	PageTargetPanel(const string & category, const Rect & rect);
 	virtual ~PageTargetPanel();
 
-	const string &getCategory() const { return category; }
+	const string & getCategory() const { return category; }
 
 	// use local memory managment currently
 	// TODO: implement managed widgets
 	vector<TargetSlider *> targetVector;
-	void resetTargetValues(const string currentTargetName = "");
+	void                   resetTargetValues(const string currentTargetName = "");
 };
 
 #endif // PAGETARGETPANEL_H

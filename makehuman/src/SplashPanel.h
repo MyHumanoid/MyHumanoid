@@ -42,16 +42,16 @@ using namespace mhgui;
 class SplashPanel : public Panel
 {
 public:
-	SplashPanel(const Size &winSize);
+	SplashPanel(const Size & winSize);
 	virtual ~SplashPanel();
 
 	void createWidgets();
 
 private: // intentionally not implemented
 	SplashPanel(const SplashPanel &);
-	SplashPanel &operator=(const SplashPanel &);
+	SplashPanel & operator=(const SplashPanel &);
 
-	Image *frame1;
+	Image * frame1;
 };
 
 #endif // SPLASHPANEL_H

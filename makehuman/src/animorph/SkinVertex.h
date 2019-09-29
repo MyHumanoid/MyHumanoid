@@ -51,23 +51,20 @@ The vertex is identified by its index.
 class SkinVertex
 {
 private:
-	int skinVertex;
+	int         skinVertex;
 	vector<int> linkedMuscles;
-	set<int> linkedMusclesSet;
-	float originalDist;
+	set<int>    linkedMusclesSet;
+	float       originalDist;
 
 public:
-	SkinVertex(int _skinVertex, float _originalDist, const vector<int> &tokens);
+	SkinVertex(int _skinVertex, float _originalDist, const vector<int> & tokens);
 
-	vector<int> &getLinkedMuscles() { return linkedMuscles; }
-	set<int> &getLinkedMusclesSet() { return linkedMusclesSet; }
-	float getOriginalDist() { return originalDist; }
-	int getSkinVertex() { return skinVertex; }
+	vector<int> & getLinkedMuscles() { return linkedMuscles; }
+	set<int> &    getLinkedMusclesSet() { return linkedMusclesSet; }
+	float         getOriginalDist() { return originalDist; }
+	int           getSkinVertex() { return skinVertex; }
 
-	void setOriginalDist(const float inOriginalDist)
-	{
-		originalDist = inOriginalDist;
-	}
+	void setOriginalDist(const float inOriginalDist) { originalDist = inOriginalDist; }
 };
 
 } // namespace Animorph

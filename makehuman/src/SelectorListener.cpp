@@ -37,12 +37,12 @@ using namespace Animorph;
 using namespace std;
 
 SelectorListener::SelectorListener()
-    : AbstractListener()
-    , ageLabels()
-    , muscleSizeLabels()
-    , breastLabels()
-    , shapeLabels()
-    , oldPos(0, 0)
+        : AbstractListener()
+        , ageLabels()
+        , muscleSizeLabels()
+        , breastLabels()
+        , shapeLabels()
+        , oldPos(0, 0)
 {
 	ageLabels.push_back("female_10");
 	ageLabels.push_back("female_30");
@@ -73,27 +73,21 @@ SelectorListener::SelectorListener()
 
 SelectorListener::~SelectorListener() {}
 
-bool SelectorListener::mouseOver(const Point &inMousePos, Component *source)
-{
-	return false;
-}
+bool SelectorListener::mouseOver(const Point & inMousePos, Component * source) { return false; }
 
-bool SelectorListener::mouseOut(const Point &inMousePos, Component *source)
-{
-	return false;
-}
+bool SelectorListener::mouseOut(const Point & inMousePos, Component * source) { return false; }
 
-bool SelectorListener::mouseDragged(const Point &inMousePos, Component *source)
+bool SelectorListener::mouseDragged(const Point & inMousePos, Component * source)
 {
 	int xDist = abs(oldPos.getX() - inMousePos.getX());
 	int yDist = abs(oldPos.getY() - inMousePos.getY());
 
-	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
 	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 
-	if (xDist > 3 || yDist > 3) {
+	if(xDist > 3 || yDist > 3) {
 		oldPos = inMousePos;
 		calcWidgetTargets(*selectorSource);
 	}
@@ -101,44 +95,38 @@ bool SelectorListener::mouseDragged(const Point &inMousePos, Component *source)
 	return true;
 }
 
-bool SelectorListener::mouseWheel(const Point &inMousePos, int inButton,
-                                  Component *source)
+bool SelectorListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
 {
 	return false;
 }
 
-bool SelectorListener::mousePressed(const Point &inMousePos, int button,
-                                    Component *source)
+bool SelectorListener::mousePressed(const Point & inMousePos, int button, Component * source)
 {
 	return true;
 }
 
-bool SelectorListener::mouseReleased(const Point &inMousePos, int button,
-                                     Component *source)
+bool SelectorListener::mouseReleased(const Point & inMousePos, int button, Component * source)
 {
 	oldPos = inMousePos;
 
-	Selector *selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
 	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 	calcWidgetTargets(*selectorSource);
 
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 	mesh->calcNormals();
 
 	return true;
 }
 
-bool SelectorListener::keyType(unsigned char key, Component *source)
-{
-	return false;
-}
+bool SelectorListener::keyType(unsigned char key, Component * source) { return false; }
 
-void SelectorListener::calcWidgetTargets(Selector &selectorSource)
+void SelectorListener::calcWidgetTargets(Selector & selectorSource)
 {
 
-	switch (selectorSource.getID()) {
+	switch(selectorSource.getID()) {
 	case kComponentID_CharacterSettingPanel_Age:
 		ageDists = selectorSource.getDists();
 		break;
@@ -165,13 +153,12 @@ void SelectorListener::calcWidgetTargetsFOO()
 	unsigned int j = 0;
 	unsigned int k = 0;
 
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 
 	// std::cout << "--------------------------" << std::endl;
 	vector<float>::const_iterator di_end = ageDists.end();
-	for (vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end;
-	     di_it++) {
-		if (i < ageLabels.size()) {
+	for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end; di_it++) {
+		if(i < ageLabels.size()) {
 			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
 
 			// if((*di_it) > 0)
@@ -186,20 +173,20 @@ void SelectorListener::calcWidgetTargetsFOO()
 	vector<float>::const_iterator ms_end = muscleSizeDists.end();
 	vector<float>::const_iterator br_end = breastDists.end();
 
-	for (vector<float>::const_iterator ms_it = muscleSizeDists.begin();
-	     ms_it != ms_end; ms_it++) {
+	for(vector<float>::const_iterator ms_it = muscleSizeDists.begin(); ms_it != ms_end;
+	    ms_it++) {
 		i = 0;
-		for (vector<float>::const_iterator di_it = ageDists.begin();
-		     di_it != di_end; di_it++) {
-			if (j < muscleSizeLabels.size() && i < ageLabels.size()) {
+		for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end;
+		    di_it++) {
+			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
 				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
 				                     muscleSizeLabels[j] + ".target");
-				float tmpTargetValue = (*di_it) * (*ms_it);
+				float  tmpTargetValue = (*di_it) * (*ms_it);
 
 				// if(tmpTargetValue > 0)
 				//{
-				//  std::cout << tmpTargetName << " " << (*di_it) << " " << (*ms_it) <<
-				//  " " << tmpTargetValue << std::endl;
+				//  std::cout << tmpTargetName << " " << (*di_it) << " " << (*ms_it)
+				//  << " " << tmpTargetValue << std::endl;
 				//}
 
 				mesh->doMorph(tmpTargetName, tmpTargetValue);
@@ -207,22 +194,26 @@ void SelectorListener::calcWidgetTargetsFOO()
 				// breast widget
 
 				k = 0;
-				if (i <= 4) {
-					for (vector<float>::const_iterator br_it = breastDists.begin();
-					     br_it != br_end; br_it++) {
-						if (k < breastLabels.size()) {
-							string tmpTargetName("breast/" + ageLabels[i] + "_" +
-							                     muscleSizeLabels[j] + "_" + breastLabels[k] +
-							                     ".target");
-							float tmpTargetValue = (*di_it) * (*ms_it) * (*br_it);
+				if(i <= 4) {
+					for(vector<float>::const_iterator br_it =
+					            breastDists.begin();
+					    br_it != br_end; br_it++) {
+						if(k < breastLabels.size()) {
+							string tmpTargetName(
+							        "breast/" + ageLabels[i] + "_" +
+							        muscleSizeLabels[j] + "_" +
+							        breastLabels[k] + ".target");
+							float tmpTargetValue =
+							        (*di_it) * (*ms_it) * (*br_it);
 
 							// if(tmpTargetValue > 0)
 							//{
-							//  std::cout << tmpTargetName << " " << tmpTargetValue <<
-							//  std::endl;
+							//  std::cout << tmpTargetName << " " <<
+							//  tmpTargetValue << std::endl;
 							//}
 
-							mesh->doMorph(tmpTargetName, tmpTargetValue);
+							mesh->doMorph(tmpTargetName,
+							              tmpTargetValue);
 						}
 						k++;
 					}
@@ -233,11 +224,10 @@ void SelectorListener::calcWidgetTargetsFOO()
 		j++;
 	}
 
-	i = 0;
+	i                                    = 0;
 	vector<float>::const_iterator sh_end = shapeDists.end();
-	for (vector<float>::const_iterator sh_it = shapeDists.begin();
-	     sh_it != sh_end; sh_it++) {
-		if (i < shapeLabels.size()) {
+	for(vector<float>::const_iterator sh_it = shapeDists.begin(); sh_it != sh_end; sh_it++) {
+		if(i < shapeLabels.size()) {
 			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
 
 			// if((*di_it) > 0)

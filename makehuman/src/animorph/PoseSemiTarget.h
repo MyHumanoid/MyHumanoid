@@ -51,7 +51,7 @@ namespace Animorph
 {
 
 struct PoseTargetData {
-	int vertex_number;
+	int   vertex_number;
 	float rotation;
 };
 
@@ -73,12 +73,12 @@ class PoseSemiTarget : public vector<PoseTargetData>
 {
 private:
 	vector<int> centerVertexNumbers;
-	RotateAxis axis;
-	UsedVertex modVertex;
+	RotateAxis  axis;
+	UsedVertex  modVertex;
 
-	bool hasCenter;
+	bool      hasCenter;
 	glm::vec3 center;
-	void stringTokenize(const string &str, vector<int> &tokens);
+	void      stringTokenize(const string & str, vector<int> & tokens);
 
 public:
 	PoseSemiTarget();
@@ -87,17 +87,17 @@ public:
 	 * \return true if file is found
 	 * \return false if file isn't found
 	 */
-	bool load(const string &filename);
+	bool load(const string & filename);
 
-	const vector<int> &getCenterVertexNumbers() { return centerVertexNumbers; }
-	UsedVertex &getModVertex() { return modVertex; }
-	const RotateAxis &getAxis() const { return axis; }
+	const vector<int> & getCenterVertexNumbers() { return centerVertexNumbers; }
+	UsedVertex &        getModVertex() { return modVertex; }
+	const RotateAxis &  getAxis() const { return axis; }
 
 	bool getHasCenter() const { return hasCenter; }
 	void setHasCenter(bool c) { hasCenter = c; }
 
-	const glm::vec3 &getCenter() const { return center; }
-	void setCenter(const glm::vec3 &c) { center = c; }
+	const glm::vec3 & getCenter() const { return center; }
+	void              setCenter(const glm::vec3 & c) { center = c; }
 };
 
 } // namespace Animorph

@@ -49,49 +49,42 @@ namespace FileTools
 
 // Some basic file routines which actually does not habe to do something with
 // the MacFS
-bool createEmptyFileIfDoesNotExists(const string &inFilename,
-                                    mode_t inPermissions = 0600);
+bool createEmptyFileIfDoesNotExists(const string & inFilename, mode_t inPermissions = 0600);
 
-const string appendFilenameToPath(const string &inPath,
-                                  const string &inFilename);
+const string appendFilenameToPath(const string & inPath, const string & inFilename);
 
-off_t getFileSize(const string &inFilename);
-bool fileExists(const string &inFilename);
-bool isDirectory(const string &inFilename);
-bool makeDir(const string &inDirPath, mode_t inMode = 0744);
-bool makeDirHier(const string &inDirPath, mode_t inMode = 0744);
+off_t getFileSize(const string & inFilename);
+bool  fileExists(const string & inFilename);
+bool  isDirectory(const string & inFilename);
+bool  makeDir(const string & inDirPath, mode_t inMode = 0744);
+bool  makeDirHier(const string & inDirPath, mode_t inMode = 0744);
 
-mode_t getProtectionFlags(const string &inFilename);
-mode_t getModeFlags(const string &inFilename);
+mode_t getProtectionFlags(const string & inFilename);
+mode_t getModeFlags(const string & inFilename);
 
-ssize_t readFileIntoBuffer(const string &inFilename, void *outBuffer,
-                           size_t readSize);
+ssize_t readFileIntoBuffer(const string & inFilename, void * outBuffer, size_t readSize);
 
-ssize_t writeFileFromString(const string &inFilename, const string &inData,
+ssize_t writeFileFromString(const string & inFilename, const string & inData, mode_t inMode = 0600);
+ssize_t writeFileFromBuffer(const string & inFilename, const void * inBuffer, size_t writeSize,
                             mode_t inMode = 0600);
-ssize_t writeFileFromBuffer(const string &inFilename, const void *inBuffer,
-                            size_t writeSize, mode_t inMode = 0600);
-ssize_t appendFileFromBuffer(const string &inFilename, const void *inBuffer,
-                             size_t writeSize, mode_t inMode = 0600);
+ssize_t appendFileFromBuffer(const string & inFilename, const void * inBuffer, size_t writeSize,
+                             mode_t inMode = 0600);
 
 // Deal with file- and pathnames
-const string getFilePath(const string &inFilename);
-const string getFilePrefix(const string &inFilename);
-const string getFileNameWithPrefix(const string &inFilename);
-const string getFileNameWithoutPrefix(const string &inFilename);
+const string getFilePath(const string & inFilename);
+const string getFilePrefix(const string & inFilename);
+const string getFileNameWithPrefix(const string & inFilename);
+const string getFileNameWithoutPrefix(const string & inFilename);
 
-bool touchFile(const string &inFilename, mode_t inMode = 0600);
+bool touchFile(const string & inFilename, mode_t inMode = 0600);
 
-const list<string> getDirs(const string &inFromDir,
-                           size_t inMaxDepth = (size_t)-1);
-const list<string> getFiles(const string &inFromDir,
-                            size_t inMaxDepth = (size_t)-1);
-const list<string> getFilesAndDirs(const string &inFromDir,
-                                   size_t inMaxDepth = (size_t)-1);
+const list<string> getDirs(const string & inFromDir, size_t inMaxDepth = (size_t)-1);
+const list<string> getFiles(const string & inFromDir, size_t inMaxDepth = (size_t)-1);
+const list<string> getFilesAndDirs(const string & inFromDir, size_t inMaxDepth = (size_t)-1);
 
-int64_t getLastAccessTime(const string &inFilename);
-int64_t getLastModificationTime(const string &inFilename);
-int64_t getLastChangedTime(const string &inFilename);
+int64_t getLastAccessTime(const string & inFilename);
+int64_t getLastModificationTime(const string & inFilename);
+int64_t getLastChangedTime(const string & inFilename);
 } // namespace FileTools
 
 #endif // _WIN32 - To Do: Verify this code On Wind32 first!

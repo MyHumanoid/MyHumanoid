@@ -40,59 +40,57 @@ namespace mhgui
 {
 
 // constructor
-Selector::Selector(uint32_t inId, const std::string &inFilename,
-                   const Rect &inGeometry)
-    : Widget(inId, inGeometry)
-    ,
+Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & inGeometry)
+        : Widget(inId, inGeometry)
+        ,
 
-    texture()
-    , textureDisabled()
-    ,
+        texture()
+        , textureDisabled()
+        ,
 
-    imageFilename(inFilename)
-    , imageFilenameDisabled()
-    ,
+        imageFilename(inFilename)
+        , imageFilenameDisabled()
+        ,
 
-    textureIsInited(false)
-    , textureDisabledIsInited(false)
-    , textureCursorIsInited(false)
-    ,
+        textureIsInited(false)
+        , textureDisabledIsInited(false)
+        , textureCursorIsInited(false)
+        ,
 
-    selectorSysListener(new SelectorSysListener())
-    , alpha(1.0)
-    , enabled(true)
-    , showLines(true)
-    , cursorPos(0, 0)
-    , rows(2)
-    , cols(2)
-    , points()
-    , labels()
-    , linesColor(0.0, 0.0, 0.0, 1.0)
-    , backgroundColor(1.0, 1.0, 1.0, 1.0)
-    , cursorColor(1.0, 0.0, 0.0, 1.0)
-    , cursorTexture()
-    , cursorFilename()
+        selectorSysListener(new SelectorSysListener())
+        , alpha(1.0)
+        , enabled(true)
+        , showLines(true)
+        , cursorPos(0, 0)
+        , rows(2)
+        , cols(2)
+        , points()
+        , labels()
+        , linesColor(0.0, 0.0, 0.0, 1.0)
+        , backgroundColor(1.0, 1.0, 1.0, 1.0)
+        , cursorColor(1.0, 0.0, 0.0, 1.0)
+        , cursorTexture()
+        , cursorFilename()
 {
 
 	setSysListener(selectorSysListener);
 
-	if (inFilename.length() > 4) {
-		imageFilenameDisabled =
-		    inFilename.substr(0, inFilename.length() - 4) + "_disa.png";
+	if(inFilename.length() > 4) {
+		imageFilenameDisabled = inFilename.substr(0, inFilename.length() - 4) + "_disa.png";
 	}
 
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < cols; j++) {
+	for(int i = 0; i < rows; i++) {
+		for(int j = 0; j < cols; j++) {
 			Point tmp(j * getSize().getWidth() / (cols - 1),
 			          i * getSize().getHeight() / (rows - 1));
 			points.push_back(tmp);
 		}
 	}
 
-	float cellWidth = getSize().getWidth() / (cols - 1);
+	float cellWidth  = getSize().getWidth() / (cols - 1);
 	float cellHeight = getSize().getHeight() / (rows - 1);
-	cellRatio = cellWidth / cellHeight;
-	maxValue = std::min(cellWidth, cellHeight * cellRatio);
+	cellRatio        = cellWidth / cellHeight;
+	maxValue         = std::min(cellWidth, cellHeight * cellRatio);
 }
 
 Selector::~Selector()
@@ -107,39 +105,37 @@ void Selector::setPoints(int inRows, int inCols)
 
 	points.clear();
 
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < cols; j++) {
+	for(int i = 0; i < rows; i++) {
+		for(int j = 0; j < cols; j++) {
 			Point tmp(j * getSize().getWidth() / (cols - 1),
 			          i * getSize().getHeight() / (rows - 1));
 			points.push_back(tmp);
 		}
 	}
 
-	float cellWidth = getSize().getWidth() / (cols - 1);
+	float cellWidth  = getSize().getWidth() / (cols - 1);
 	float cellHeight = getSize().getHeight() / (rows - 1);
 
 	cellRatio = cellWidth / cellHeight;
-	maxValue = std::min(cellWidth, cellHeight * cellRatio);
+	maxValue  = std::min(cellWidth, cellHeight * cellRatio);
 }
 
-void Selector::setCursorPosFromMousePoint(const Point &inMousePoint)
+void Selector::setCursorPosFromMousePoint(const Point & inMousePoint)
 {
 	int x;
 	int y;
 
-	if (inMousePoint.getX() < getAbsolutePosition().getX()) {
+	if(inMousePoint.getX() < getAbsolutePosition().getX()) {
 		x = getAbsolutePosition().getX();
-	} else if (inMousePoint.getX() >
-	           getAbsolutePosition().getX() + getSize().getWidth()) {
+	} else if(inMousePoint.getX() > getAbsolutePosition().getX() + getSize().getWidth()) {
 		x = getAbsolutePosition().getX() + getSize().getWidth();
 	} else {
 		x = inMousePoint.getX();
 	}
 
-	if (inMousePoint.getY() < getAbsolutePosition().getY()) {
+	if(inMousePoint.getY() < getAbsolutePosition().getY()) {
 		y = getAbsolutePosition().getY();
-	} else if (inMousePoint.getY() >
-	           getAbsolutePosition().getY() + getSize().getHeight()) {
+	} else if(inMousePoint.getY() > getAbsolutePosition().getY() + getSize().getHeight()) {
 		y = getAbsolutePosition().getY() + getSize().getHeight();
 	} else {
 		y = inMousePoint.getY();
@@ -149,15 +145,12 @@ void Selector::setCursorPosFromMousePoint(const Point &inMousePoint)
 	setCursorPos(tmp);
 }
 
-void Selector::setDisabledTexture(const std::string &inFilename)
+void Selector::setDisabledTexture(const std::string & inFilename)
 {
 	imageFilenameDisabled = inFilename;
 }
 
-void Selector::setCursorTexture(const std::string &inFilename)
-{
-	cursorFilename = inFilename;
-}
+void Selector::setCursorTexture(const std::string & inFilename) { cursorFilename = inFilename; }
 
 void Selector::setAlpha(float a) { alpha = a; }
 
@@ -171,13 +164,13 @@ void Selector::show()
 void Selector::hide() { setVisible(false); }
 
 // Return the ID assigned
-const Texture &Selector::getTextures()
+const Texture & Selector::getTextures()
 {
 	lazyLoadTexture();
 	return enabled ? texture : textureDisabled;
 }
 
-const Texture &Selector::getCursorTextures()
+const Texture & Selector::getCursorTextures()
 {
 	lazyLoadCursorTexture();
 	return cursorTexture;
@@ -188,14 +181,13 @@ std::vector<float> Selector::getDists()
 	std::vector<float> ret;
 
 	std::vector<Point>::iterator vp_end = points.end();
-	for (std::vector<Point>::iterator vp_it = points.begin(); vp_it != vp_end;
-	     vp_it++) {
-		Point &tmp(*vp_it);
+	for(std::vector<Point>::iterator vp_it = points.begin(); vp_it != vp_end; vp_it++) {
+		Point & tmp(*vp_it);
 
-		float dist = sqrt(pow(tmp.getX() - cursorPos.getX(), 2) +
-		                  pow((tmp.getY() - cursorPos.getY()) * cellRatio, 2));
+		float dist  = sqrt(pow(tmp.getX() - cursorPos.getX(), 2) +
+                                  pow((tmp.getY() - cursorPos.getY()) * cellRatio, 2));
 		float value = 1 - (dist / maxValue);
-		if (value > 0) {
+		if(value > 0) {
 			ret.push_back(value);
 		} else {
 			ret.push_back(0.0f);
@@ -210,41 +202,43 @@ void Selector::drawOverlay() { draw(); }
 // draw function
 void Selector::draw()
 {
-	if (isVisible()) {
+	if(isVisible()) {
 		cgutils::enableBlend();
-		if (lazyLoadTexture()) {
+		if(lazyLoadTexture()) {
 			cgutils::drawSquareFillTexture(getAbsoluteRect(), alpha, getTextures());
 		} else {
 			cgutils::drawSquareFill(getAbsoluteRect(), backgroundColor);
 		}
 
 		// cursor
-		const Point &pos = getAbsolutePosition();
-		const Size &size = getSize();
-		const Rect cur(cursorPos.getX() + pos.getX() - HALF_CURSOR_SIZE,
-		               (size.getHeight() + pos.getY()) - cursorPos.getY() -
-		                   HALF_CURSOR_SIZE,
-		               CURSOR_SIZE, CURSOR_SIZE);
-		if (lazyLoadCursorTexture()) {
+		const Point & pos  = getAbsolutePosition();
+		const Size &  size = getSize();
+		const Rect    cur(cursorPos.getX() + pos.getX() - HALF_CURSOR_SIZE,
+                               (size.getHeight() + pos.getY()) - cursorPos.getY() -
+                                       HALF_CURSOR_SIZE,
+                               CURSOR_SIZE, CURSOR_SIZE);
+		if(lazyLoadCursorTexture()) {
 			cgutils::drawSquareFillTexture(cur, alpha, getCursorTextures());
 		} else {
 			cgutils::drawSquareFill(cur, cursorColor);
 		}
 
-		if (showLines) {
+		if(showLines) {
 			// lines
-			for (int i = 1; i < rows - 1; i++) {
+			for(int i = 1; i < rows - 1; i++) {
 				int y = (i * size.getHeight() / (rows - 1));
-				cgutils::drawLine2D(Point(pos.getX(), pos.getY() + y),
-				                    Point(pos.getX() + size.getWidth(), pos.getY() + y),
-				                    linesColor);
+				cgutils::drawLine2D(
+				        Point(pos.getX(), pos.getY() + y),
+				        Point(pos.getX() + size.getWidth(), pos.getY() + y),
+				        linesColor);
 			}
 
-			for (int i = 1; i < cols - 1; i++) {
+			for(int i = 1; i < cols - 1; i++) {
 				int x = (i * size.getWidth() / (cols - 1));
 				cgutils::drawLine2D(
-				    Point(pos.getX() + x, pos.getY()),
-				    Point(pos.getX() + x, pos.getY() + size.getHeight()), linesColor);
+				        Point(pos.getX() + x, pos.getY()),
+				        Point(pos.getX() + x, pos.getY() + size.getHeight()),
+				        linesColor);
 			}
 		}
 
@@ -268,21 +262,21 @@ void Selector::draw()
 /* ========================================================================== */
 bool Selector::lazyLoadTexture()
 {
-	bool &isInited = enabled ? textureIsInited : textureDisabledIsInited;
-	string &filename = enabled ? imageFilename : imageFilenameDisabled;
-	Texture &text = enabled ? texture : textureDisabled;
+	bool &    isInited = enabled ? textureIsInited : textureDisabledIsInited;
+	string &  filename = enabled ? imageFilename : imageFilenameDisabled;
+	Texture & text     = enabled ? texture : textureDisabled;
 
-	if (filename.empty())
+	if(filename.empty())
 		return false;
 
-	if (isInited) // already loaded?
+	if(isInited) // already loaded?
 		return true;
 
 	isInited = true;
 
 	// read the PNG file using pngLoad
 	// raw data from PNG file is in image buffer
-	if (text.load(filename) == false) {
+	if(text.load(filename) == false) {
 		cerr << "(pngLoad) " << filename << " FAILED" << endl;
 		;
 		return false;
@@ -293,21 +287,21 @@ bool Selector::lazyLoadTexture()
 
 bool Selector::lazyLoadCursorTexture()
 {
-	bool &isInited = textureCursorIsInited;
-	string &filename = cursorFilename;
-	Texture &text = cursorTexture;
+	bool &    isInited = textureCursorIsInited;
+	string &  filename = cursorFilename;
+	Texture & text     = cursorTexture;
 
-	if (filename.empty())
+	if(filename.empty())
 		return false;
 
-	if (isInited) // already loaded?
+	if(isInited) // already loaded?
 		return true;
 
 	isInited = true;
 
 	// read the PNG file using pngLoad
 	// raw data from PNG file is in image buffer
-	if (text.load(filename) == false) {
+	if(text.load(filename) == false) {
 		cerr << "(pngLoad) " << filename << " FAILED" << endl;
 		;
 		return false;

@@ -59,10 +59,10 @@ The format of VertexGroup file:
 class VertexGroup : public std::map<std::string, VGroupData>
 {
 private:
-	void fromStream(std::ifstream &in_stream);
+	void fromStream(std::ifstream & in_stream);
 
 public:
-	bool load(const std::string &filename);
+	bool load(const std::string & filename);
 };
 
 } // namespace Animorph

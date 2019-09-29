@@ -52,7 +52,7 @@ namespace Animorph
 {
 
 struct PoseTargetData {
-	int vertex_number;
+	int   vertex_number;
 	float rotation;
 };
 
@@ -125,24 +125,24 @@ public:
 	 * \return true if file is found
 	 * \return false if file isn't found
 	 */
-	bool load(const string &filename);
+	bool load(const string & filename);
 
-	const vector<int> &getCenterVertexNumbers() { return centerVertexNumbers; }
-	UnsortedUsedVertex &getModVertex() { return modVertex; }
-	const glm::vec3 &getCenter() const { return center; }
-	void setCenter(const glm::vec3 &c) { center = c; }
+	const vector<int> &  getCenterVertexNumbers() { return centerVertexNumbers; }
+	UnsortedUsedVertex & getModVertex() { return modVertex; }
+	const glm::vec3 &    getCenter() const { return center; }
+	void                 setCenter(const glm::vec3 & c) { center = c; }
 
-	const RotateAxis &getAxis() const { return axis; }
-	bool getHasCenter() const { return hasCenter; }
-	void setHasCenter(bool c) { hasCenter = c; }
+	const RotateAxis & getAxis() const { return axis; }
+	bool               getHasCenter() const { return hasCenter; }
+	void               setHasCenter(bool c) { hasCenter = c; }
 
 	float getMinAngle() const { return minAngle; }
 	float getMaxAngle() const { return maxAngle; }
-	bool getNormalize() const { return normalize; }
-	void setNormalize(bool inNormalize) { normalize = inNormalize; }
+	bool  getNormalize() const { return normalize; }
+	void  setNormalize(bool inNormalize) { normalize = inNormalize; }
 
-	const string &getCat() const { return cat; }
-	void setCat(string inCat) { cat = inCat; }
+	const string & getCat() const { return cat; }
+	void           setCat(string inCat) { cat = inCat; }
 
 	void setLimb(bool limb) { mbLimb = limb; }
 	bool getLimb() { return mbLimb; }

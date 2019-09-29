@@ -43,9 +43,9 @@ namespace Animorph
 class RawMesh
 {
 private:
-	FaceVector facevector;
+	FaceVector   facevector;
 	VertexVector vertexvector;
-	FaceGroup bodyfaces;
+	FaceGroup    bodyfaces;
 	// FaceGroup         facegroup;
 
 	string name;
@@ -58,35 +58,29 @@ public:
 	/*!
 	 * \return a reference to the morphed VertexVector of this Mesh
 	 */
-	VertexVector &getVertexVectorRef() { return vertexvector; }
+	VertexVector & getVertexVectorRef() { return vertexvector; }
 
 	/*!
 	 * \return a reference to the FaceVector of this Mesh
 	 */
-	FaceVector &getFaceVectorRef() { return facevector; }
+	FaceVector & getFaceVectorRef() { return facevector; }
 
 	/*!
 	 * \return a reference to the BodyFaces of the Mesh
 	 */
-	FaceGroup &getBodyFacesRef() { return bodyfaces; }
+	FaceGroup & getBodyFacesRef() { return bodyfaces; }
 
 	/**** set Reference API ****/
 	/***************************/
 
-	void setVertexVector(const VertexVector &inVertexVector)
-	{
-		vertexvector = inVertexVector;
-	}
+	void setVertexVector(const VertexVector & inVertexVector) { vertexvector = inVertexVector; }
 
-	void setFaceVector(const FaceVector &inFaceVector)
-	{
-		facevector = inFaceVector;
-	}
+	void setFaceVector(const FaceVector & inFaceVector) { facevector = inFaceVector; }
 
-	void setBodyFaces(const FaceGroup &inBodyFaces) { bodyfaces = inBodyFaces; }
+	void setBodyFaces(const FaceGroup & inBodyFaces) { bodyfaces = inBodyFaces; }
 
-	void setName(const string &inName) { name = inName; }
-	const string &getName() { return name; }
+	void           setName(const string & inName) { name = inName; }
+	const string & getName() { return name; }
 };
 
 } // namespace Animorph

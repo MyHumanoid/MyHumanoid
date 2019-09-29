@@ -4,13 +4,13 @@
 using namespace std;
 using namespace Animorph;
 
-bool SmoothVertex::load(const std::string &filename)
+bool SmoothVertex::load(const std::string & filename)
 {
 	FileReader file_reader;
 
 	file_reader.open(filename);
 
-	if (!file_reader)
+	if(!file_reader)
 		return false;
 
 	fromStream(file_reader);
@@ -18,12 +18,12 @@ bool SmoothVertex::load(const std::string &filename)
 	return true;
 }
 
-void SmoothVertex::fromStream(std::ifstream &in_stream)
+void SmoothVertex::fromStream(std::ifstream & in_stream)
 {
 	clear();
 
 	char buffer[MAX_LINE];
-	while (in_stream.getline(buffer, MAX_LINE)) {
+	while(in_stream.getline(buffer, MAX_LINE)) {
 		SmoothData vertexes;
 
 		stringTokeni(buffer, ",", vertexes);

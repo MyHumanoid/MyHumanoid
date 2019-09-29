@@ -39,7 +39,7 @@ using namespace std;
 using namespace Animorph;
 
 ToolbarPanel::ToolbarPanel()
-    : Panel(kComponentID_ToolbarPanel, Rect(192, 16, 1248, 32))
+        : Panel(kComponentID_ToolbarPanel, Rect(192, 16, 1248, 32))
 {
 }
 
@@ -50,15 +50,15 @@ ToolbarPanel::~ToolbarPanel()
 
 void ToolbarPanel::createWidgets()
 {
-	Window &mainWindow = *g_mainWindow;
-	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
+	Window & mainWindow   = *g_mainWindow;
+	Panel *  tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
 	const Color color_red(1.0, 0.0, 0.0);
 	const float alpha = 1.0;
 	const Point kTooltipPos(70, 12);
 
-	Image *image;
+	Image * image;
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
@@ -66,30 +66,26 @@ void ToolbarPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_CharacterSettings,
-	                  searchPixmapFile("ui/toolbar_charac_sett.png"),
-	                  Rect(0, 0, 32, 32));
+	                  searchPixmapFile("ui/toolbar_charac_sett.png"), Rect(0, 0, 32, 32));
 	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Character setting (somatotypes, shapes, age, etc...)",
-	            kTooltipPos, color_red, tooltipPanel));
+	image->setTooltip(Tooltip("Character setting (somatotypes, shapes, age, etc...)",
+	                          kTooltipPos, color_red, tooltipPanel));
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
 	addWidget(image);
 
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_BodyDetailsRealistic,
-	                  searchPixmapFile("ui/toolbar_body_det_real.png"),
-	                  Rect(0, 0, 32, 32));
+	                  searchPixmapFile("ui/toolbar_body_det_real.png"), Rect(0, 0, 32, 32));
 	image->setListener(&imgListener1);
-	image->setTooltip(Tooltip("Body details (realistic morphings)", kTooltipPos,
-	                          color_red, tooltipPanel));
+	image->setTooltip(Tooltip("Body details (realistic morphings)", kTooltipPos, color_red,
+	                          tooltipPanel));
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
 	addWidget(image);
 	// -------------------------------------------------------------------------
-	image =
-	    new Image(kComponentID_ImageToolbarPanel_Poses,
-	              searchPixmapFile("ui/toolbar_poses.png"), Rect(0, 0, 32, 32));
+	image = new Image(kComponentID_ImageToolbarPanel_Poses,
+	                  searchPixmapFile("ui/toolbar_poses.png"), Rect(0, 0, 32, 32));
 	image->setListener(&imgListener1);
 	image->setTooltip(Tooltip("Poses", kTooltipPos, color_red, tooltipPanel));
 	image->setAlpha(alpha);
@@ -100,16 +96,14 @@ void ToolbarPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	image = new Image(kComponentID_ImageToolbarPanel_MorphingList,
-	                  searchPixmapFile("ui/toolbar_morph_list.png"),
-	                  Rect(0, 0, 32, 32));
+	                  searchPixmapFile("ui/toolbar_morph_list.png"), Rect(0, 0, 32, 32));
 	image->setListener(&imgListener1);
-	image->setTooltip(
-	    Tooltip("Used morphing list", kTooltipPos, color_red, tooltipPanel));
+	image->setTooltip(Tooltip("Used morphing list", kTooltipPos, color_red, tooltipPanel));
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
 	addWidget(image);
-	
-	
+
+
 	image->setAlpha(alpha);
 	imageVector.push_back(image);
 	addWidget(image);

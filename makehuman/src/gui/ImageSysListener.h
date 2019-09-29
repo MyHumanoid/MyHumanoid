@@ -44,16 +44,13 @@ public:
 	ImageSysListener();
 	virtual ~ImageSysListener();
 
-	virtual bool mouseOver(const Point &inMousePos, Component *source);
-	virtual bool mouseOut(const Point &inMousePos, Component *source);
-	virtual bool mousePressed(const Point &inMousePos, int inButton,
-	                          Component *source);
-	virtual bool mouseReleased(const Point &inMousePos, int inButton,
-	                           Component *source);
-	virtual bool mouseDragged(const Point &inMousePos, Component *source);
-	virtual bool mouseWheel(const Point &inMousePos, int inButton,
-	                        Component *source);
-	virtual bool keyType(unsigned char inKey, Component *source);
+	virtual bool mouseOver(const Point & inMousePos, Component * source);
+	virtual bool mouseOut(const Point & inMousePos, Component * source);
+	virtual bool mousePressed(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseReleased(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseDragged(const Point & inMousePos, Component * source);
+	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source);
+	virtual bool keyType(unsigned char inKey, Component * source);
 };
 
 } // namespace mhgui

@@ -30,31 +30,31 @@ class ImageData
 	friend class Texture;
 
 private:
-	char *image_data; /* raw png image data */
-	char *end_bufferPtr;
-	png_uint_32 width, height;
+	char *       image_data; /* raw png image data */
+	char *       end_bufferPtr;
+	png_uint_32  width, height;
 	unsigned int bytesPerRow;
-	bool alpha;
+	bool         alpha;
 
 	// Intionally declared as private because not implemented (yet)
 private:
 	ImageData(const ImageData &);
-	ImageData &operator=(const ImageData &);
+	ImageData & operator=(const ImageData &);
 
 private:
 	ImageData();
 	~ImageData();
 
-	bool pngLoad(const string &filename);
+	bool pngLoad(const string & filename);
 
 	unsigned long getWidth() const;
 	unsigned long getHeight() const;
-	unsigned int getBytesPerRow() const { return bytesPerRow; }
-	bool hasAlpha() const;
-	const void *getData() const;
+	unsigned int  getBytesPerRow() const { return bytesPerRow; }
+	bool          hasAlpha() const;
+	const void *  getData() const;
 
 private:
-	bool pngLoadPNGLib(const string &filename);
+	bool pngLoadPNGLib(const string & filename);
 };
 
 } // namespace mhgui

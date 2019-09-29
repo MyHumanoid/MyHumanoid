@@ -50,11 +50,11 @@ public:
 
 private: // intentionally not implemented
 	HandsPanel(const HandsPanel &);
-	HandsPanel &operator=(const HandsPanel &);
+	HandsPanel & operator=(const HandsPanel &);
 
 private:
 	TargetSelectionListener imgListener;
-	vector<Image *> imageVector;
+	vector<Image *>         imageVector;
 };
 
 #endif // HANDSPANEL_H

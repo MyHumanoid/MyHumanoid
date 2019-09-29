@@ -50,11 +50,11 @@ public:
 
 private: // intentionally not implemented
 	PosesBodyPanel(const PosesBodyPanel &);
-	PosesBodyPanel &operator=(const PosesBodyPanel &);
+	PosesBodyPanel & operator=(const PosesBodyPanel &);
 
 private:
 	PoseTargetSelectionListener imgListener;
-	vector<Image *> imageVector;
+	vector<Image *>             imageVector;
 };
 
 #endif // POSESBODYPANEL_H

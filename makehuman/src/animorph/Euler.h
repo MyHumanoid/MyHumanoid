@@ -51,8 +51,8 @@ private:
 public:
 	/// constructor for Euler with all components 0.
 	Euler(Notation n)
-	    : glm::vec3(0, 0, 0)
-	    , n(XYZ)
+	        : glm::vec3(0, 0, 0)
+	        , n(XYZ)
 	{
 	}
 
@@ -64,8 +64,8 @@ public:
 	 * \param n A Notation for this three rotations.
 	 */
 	Euler(float x, float y, float z, Notation n)
-	    : glm::vec3(x, y, z)
-	    , n(n)
+	        : glm::vec3(x, y, z)
+	        , n(n)
 	{
 	}
 

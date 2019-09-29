@@ -45,16 +45,15 @@ using namespace Animorph;
 using namespace std;
 
 PoseTargetSelectionListener::PoseTargetSelectionListener()
-    : AbstractListener()
+        : AbstractListener()
 {
 }
 
 PoseTargetSelectionListener::~PoseTargetSelectionListener() {}
 
-bool PoseTargetSelectionListener::mouseOver(const Point &inMousePos,
-                                            Component *source)
+bool PoseTargetSelectionListener::mouseOver(const Point & inMousePos, Component * source)
 {
-	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 	assert(imgSource); // Check if this is really an Image object?
 
 	imgSource->setOverlayRectangle(Color(1, 0, 0, 0.5));
@@ -62,10 +61,9 @@ bool PoseTargetSelectionListener::mouseOver(const Point &inMousePos,
 	return false;
 }
 
-bool PoseTargetSelectionListener::mouseOut(const Point &inMousePos,
-                                           Component *source)
+bool PoseTargetSelectionListener::mouseOut(const Point & inMousePos, Component * source)
 {
-	Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 	assert(imgSource); // Check if this is really an Image object?
 
 	imgSource->setOverlayRectangle(false);
@@ -73,23 +71,22 @@ bool PoseTargetSelectionListener::mouseOut(const Point &inMousePos,
 	return false;
 }
 
-bool PoseTargetSelectionListener::mouseDragged(const Point &inMousePos,
-                                               Component *source)
+bool PoseTargetSelectionListener::mouseDragged(const Point & inMousePos, Component * source)
 {
 	return true;
 }
 
-bool PoseTargetSelectionListener::mouseWheel(const Point &inMousePos,
-                                             int inButton, Component *source)
+bool PoseTargetSelectionListener::mouseWheel(const Point & inMousePos, int inButton,
+                                             Component * source)
 {
 	return false;
 }
 
-bool PoseTargetSelectionListener::mousePressed(const Point &inMousePos,
-                                               int button, Component *source)
+bool PoseTargetSelectionListener::mousePressed(const Point & inMousePos, int button,
+                                               Component * source)
 {
-	if (button == GLUT_LEFT_BUTTON) {
-		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	if(button == GLUT_LEFT_BUTTON) {
+		Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 		assert(imgSource); // Check if this is really an Image object?
 		imgSource->setOverlayRectangle(Color(1, 1, 1, 0.5));
 
@@ -98,21 +95,21 @@ bool PoseTargetSelectionListener::mousePressed(const Point &inMousePos,
 	return false;
 }
 
-bool PoseTargetSelectionListener::mouseReleased(const Point &inMousePos,
-                                                int button, Component *source)
+bool PoseTargetSelectionListener::mouseReleased(const Point & inMousePos, int button,
+                                                Component * source)
 {
-	if (button == GLUT_LEFT_BUTTON) {
-		Image *imgSource = dynamic_cast<Image *>(source); // req. RTTI!
+	if(button == GLUT_LEFT_BUTTON) {
+		Image * imgSource = dynamic_cast<Image *>(source); // req. RTTI!
 		assert(imgSource); // Check if this is really an Image object?
 
 		imgSource->setOverlayRectangle(false);
 
-		if (!imgSource->getAbsoluteRect().isHitBy(inMousePos))
+		if(!imgSource->getAbsoluteRect().isHitBy(inMousePos))
 			return false;
 
 		string target;
 
-		switch (imgSource->getID()) {
+		switch(imgSource->getID()) {
 			// The Image ID's of the  PoseBodyPanel (kComponentID_PosesBodyPanel)
 		case kComponentID_PosesImageBody_RightCollarParams:
 			target = "260_right_collar";
@@ -323,13 +320,13 @@ bool PoseTargetSelectionListener::mouseReleased(const Point &inMousePos,
 			break;
 		}
 
-		Window &mainWindow = *g_mainWindow;
+		Window & mainWindow = *g_mainWindow;
 
-		PoseTargetPanel *targetPanel = dynamic_cast<PoseTargetPanel *>(
-		    mainWindow.getPanel(kComponentID_TargetPanel));
+		PoseTargetPanel * targetPanel = dynamic_cast<PoseTargetPanel *>(
+		        mainWindow.getPanel(kComponentID_TargetPanel));
 
 		// Check if this Target Panel is not the current one?
-		if ((targetPanel == NULL) || (targetPanel->getCategory() != target)) {
+		if((targetPanel == NULL) || (targetPanel->getCategory() != target)) {
 			// No? The create it
 			int x = mainWindow.getSize().getWidth() - 210;
 
@@ -350,7 +347,4 @@ bool PoseTargetSelectionListener::mouseReleased(const Point &inMousePos,
 	return false;
 }
 
-bool PoseTargetSelectionListener::keyType(unsigned char key, Component *source)
-{
-	return false;
-}
+bool PoseTargetSelectionListener::keyType(unsigned char key, Component * source) { return false; }

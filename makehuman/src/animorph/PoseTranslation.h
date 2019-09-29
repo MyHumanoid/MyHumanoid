@@ -82,11 +82,11 @@ The filenames of these files end in ".target.info".
 class PoseTranslation
 {
 private:
-	Target *target;
-	float originalSize[3];
+	Target *  target;
+	float     originalSize[3];
 	glm::vec3 formFactor;
-	float minAngle;
-	float maxAngle;
+	float     minAngle;
+	float     maxAngle;
 	/// flag
 	bool normalize;
 	// string inFilename;
@@ -103,22 +103,22 @@ public:
 	 * \return true if file is found
 	 * \return false if file isn't found
 	 */
-	bool load(const string &filename);
+	bool load(const string & filename);
 
-	UnsortedUsedVertex &getModVertex() { return target->getModVertex(); }
+	UnsortedUsedVertex & getModVertex() { return target->getModVertex(); }
 
 	/// The distance between startVertexNumbers and endVertexNumbers, divided by
 	/// originalSize
-	void calcFormFactor(const VertexVector &vertexvector);
-	Target &getTarget() { return *target; }
-	glm::vec3 &getFormFactor() { return formFactor; }
+	void        calcFormFactor(const VertexVector & vertexvector);
+	Target &    getTarget() { return *target; }
+	glm::vec3 & getFormFactor() { return formFactor; }
 	const float getMinAngle() const { return minAngle; }
 	const float getMaxAngle() const { return maxAngle; }
-	const bool getNormalize() const { return normalize; }
-	void setNormalize(bool inNormalize) { normalize = inNormalize; }
+	const bool  getNormalize() const { return normalize; }
+	void        setNormalize(bool inNormalize) { normalize = inNormalize; }
 	// const string &getFilename() const {return inFilename;}
-	const string &getCat() const { return cat; }
-	void setCat(string inCat) { cat = inCat; }
+	const string & getCat() const { return cat; }
+	void           setCat(string inCat) { cat = inCat; }
 
 	void setLimb(bool limb) { mbLimb = limb; }
 	bool getLimb() { return mbLimb; }

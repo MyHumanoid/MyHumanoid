@@ -51,25 +51,25 @@ class TargetPanel : public MultiPanel
 {
 private: // intentionally not implemented
 	TargetPanel(const TargetPanel &);
-	TargetPanel &operator=(const TargetPanel &);
+	TargetPanel & operator=(const TargetPanel &);
 
 	TargetSliderListener imgSliderListener;
-	ImageListener imgListener;
-	string category;
+	ImageListener        imgListener;
+	string               category;
 
 	// use local memory managment currently
 	// TODO: implement managed widgets
 	vector<TargetSlider *> targetVector;
-	vector<Image *> imageVector;
-	PageTargetPanel *newPagePanel();
+	vector<Image *>        imageVector;
+	PageTargetPanel *      newPagePanel();
 
 public:
-	TargetPanel(const string &category, const Rect &rect);
+	TargetPanel(const string & category, const Rect & rect);
 	virtual ~TargetPanel();
 
-	void createWidgets();
-	const string &getCategory() const { return category; }
-	void resetTargetValues(const string currentTargetName = "");
+	void           createWidgets();
+	const string & getCategory() const { return category; }
+	void           resetTargetValues(const string currentTargetName = "");
 };
 
 #endif // TARGETPANEL_H

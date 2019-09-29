@@ -48,23 +48,23 @@ class PoseTargetPanel : public Panel
 {
 private: // intentionally not implemented
 	PoseTargetPanel(const PoseTargetPanel &);
-	PoseTargetPanel &operator=(const PoseTargetPanel &);
+	PoseTargetPanel & operator=(const PoseTargetPanel &);
 
 	PoseTargetSliderListener imgSliderListener;
-	ImageListener imgListener;
-	string category;
-	Image *close_image;
+	ImageListener            imgListener;
+	string                   category;
+	Image *                  close_image;
 	// use local memory managment currently
 	// TODO: implement managed widgets
 	vector<TargetSlider *> targetVector;
 
 public:
-	PoseTargetPanel(const string &category, const Rect &rect);
+	PoseTargetPanel(const string & category, const Rect & rect);
 	virtual ~PoseTargetPanel();
 
-	void createWidgets();
-	const string &getCategory() const { return category; }
-	void resetTargetValues(const string currentTargetName = "");
+	void           createWidgets();
+	const string & getCategory() const { return category; }
+	void           resetTargetValues(const string currentTargetName = "");
 };
 
 #endif // POSETARGETPANEL_H

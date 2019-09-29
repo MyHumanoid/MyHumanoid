@@ -56,8 +56,8 @@ The format of BodySettings file:
 class BodySettings : public std::map<std::string, float>
 {
 private:
-	void createStream(std::ostringstream &out_stream);
-	void fromStream(std::ifstream &in_stream);
+	void createStream(std::ostringstream & out_stream);
+	void fromStream(std::ifstream & in_stream);
 
 public:
 	/// load a BodySetting
@@ -66,7 +66,7 @@ public:
 	 * \return true if file is found
 	 * \return false if file isn't found
 	 */
-	bool load(const std::string &filename);
+	bool load(const std::string & filename);
 
 	/// save a BodySetting
 	/*!
@@ -74,7 +74,7 @@ public:
 	 * \return true if file is saved
 	 * \return false if file couldn't be saved
 	 */
-	bool save(const std::string &filename);
+	bool save(const std::string & filename);
 
 	std::vector<string> cursorPositions;
 };

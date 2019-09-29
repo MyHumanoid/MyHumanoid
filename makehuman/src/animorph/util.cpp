@@ -3,76 +3,70 @@
 using namespace std;
 using namespace Animorph;
 
-void Animorph::UtilStringDelFollow(std::string &str,
-                                   const std::string &characters)
+void Animorph::UtilStringDelFollow(std::string & str, const std::string & characters)
 {
 	string::size_type pos = str.find_last_not_of(characters);
-	if (string::npos != pos)
+	if(string::npos != pos)
 		str = str.substr(0, pos + 1);
 	else {
 		// it is still possible that 'str' contains only 'characters':
-		if (string::npos != str.find_first_of(characters))
+		if(string::npos != str.find_first_of(characters))
 			str.erase();
 	}
 }
 
-void Animorph::UtilStringDelLead(std::string &str,
-                                 const std::string &characters)
+void Animorph::UtilStringDelLead(std::string & str, const std::string & characters)
 {
 	string::size_type pos = str.find_first_not_of(characters);
-	if (string::npos != pos)
+	if(string::npos != pos)
 		str = str.substr(pos);
 	else {
 		// it is still possible that 'str' contains only 'characters':
-		if (string::npos != str.find_first_of(characters))
+		if(string::npos != str.find_first_of(characters))
 			str.erase();
 	}
 }
 
-void Animorph::UtilStringDelSurround(std::string &str,
-                                     const std::string &characters)
+void Animorph::UtilStringDelSurround(std::string & str, const std::string & characters)
 {
 	string::size_type pos = str.find_first_not_of(characters);
-	if (string::npos != pos)
+	if(string::npos != pos)
 		str = str.substr(pos);
 
 	pos = str.find_last_not_of(characters);
-	if (string::npos != pos)
+	if(string::npos != pos)
 		str = str.substr(0, pos + 1);
 	else {
 		// it is still possible that 'str' contains only 'characters':
-		if (string::npos != str.find_first_of(characters))
+		if(string::npos != str.find_first_of(characters))
 			str.erase();
 	}
 }
 
-bool Animorph::hasFileEnding(const std::string &filename,
-                             const std::string &ending)
+bool Animorph::hasFileEnding(const std::string & filename, const std::string & ending)
 {
 	unsigned int loc = filename.find(ending, filename.length() - ending.length());
 
-	if (loc != string::npos) {
+	if(loc != string::npos) {
 		return true;
 	}
 
 	return false;
 }
 
-std::string Animorph::cutFileEnding(std::string filename,
-                                    const std::string &ending)
+std::string Animorph::cutFileEnding(std::string filename, const std::string & ending)
 {
-	if (ending == "") {
+	if(ending == "") {
 		unsigned int loc = filename.find_last_of('.', filename.length());
 
-		if (loc != string::npos) {
+		if(loc != string::npos) {
 			filename.erase(loc);
 			return filename;
 		}
 	} else {
-		unsigned int loc =
-		    filename.find(ending, filename.length() - ending.length());
+		unsigned int loc = filename.find(ending, filename.length() - ending.length());
 
-		if (loc != string::npos) {
+		if(loc != string::npos) {
 			filename.erase(loc);
 			return filename;
 		}
@@ -90,19 +84,19 @@ std::string Animorph::cutFileEnding(std::string filename,
  * @param maxReplace Give a int to limit the replace matches. If 0 is given
  * there's no limit.
  */
-int Animorph::replaceString(const string &match, const string &replace,
-                            string &str, unsigned int maxReplace)
+int Animorph::replaceString(const string & match, const string & replace, string & str,
+                            unsigned int maxReplace)
 {
-	int start = 0;
-	unsigned int i = 0;
+	int          start = 0;
+	unsigned int i     = 0;
 
-	if (maxReplace == 0)
+	if(maxReplace == 0)
 		maxReplace = str.length();
 
-	for (; i < maxReplace; i++) {
+	for(; i < maxReplace; i++) {
 		string::size_type loc = str.find(match, start);
 
-		if (loc != string::npos) {
+		if(loc != string::npos) {
 			str.replace(loc, match.length(), replace);
 		} else {
 			return i;
@@ -114,40 +108,40 @@ int Animorph::replaceString(const string &match, const string &replace,
 	return i;
 }
 
-glm::vec3 Animorph::calcCenteroid(const vector<int> &vertexNumbers,
-                                 const VertexVector &vertexvector)
+glm::vec3 Animorph::calcCenteroid(const vector<int> &  vertexNumbers,
+                                  const VertexVector & vertexvector)
 {
 	glm::vec3 center = glm::vec3(0);
 
-	for (vector<int>::const_iterator v_it = vertexNumbers.begin();
-	     v_it != vertexNumbers.end(); v_it++) {
+	for(vector<int>::const_iterator v_it = vertexNumbers.begin(); v_it != vertexNumbers.end();
+	    v_it++) {
 		int vn = *v_it;
 
-		const Vertex &vertex(vertexvector[vn]);
+		const Vertex & vertex(vertexvector[vn]);
 		center += vertex.co;
 	}
 
-	if (vertexNumbers.size()) {
+	if(vertexNumbers.size()) {
 		center /= vertexNumbers.size();
 	}
 
 	return center;
 }
 
-glm::vec3 Animorph::calcAverageNormalLength(const vector<int> vertexNumbers,
-                                           const VertexVector &vertexvector)
+glm::vec3 Animorph::calcAverageNormalLength(const vector<int>    vertexNumbers,
+                                            const VertexVector & vertexvector)
 {
 	glm::vec3 averageNormal = glm::vec3(0);
 
-	for (vector<int>::const_iterator v_it = vertexNumbers.begin();
-	     v_it != vertexNumbers.end(); v_it++) {
+	for(vector<int>::const_iterator v_it = vertexNumbers.begin(); v_it != vertexNumbers.end();
+	    v_it++) {
 		int vn = *v_it;
 
-		const Vertex &vertex(vertexvector[vn]);
+		const Vertex & vertex(vertexvector[vn]);
 		averageNormal += vertex.no;
 	}
 
-	if (vertexNumbers.size()) {
+	if(vertexNumbers.size()) {
 		averageNormal /= vertexNumbers.size();
 	}
 

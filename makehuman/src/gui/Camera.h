@@ -51,10 +51,10 @@ namespace mhgui
 typedef std::vector<int> Reference_Verts;
 
 struct AutozoomData {
-	glm::vec3 pos_camera;
-	glm::vec2 xyRot_camera;
+	glm::vec3       pos_camera;
+	glm::vec2       xyRot_camera;
 	Reference_Verts vertsIndexes;
-	glm::vec3 vertsCenteroid;
+	glm::vec3       vertsCenteroid;
 };
 
 // TODO: moving world vs. moving camera problem
@@ -65,9 +65,9 @@ class Camera
 private:
 	glm::vec2 last_mouse_pos;
 	glm::vec3 last_pos_camera;
-	int width;
-	int height;
-	float angle;
+	int       width;
+	int       height;
+	float     angle;
 	glm::vec3 axis;
 
 	Matrix cam_pos;
@@ -77,23 +77,23 @@ private:
 
 	// Ugly Test code following - just for test purposes!
 	glm::vec3 mCameraPos;
-	float mAngleX;
-	float mAngleY;
-	float mAngleZ;
+	float     mAngleX;
+	float     mAngleY;
+	float     mAngleZ;
 	glm::vec3 startVector;
 	glm::vec3 endVector;
-	float startAngleX;
-	float endAngleX;
-	float startAngleY;
-	float endAngleY;
-	float timeForMorph;
-	int step;
+	float     startAngleX;
+	float     endAngleX;
+	float     startAngleY;
+	float     endAngleY;
+	float     timeForMorph;
+	int       step;
 
 public:
 	/// construct a Camera that manages the world Matrix
 	Camera();
-	Camera(const Camera &inRHS);
-	Camera &operator=(const Camera &inRHS);
+	Camera(const Camera & inRHS);
+	Camera & operator=(const Camera & inRHS);
 
 	void reshape(int width, int height);
 	void rotate(float theta, Animorph::RotateAxis axis);
@@ -106,33 +106,33 @@ public:
 
 	void applyMatrix();
 
-	const glm::vec3 &getPosition() const { return mCameraPos; }
-	float getAngleX() const { return mAngleX; }
-	float getAngleY() const { return mAngleY; }
-	float getAngleZ() const { return mAngleZ; }
-	bool isPerspective() const { return mode; }
-	void setPerspective(bool m);
+	const glm::vec3 & getPosition() const { return mCameraPos; }
+	float             getAngleX() const { return mAngleX; }
+	float             getAngleY() const { return mAngleY; }
+	float             getAngleZ() const { return mAngleZ; }
+	bool              isPerspective() const { return mode; }
+	void              setPerspective(bool m);
 
-	int steps();
+	int   steps();
 	float getYForX(float x);
-	void calcForStepAnimate(float inX);
-	bool timerTrigger();
+	void  calcForStepAnimate(float inX);
+	bool  timerTrigger();
 
-	void moveCameraAnimated(const std::string &filename, AutozoomData data,
-	                        const VertexVector &vertexvector);
+	void moveCameraAnimated(const std::string & filename, AutozoomData data,
+	                        const VertexVector & vertexvector);
 };
 
 class Autozoom : public std::map<std::string, AutozoomData>
 {
 private:
-	void fromStream(std::ifstream &in_stream, const std::string &filename);
-	void createStream(std::ostringstream &out_stream, const std::string &filename,
-	                  const Camera &camera);
+	void fromStream(std::ifstream & in_stream, const std::string & filename);
+	void createStream(std::ostringstream & out_stream, const std::string & filename,
+	                  const Camera & camera);
 
 public:
-	bool lazyLoadData(const std::string &filename);
-	bool save(const std::string &filename, const Camera &camera);
-	AutozoomData getAutozoomData(const std::string &filename);
+	bool         lazyLoadData(const std::string & filename);
+	bool         save(const std::string & filename, const Camera & camera);
+	AutozoomData getAutozoomData(const std::string & filename);
 };
 
 } // namespace mhgui

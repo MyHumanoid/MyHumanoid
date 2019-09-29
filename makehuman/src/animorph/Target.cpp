@@ -4,9 +4,9 @@
 using namespace std;
 using namespace Animorph;
 
-void Target::createStream(std::ostringstream &out_stream)
+void Target::createStream(std::ostringstream & out_stream)
 {
-	for (Target::iterator target_it = begin(); target_it != end(); target_it++) {
+	for(Target::iterator target_it = begin(); target_it != end(); target_it++) {
 		TargetData td = (*target_it);
 
 		out_stream << td.vertex_number << "," << td.morph_vector.x << ","
@@ -14,35 +14,35 @@ void Target::createStream(std::ostringstream &out_stream)
 	}
 }
 
-bool Target::load(const std::string &filename)
+bool Target::load(const std::string & filename)
 {
 	clear();
 
-	FILE *fd = fopen(filename.c_str(), "r");
-	if (!fd)
+	FILE * fd = fopen(filename.c_str(), "r");
+	if(!fd)
 		return false;
 
 	// get the current locale
-	char *locale = ::setlocale(LC_NUMERIC, NULL);
+	char * locale = ::setlocale(LC_NUMERIC, NULL);
 
 	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
 	::setlocale(LC_NUMERIC, "C");
 
-	Target &target(*this);
+	Target & target(*this);
 
-	int ret = 0;
-	bool rc = true; // assume "success" by default
+	int  ret = 0;
+	bool rc  = true; // assume "success" by default
 
-	for (;;) {
+	for(;;) {
 		TargetData td;
 
 		ret = fscanf(fd, "%d,%f,%f,%f", &td.vertex_number, &td.morph_vector.x,
 		             &td.morph_vector.y, &td.morph_vector.z);
 
-		if (ret == EOF) // end of file reached?
+		if(ret == EOF) // end of file reached?
 			break;
 
-		if ((ret != 4) && (ret != 0)) {
+		if((ret != 4) && (ret != 0)) {
 
 			cerr << "Illegal line while reading target '" << filename << "'!" << endl;
 			clear();
@@ -62,13 +62,13 @@ bool Target::load(const std::string &filename)
 	return rc;
 }
 
-bool Target::save(const std::string &filename)
+bool Target::save(const std::string & filename)
 {
 	FileWriter file_writer;
 
 	file_writer.open(filename);
 
-	if (!file_writer)
+	if(!file_writer)
 		return false;
 
 	std::ostringstream out_stream;

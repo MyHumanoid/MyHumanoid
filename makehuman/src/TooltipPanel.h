@@ -48,10 +48,10 @@ public:
 
 private: // intentionally not implemented
 	TooltipPanel(const TooltipPanel &);
-	TooltipPanel &operator=(const TooltipPanel &);
+	TooltipPanel & operator=(const TooltipPanel &);
 
-	Image *tooltip;
-	Image *tooltipLabel;
+	Image * tooltip;
+	Image * tooltipLabel;
 };
 
 #endif // TOOLTIPPANEL_H

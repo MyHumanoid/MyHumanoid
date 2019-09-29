@@ -44,33 +44,31 @@ enum Modes {
 };
 
 struct GlobalPaths {
-	
 };
 
-struct Global
-{
+struct Global {
 	GlobalPaths paths;
-	
-	Mesh *mesh = NULL;
-	Camera *camera = NULL;
-	Autozoom *autozoom = NULL;
-	bool drawGrid = false;
-	bool quotedBox = false;
-	bool m_enableTexture = false;
-	bool subdivision = false;
-	Modes appMode = CHARACTER_SETTING;
-	
+
+	Mesh *     mesh            = NULL;
+	Camera *   camera          = NULL;
+	Autozoom * autozoom        = NULL;
+	bool       drawGrid        = false;
+	bool       quotedBox       = false;
+	bool       m_enableTexture = false;
+	bool       subdivision     = false;
+	Modes      appMode         = CHARACTER_SETTING;
+
 	std::map<const uint32_t, Point *> fuzzyValues;
 
 public:
-	void setMesh(Mesh *mesh) { this->mesh = mesh; }
-	Mesh *getMesh() { return mesh; }
+	void   setMesh(Mesh * mesh) { this->mesh = mesh; }
+	Mesh * getMesh() { return mesh; }
 
-	void setCamera(Camera *camera) { this->camera = camera; }
-	Camera *getCamera() { return camera; }
+	void     setCamera(Camera * camera) { this->camera = camera; }
+	Camera * getCamera() { return camera; }
 
-	void setAutozoom(Autozoom *autozoom) { this->autozoom = autozoom; }
-	Autozoom *getAutozoom() { return autozoom; }
+	void       setAutozoom(Autozoom * autozoom) { this->autozoom = autozoom; }
+	Autozoom * getAutozoom() { return autozoom; }
 
 	void setDrawGrid(bool grid) { drawGrid = grid; }
 	bool getDrawGrid() { return drawGrid; }
@@ -78,23 +76,20 @@ public:
 	void setQuotedBox(bool qbox) { quotedBox = qbox; }
 	bool getQuotedBox() { return quotedBox; }
 
-	void setAppMode(Modes mode) { appMode = mode; }
+	void  setAppMode(Modes mode) { appMode = mode; }
 	Modes getAppMode() { return appMode; }
 
-	void setFuzzyValue(uint32_t index, const Point &inPoint)
+	void setFuzzyValue(uint32_t index, const Point & inPoint)
 	{
 		this->fuzzyValues[index] = new Point(inPoint);
 	}
-	void resetFuzzyValues() { fuzzyValues.clear(); }
-	Point *getFuzzyValue(const uint32_t index)
-	{
-		return this->fuzzyValues[index];
-	}
-	
-	glm::vec2 ageAndSex = {0.f, 0.f};
+	void    resetFuzzyValues() { fuzzyValues.clear(); }
+	Point * getFuzzyValue(const uint32_t index) { return this->fuzzyValues[index]; }
+
+	glm::vec2 ageAndSex        = {0.f, 0.f};
 	glm::vec2 bodyWeightMuscle = {0.f, 0.f};
-	glm::vec2 breastSizeShape = {0.f, 0.f};
-	glm::vec2 bodyShapeHeight = {0.f, 0.f};
+	glm::vec2 breastSizeShape  = {0.f, 0.f};
+	glm::vec2 bodyShapeHeight  = {0.f, 0.f};
 };
 
 extern Global g_global;

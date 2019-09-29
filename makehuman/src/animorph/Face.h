@@ -71,10 +71,7 @@ public:
 	/*!
 	 * \param material_index index of the material in MaterialVector
 	 */
-	void setMaterialIndex(int material_index)
-	{
-		this->material_index = material_index;
-	}
+	void setMaterialIndex(int material_index) { this->material_index = material_index; }
 
 	/*!
 	 * \return a vector with all vertex numbers for this face

@@ -54,8 +54,7 @@ inline double deg2rad(double x) { return x * M_PI / 180.0; }
 /// return true if 'value' between 'range1' and 'range2' - including bounds!
 template <typename T> bool between(T value, T range1, T range2)
 {
-	if (((value >= range1) && (value <= range2)) ||
-	    ((value >= range2) && (value <= range1))) {
+	if(((value >= range1) && (value <= range2)) || ((value >= range2) && (value <= range1))) {
 		return true;
 	}
 	return false;
@@ -65,9 +64,9 @@ template <typename T> bool between(T value, T range1, T range2)
 template <typename T, typename T2> T2 pseudoFuzzy(T total, T part, T2 fuzzyable)
 {
 	T2 ratio;
-	T null_value(0);
+	T  null_value(0);
 
-	if (part != null_value) {
+	if(part != null_value) {
 		ratio = total / part;
 		return fuzzyable / ratio;
 	} else {
@@ -86,7 +85,7 @@ template <typename T> T abs(T value)
 {
 	T null_value(0);
 
-	if (value < null_value)
+	if(value < null_value)
 		value = -value;
 
 	return value;
@@ -105,9 +104,9 @@ template <typename T> T dist(T value1, T value2)
 /// (a+b)/2)
 template <typename T> T middle(T value1, T value2)
 {
-	if (value1 < value2) {
+	if(value1 < value2) {
 		return value1 + (dist(value1, value2) * 0.5);
-	} else if (value1 > value2) {
+	} else if(value1 > value2) {
 		return value1 - (dist(value1, value2) * 0.5);
 	}
 
@@ -118,9 +117,9 @@ template <typename T> T middle(T value1, T value2)
 /// Clap value to bounds from limit_val (from both sides!)
 template <typename T> T limit(T value, T limit_val)
 {
-	if (value > limit_val)
+	if(value > limit_val)
 		value = limit_val;
-	else if (value < -limit_val)
+	else if(value < -limit_val)
 		value = -limit_val;
 
 	return value;
@@ -138,11 +137,11 @@ template <typename T> T limit(T value, T limit_val)
 template <typename T> int hasMonotonie(T value0, T value1, T value2)
 {
 	// strictly monotonic increasing
-	if ((value0 > value1) && (value1 > value2))
+	if((value0 > value1) && (value1 > value2))
 		return 0;
 
 	// strictly monotonic decreasing
-	if ((value0 < value1) && (value1 < value2))
+	if((value0 < value1) && (value1 < value2))
 		return 1;
 
 	return -1;

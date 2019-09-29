@@ -55,7 +55,7 @@ public:
 	Texture();
 	~Texture();
 
-	bool load(const string &inFilename);
+	bool load(const string & inFilename);
 
 	size_t getNumberOfTextures() const { return mCountTilesX * mCountTilesY; }
 
@@ -65,22 +65,22 @@ public:
 	float getFragmentTextureOffsetXInPercent(size_t inIndexX) const;
 	float getFragmentTextureOffsetYInPercent(size_t inIndexY) const;
 
-	void mapToGeometry(const Rect &inRect, float inZLayer = 0.0) const;
+	void   mapToGeometry(const Rect & inRect, float inZLayer = 0.0) const;
 	GLuint getTextureIdOfXY(size_t inX, size_t inY) const;
 
 private:
 	void releaseAll();
 	void releaseTextureCharacteristics();
-	bool buildTiledImageBuffers(const string &inFilename);
+	bool buildTiledImageBuffers(const string & inFilename);
 
 private:
 	size_t mCountTilesX;
 	size_t mCountTilesY;
 
-	float *mSizeXInPercent;
-	float *mSizeYInPercent;
+	float * mSizeXInPercent;
+	float * mSizeYInPercent;
 
-	TextureCharacteristics **mTextureCharacteristics;
+	TextureCharacteristics ** mTextureCharacteristics;
 }; // class Texture
 
 } // namespace mhgui

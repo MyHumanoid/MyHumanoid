@@ -50,11 +50,11 @@ public:
 
 private: // intentionally not implemented
 	BodyPanel(const BodyPanel &);
-	BodyPanel &operator=(const BodyPanel &);
+	BodyPanel & operator=(const BodyPanel &);
 
 private:
 	TargetSelectionListener imgListener;
-	vector<Image *> imageVector;
+	vector<Image *>         imageVector;
 };
 
 #endif // BODYPANEL_H

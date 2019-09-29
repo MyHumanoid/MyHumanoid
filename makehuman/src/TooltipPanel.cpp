@@ -37,9 +37,9 @@ using namespace std;
 using namespace Animorph;
 
 TooltipPanel::TooltipPanel(const int winHeight)
-    : Panel(kComponentID_TooltipPanel, Rect(400, winHeight - 36, 64, 16))
-    , tooltip(NULL)
-    , tooltipLabel(NULL)
+        : Panel(kComponentID_TooltipPanel, Rect(400, winHeight - 36, 64, 16))
+        , tooltip(NULL)
+        , tooltipLabel(NULL)
 {
 	setBottomAnchor(true);
 }
@@ -53,21 +53,18 @@ TooltipPanel::~TooltipPanel()
 void TooltipPanel::createWidgets()
 {
 	// -------------------------------------------------------------------------
-	tooltipLabel =
-	    new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_1.png"),
-	              Rect(0, 0, 16, 16));
+	tooltipLabel = new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_1.png"),
+	                         Rect(0, 0, 16, 16));
 	addWidget(tooltipLabel);
 
 	// -------------------------------------------------------------------------
-	tooltipLabel =
-	    new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_2.png"),
-	              Rect(0, 0, 16, 16));
+	tooltipLabel = new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_2.png"),
+	                         Rect(0, 0, 16, 16));
 	addWidget(tooltipLabel);
 
 	// -------------------------------------------------------------------------
-	tooltipLabel =
-	    new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_3.png"),
-	              Rect(0, 0, 16, 16));
+	tooltipLabel = new Image(kComponentID_Dummy, searchPixmapFile("ui/tooltips_label_3.png"),
+	                         Rect(0, 0, 16, 16));
 	addWidget(tooltipLabel);
 
 	// -------------------------------------------------------------------------

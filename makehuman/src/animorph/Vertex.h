@@ -60,9 +60,10 @@ public:
 	// Color color;
 
 	Vertex()
-	    : co(0.f)
-	    , no(0.f)
-	{}
+	        : co(0.f)
+	        , no(0.f)
+	{
+	}
 
 	/// construct Vertex with coordinates
 	/*!
@@ -71,9 +72,10 @@ public:
 	 * \param z the z component to the vertex coordinate
 	 */
 	Vertex(float x, float y, float z)
-	    : co(x, y, z)
-	    , no(0.f)
-	{}
+	        : co(x, y, z)
+	        , no(0.f)
+	{
+	}
 
 	/*!
 	 * \param shared_face add the index number to which face this Vertex belongs
@@ -83,20 +85,20 @@ public:
 	/*!
 	 * \return get a vector with all faces this Vertex belongs to
 	 */
-	std::vector<int> &getSharedFaces();
+	std::vector<int> & getSharedFaces();
 };
 
 class origVertex : public Vertex
 {
 private:
 	/// Vertices from which this one is generated
-	int valence, fvalence;
+	int              valence, fvalence;
 	std::vector<int> faceVerts;
 	std::vector<int> edgeVerts;
 
 public:
 	/// construct origVertex
-	origVertex(std::vector<int> &i_faceVerts, std::vector<int> &i_edgeVerts);
+	origVertex(std::vector<int> & i_faceVerts, std::vector<int> & i_edgeVerts);
 
 	int getFaceVertexAtIndex(int inIndex) const { return faceVerts[inIndex]; }
 

@@ -7,13 +7,13 @@ using namespace Animorph;
 
 const int MAX_LINE = 350000;
 
-bool FaceGroup::load(const std::string &filename)
+bool FaceGroup::load(const std::string & filename)
 {
 	FileReader file_reader;
 
 	file_reader.open(filename);
 
-	if (!file_reader)
+	if(!file_reader)
 		return false;
 
 	fromStream(file_reader);
@@ -23,34 +23,34 @@ bool FaceGroup::load(const std::string &filename)
 	return true;
 }
 
-void FaceGroup::calcVertexes(const FaceVector &facevector)
+void FaceGroup::calcVertexes(const FaceVector & facevector)
 {
-	if (loaded)
+	if(loaded)
 		return;
 
 	loaded = true;
 
 	int vertexCounter;
-	
-	for(auto & [partname, groupValue]: m_groups) {
-		
-		FGroupData &groupdata = groupValue.facesIndexes;
-		vertexCounter = 0;
 
-		for (unsigned int i = 0; i < groupdata.size(); i++) {
-			const Face &face(facevector[groupdata[i]]);
+	for(auto & [partname, groupValue] : m_groups) {
 
-			for (unsigned int j = 0; j < face.getSize(); j++) {
+		FGroupData & groupdata = groupValue.facesIndexes;
+		vertexCounter          = 0;
+
+		for(unsigned int i = 0; i < groupdata.size(); i++) {
+			const Face & face(facevector[groupdata[i]]);
+
+			for(unsigned int j = 0; j < face.getSize(); j++) {
 				const int tmp = face.getVertexAtIndex(j);
 
-				if (vertexes[partname].find(tmp) == vertexes[partname].end()) {
+				if(vertexes[partname].find(tmp) == vertexes[partname].end()) {
 					vertexes[partname][tmp] = 0;
 				}
 			}
 		}
 
-		for (VertexData::iterator vertexgroup_it = vertexes[partname].begin();
-		     vertexgroup_it != vertexes[partname].end(); vertexgroup_it++) {
+		for(VertexData::iterator vertexgroup_it = vertexes[partname].begin();
+		    vertexgroup_it != vertexes[partname].end(); vertexgroup_it++) {
 			vertexes[partname][(*vertexgroup_it).first] = vertexCounter++;
 		}
 	}
@@ -58,7 +58,7 @@ void FaceGroup::calcVertexes(const FaceVector &facevector)
 	// cout << vertexes.size() << endl;
 }
 
-void FaceGroup::fromStream(std::ifstream &in_stream)
+void FaceGroup::fromStream(std::ifstream & in_stream)
 {
 	FGroup data;
 	string fgroup_ident;
@@ -66,12 +66,12 @@ void FaceGroup::fromStream(std::ifstream &in_stream)
 	m_groups.clear();
 
 	char buffer[MAX_LINE];
-	while (in_stream.getline(buffer, MAX_LINE)) {
-		if (isalpha(buffer[0])) // line is a fgroup identifier
+	while(in_stream.getline(buffer, MAX_LINE)) {
+		if(isalpha(buffer[0])) // line is a fgroup identifier
 		{
-			char *p;
+			char * p;
 			p = strrchr(buffer, ',');
-			if (p == NULL)
+			if(p == NULL)
 				p = buffer;
 			else
 				p++;
@@ -89,20 +89,19 @@ void FaceGroup::fromStream(std::ifstream &in_stream)
 	}
 }
 
-void FaceGroup::toggleVisible(const std::string &name)
+void FaceGroup::toggleVisible(const std::string & name)
 {
-	if (m_groups.count(name)) {
+	if(m_groups.count(name)) {
 		m_groups[name].visible = !(m_groups[name].visible);
 	}
 }
 
-bool FaceGroup::saveVisibilities(const std::string &filename,
-                                 std::ios_base::openmode mode)
+bool FaceGroup::saveVisibilities(const std::string & filename, std::ios_base::openmode mode)
 {
 	FileWriter file_writer;
 	file_writer.open(filename, mode);
 
-	if (!file_writer)
+	if(!file_writer)
 		return false;
 
 	std::ostringstream out_stream;
@@ -113,13 +112,13 @@ bool FaceGroup::saveVisibilities(const std::string &filename,
 	return true;
 }
 
-bool FaceGroup::loadVisibilities(const std::string &filename)
+bool FaceGroup::loadVisibilities(const std::string & filename)
 {
 	FileReader file_reader;
 
 	file_reader.open(filename);
 
-	if (!file_reader)
+	if(!file_reader)
 		return false;
 
 	fromStreamVisibilities(file_reader);
@@ -127,23 +126,23 @@ bool FaceGroup::loadVisibilities(const std::string &filename)
 	return true;
 }
 
-void FaceGroup::createStreamVisibilities(std::ostringstream &out_stream)
+void FaceGroup::createStreamVisibilities(std::ostringstream & out_stream)
 {
-	for(const auto & [partname, groupValue]: m_groups) {
+	for(const auto & [partname, groupValue] : m_groups) {
 		bool visible = groupValue.visible;
 
-		if (visible) {
+		if(visible) {
 			out_stream << "#v," << partname << endl;
 		}
 	}
 }
 
-void FaceGroup::fromStreamVisibilities(std::ifstream &in_stream)
+void FaceGroup::fromStreamVisibilities(std::ifstream & in_stream)
 {
 	char buffer[MAX_LINE];
 	char line[MAX_LINE];
-	while (in_stream.getline(buffer, MAX_LINE)) {
-		if (sscanf(buffer, "nv,%s", line) == 1) {
+	while(in_stream.getline(buffer, MAX_LINE)) {
+		if(sscanf(buffer, "nv,%s", line) == 1) {
 			// ema     if(find(line) != end())
 			{
 				m_groups[line].visible = false;

@@ -41,7 +41,7 @@
 using namespace std;
 using namespace mhgui;
 
-void cgutils::drawLine2D(const Point &start, const Point &end, const Color &c)
+void cgutils::drawLine2D(const Point & start, const Point & end, const Color & c)
 {
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glBegin(GL_LINES);
@@ -53,8 +53,8 @@ void cgutils::drawLine2D(const Point &start, const Point &end, const Color &c)
 }
 
 /*! Draw a grid on XY plane.*/
-void cgutils::drawGrid(const Size &inSize, const int xMargin, const int yMargin,
-                       const Color &c, const Color &b, int squareSize)
+void cgutils::drawGrid(const Size & inSize, const int xMargin, const int yMargin, const Color & c,
+                       const Color & b, int squareSize)
 {
 	int i;
 
@@ -73,14 +73,12 @@ void cgutils::drawGrid(const Size &inSize, const int xMargin, const int yMargin,
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glBegin(GL_LINES);
 
-	for (i = squareSize + xMargin; i < inSize.getWidth() - xMargin;
-	     i += squareSize) {
+	for(i = squareSize + xMargin; i < inSize.getWidth() - xMargin; i += squareSize) {
 		glVertex3f(i, yMargin, 0.0);
 		glVertex3f(i, inSize.getHeight() - yMargin, 0.0);
 	}
 
-	for (i = squareSize + yMargin; i < inSize.getHeight() - yMargin;
-	     i += squareSize) {
+	for(i = squareSize + yMargin; i < inSize.getHeight() - yMargin; i += squareSize) {
 		glVertex3f(xMargin, i, 0.0);
 		glVertex3f(inSize.getWidth() - xMargin, i, 0.0);
 	}
@@ -88,9 +86,9 @@ void cgutils::drawGrid(const Size &inSize, const int xMargin, const int yMargin,
 	glEnd();
 
 	drawSquareFill(Rect(xMargin, yMargin, 10, 10), b);
-	drawSquareFill(Rect(inSize.getWidth() - xMargin - 10,
-	                    inSize.getHeight() - yMargin - 10, 10, 10),
-	               b);
+	drawSquareFill(
+	        Rect(inSize.getWidth() - xMargin - 10, inSize.getHeight() - yMargin - 10, 10, 10),
+	        b);
 
 	drawSquareFill(Rect(xMargin, inSize.getHeight() - yMargin - 40, 3, 40), b);
 	drawSquareFill(Rect(xMargin, inSize.getHeight() - yMargin, 40, 3), b);
@@ -111,15 +109,15 @@ void cgutils::enableOrthographicProjection()
 	// Get the actual windows size
 	GLint viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	GLint &w = viewport[2];
-	GLint &h = viewport[3];
+	GLint & w = viewport[2];
+	GLint & h = viewport[3];
 
 	// switch to projection mode
 
-	if (glIsEnabled(GL_LIGHTING)) {
+	if(glIsEnabled(GL_LIGHTING)) {
 		glDisable(GL_LIGHTING);
 	}
-	if (glIsEnabled(GL_DEPTH_TEST)) {
+	if(glIsEnabled(GL_DEPTH_TEST)) {
 		glDisable(GL_DEPTH_TEST);
 	}
 
@@ -129,10 +127,10 @@ void cgutils::enableOrthographicProjection()
 	glPushMatrix();
 	// reset matrix
 	glLoadIdentity();
-	
+
 	// set a 2D orthographic projection
-	glOrtho(0, w, h, 0, -1, 1); 
-	
+	glOrtho(0, w, h, 0, -1, 1);
+
 	glClear(GL_DEPTH_BUFFER_BIT);
 	// invert the y axis, down is positive (GLUT has different Y than openGL)
 	// glScalef (1, -1, 1);
@@ -150,10 +148,10 @@ void cgutils::disableOrthographicProjection()
 	glPopMatrix();
 	// glDisable (GL_DEPTH_TEST);
 
-	if (!glIsEnabled(GL_LIGHTING)) {
+	if(!glIsEnabled(GL_LIGHTING)) {
 		glEnable(GL_LIGHTING);
 	}
-	if (!glIsEnabled(GL_DEPTH_TEST)) {
+	if(!glIsEnabled(GL_DEPTH_TEST)) {
 		glEnable(GL_DEPTH_TEST);
 	}
 }
@@ -161,13 +159,13 @@ void cgutils::disableOrthographicProjection()
 /*!Draw the XYZ axis.*/
 void cgutils::drawAxis()
 {
-	float wid = 2.8;
-	char axis[] = "XYZ";
+	float wid    = 2.8;
+	char  axis[] = "XYZ";
 
-	if (glIsEnabled(GL_LIGHTING)) {
+	if(glIsEnabled(GL_LIGHTING)) {
 		glDisable(GL_LIGHTING);
 	}
-	if (glIsEnabled(GL_DEPTH_TEST)) {
+	if(glIsEnabled(GL_DEPTH_TEST)) {
 		glDisable(GL_DEPTH_TEST);
 	}
 
@@ -206,16 +204,15 @@ void cgutils::drawAxis()
 	glutSolidCone(0.03, 0.1, 8, 4);
 	glPopMatrix();
 
-	if (!glIsEnabled(GL_LIGHTING)) {
+	if(!glIsEnabled(GL_LIGHTING)) {
 		glEnable(GL_LIGHTING);
 	}
-	if (!glIsEnabled(GL_DEPTH_TEST)) {
+	if(!glIsEnabled(GL_DEPTH_TEST)) {
 		glEnable(GL_DEPTH_TEST);
 	}
 }
 
-void cgutils::drawSquareFillTexture(const Rect &inRect, float alpha,
-                                    const Texture &inTexture)
+void cgutils::drawSquareFillTexture(const Rect & inRect, float alpha, const Texture & inTexture)
 {
 	float zlayer = 0.0;
 
@@ -223,7 +220,7 @@ void cgutils::drawSquareFillTexture(const Rect &inRect, float alpha,
 	inTexture.mapToGeometry(inRect, zlayer);
 }
 
-void cgutils::drawSquareFill(const mhgui::Rect &inRect, const Color &c)
+void cgutils::drawSquareFill(const mhgui::Rect & inRect, const Color & c)
 {
 	float zlayer = 0.0;
 
@@ -234,14 +231,13 @@ void cgutils::drawSquareFill(const mhgui::Rect &inRect, const Color &c)
 	glTexCoord2f(1, 0);
 	glVertex3f(inRect.getX() + inRect.getWidth(), inRect.getY(), zlayer);
 	glTexCoord2f(1, 1);
-	glVertex3f(inRect.getX() + inRect.getWidth(),
-	           inRect.getY() + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.getX() + inRect.getWidth(), inRect.getY() + inRect.getHeight(), zlayer);
 	glTexCoord2f(0, 1);
 	glVertex3f(inRect.getX(), inRect.getY() + inRect.getHeight(), zlayer);
 	glEnd();
 }
 
-void cgutils::drawSquare(const Rect &inRect, const Color &c)
+void cgutils::drawSquare(const Rect & inRect, const Color & c)
 {
 	float zlayer = 0.0;
 
@@ -249,46 +245,45 @@ void cgutils::drawSquare(const Rect &inRect, const Color &c)
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(inRect.getX(), inRect.getY() + 1, zlayer);
 	glVertex3f(inRect.getX() - 1 + inRect.getWidth(), inRect.getY(), zlayer);
-	glVertex3f(inRect.getX() - 1 + inRect.getWidth(),
-	           inRect.getY() + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.getX() - 1 + inRect.getWidth(), inRect.getY() + inRect.getHeight(),
+	           zlayer);
 	glVertex3f(inRect.getX(), inRect.getY() + inRect.getHeight(), zlayer);
 	glEnd();
 }
 
-void perspectiveGL( GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar )
+void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
 	const GLdouble pi = 3.1415926535897932384626433832795;
-	GLdouble fW, fH;
-	
-	//fH = tan( (fovY / 2) / 180 * pi ) * zNear;
-	fH = tan( fovY / 360 * pi ) * zNear;
+	GLdouble       fW, fH;
+
+	// fH = tan( (fovY / 2) / 180 * pi ) * zNear;
+	fH = tan(fovY / 360 * pi) * zNear;
 	fW = fH * aspect;
-	
-	glFrustum( -fW, fW, -fH, fH, zNear, zFar );
+
+	glFrustum(-fW, fW, -fH, fH, zNear, zFar);
 }
 
 // Glut call back functions
-void cgutils::reshape(const Size &inSize, const Camera &inCamera)
+void cgutils::reshape(const Size & inSize, const Camera & inCamera)
 {
 	glViewport(0, 0, inSize.getWidth(), inSize.getHeight());
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	const float kZFar = 1000.0f;
-	const float kZNear = 1.0f;
-	const float kFOVY = 10.0;
+	const float kZFar     = 1000.0f;
+	const float kZNear    = 1.0f;
+	const float kFOVY     = 10.0;
 	const float zToCenter = (fabs(inCamera.getPosition().z));
 
-	if (inCamera.isPerspective()) // if perspective
+	if(inCamera.isPerspective()) // if perspective
 	{
-		if (inSize.getHeight() == 0)
-			perspectiveGL(kFOVY, static_cast<float>(inSize.getWidth()), kZNear,
-			               kZFar);
+		if(inSize.getHeight() == 0)
+			perspectiveGL(kFOVY, static_cast<float>(inSize.getWidth()), kZNear, kZFar);
 		else
 			perspectiveGL(kFOVY,
-			               static_cast<float>(inSize.getWidth()) /
-			                   static_cast<float>(inSize.getHeight()),
-			               kZNear, kZFar);
+			              static_cast<float>(inSize.getWidth()) /
+			                      static_cast<float>(inSize.getHeight()),
+			              kZNear, kZFar);
 	} else {
 		float ratioW = static_cast<float>(inSize.getWidth()) /
 		               static_cast<float>(inSize.getHeight());
@@ -303,62 +298,60 @@ void cgutils::reshape(const Size &inSize, const Camera &inCamera)
 }
 
 // Init window with some classic openGL commands
-int cgutils::initWindow(const Rect &rect, const char *title,
-                        const glm::vec3 &light0Pos, const glm::vec3 &light1Pos,
-                        float light0Lum, float light1Lum, const Color &c)
+int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
+                        const glm::vec3 & light1Pos, float light0Lum, float light1Lum,
+                        const Color & c)
 {
-	
+
 	glutInitContextVersion(3, 3);
 	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
-	glutInitContextFlags(/*GLUT_FORWARD_COMPATIBLE | */GLUT_DEBUG);
+	glutInitContextFlags(/*GLUT_FORWARD_COMPATIBLE | */ GLUT_DEBUG);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowSize(rect.getWidth(), rect.getHeight());
 	glutInitWindowPosition(rect.getX(), rect.getY());
 	int winID = glutCreateWindow(title);
-	
+
 	glewInit();
-	
+
 	{
-		logger("GLEW Version: {}.{}.{}",
-		       GLEW_VERSION_MAJOR,
-		       GLEW_VERSION_MINOR,
+		logger("GLEW Version: {}.{}.{}", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR,
 		       GLEW_VERSION_MICRO);
-		
+
 		glewExperimental = true;
-		GLenum err = glewInit();
+		GLenum err       = glewInit();
 		if(err != GLEW_OK) {
 			logger_err("GLEW error: {}", glewGetErrorString(err));
 		}
 	}
-	
+
 	initDebugGl();
-	
+
 
 	// Enables
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
-	//glEnable(GL_COLOR_MATERIAL);
+	// glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 
 	// Standard material
-	//float mat_ambient[] = {0.7, 0.7, 0.7, 1.0};
-	//float mat_diffuse[] = {0.8, 0.8, 0.8, 1.0};
-	//float mat_specular[] = {1.0, 1.0, 1.0, 1.0};
-	//float high_shininess[] = {100.0};
+	// float mat_ambient[] = {0.7, 0.7, 0.7, 1.0};
+	// float mat_diffuse[] = {0.8, 0.8, 0.8, 1.0};
+	// float mat_specular[] = {1.0, 1.0, 1.0, 1.0};
+	// float high_shininess[] = {100.0};
 
-	//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-	//glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-	//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	//glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+	// glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+	// glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+	// glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	// glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 
 	// Light0 features
-	float light_diffuse0[] = {light0Lum, light0Lum, light0Lum, light0Lum};
+	float light_diffuse0[]  = {light0Lum, light0Lum, light0Lum, light0Lum};
 	float light_specular0[] = {1.0, 1.0, 1.0, 1.0};
 
 	// Light1 features
-	float light_diffuse1[] = {light1Lum, light1Lum, light1Lum, light1Lum};
+	float light_diffuse1[]  = {light1Lum, light1Lum, light1Lum, light1Lum};
 	float light_specular1[] = {1.0, 1.0, 1.0, 1.0};
 
 	// Lights positions
@@ -382,30 +375,27 @@ int cgutils::initWindow(const Rect &rect, const char *title,
 	return winID;
 }
 
-void cgutils::drawString(const Point &inPoint, FontType font, const string &str,
-                         const Color &c)
+void cgutils::drawString(const Point & inPoint, FontType font, const string & str, const Color & c)
 {
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glRasterPos2f(inPoint.getX(), inPoint.getY());
 
 	// TODO: anchor text in the upper left corner instead of lower left!
 
-	for (string::const_iterator str_it = str.begin(); str_it != str.end();
-	     str_it++) {
+	for(string::const_iterator str_it = str.begin(); str_it != str.end(); str_it++) {
 		char ch = *str_it;
 
 		glutBitmapCharacter(font, ch);
 	}
 }
 
-void cgutils::drawString3D(const glm::vec3 &pos, FontType font,
-                           const string &str, const Color &c)
+void cgutils::drawString3D(const glm::vec3 & pos, FontType font, const string & str,
+                           const Color & c)
 {
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glRasterPos3f(pos.x, pos.y, pos.z);
 
-	for (string::const_iterator str_it = str.begin(); str_it != str.end();
-	     str_it++) {
+	for(string::const_iterator str_it = str.begin(); str_it != str.end(); str_it++) {
 		char ch = *str_it;
 
 		glutBitmapCharacter(font, ch);
@@ -421,31 +411,31 @@ void cgutils::enableBlend()
 // TODO: temporary broken; fix it!
 int cgutils::getFontWidth(FontType font)
 {
-	if (font == GLUT_BITMAP_8_BY_13)
+	if(font == GLUT_BITMAP_8_BY_13)
 		return 13;
 
-	if (font == GLUT_BITMAP_9_BY_15)
+	if(font == GLUT_BITMAP_9_BY_15)
 		return 15;
 
-	if (font == GLUT_BITMAP_TIMES_ROMAN_10)
+	if(font == GLUT_BITMAP_TIMES_ROMAN_10)
 		return 10;
 
-	if (font == GLUT_BITMAP_TIMES_ROMAN_24)
+	if(font == GLUT_BITMAP_TIMES_ROMAN_24)
 		return 24;
 
-	if (font == GLUT_BITMAP_HELVETICA_10)
+	if(font == GLUT_BITMAP_HELVETICA_10)
 		return 10;
 
-	if (font == GLUT_BITMAP_HELVETICA_12)
+	if(font == GLUT_BITMAP_HELVETICA_12)
 		return 12;
 
-	if (font == GLUT_BITMAP_HELVETICA_18)
+	if(font == GLUT_BITMAP_HELVETICA_18)
 		return 18;
 
 	return 0;
 }
 
-int cgutils::getFontLength(FontType font, const string &str)
+int cgutils::getFontLength(FontType font, const string & str)
 {
 	return glutBitmapLength(font, (unsigned char *)str.c_str());
 }

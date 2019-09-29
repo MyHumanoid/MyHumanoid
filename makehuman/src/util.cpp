@@ -46,10 +46,10 @@
 
 using namespace std;
 
-const string searchDataFile(const string &data_file)
+const string searchDataFile(const string & data_file)
 {
 	string s(searchFile(getDataAlternatives(data_file)));
-	if (s.empty()) {
+	if(s.empty()) {
 		fprintf(stderr,
 		        "*** WARNING in searchDataFile() : attempt to load file '%s'"
 		        "' but this could not found in data/!\n",
@@ -58,10 +58,10 @@ const string searchDataFile(const string &data_file)
 	return s;
 }
 
-const string searchPixmapFile(const string &pixmap_file)
+const string searchPixmapFile(const string & pixmap_file)
 {
 	string s(searchFile(getPixmapsAlternatives(pixmap_file)));
-	if (s.empty()) {
+	if(s.empty()) {
 		fprintf(stderr,
 		        "*** WARNING in searchPixmapFile() : attempt to load file '%s'"
 		        "' but this could not found in pixmaps/!\n",
@@ -70,17 +70,17 @@ const string searchPixmapFile(const string &pixmap_file)
 	return s;
 }
 
-const string searchDataDir(const string &data_dir)
+const string searchDataDir(const string & data_dir)
 {
 	return searchDir(getDataAlternatives(data_dir));
 }
 
-const string searchPixmapDir(const string &pixmap_dir)
+const string searchPixmapDir(const string & pixmap_dir)
 {
 	return searchDir(getPixmapsAlternatives(pixmap_dir));
 }
 
-const StringVector getPixmapsAlternatives(const string &pixmap)
+const StringVector getPixmapsAlternatives(const string & pixmap)
 {
 	StringVector name_vector;
 	name_vector.push_back("pixmaps/" + pixmap);
@@ -88,7 +88,7 @@ const StringVector getPixmapsAlternatives(const string &pixmap)
 	return name_vector;
 }
 
-const StringVector getDataAlternatives(const string &data)
+const StringVector getDataAlternatives(const string & data)
 {
 	StringVector name_vector;
 	name_vector.push_back("data/" + data);
@@ -96,20 +96,20 @@ const StringVector getDataAlternatives(const string &data)
 	return name_vector;
 }
 
-const string searchFile(const StringVector &name_vector)
+const string searchFile(const StringVector & name_vector)
 {
 	struct stat buf;
 
-	for (unsigned int i = 0; i < name_vector.size(); i++) {
-		const string &try_name = name_vector[i];
-		int result;
+	for(unsigned int i = 0; i < name_vector.size(); i++) {
+		const string & try_name = name_vector[i];
+		int            result;
 
 		result = stat(try_name.c_str(), &buf);
 
-		if (result != 0) {
+		if(result != 0) {
 			continue;
 		} else {
-			if (buf.st_mode & S_IFREG)
+			if(buf.st_mode & S_IFREG)
 				return try_name;
 		}
 	}
@@ -117,54 +117,46 @@ const string searchFile(const StringVector &name_vector)
 	return string();
 }
 
-const string searchDir(const StringVector &name_vector)
+const string searchDir(const StringVector & name_vector)
 {
 	struct stat buf;
 
-	for (unsigned int i = 0; i < name_vector.size(); i++) {
-		const string &try_name = name_vector[i];
-		int result;
+	for(unsigned int i = 0; i < name_vector.size(); i++) {
+		const string & try_name = name_vector[i];
+		int            result;
 
 		result = stat(try_name.c_str(), &buf);
 
-		if (result != 0) {
+		if(result != 0) {
 			continue;
 		} else {
-			if (buf.st_mode & S_IFDIR)
+			if(buf.st_mode & S_IFDIR)
 				return try_name;
 		}
 	}
 	return string();
 }
 
-const string getUserWorkDir() {
-	return "./userdata";
-}
+const string getUserWorkDir() { return "./userdata"; }
 
-const string getMyPosesBasePath()
-{
-	return string(getUserWorkDir() + "makehuman/myposes/");
-}
+const string getMyPosesBasePath() { return string(getUserWorkDir() + "makehuman/myposes/"); }
 
-const string getMyBodysettingsBasePath()
-{
-	return string(getUserWorkDir() + "makehuman/mybs/");
-}
+const string getMyBodysettingsBasePath() { return string(getUserWorkDir() + "makehuman/mybs/"); }
 
-bool GetSymmVertexConfig(int *symm_vertex)
+bool GetSymmVertexConfig(int * symm_vertex)
 {
 	FileReader file_reader;
 	file_reader.open("../data/base.sym");
 
-	if (!file_reader)
+	if(!file_reader)
 		return false;
 
 	char buffer[MAX_LINE_BUFFER];
-	int sx, dx;
+	int  sx, dx;
 
-	while (file_reader.getline(buffer, MAX_LINE_BUFFER)) {
+	while(file_reader.getline(buffer, MAX_LINE_BUFFER)) {
 
-		if (sscanf(buffer, "%d,%d", &sx, &dx) == 2) {
+		if(sscanf(buffer, "%d,%d", &sx, &dx) == 2) {
 			symm_vertex[dx] = sx;
 		}
 	}
@@ -173,7 +165,7 @@ bool GetSymmVertexConfig(int *symm_vertex)
 }
 int getSymmJoint(int joint)
 {
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 
 	return mesh->getSymmetricJoint((SKELETON_JOINT)joint);
 }
@@ -188,33 +180,32 @@ void CreateWeightsFile()
 	file_write.open("../data/vertex_complete.weights");
 
 	char buffer[MAX_LINE_BUFFER * 4];
-	int weight[SK_JOINT_END];
-	int actual_weight[SK_JOINT_END];
+	int  weight[SK_JOINT_END];
+	int  actual_weight[SK_JOINT_END];
 
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 
-	VertexVector &vertexvector(mesh->getVertexVectorMorphOnlyRef());
-	unsigned int size_vx = vertexvector.size();
+	VertexVector & vertexvector(mesh->getVertexVectorMorphOnlyRef());
+	unsigned int   size_vx = vertexvector.size();
 
-	int *symm_vertex = new int[size_vx];
-	std::ostringstream *out_stream =
-	    (std::ostringstream *)new std::ostringstream[size_vx];
+	int *                symm_vertex = new int[size_vx];
+	std::ostringstream * out_stream  = (std::ostringstream *)new std::ostringstream[size_vx];
 
 	int index;
 
 	file_reader.open("../data/vertex_sx.weights");
 
-	if (!file_reader)
+	if(!file_reader)
 		return;
 
-	for (unsigned int v = 0; v < size_vx; v++) {
+	for(unsigned int v = 0; v < size_vx; v++) {
 		symm_vertex[v] = -1;
 	}
 
-	if (GetSymmVertexConfig(&symm_vertex[0]) == false)
+	if(GetSymmVertexConfig(&symm_vertex[0]) == false)
 		return;
 
-	for (unsigned int i = 0; i < size_vx; i++) {
+	for(unsigned int i = 0; i < size_vx; i++) {
 		memset(buffer, 0, MAX_LINE_BUFFER * 4);
 		out_stream[i].str("");
 
@@ -223,9 +214,9 @@ void CreateWeightsFile()
 		out_stream[i] << buffer << endl;
 	}
 
-	for (unsigned int j = 0; j < size_vx; j++) {
+	for(unsigned int j = 0; j < size_vx; j++) {
 
-		if (symm_vertex[j] == -1) { // sx vertex
+		if(symm_vertex[j] == -1) { // sx vertex
 			file_write << out_stream[j].str().c_str();
 		} else {
 
@@ -266,8 +257,8 @@ void CreateWeightsFile()
 			       &weight[63], &index, &weight[64], &index, &weight[65], &index,
 			       &weight[66], &index, &weight[67]);
 
-			for (int joint = 0; joint < SK_JOINT_END; joint++) {
-				int symm_joint = getSymmJoint(joint);
+			for(int joint = 0; joint < SK_JOINT_END; joint++) {
+				int symm_joint       = getSymmJoint(joint);
 				actual_weight[joint] = weight[symm_joint];
 				file_write << joint << " ";
 				file_write << actual_weight[joint] << " ";
@@ -281,51 +272,49 @@ void CreateWeightsFile()
 
 void loadDefaultBodySettings()
 {
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 	assert(mesh);
-	Window &mainWindow = *g_mainWindow;
+	Window & mainWindow = *g_mainWindow;
 
 	BodySettings bodyset;
-	bool state = bodyset.load(searchDataFile("default.bs"));
+	bool         state = bodyset.load(searchDataFile("default.bs"));
 
-	if (state) {
+	if(state) {
 		g_global.resetFuzzyValues();
 		state = loadSelectorsPositions(searchDataFile("default.bs"));
 
-		CharacterSettingPanel *tmpPanel =
-		    (CharacterSettingPanel *)mainWindow.getPanel(
+		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
 		        kComponentID_CharacterSettingPanel);
-		if (tmpPanel != NULL) {
+		if(tmpPanel != NULL) {
 			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Age);
 			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
-			tmpPanel->calcSelectorValues(
-			    kComponentID_CharacterSettingPanel_MuscleSize);
+			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_MuscleSize);
 			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
 		}
 	}
 
-	if (state) {
+	if(state) {
 		mesh->doMorph(bodyset);
 		mesh->calcNormals();
 	}
 }
 
-bool loadSelectorsPositions(const std::string &filename)
+bool loadSelectorsPositions(const std::string & filename)
 {
-	char buffer[MAX_LINE];
-	char tmp[MAX_LINE];
-	char tmp1[MAX_LINE];
-	uint32_t id;
-	int x, y;
+	char       buffer[MAX_LINE];
+	char       tmp[MAX_LINE];
+	char       tmp1[MAX_LINE];
+	uint32_t   id;
+	int        x, y;
 	FileReader file_reader;
 
 	file_reader.open(filename);
 
-	if (!file_reader)
+	if(!file_reader)
 		return false;
 
-	while (file_reader.getline(buffer, MAX_LINE)) {
-		if (sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
+	while(file_reader.getline(buffer, MAX_LINE)) {
+		if(sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
 			g_global.setFuzzyValue(id, Point(x, y));
 		}
 	}
@@ -333,57 +322,54 @@ bool loadSelectorsPositions(const std::string &filename)
 	return true;
 }
 
-bool loadSelectorsPositions(const std::vector<string> &strings,
-                            const float value)
+bool loadSelectorsPositions(const std::vector<string> & strings, const float value)
 {
-	char buffer[MAX_LINE];
-	char tmp[MAX_LINE];
-	char tmp1[MAX_LINE];
+	char     buffer[MAX_LINE];
+	char     tmp[MAX_LINE];
+	char     tmp1[MAX_LINE];
 	uint32_t id;
-	int x, y;
+	int      x, y;
 
-	for (vector<string>::const_iterator it = strings.begin(); it != strings.end();
-	     it++) {
-		if (sscanf((*it).c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
+	for(vector<string>::const_iterator it = strings.begin(); it != strings.end(); it++) {
+		if(sscanf((*it).c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
 			g_global.setFuzzyValue(id,
-			                     Point((int32_t)(x * value), (int32_t)(y * value)));
+			                       Point((int32_t)(x * value), (int32_t)(y * value)));
 		}
 	}
 
 	return true;
 }
 
-bool saveSelectorsPositions(const std::string &filename,
-                            std::ios_base::openmode mode)
+bool saveSelectorsPositions(const std::string & filename, std::ios_base::openmode mode)
 {
 	FileWriter file_writer;
 	file_writer.open(filename, mode);
 
-	if (!file_writer)
+	if(!file_writer)
 		return false;
 
 	std::ostringstream out_stream;
 
-	Point *tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
-	if (tmp != NULL) {
+	Point * tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
+	if(tmp != NULL) {
 		out_stream << "#t,A," << kComponentID_CharacterSettingPanel_Age << ","
 		           << tmp->getX() << "," << tmp->getY() << endl;
 	}
 
 	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
-	if (tmp != NULL) {
-		out_stream << "#t,M," << kComponentID_CharacterSettingPanel_MuscleSize
-		           << "," << tmp->getX() << "," << tmp->getY() << endl;
+	if(tmp != NULL) {
+		out_stream << "#t,M," << kComponentID_CharacterSettingPanel_MuscleSize << ","
+		           << tmp->getX() << "," << tmp->getY() << endl;
 	}
 
 	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
-	if (tmp != NULL) {
+	if(tmp != NULL) {
 		out_stream << "#t,B," << kComponentID_CharacterSettingPanel_Breast << ","
 		           << tmp->getX() << "," << tmp->getY() << endl;
 	}
 
 	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
-	if (tmp != NULL) {
+	if(tmp != NULL) {
 		out_stream << "#t,S," << kComponentID_CharacterSettingPanel_Shape << ","
 		           << tmp->getX() << "," << tmp->getY();
 	}

@@ -153,7 +153,7 @@ namespace Animorph
 typedef struct DummyJoint {
 
 	SKELETON_JOINT joint;
-	glm::vec3 v3;
+	glm::vec3      v3;
 } DummyJoint;
 
 /*! \brief Wraps a PoseTarget object to make it capable of lazy loading.
@@ -177,8 +177,7 @@ public:
 	 *                  to skip the lazy load.  If you omit this parameter,
 	 *                  it defaults to false ie. lazy loading.
 	 */
-	PoseEntry(const string &inFilename, const string &inFullPath,
-	          bool inPreload = false);
+	PoseEntry(const string & inFilename, const string & inFullPath, bool inPreload = false);
 
 	/// The destructor destroys all encapsulated members, including the
 	/// PoseTarget.
@@ -189,7 +188,7 @@ public:
 	 * @return The PoseTarget or NULL if a target with the filename given in the
 	 * constructor does not exist.
 	 */
-	PoseTarget *getTarget();
+	PoseTarget * getTarget();
 
 private:
 	/** \brief Try to load the target given in the constructor.  Loading is
@@ -202,18 +201,18 @@ private:
 	/// Intentionally not implemented
 	PoseEntry(const PoseEntry &);
 	/// Intentionally not implemented
-	PoseEntry &operator=(const PoseEntry &);
+	PoseEntry & operator=(const PoseEntry &);
 
-	const string *mFilename;
-	const string *mFullPath;
-	PoseTarget *mTarget;
-	bool mTargetLoadTry;
+	const string * mFilename;
+	const string * mFullPath;
+	PoseTarget *   mTarget;
+	bool           mTargetLoadTry;
 }; // class PoseEntry
 
-typedef map<string, Target *> TargetMap;
-typedef map<string, glm::vec3> Centeroid;
-typedef map<string, glm::vec3> FormFactor;
-typedef map<string, PoseEntry *> PoseMap;
+typedef map<string, Target *>     TargetMap;
+typedef map<string, glm::vec3>    Centeroid;
+typedef map<string, glm::vec3>    FormFactor;
+typedef map<string, PoseEntry *>  PoseMap;
 typedef map<string, BodySettings> CharactersMap;
 
 /*! \brief A poseable and morphable mesh.
@@ -241,28 +240,28 @@ class Mesh
 	vector<glm::vec3> vertexvector_orginal; ///< Orginal mesh
 
 	// VertexGroup       vgroup;
-	BodySettings bodyset;
-	TargetMap targetmap;
+	BodySettings   bodyset;
+	TargetMap      targetmap;
 	MaterialVector materialvector;
-	Centeroid centeroid;
-	BodySettings poses; ///< Currently active PoseTargets
-	PoseMap posemap;    ///< Possible pose transformations
-	CharactersMap charactersmap;
+	Centeroid      centeroid;
+	BodySettings   poses;   ///< Currently active PoseTargets
+	PoseMap        posemap; ///< Possible pose transformations
+	CharactersMap  charactersmap;
 
 	Skin skin;
-	
+
 	SmoothVertex smoothvertex;
 
 	/// Save with each vertex to which faces it belongs
 	void calcSharedVertices();
 
 	vector<glm::vec3> jointvector;
-	
+
 public:
 	TextureVector texture_vector;
-	FaceGroup facegroup;
-	
-	
+	FaceGroup     facegroup;
+
+
 private:
 	/*! \brief Releases all targets in targetmap
 	 *
@@ -291,7 +290,7 @@ private:
 	void calcVertexNormals();
 
 	/// Looks up inTargetname in targetmap
-	const Target *getTargetForName(const string &inTargetname);
+	const Target * getTargetForName(const string & inTargetname);
 
 	void initPoses();
 
@@ -303,7 +302,7 @@ private:
 
 	void applySkeleton();
 
-	bool IsADummyJoint(SKELETON_JOINT joint, glm::vec3 &v3);
+	bool IsADummyJoint(SKELETON_JOINT joint, glm::vec3 & v3);
 
 	/*! \brief Apply a PoseRotation target
 	 *
@@ -315,8 +314,8 @@ private:
 	 * morph_value, const UsedVertex& modVertex).
 	 *
 	 */
-	void doPoseRotation(const PoseRotation &pr, float morph_value,
-	                    const UsedVertex &modVertex);
+	void doPoseRotation(const PoseRotation & pr, float morph_value,
+	                    const UsedVertex & modVertex);
 
 	/*! \brief Apply a PoseTranslation target
 	 *
@@ -326,8 +325,8 @@ private:
 	 * morph_value, const UsedVertex& modVertex).
 	 *
 	 */
-	void doPoseTranslation(PoseTranslation &pt, float morph_value,
-	                       const UsedVertex &modVertex);
+	void doPoseTranslation(PoseTranslation & pt, float morph_value,
+	                       const UsedVertex & modVertex);
 
 public:
 	Mesh();
@@ -339,14 +338,14 @@ public:
 	 * @return a pointer to the pose target to get or NULL if this target does not
 	 *         exist
 	 */
-	PoseTarget *getPoseTargetForName(const string &inTargetname) const;
+	PoseTarget * getPoseTargetForName(const string & inTargetname) const;
 
 	/** @name Getting pointers to member variables
 	 */
 	//@{
 
-	vector<glm::vec3> *getJointVector() { return &jointvector; }
-	glm::vec3 GetJoint0_Pos() { return getJointVector()->at(0); }
+	vector<glm::vec3> * getJointVector() { return &jointvector; }
+	glm::vec3           GetJoint0_Pos() { return getJointVector()->at(0); }
 	//@}
 
 	/** @name Getting references to member variables
@@ -355,49 +354,46 @@ public:
 	/*!
 	 * \return a reference to the morphed VertexVector of this Mesh
 	 */
-	VertexVector &getVertexVectorRef() { return vertexvector_morph; }
+	VertexVector & getVertexVectorRef() { return vertexvector_morph; }
 
-	VertexVector &getVertexVectorMorphOnlyRef()
-	{
-		return vertexvector_morph_only;
-	}
+	VertexVector & getVertexVectorMorphOnlyRef() { return vertexvector_morph_only; }
 
 	/*!
 	 * \return a reference to the FaceVector of this Mesh
 	 */
-	FaceVector &getFaceVectorRef() { return facevector; }
+	FaceVector & getFaceVectorRef() { return facevector; }
 
 	/*!
 	 * \return a reference to the MaterialVector of this Mesh
 	 */
-	MaterialVector &getMaterialVectorRef() { return materialvector; }
+	MaterialVector & getMaterialVectorRef() { return materialvector; }
 
 	/*!
 	 * \return a reference to the TargetMap of this Mesh
 	 */
-	TargetMap &getTargetMapRef() { return targetmap; }
+	TargetMap & getTargetMapRef() { return targetmap; }
 
 	/*!
 	 * \return a reference to the PoseMap of this Mesh
 	 */
-	PoseMap &getPoseMapRef() { return posemap; }
+	PoseMap & getPoseMapRef() { return posemap; }
 
 	/*!
 	 * \return a reference to the CharactersMap of this Mesh
 	 */
-	CharactersMap &getCharactersMapRef() { return charactersmap; }
+	CharactersMap & getCharactersMapRef() { return charactersmap; }
 
 	//@}
 
 	/*!
 	 * \return the Mesh's BodySetting
 	 */
-	const BodySettings &getBodySettings() const { return bodyset; }
+	const BodySettings & getBodySettings() const { return bodyset; }
 
 	/*!
 	 * \return the Mesh's Poses
 	 */
-	const BodySettings &getPoses() const { return poses; }
+	const BodySettings & getPoses() const { return poses; }
 
 	/** @name Loading
 	 */
@@ -409,8 +405,7 @@ public:
 	 * \return true if files are found
 	 * \return false if files aren't found
 	 */
-	bool loadMeshFactory(const string &mesh_filename,
-	                     const string &faces_filename);
+	bool loadMeshFactory(const string & mesh_filename, const string & faces_filename);
 
 	/// Load the Material files.
 	/*!
@@ -419,8 +414,8 @@ public:
 	 * \return true if files are found
 	 * \return false if files aren't found
 	 */
-	bool loadMaterialFactory(const string &material_filename,
-	                         const string &face_colors_filename);
+	bool loadMaterialFactory(const string & material_filename,
+	                         const string & face_colors_filename);
 
 	/// Load all (pose) Targets recursively from a directory.
 	/*!
@@ -429,8 +424,7 @@ public:
 	 * DirectoryList for more help. \return true if files are found \return false
 	 * if files aren't found
 	 */
-	void loadTargetsFactory(const string &target_root_path,
-	                        int recursive_level = 1,
+	void loadTargetsFactory(const string & target_root_path, int recursive_level = 1,
 	                        bool clearmap = true);
 
 	/// Load all PoseTargets recursively from a directory.
@@ -440,8 +434,7 @@ public:
 	 * DirectoryList for more help. \return true if files are found \return false
 	 * if files aren't found
 	 */
-	void loadPoseTargetsFactory(const string &target_root_path,
-	                            int recursive_level = 1);
+	void loadPoseTargetsFactory(const string & target_root_path, int recursive_level = 1);
 
 	/// Load all characters (BodySettings) recursively from a directory.
 	/*!
@@ -450,17 +443,16 @@ public:
 	 * DirectoryList for more help. \return true if files are found \return false
 	 * if files aren't found
 	 */
-	void loadCharactersFactory(const string &characters_root_path,
-	                           int recursive_level = 1);
+	void loadCharactersFactory(const string & characters_root_path, int recursive_level = 1);
 
 	/// Load faces groups from file
-	bool loadGroupsFactory(const string &groups_filename);
+	bool loadGroupsFactory(const string & groups_filename);
 
 	/// Load skin info from file
-	bool loadSkinFactory(const string &filename);
+	bool loadSkinFactory(const string & filename);
 
 	/// Load smooth info from file
-	bool loadSmoothVertexFactory(const string &filename);
+	bool loadSmoothVertexFactory(const string & filename);
 
 	//@}
 
@@ -490,7 +482,7 @@ public:
 	 * \return true if target was found in TargetMap and was morphed
 	 * \return false if target wasn't found in TargetMap
 	 */
-	bool doMorph(const string &target_name, float morph_value);
+	bool doMorph(const string & target_name, float morph_value);
 
 	/*! \brief Fully apply morphs of a BodySettings object
 	 *
@@ -499,7 +491,7 @@ public:
 	 *        before using a BodySettings. Use 'false' to not clear
 	 * the targets before morphing
 	 */
-	void doMorph(const BodySettings &bs, const bool clear = true);
+	void doMorph(const BodySettings & bs, const bool clear = true);
 
 	/*! \brief Apply morphs of a BodySettings object to a certain degree
 	 *
@@ -509,7 +501,7 @@ public:
 	 *        before using a BodySettings. Use 'false' to not clear
 	 *        the targets before morphing.
 	 */
-	void doMorph(const BodySettings &bs, float value, bool clear = true);
+	void doMorph(const BodySettings & bs, float value, bool clear = true);
 
 	/// Reset the Mesh to loaded state without deformation
 	void resetMorph();
@@ -528,9 +520,9 @@ public:
 	 *        before using a BodySettings. Use 'false' to not clear
 	 *        the targets before morphing.
 	 */
-	void doPose(const BodySettings &bs, bool clear = true);
+	void doPose(const BodySettings & bs, bool clear = true);
 
-	void doPose(const BodySettings &bs, const float value, bool clear = true);
+	void doPose(const BodySettings & bs, const float value, bool clear = true);
 
 	/*! \brief Apply a PoseTarget by name to the current mesh
 	 *
@@ -544,8 +536,7 @@ public:
 	 * \return true if target was found in PoseMap and was morphed
 	 * \return false if target wasn't found in PoseMap and wasn't morphed
 	 */
-	void doPose(const string &target_name, float morph_value,
-	            const UsedVertex &modVertex);
+	void doPose(const string & target_name, float morph_value, const UsedVertex & modVertex);
 
 	/*! \brief Apply an additional PoseTarget by name
 	 *
@@ -559,7 +550,7 @@ public:
 	 * \return true if target was found in PoseMap and could be morphed
 	 * \return false if target wasn't found in PoseMap and couldn't be morphed
 	 */
-	bool setPose(const string &target_name, float morph_value);
+	bool setPose(const string & target_name, float morph_value);
 
 	/// Reset the Mesh to loaded state without poses
 	// void resetPose (const PoseRotation &target);

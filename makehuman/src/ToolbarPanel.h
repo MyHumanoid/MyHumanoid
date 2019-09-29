@@ -50,10 +50,10 @@ public:
 
 private: // intentionally not implemented
 	ToolbarPanel(const ToolbarPanel &);
-	ToolbarPanel &operator=(const ToolbarPanel &);
+	ToolbarPanel & operator=(const ToolbarPanel &);
 
 private:
-	ImageListener imgListener1;
+	ImageListener   imgListener1;
 	vector<Image *> imageVector;
 };
 

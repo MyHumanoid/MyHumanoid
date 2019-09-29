@@ -47,36 +47,34 @@ namespace Animorph
 class ColladaExporter
 {
 protected:
-	Mesh &mesh;
+	Mesh & mesh;
 	Matrix tm;
 
-	void CreateLibraryMaterialsNode(struct XMLNode *xNode_library_materials,
-	                                XMLNode *xNode_library_effects);
-	void CreatePolygons(XMLNode *xNode_mesh, string name, int material,
-	                    unsigned int &texture_number);
-	void AddGeometry(XMLNode *xNode_geometry, string name);
-	void AddController(XMLNode *xNode_library_controller, string name);
-	void loadBindPoses(const std::string &filename, XMLNode *xNode_binding,
-	                   int jointCounter);
-	void loadVertexWeights(const std::string &filename, XMLNode *xNode_binding,
+	void CreateLibraryMaterialsNode(struct XMLNode * xNode_library_materials,
+	                                XMLNode *        xNode_library_effects);
+	void CreatePolygons(XMLNode * xNode_mesh, string name, int material,
+	                    unsigned int & texture_number);
+	void AddGeometry(XMLNode * xNode_geometry, string name);
+	void AddController(XMLNode * xNode_library_controller, string name);
+	void loadBindPoses(const std::string & filename, XMLNode * xNode_binding, int jointCounter);
+	void loadVertexWeights(const std::string & filename, XMLNode * xNode_binding,
 	                       int jointcounter);
-	void loadWeightsVector(const std::string &filename, XMLNode *xNode_weights);
+	void loadWeightsVector(const std::string & filename, XMLNode * xNode_weights);
 	bool CheckIfJointIsLinked(SKELETON_JOINT joint);
-	void WriteTriangle(int uno, int due, int tre, XMLNode &p, const Face face,
-	                   int texture_counter,
-	                   std::ostringstream &polygon_out_stream);
+	void WriteTriangle(int uno, int due, int tre, XMLNode & p, const Face face,
+	                   int texture_counter, std::ostringstream & polygon_out_stream);
 
-	void createSkeleton(XMLNode *mainNode);
-	void recursiveJointAdd(int row, XMLNode *xNode_Parent);
-	void setChildNode(XMLNode *child, SKELETON_JOINT numb, unsigned int row,
+	void createSkeleton(XMLNode * mainNode);
+	void recursiveJointAdd(int row, XMLNode * xNode_Parent);
+	void setChildNode(XMLNode * child, SKELETON_JOINT numb, unsigned int row,
 	                  unsigned int column);
 
 public:
 	/*!
 	 * \param _mesh construct ColladaExporter from a Mesh object
 	 */
-	ColladaExporter(Animorph::Mesh &_mesh)
-	    : mesh(_mesh)
+	ColladaExporter(Animorph::Mesh & _mesh)
+	        : mesh(_mesh)
 	{
 		tm.identity();
 	}
@@ -84,7 +82,7 @@ public:
 	/*!
 	 * \param tm the Matrix which transformates the Mesh before exporting
 	 */
-	void setTransformationMatrix(Matrix &tm) { this->tm = tm; }
+	void setTransformationMatrix(Matrix & tm) { this->tm = tm; }
 
 	/// export the Mesh and MTL file in the same file .dae
 	/*!
@@ -92,7 +90,7 @@ public:
 	 * \return true if file is saved
 	 * \return false if file couldn't be saved
 	 */
-	bool exportFile(const string &filename);
+	bool exportFile(const string & filename);
 };
 } // namespace Animorph
 #endif

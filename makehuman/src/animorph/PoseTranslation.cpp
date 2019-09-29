@@ -10,55 +10,54 @@ using namespace std;
 using namespace Animorph;
 
 PoseTranslation::PoseTranslation()
-    : target(new Target())
-    , formFactor(1.0, 1.0, 1.0)
-    , minAngle(0.0f)
-    , maxAngle(0.0f)
-    , normalize(false)
-    ,
-    // inFilename(),
-    cat()
+        : target(new Target())
+        , formFactor(1.0, 1.0, 1.0)
+        , minAngle(0.0f)
+        , maxAngle(0.0f)
+        , normalize(false)
+        ,
+        // inFilename(),
+        cat()
 {
 }
 
-bool PoseTranslation::load(const std::string &filename)
+bool PoseTranslation::load(const std::string & filename)
 {
-	char tmp[MAX_LINE_BUFFER];
+	char        tmp[MAX_LINE_BUFFER];
 	vector<int> tmpVector();
-	int ret = 0;
+	int         ret = 0;
 
 	bool rc = true; // assume "success" by default
 
 	// get the current locale
-	char *locale = ::setlocale(LC_NUMERIC, NULL);
+	char * locale = ::setlocale(LC_NUMERIC, NULL);
 
 	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
 	::setlocale(LC_NUMERIC, "C");
 
 	// info file
-	FILE *fd = fopen((filename + ".info").c_str(), "r");
+	FILE * fd = fopen((filename + ".info").c_str(), "r");
 
-	if (fd == NULL)
+	if(fd == NULL)
 		return false;
 
 	// form factor
 	fgets(tmp, MAX_LINE_BUFFER, fd);
-	if (tmp == NULL) // end of file reached?
+	if(tmp == NULL) // end of file reached?
 		return false;
 
-	ret = sscanf(tmp, "%f,%f,%f", &originalSize[0], &originalSize[1],
-	             &originalSize[2]);
+	ret = sscanf(tmp, "%f,%f,%f", &originalSize[0], &originalSize[1], &originalSize[2]);
 
-	if (ret == EOF) // end of file reached?
+	if(ret == EOF) // end of file reached?
 		return false;
 
 	fgets(tmp, MAX_LINE_BUFFER, fd);
-	if (tmp == NULL) // end of file reached?
+	if(tmp == NULL) // end of file reached?
 		return false;
 
 	ret = sscanf(tmp, "%f,%f", &minAngle, &maxAngle);
 
-	if (ret == EOF) // end of file reached?
+	if(ret == EOF) // end of file reached?
 		return false;
 
 	fclose(fd);
@@ -66,35 +65,35 @@ bool PoseTranslation::load(const std::string &filename)
 	// reset locale after file was written
 	::setlocale(LC_NUMERIC, locale);
 
-	if (!target->load(filename))
+	if(!target->load(filename))
 		return false;
 
 	return rc;
 }
 
-void PoseTranslation::calcFormFactor(const VertexVector &vertexvector)
+void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 {
 	multiset<float> minXSet, maxXSet;
 	multiset<float> minYSet, maxYSet;
 	multiset<float> minZSet, maxZSet;
 
-	int counter = 0;
-	int n_vertex = FF_VERTEX_N;
-	float minX = 0, maxX = 0;
-	float minY = 0, maxY = 0;
-	float minZ = 0, maxZ = 0;
+	int                              counter  = 0;
+	int                              n_vertex = FF_VERTEX_N;
+	float                            minX = 0, maxX = 0;
+	float                            minY = 0, maxY = 0;
+	float                            minZ = 0, maxZ = 0;
 	pair<set<float>::iterator, bool> pr;
 
-	Target &tmpTarget = getTarget();
+	Target & tmpTarget = getTarget();
 
-	if (tmpTarget.size() < (FF_VERTEX_N * 2)) {
+	if(tmpTarget.size() < (FF_VERTEX_N * 2)) {
 		n_vertex = (int)(tmpTarget.size() / 2);
 	}
 
-	for (Target::const_iterator target_it = tmpTarget.begin();
-	     target_it != tmpTarget.end(); target_it++) {
-		const TargetData &td(*target_it);
-		if (counter < n_vertex) {
+	for(Target::const_iterator target_it = tmpTarget.begin(); target_it != tmpTarget.end();
+	    target_it++) {
+		const TargetData & td(*target_it);
+		if(counter < n_vertex) {
 			minXSet.insert(vertexvector[td.vertex_number].co.x);
 			maxXSet.insert(vertexvector[td.vertex_number].co.x);
 
@@ -106,59 +105,53 @@ void PoseTranslation::calcFormFactor(const VertexVector &vertexvector)
 
 			counter++;
 		} else {
-			if (vertexvector[td.vertex_number].co.x < *(--minXSet.end())) {
+			if(vertexvector[td.vertex_number].co.x < *(--minXSet.end())) {
 				minXSet.insert(vertexvector[td.vertex_number].co.x);
 				minXSet.erase(--(minXSet.end()));
 			}
-			if (vertexvector[td.vertex_number].co.x > *(maxXSet.begin())) {
+			if(vertexvector[td.vertex_number].co.x > *(maxXSet.begin())) {
 				maxXSet.insert(vertexvector[td.vertex_number].co.x);
 				maxXSet.erase(maxXSet.begin());
 			}
 
-			if (vertexvector[td.vertex_number].co.y < *(--minYSet.end())) {
+			if(vertexvector[td.vertex_number].co.y < *(--minYSet.end())) {
 				minYSet.insert(vertexvector[td.vertex_number].co.y);
 				minYSet.erase(--(minYSet.end()));
 			}
-			if (vertexvector[td.vertex_number].co.y > *(maxYSet.begin())) {
+			if(vertexvector[td.vertex_number].co.y > *(maxYSet.begin())) {
 				maxYSet.insert(vertexvector[td.vertex_number].co.y);
 				maxYSet.erase(maxYSet.begin());
 			}
 
-			if (vertexvector[td.vertex_number].co.z < *(--minZSet.end())) {
+			if(vertexvector[td.vertex_number].co.z < *(--minZSet.end())) {
 				minZSet.insert(vertexvector[td.vertex_number].co.z);
 				minZSet.erase(--(minZSet.end()));
 			}
-			if (vertexvector[td.vertex_number].co.z > *(maxZSet.begin())) {
+			if(vertexvector[td.vertex_number].co.z > *(maxZSet.begin())) {
 				maxZSet.insert(vertexvector[td.vertex_number].co.z);
 				maxZSet.erase(maxZSet.begin());
 			}
 		}
 	}
 
-	for (multiset<float>::const_iterator it = minXSet.begin();
-	     it != minXSet.end(); it++) {
+	for(multiset<float>::const_iterator it = minXSet.begin(); it != minXSet.end(); it++) {
 		minX += (*it);
 	}
-	for (multiset<float>::const_iterator it = maxXSet.begin();
-	     it != maxXSet.end(); it++) {
+	for(multiset<float>::const_iterator it = maxXSet.begin(); it != maxXSet.end(); it++) {
 		maxX += (*it);
 	}
 
-	for (multiset<float>::const_iterator it = minYSet.begin();
-	     it != minYSet.end(); it++) {
+	for(multiset<float>::const_iterator it = minYSet.begin(); it != minYSet.end(); it++) {
 		minY += (*it);
 	}
-	for (multiset<float>::const_iterator it = maxYSet.begin();
-	     it != maxYSet.end(); it++) {
+	for(multiset<float>::const_iterator it = maxYSet.begin(); it != maxYSet.end(); it++) {
 		maxY += (*it);
 	}
 
-	for (multiset<float>::const_iterator it = minZSet.begin();
-	     it != minZSet.end(); it++) {
+	for(multiset<float>::const_iterator it = minZSet.begin(); it != minZSet.end(); it++) {
 		minZ += (*it);
 	}
-	for (multiset<float>::const_iterator it = maxZSet.begin();
-	     it != maxZSet.end(); it++) {
+	for(multiset<float>::const_iterator it = maxZSet.begin(); it != maxZSet.end(); it++) {
 		maxZ += (*it);
 	}
 
@@ -167,6 +160,6 @@ void PoseTranslation::calcFormFactor(const VertexVector &vertexvector)
 	int zsize = maxZSet.size();
 
 	formFactor = glm::vec3((maxX / xsize - minX / xsize) / originalSize[0],
-	                      (maxY / ysize - minY / ysize) / originalSize[1],
-	                      (maxZ / zsize - minZ / zsize) / originalSize[2]);
+	                       (maxY / ysize - minY / ysize) / originalSize[1],
+	                       (maxZ / zsize - minZ / zsize) / originalSize[2]);
 }

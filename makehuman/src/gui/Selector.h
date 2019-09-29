@@ -70,8 +70,8 @@ public:
 
 	bool textureCursorIsInited;
 
-	SelectorSysListener *selectorSysListener;
-	float alpha;
+	SelectorSysListener * selectorSysListener;
+	float                 alpha;
 
 	bool enabled;
 	bool showLines;
@@ -84,7 +84,7 @@ public:
 	float maxValue;
 	float cellRatio;
 
-	std::vector<Point> points;  // from left-bottom point to right-up point
+	std::vector<Point>  points; // from left-bottom point to right-up point
 	std::vector<string> labels; // from left-bottom point to right-up point
 
 	Color linesColor;
@@ -92,17 +92,17 @@ public:
 	Color cursorColor;
 
 	Texture cursorTexture;
-	string cursorFilename;
+	string  cursorFilename;
 
 	// intentionally not implemented
 	Selector(const Selector &);
-	Selector &operator=(const Selector &);
+	Selector & operator=(const Selector &);
 
 public:
-	Selector(uint32_t inId, const string &inFilename, const Rect &inGeometry);
+	Selector(uint32_t inId, const string & inFilename, const Rect & inGeometry);
 	virtual ~Selector();
 
-	void setAlpha(float);
+	void  setAlpha(float);
 	float getAlpha() const { return alpha; }
 
 	void setEnabled(bool inEnabled) { enabled = inEnabled; }
@@ -110,26 +110,26 @@ public:
 
 	void setShowLines(bool inShowLines) { showLines = inShowLines; }
 
-	void setCursorPos(const Point &inCursorPos) { cursorPos = inCursorPos; }
-	const Point &getCursorPos() const { return cursorPos; }
+	void          setCursorPos(const Point & inCursorPos) { cursorPos = inCursorPos; }
+	const Point & getCursorPos() const { return cursorPos; }
 
-	void setCursorPosFromMousePoint(const Point &inMousePoint);
+	void setCursorPosFromMousePoint(const Point & inMousePoint);
 
 	std::vector<float> getDists();
-	void setDisabledTexture(const string &inFilename);
+	void               setDisabledTexture(const string & inFilename);
 
-	const Texture &getTextures(); // return the textureID
+	const Texture & getTextures(); // return the textureID
 
 	void setPoints(int inRows, int inCols);
 
-	void setCursorColor(const Color &inColor) { cursorColor = inColor; }
-	void setBackgroundColor(const Color &inColor) { backgroundColor = inColor; }
-	void setLinesColor(const Color &inColor) { linesColor = inColor; }
-	void setCursorTexture(const string &inFilename);
-	void setLabels(const std::vector<string> &inLabels) { labels = inLabels; }
+	void                setCursorColor(const Color & inColor) { cursorColor = inColor; }
+	void                setBackgroundColor(const Color & inColor) { backgroundColor = inColor; }
+	void                setLinesColor(const Color & inColor) { linesColor = inColor; }
+	void                setCursorTexture(const string & inFilename);
+	void                setLabels(const std::vector<string> & inLabels) { labels = inLabels; }
 	std::vector<string> getLabels() { return labels; }
 
-	const Texture &getCursorTextures(); // return the cursor textureID
+	const Texture & getCursorTextures(); // return the cursor textureID
 
 	virtual void show();
 	virtual void hide();

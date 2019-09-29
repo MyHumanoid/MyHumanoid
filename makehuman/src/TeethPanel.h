@@ -50,11 +50,11 @@ public:
 
 private: // intentionally not implemented
 	TeethPanel(const TeethPanel &);
-	TeethPanel &operator=(const TeethPanel &);
+	TeethPanel & operator=(const TeethPanel &);
 
 private:
 	TargetSelectionListener imgListener;
-	vector<Image *> imageVector;
+	vector<Image *>         imageVector;
 };
 
 #endif // TEETHPANEL_H

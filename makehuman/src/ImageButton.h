@@ -40,10 +40,10 @@ using namespace mhgui;
 class ImageButton : public Image
 {
 public:
-	ImageButton(uint32_t inId, const string &inFilename, const string &inCommand,
-	            const Rect &inGeometry)
-	    : Image(inId, inFilename, inGeometry)
-	    , infoCommand(inCommand){};
+	ImageButton(uint32_t inId, const string & inFilename, const string & inCommand,
+	            const Rect & inGeometry)
+	        : Image(inId, inFilename, inGeometry)
+	        , infoCommand(inCommand){};
 	~ImageButton(){};
 
 	string infoCommand;

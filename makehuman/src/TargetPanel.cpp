@@ -42,11 +42,11 @@ using namespace Animorph;
 
 const static string kFilePrefixTarget(".target");
 const static string kFilePrefixPNG(".png");
-const static int kMaxTargetsNumber = 44;
+const static int    kMaxTargetsNumber = 44;
 
-TargetPanel::TargetPanel(const string &category, const Rect &rect)
-    : MultiPanel(kComponentID_TargetPanel, rect)
-    , category(category)
+TargetPanel::TargetPanel(const string & category, const Rect & rect)
+        : MultiPanel(kComponentID_TargetPanel, rect)
+        , category(category)
 {
 	setAlignment(FREE);
 	setRightAnchor(true);
@@ -54,15 +54,14 @@ TargetPanel::TargetPanel(const string &category, const Rect &rect)
 
 TargetPanel::~TargetPanel()
 {
-	for_each(targetVector.begin(), targetVector.end(),
-	         deleteFunctor<TargetSlider *>());
+	for_each(targetVector.begin(), targetVector.end(), deleteFunctor<TargetSlider *>());
 	for_each(imageVector.begin(), imageVector.end(), deleteFunctor<Image *>());
 	for_each(begin(), end(), deleteFunctor<Panel *>());
 }
 
-PageTargetPanel *TargetPanel::newPagePanel()
+PageTargetPanel * TargetPanel::newPagePanel()
 {
-	PageTargetPanel *page;
+	PageTargetPanel * page;
 
 	page = new PageTargetPanel(category, getRect());
 
@@ -73,118 +72,115 @@ void TargetPanel::createWidgets()
 {
 	int numTargetsInPage = 1;
 
-	Window &mainWindow = *g_mainWindow;
+	Window & mainWindow = *g_mainWindow;
 
-	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
+	Panel * tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 	assert(mesh);
 
-	TargetMap &targetmap = mesh->getTargetMapRef();
+	TargetMap & targetmap = mesh->getTargetMapRef();
 
 	const Color c(1.0, 0.0, 0.0);
 	const Point kTooltipPos(70, 12);
 
 	BodySettings bodyset = mesh->getBodySettings();
 
-	TargetSlider *image_slider;
+	TargetSlider * image_slider;
 
-	PageTargetPanel *page = newPagePanel();
+	PageTargetPanel * page = newPagePanel();
 
-	if (category == applied_target_list) {
-		Image *close_image =
-		    new Image(kComponentID_CloseTargetPanel,
-		              searchPixmapFile("ui/close_panel.png"), Rect(0, 0, 32, 32));
+	if(category == applied_target_list) {
+		Image * close_image =
+		        new Image(kComponentID_CloseTargetPanel,
+		                  searchPixmapFile("ui/close_panel.png"), Rect(0, 0, 32, 32));
 		close_image->setListener(&imgListener);
-		close_image->setTooltip(
-		    Tooltip("Close panel", kTooltipPos, c, tooltipPanel));
+		close_image->setTooltip(Tooltip("Close panel", kTooltipPos, c, tooltipPanel));
 		imageVector.push_back(close_image);
 		page->addWidget(close_image);
 
-		for (BodySettings::iterator bodyset_it = bodyset.begin();
-		     bodyset_it != bodyset.end(); bodyset_it++) {
+		for(BodySettings::iterator bodyset_it = bodyset.begin();
+		    bodyset_it != bodyset.end(); bodyset_it++) {
 
-			const string &target_name((*bodyset_it).first);
-			if (target_name.find("ages", 0) != string::npos ||
-			    target_name.find("breast", 0) != string::npos ||
-			    target_name.find("muscleSize", 0) != string::npos ||
-			    target_name.find("shapes", 0) != string::npos) {
+			const string & target_name((*bodyset_it).first);
+			if(target_name.find("ages", 0) != string::npos ||
+			   target_name.find("breast", 0) != string::npos ||
+			   target_name.find("muscleSize", 0) != string::npos ||
+			   target_name.find("shapes", 0) != string::npos) {
 				continue;
 			}
 
-			if (numTargetsInPage++ > kMaxTargetsNumber) {
+			if(numTargetsInPage++ > kMaxTargetsNumber) {
 				numTargetsInPage = 0;
 				addPanel(page);
 				page = newPagePanel();
 			}
 
-			float target_value = (*bodyset_it).second;
+			float  target_value = (*bodyset_it).second;
 			string target_image(target_name);
 			target_image.replace(target_image.length() - kFilePrefixTarget.length(),
 			                     kFilePrefixTarget.length(), kFilePrefixPNG);
 
 			image_slider =
-			    new TargetSlider(kComponentID_TargetPanel_Target,
-			                     searchPixmapFile("tgimg/" + target_image),
-			                     target_name, Rect(0, 0, 32, 32 + 10), 0.0, 1.0);
+			        new TargetSlider(kComponentID_TargetPanel_Target,
+			                         searchPixmapFile("tgimg/" + target_image),
+			                         target_name, Rect(0, 0, 32, 32 + 10), 0.0, 1.0);
 
-			image_slider->setOverlayTexture(
-			    searchPixmapFile("tgimg/" + target_image));
+			image_slider->setOverlayTexture(searchPixmapFile("tgimg/" + target_image));
 			image_slider->setOverlayMultiplier(4);
 			image_slider->setSliderValue(target_value);
 			image_slider->setListener(&imgSliderListener);
 			image_slider->setTooltip(
-			    Tooltip(target_name, kTooltipPos, c, tooltipPanel));
+			        Tooltip(target_name, kTooltipPos, c, tooltipPanel));
 			page->targetVector.push_back(image_slider);
 			page->addWidget(image_slider);
 		}
 	} else {
-		Image *close_image =
-		    new Image(kComponentID_CloseTargetPanel,
-		              searchPixmapFile("ui/close_panel.png"), Rect(0, 0, 32, 32));
+		Image * close_image =
+		        new Image(kComponentID_CloseTargetPanel,
+		                  searchPixmapFile("ui/close_panel.png"), Rect(0, 0, 32, 32));
 		close_image->setListener(&imgListener);
-		close_image->setTooltip(
-		    Tooltip("Close panel", kTooltipPos, c, tooltipPanel));
+		close_image->setTooltip(Tooltip("Close panel", kTooltipPos, c, tooltipPanel));
 		imageVector.push_back(close_image);
 		page->addWidget(close_image);
 
-		for (TargetMap::const_iterator targetmap_it = targetmap.begin();
-		     targetmap_it != targetmap.end(); targetmap_it++) {
-			const string &target_name((*targetmap_it).first);
+		for(TargetMap::const_iterator targetmap_it = targetmap.begin();
+		    targetmap_it != targetmap.end(); targetmap_it++) {
+			const string & target_name((*targetmap_it).first);
 
 			string::size_type loc = target_name.find("/", 0);
-			if (loc == string::npos)
+			if(loc == string::npos)
 				continue;
 			else {
 				string sub = target_name.substr(0, loc);
 
-				if (sub == category) {
-					if (numTargetsInPage++ > kMaxTargetsNumber) {
+				if(sub == category) {
+					if(numTargetsInPage++ > kMaxTargetsNumber) {
 						numTargetsInPage = 0;
 						addPanel(page);
 						page = newPagePanel();
 					}
 					// remove ".target"
 					string target_image(target_name);
-					target_image.replace(target_image.length() -
-					                         kFilePrefixTarget.length(),
-					                     kFilePrefixTarget.length(), kFilePrefixPNG);
+					target_image.replace(
+					        target_image.length() - kFilePrefixTarget.length(),
+					        kFilePrefixTarget.length(), kFilePrefixPNG);
 
-					image_slider =
-					    new TargetSlider(kComponentID_TargetPanel_Target,
-					                     searchPixmapFile("tgimg/" + target_image),
-					                     target_name, Rect(0, 0, 32, 42), 0.0, 1.0);
+					image_slider = new TargetSlider(
+					        kComponentID_TargetPanel_Target,
+					        searchPixmapFile("tgimg/" + target_image),
+					        target_name, Rect(0, 0, 32, 42), 0.0, 1.0);
 
 					image_slider->setOverlayTexture(
-					    searchPixmapFile("tgimg/" + target_image));
+					        searchPixmapFile("tgimg/" + target_image));
 					image_slider->setOverlayMultiplier(4);
 					float target_value = bodyset[target_name];
 					image_slider->setSliderValue(target_value);
 
 					image_slider->setListener(&imgSliderListener);
 					image_slider->setTooltip(
-					    Tooltip(target_name, kTooltipPos, c, tooltipPanel));
+					        Tooltip(target_name, kTooltipPos, c, tooltipPanel));
 					page->targetVector.push_back(image_slider);
 					page->addWidget(image_slider);
 				}
@@ -193,18 +189,18 @@ void TargetPanel::createWidgets()
 	}
 	addPanel(page);
 
-	if (numPages > 1) {
+	if(numPages > 1) {
 		prevPage = new Image(
-		    kComponentID_PrevTargetPanel, searchPixmapFile("ui/page_prev.png"),
-		    Rect(getSize().getWidth() - 70, getSize().getHeight() - 32, 32, 32));
+		        kComponentID_PrevTargetPanel, searchPixmapFile("ui/page_prev.png"),
+		        Rect(getSize().getWidth() - 70, getSize().getHeight() - 32, 32, 32));
 		prevPage->setListener(&imgListener);
 		prevPage->setTooltip(Tooltip("Prev page", kTooltipPos, c, tooltipPanel));
 		addWidget(prevPage);
 		imageVector.push_back(prevPage);
 
 		nextPage = new Image(
-		    kComponentID_NextTargetPanel, searchPixmapFile("ui/page_next.png"),
-		    Rect(getSize().getWidth() - 35, getSize().getHeight() - 32, 32, 32));
+		        kComponentID_NextTargetPanel, searchPixmapFile("ui/page_next.png"),
+		        Rect(getSize().getWidth() - 35, getSize().getHeight() - 32, 32, 32));
 		nextPage->setListener(&imgListener);
 		nextPage->setTooltip(Tooltip("Next page", kTooltipPos, c, tooltipPanel));
 		addWidget(nextPage);
@@ -216,8 +212,8 @@ void TargetPanel::createWidgets()
 
 void TargetPanel::resetTargetValues(const string currentTargetName)
 {
-	for (vector<Panel *>::iterator pagepanel_it = begin(); pagepanel_it != end();
-	     pagepanel_it++) {
+	for(vector<Panel *>::iterator pagepanel_it = begin(); pagepanel_it != end();
+	    pagepanel_it++) {
 
 		((PageTargetPanel *)(*pagepanel_it))->resetTargetValues(currentTargetName);
 	}

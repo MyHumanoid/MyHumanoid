@@ -48,16 +48,16 @@ namespace Animorph
 class FileWriter : public ofstream
 {
 private:
-	char *locale;
+	char * locale;
 
 	// Intentionally declared as private because not implemented yet
 private:
 	FileWriter(const FileWriter &);
-	FileWriter &operator=(const FileWriter &);
+	FileWriter & operator=(const FileWriter &);
 
 public:
 	FileWriter()
-	    : locale(NULL)
+	        : locale(NULL)
 	{
 	}
 
@@ -69,7 +69,7 @@ public:
 	 * \param mode Used as parameter for ofstream::open()
 	 * \return 0 if the file could be opened.
 	 */
-	virtual int open(const string &filename,
+	virtual int open(const string &          filename,
 	                 std::ios_base::openmode mode = std::ios_base::out);
 
 	/// closes the currently opened file

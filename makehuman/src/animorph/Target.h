@@ -45,7 +45,7 @@ namespace Animorph
 typedef std::vector<int> UnsortedUsedVertex;
 
 struct TargetData {
-	int vertex_number;
+	int       vertex_number;
 	glm::vec3 morph_vector;
 };
 
@@ -66,7 +66,7 @@ class Target : public std::vector<TargetData>
 {
 private:
 	// void fromStream (std::ifstream &in_stream);
-	void createStream(std::ostringstream &out_stream);
+	void createStream(std::ostringstream & out_stream);
 	/// The indices of the vertices from the Target file
 	UnsortedUsedVertex modVertex;
 
@@ -76,16 +76,16 @@ public:
 	 * \return true if file was found
 	 * \return false if file wasn't found
 	 */
-	bool load(const std::string &filename);
+	bool load(const std::string & filename);
 
 	/*!
 	 * \param filename the file with Target data to save
 	 * \return true if file was found
 	 * \return false if file wasn't found
 	 */
-	bool save(const std::string &filename);
+	bool save(const std::string & filename);
 
-	UnsortedUsedVertex &getModVertex() { return modVertex; }
+	UnsortedUsedVertex & getModVertex() { return modVertex; }
 };
 
 } // namespace Animorph

@@ -47,16 +47,13 @@ public:
 	AbstractListener() {}
 	virtual ~AbstractListener() {}
 
-	virtual bool mouseOver(const Point &inMousePos, Component *source) = 0;
-	virtual bool mouseOut(const Point &inMousePos, Component *source) = 0;
-	virtual bool mousePressed(const Point &inMousePos, int inButton,
-	                          Component *source) = 0;
-	virtual bool mouseReleased(const Point &inMousePos, int inButton,
-	                           Component *source) = 0;
-	virtual bool mouseDragged(const Point &inMousePos, Component *source) = 0;
-	virtual bool mouseWheel(const Point &inMousePos, int inButton,
-	                        Component *source) = 0;
-	virtual bool keyType(unsigned char inKey, Component *source) = 0;
+	virtual bool mouseOver(const Point & inMousePos, Component * source)                   = 0;
+	virtual bool mouseOut(const Point & inMousePos, Component * source)                    = 0;
+	virtual bool mousePressed(const Point & inMousePos, int inButton, Component * source)  = 0;
+	virtual bool mouseReleased(const Point & inMousePos, int inButton, Component * source) = 0;
+	virtual bool mouseDragged(const Point & inMousePos, Component * source)                = 0;
+	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source)    = 0;
+	virtual bool keyType(unsigned char inKey, Component * source)                          = 0;
 };
 
 } // namespace mhgui

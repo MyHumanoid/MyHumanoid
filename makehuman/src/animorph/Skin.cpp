@@ -30,36 +30,36 @@
 using namespace std;
 using namespace Animorph;
 
-bool Skin::load(const std::string &filename)
+bool Skin::load(const std::string & filename)
 {
-	char str[MAX_LINE_BUFFER];
+	char        str[MAX_LINE_BUFFER];
 	vector<int> tokens;
-	bool rc = true;
-	int ret = 0;
-	int skinVertex;
+	bool        rc  = true;
+	int         ret = 0;
+	int         skinVertex;
 
 	clear();
 
-	FILE *fd = fopen(filename.c_str(), "r");
+	FILE * fd = fopen(filename.c_str(), "r");
 
-	if (fd == NULL)
+	if(fd == NULL)
 		return false;
 
 	// get the current locale
-	char *locale = ::setlocale(LC_NUMERIC, NULL);
+	char * locale = ::setlocale(LC_NUMERIC, NULL);
 
 	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
 	::setlocale(LC_NUMERIC, "C");
 
 	// Skin &skin(*this);
 
-	for (;;) {
+	for(;;) {
 		ret = fscanf(fd, "%i,%s", &skinVertex, str);
 
-		if (ret == EOF) // end of file reached?
+		if(ret == EOF) // end of file reached?
 			break;
 
-		if (ret != 2 && (ret != 0)) {
+		if(ret != 2 && (ret != 0)) {
 			cerr << "Illegal line while reading skin info '" << filename << "'!"
 			     << endl;
 			clear();
@@ -70,7 +70,7 @@ bool Skin::load(const std::string &filename)
 		string values(str);
 		stringTokeni(values, ", ", tokens);
 
-		if (tokens.empty()) {
+		if(tokens.empty()) {
 			cerr << "Illegal line while reading skin info '" << filename << "'!"
 			     << endl;
 			clear();

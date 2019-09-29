@@ -54,21 +54,21 @@ The format of Vertices file:
 class VertexVector : public std::vector<Vertex>
 {
 private:
-	void fromStream(std::ifstream &in_stream);
+	void fromStream(std::ifstream & in_stream);
 
 public:
-	bool load(const std::string &filename);
+	bool load(const std::string & filename);
 
-	int setCoordinates(std::vector<glm::vec3> &vertexvector);
+	int setCoordinates(std::vector<glm::vec3> & vertexvector);
 };
 
 class origVertexVector : public std::vector<origVertex>
 {
 private:
-	void fromStream(std::ifstream &in_stream);
+	void fromStream(std::ifstream & in_stream);
 
 public:
-	bool load(const std::string &filename);
+	bool load(const std::string & filename);
 };
 
 } // namespace Animorph

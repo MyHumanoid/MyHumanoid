@@ -47,18 +47,17 @@ private:
 	string targetName;
 
 public:
-	TargetSlider(uint32_t inImageID, const string &inSliderImageFilename,
-	             const string &inTargetName, const Rect &inGeometry,
-	             float inMinValue, float inMaxValue)
-	    : ImageSlider(inImageID, inSliderImageFilename, inGeometry, inMinValue,
-	                  inMaxValue)
-	    , targetName(inTargetName)
+	TargetSlider(uint32_t inImageID, const string & inSliderImageFilename,
+	             const string & inTargetName, const Rect & inGeometry, float inMinValue,
+	             float inMaxValue)
+	        : ImageSlider(inImageID, inSliderImageFilename, inGeometry, inMinValue, inMaxValue)
+	        , targetName(inTargetName)
 	{
 	}
 
 	virtual ~TargetSlider() {}
 
-	void setTargetName(const string &name) { targetName = name; }
+	void   setTargetName(const string & name) { targetName = name; }
 	string getTargetName() { return targetName; }
 };
 

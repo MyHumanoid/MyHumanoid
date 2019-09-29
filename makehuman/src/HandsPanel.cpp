@@ -40,7 +40,7 @@ using namespace std;
 using namespace Animorph;
 
 HandsPanel::HandsPanel()
-    : Panel(kComponentID_HandsPanel, Rect(64, 208, 128, 96))
+        : Panel(kComponentID_HandsPanel, Rect(64, 208, 128, 96))
 {
 }
 
@@ -51,22 +51,21 @@ HandsPanel::~HandsPanel()
 
 void HandsPanel::createWidgets()
 {
-	Window &mainWindow = *g_mainWindow;
+	Window & mainWindow = *g_mainWindow;
 
-	Panel *tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
+	Panel * tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
 	const Color color_red(1.0, 0.0, 0.0);
 	const Point kTooltipPos(70, 12);
 	const float alpha = 1.0;
-	Image *body;
+	Image *     body;
 
 	// -------------------------------------------------------------------------
 	body = new Image(kComponentID_HandsPanel_ForefingerLeftParams,
 	                 searchPixmapFile("ui/hands_01.png"), Rect(0, 0, 32, 32));
 	body->setListener(&imgListener);
-	body->setTooltip(
-	    Tooltip("Forefinger parameters", kTooltipPos, color_red, tooltipPanel));
+	body->setTooltip(Tooltip("Forefinger parameters", kTooltipPos, color_red, tooltipPanel));
 	body->setAlpha(alpha);
 	imageVector.push_back(body);
 	addWidget(body);
@@ -75,8 +74,7 @@ void HandsPanel::createWidgets()
 	body = new Image(kComponentID_HandsPanel_MiddlefingerLeftParams,
 	                 searchPixmapFile("ui/hands_02.png"), Rect(0, 0, 32, 32));
 	body->setListener(&imgListener);
-	body->setTooltip(
-	    Tooltip("Middlefinger parameters", kTooltipPos, color_red, tooltipPanel));
+	body->setTooltip(Tooltip("Middlefinger parameters", kTooltipPos, color_red, tooltipPanel));
 	body->setAlpha(alpha);
 	imageVector.push_back(body);
 	addWidget(body);
@@ -85,8 +83,7 @@ void HandsPanel::createWidgets()
 	body = new Image(kComponentID_HandsPanel_RingfingerLeftParams,
 	                 searchPixmapFile("ui/hands_03.png"), Rect(0, 0, 32, 32));
 	body->setListener(&imgListener);
-	body->setTooltip(
-	    Tooltip("Ringfinger parameters", kTooltipPos, color_red, tooltipPanel));
+	body->setTooltip(Tooltip("Ringfinger parameters", kTooltipPos, color_red, tooltipPanel));
 	body->setAlpha(alpha);
 	imageVector.push_back(body);
 	addWidget(body);
@@ -102,8 +99,7 @@ void HandsPanel::createWidgets()
 	body = new Image(kComponentID_HandsPanel_PollexLeftParams,
 	                 searchPixmapFile("ui/hands_05.png"), Rect(0, 0, 32, 32));
 	body->setListener(&imgListener);
-	body->setTooltip(
-	    Tooltip("Pollex parameters", kTooltipPos, color_red, tooltipPanel));
+	body->setTooltip(Tooltip("Pollex parameters", kTooltipPos, color_red, tooltipPanel));
 	body->setAlpha(alpha);
 	imageVector.push_back(body);
 	addWidget(body);
@@ -119,8 +115,7 @@ void HandsPanel::createWidgets()
 	body = new Image(kComponentID_HandsPanel_LittlefingerLeftParams,
 	                 searchPixmapFile("ui/hands_07.png"), Rect(0, 0, 32, 32));
 	body->setListener(&imgListener);
-	body->setTooltip(
-	    Tooltip("Littlefinger parameters", kTooltipPos, color_red, tooltipPanel));
+	body->setTooltip(Tooltip("Littlefinger parameters", kTooltipPos, color_red, tooltipPanel));
 	body->setAlpha(alpha);
 	imageVector.push_back(body);
 	addWidget(body);

@@ -41,27 +41,25 @@ using namespace std;
 const static float kPoseThreshold = 0.04;
 
 PoseTargetSliderListener::PoseTargetSliderListener()
-    : AbstractListener()
-    , lastTargetName()
+        : AbstractListener()
+        , lastTargetName()
 {
 }
 
 PoseTargetSliderListener::~PoseTargetSliderListener() {}
 
-bool PoseTargetSliderListener::mouseOver(const Point &inMousePos,
-                                         Component *source)
+bool PoseTargetSliderListener::mouseOver(const Point & inMousePos, Component * source)
 {
 	return false;
 }
 
-bool PoseTargetSliderListener::mouseOut(const Point &inMousePos,
-                                        Component *source)
+bool PoseTargetSliderListener::mouseOut(const Point & inMousePos, Component * source)
 {
 	return false;
 }
 
-bool PoseTargetSliderListener::mouseWheel(const Point &inMousePos, int inButton,
-                                          Component *source)
+bool PoseTargetSliderListener::mouseWheel(const Point & inMousePos, int inButton,
+                                          Component * source)
 {
 #ifdef GLUT_WHEEL_UP
 	return mouseDragged(inMousePos, source);
@@ -70,22 +68,20 @@ bool PoseTargetSliderListener::mouseWheel(const Point &inMousePos, int inButton,
 #endif
 }
 
-bool PoseTargetSliderListener::mouseDragged(const Point &inMousePos,
-                                            Component *source)
+bool PoseTargetSliderListener::mouseDragged(const Point & inMousePos, Component * source)
 {
-	TargetSlider *imgSliderSource =
-	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	TargetSlider * imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	if (lastTargetName != imgSliderSource->getTargetName()) {
-		lastTargetName = imgSliderSource->getTargetName();
+	if(lastTargetName != imgSliderSource->getTargetName()) {
+		lastTargetName  = imgSliderSource->getTargetName();
 		lastTargetValue = imgSliderSource->getSliderValue();
 	} else {
 		float diffValue = lastTargetValue - imgSliderSource->getSliderValue();
-		if (diffValue < -kPoseThreshold || diffValue > kPoseThreshold) {
+		if(diffValue < -kPoseThreshold || diffValue > kPoseThreshold) {
 			lastTargetValue = imgSliderSource->getSliderValue();
 
-			Mesh *mesh = g_global.getMesh();
+			Mesh * mesh = g_global.getMesh();
 			mesh->setPose(imgSliderSource->getTargetName(),
 			              imgSliderSource->getSliderValue());
 		}
@@ -94,30 +90,25 @@ bool PoseTargetSliderListener::mouseDragged(const Point &inMousePos,
 	return true;
 }
 
-bool PoseTargetSliderListener::mousePressed(const Point &inMousePos, int button,
-                                            Component *source)
+bool PoseTargetSliderListener::mousePressed(const Point & inMousePos, int button,
+                                            Component * source)
 {
 	return false;
 }
 
-bool PoseTargetSliderListener::mouseReleased(const Point &inMousePos,
-                                             int button, Component *source)
+bool PoseTargetSliderListener::mouseReleased(const Point & inMousePos, int button,
+                                             Component * source)
 {
-	TargetSlider *imgSliderSource =
-	    dynamic_cast<TargetSlider *>(source); // req. RTTI!
+	TargetSlider * imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Mesh *mesh = g_global.getMesh();
+	Mesh * mesh = g_global.getMesh();
 
-	mesh->setPose(imgSliderSource->getTargetName(),
-	              imgSliderSource->getSliderValue());
+	mesh->setPose(imgSliderSource->getTargetName(), imgSliderSource->getSliderValue());
 
 	mesh->calcNormals();
 
 	return false;
 }
 
-bool PoseTargetSliderListener::keyType(unsigned char key, Component *source)
-{
-	return false;
-}
+bool PoseTargetSliderListener::keyType(unsigned char key, Component * source) { return false; }

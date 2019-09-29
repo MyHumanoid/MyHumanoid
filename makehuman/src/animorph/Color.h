@@ -49,27 +49,27 @@ private:
 public:
 	/// constructor initalizes Color with 1.0,1.0,1.0
 	Color()
-	    : r(1.0)
-	    , g(1.0)
-	    , b(1.0)
-	    , a(1.0)
+	        : r(1.0)
+	        , g(1.0)
+	        , b(1.0)
+	        , a(1.0)
 	{
 	}
 
 	// constructor initializes Color with rgb values and alpha = 1.0
 	Color(float r, float g, float b, float a = 1.0)
-	    : r(r)
-	    , g(g)
-	    , b(b)
-	    , a(a)
+	        : r(r)
+	        , g(g)
+	        , b(b)
+	        , a(a)
 	{
 	}
 
-	Color(const Color &inColor);
+	Color(const Color & inColor);
 
 	~Color() {}
 
-	Color &operator=(const Color &inRHS);
+	Color & operator=(const Color & inRHS);
 
 	/// \param r red component of a color
 	void red(float r) { this->r = r; }
@@ -123,7 +123,7 @@ public:
 	/// \return alpha component of a color
 	float alpha(void) const { return a; }
 
-	const float *getAsOpenGLVector() const { return &r; }
+	const float * getAsOpenGLVector() const { return &r; }
 };
 
 } // namespace Animorph

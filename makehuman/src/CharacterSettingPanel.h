@@ -55,18 +55,18 @@ public:
 
 private: // intentionally not implemented
 	CharacterSettingPanel(const CharacterSettingPanel &);
-	CharacterSettingPanel &operator=(const CharacterSettingPanel &);
+	CharacterSettingPanel & operator=(const CharacterSettingPanel &);
 
 public:
-	vector<Image *> imageVector;
+	vector<Image *>    imageVector;
 	vector<Selector *> selectorVector;
-	Selector *selector;
-	SelectorListener selectorListener;
+	Selector *         selector;
+	SelectorListener   selectorListener;
 
-	Selector *m_age;
-	Selector *m_muscleSize;
-	Selector *m_breast;
-	Selector *m_shape;
+	Selector * m_age;
+	Selector * m_muscleSize;
+	Selector * m_breast;
+	Selector * m_shape;
 };
 
 #endif // CHARACTERSETTINGBODYPANEL_H

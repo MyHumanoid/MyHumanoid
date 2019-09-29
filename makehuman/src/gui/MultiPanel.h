@@ -45,20 +45,20 @@ class MultiPanel : public Panel
 {
 protected:
 	vector<Panel *> panelList;
-	Window *parentWindow;
-	int numPages;
-	Image *nextPage;
-	Image *prevPage;
-	void checkControlsVisibility();
+	Window *        parentWindow;
+	int             numPages;
+	Image *         nextPage;
+	Image *         prevPage;
+	void            checkControlsVisibility();
 
 public:
-	MultiPanel(uint32_t inMultiPanelId, const Rect &inGeometry);
+	MultiPanel(uint32_t inMultiPanelId, const Rect & inGeometry);
 	virtual ~MultiPanel();
 
 	virtual void draw();
 
-	bool addPanel(Panel *p);
-	void removePanel(Panel *p);
+	bool addPanel(Panel * p);
+	void removePanel(Panel * p);
 
 	bool hasNextPage();
 	bool hasPrevPage();
@@ -71,17 +71,16 @@ public:
 	PanelIterator begin() { return panelList.begin(); }
 	PanelIterator end() { return panelList.end(); }
 
-	virtual bool isMouseOverWidgets(const Point &inMousePos);
-	virtual bool isMouseClickWidgets(const Point &inMousePos, int button,
-	                                 int state);
-	virtual bool isMouseDraggedWidgets(const Point &inMousePos);
+	virtual bool isMouseOverWidgets(const Point & inMousePos);
+	virtual bool isMouseClickWidgets(const Point & inMousePos, int button, int state);
+	virtual bool isMouseDraggedWidgets(const Point & inMousePos);
 	virtual bool isKeyTypeWidgets(unsigned char key);
 
 	virtual void calcWidgetPosition();
 
 private: // intentionally not implemeted
 	MultiPanel(const MultiPanel &);
-	MultiPanel &operator=(const MultiPanel &);
+	MultiPanel & operator=(const MultiPanel &);
 
 	int currentPage;
 };

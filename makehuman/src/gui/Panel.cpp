@@ -37,47 +37,47 @@ using namespace std;
 namespace mhgui
 {
 
-Panel::Panel(uint32_t inPanelId, const Rect &inGeometry)
-    : Component(inPanelId, inGeometry)
-    ,
+Panel::Panel(uint32_t inPanelId, const Rect & inGeometry)
+        : Component(inPanelId, inGeometry)
+        ,
 
-    widgetList()
-    , widgetListChangedCount(0)
-    ,
+        widgetList()
+        , widgetListChangedCount(0)
+        ,
 
-    rightAnchor(false)
-    , bottomAnchor(false)
-    , parentWindow(NULL)
-    , align(HORIZONTAL)
-    , maximize(false)
-    , rowSpacing(0)
-    , columnSpacing(0)
-    , backColor(0, 0, 0, 0)
+        rightAnchor(false)
+        , bottomAnchor(false)
+        , parentWindow(NULL)
+        , align(HORIZONTAL)
+        , maximize(false)
+        , rowSpacing(0)
+        , columnSpacing(0)
+        , backColor(0, 0, 0, 0)
 {
 }
 
 Panel::~Panel()
 {
 	// Remove this Panel reference from the parent window.
-	if (parentWindow)
+	if(parentWindow)
 		parentWindow->removePanel(this);
 }
 
-const Window *Panel::getParentWindow() const { return parentWindow; }
+const Window * Panel::getParentWindow() const { return parentWindow; }
 
-void Panel::setParentWindow(Window *w) { parentWindow = w; }
+void Panel::setParentWindow(Window * w) { parentWindow = w; }
 
 // Put widget into panel
-bool Panel::addWidget(Widget *w)
+bool Panel::addWidget(Widget * w)
 {
 	// th ID FOUR_CHAR_CONST ('D', 'M', 'M', 'Y') (means dummy) is the only ID
 	// which can occur several times which means "not specified".
-	if (w->getID() != FOUR_CHAR_CONST('D', 'M', 'M', 'Y')) {
+	if(w->getID() != FOUR_CHAR_CONST('D', 'M', 'M', 'Y')) {
 		// if the given ID is not a dummy then check if a Widget with this id
 		// already exists!
-		for (list<Widget *>::const_iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			if ((*w == **wl_it)) {
+		for(list<Widget *>::const_iterator wl_it = widgetList.begin();
+		    wl_it != widgetList.end(); wl_it++) {
+			if((*w == **wl_it)) {
 				cerr << "**** Error: Widget needs a unique name in the same Panel! "
 				     << "A Widget with name '" << w->getIDAsString()
 				     << "' does yet exist!" << endl;
@@ -99,11 +99,11 @@ bool Panel::addWidget(Widget *w)
 	return true;
 }
 
-void Panel::removeWidget(Widget *w)
+void Panel::removeWidget(Widget * w)
 {
-	for (list<Widget *>::iterator wl_it = widgetList.begin();
-	     wl_it != widgetList.end(); wl_it++) {
-		if (w->operator==(**wl_it)) {
+	for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+	    wl_it++) {
+		if(w->operator==(**wl_it)) {
 			// if removing a widget set zero point to 0,0
 			w->setZeroPoint(Point(0, 0));
 			widgetList.erase(wl_it);
@@ -115,13 +115,13 @@ void Panel::removeWidget(Widget *w)
 	calcWidgetPosition();
 }
 
-Widget *Panel::getWidget(uint32_t inWidgetId)
+Widget * Panel::getWidget(uint32_t inWidgetId)
 {
-	for (list<Widget *>::const_iterator wl_it = widgetList.begin();
-	     wl_it != widgetList.end(); wl_it++) {
-		Widget *widget = (*wl_it);
+	for(list<Widget *>::const_iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+	    wl_it++) {
+		Widget * widget = (*wl_it);
 
-		if (inWidgetId == widget->getID()) {
+		if(inWidgetId == widget->getID()) {
 			return widget;
 		}
 	}
@@ -135,32 +135,32 @@ void Panel::hide() { setVisible(false); }
 
 void Panel::calcWidgetPosition()
 {
-	if (align == FREE) {
+	if(align == FREE) {
 		// do not much because alignment is FREE
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			Widget *widget = (*wl_it);
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++) {
+			Widget * widget = (*wl_it);
 			widget->setZeroPoint(getPosition());
 		}
-	} else if (align == HORIZONTAL) {
-		int xpos = 0;
-		int ypos = 0;
+	} else if(align == HORIZONTAL) {
+		int xpos     = 0;
+		int ypos     = 0;
 		int ybiggest = 0;
 
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			Widget *widget = (*wl_it);
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++) {
+			Widget * widget = (*wl_it);
 			widget->setZeroPoint(getPosition());
 
 			// some references to ease access
-			const int widgetWidth = widget->getSize().getWidth() + columnSpacing;
+			const int widgetWidth  = widget->getSize().getWidth() + columnSpacing;
 			const int widgetHeight = widget->getSize().getHeight() + rowSpacing;
-			const int panelWidth = getSize().getWidth();
-			const int panelHeight = getSize().getHeight();
+			const int panelWidth   = getSize().getWidth();
+			const int panelHeight  = getSize().getHeight();
 
 			// empty space in current x row
-			if ((xpos + widgetWidth <= panelWidth) &&
-			    (ypos + widgetHeight <= panelHeight)) {
+			if((xpos + widgetWidth <= panelWidth) &&
+			   (ypos + widgetHeight <= panelHeight)) {
 				widget->setPosition(Point(xpos, ypos));
 
 				// after position a widget increment current x position
@@ -170,8 +170,8 @@ void Panel::calcWidgetPosition()
 				ybiggest = max<int>(ybiggest, ypos + widgetHeight);
 			}
 			// x row full, but space in new y row
-			else if ((xpos + widgetWidth > panelWidth) &&
-			         (ybiggest + widgetHeight <= panelHeight)) {
+			else if((xpos + widgetWidth > panelWidth) &&
+			        (ybiggest + widgetHeight <= panelHeight)) {
 				// new row -> reset x position
 				xpos = 0;
 
@@ -180,7 +180,8 @@ void Panel::calcWidgetPosition()
 				// after position a widget increment current x position
 				xpos += widgetWidth;
 
-				// the new y position for this row is the biggest y from the last row
+				// the new y position for this row is the biggest y from the last
+				// row
 				ypos = ybiggest;
 			}
 			// no more space available in Panel
@@ -191,25 +192,25 @@ void Panel::calcWidgetPosition()
 				break;
 			}
 		}
-	} else if (align == VERTICAL) {
-		int xpos = 0;
-		int ypos = 0;
+	} else if(align == VERTICAL) {
+		int xpos     = 0;
+		int ypos     = 0;
 		int xbiggest = 0;
 
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			Widget *widget = (*wl_it);
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++) {
+			Widget * widget = (*wl_it);
 			widget->setZeroPoint(getPosition());
 
 			// some references to ease access
-			const int widgetWidth = widget->getSize().getWidth() + columnSpacing;
+			const int widgetWidth  = widget->getSize().getWidth() + columnSpacing;
 			const int widgetHeight = widget->getSize().getHeight() + rowSpacing;
-			const int panelWidth = getSize().getWidth();
-			const int panelHeight = getSize().getHeight();
+			const int panelWidth   = getSize().getWidth();
+			const int panelHeight  = getSize().getHeight();
 
 			// empty space in current y row
-			if ((ypos + widgetHeight <= panelHeight) &&
-			    (xpos + widgetWidth <= panelWidth)) {
+			if((ypos + widgetHeight <= panelHeight) &&
+			   (xpos + widgetWidth <= panelWidth)) {
 				widget->setPosition(Point(xpos, ypos));
 
 				// after position a widget increment current y position
@@ -219,8 +220,8 @@ void Panel::calcWidgetPosition()
 				xbiggest = max<int>(xbiggest, xpos + widgetWidth);
 			}
 			// y row full, but space in new x row
-			else if ((ypos + widgetHeight > panelHeight) &&
-			         (xpos + widgetWidth <= panelWidth)) {
+			else if((ypos + widgetHeight > panelHeight) &&
+			        (xpos + widgetWidth <= panelWidth)) {
 				// new row -> reset y position
 				ypos = 0;
 
@@ -229,7 +230,8 @@ void Panel::calcWidgetPosition()
 				// after position a widget increment current y position
 				ypos += widgetHeight;
 
-				// the new y position for this row is the biggest y from the last row
+				// the new y position for this row is the biggest y from the last
+				// row
 				xpos = xbiggest;
 			}
 			// no more space available in Panel
@@ -246,13 +248,13 @@ void Panel::calcWidgetPosition()
 // Draw all widgets
 void Panel::draw()
 {
-	if (isVisible()) {
+	if(isVisible()) {
 		cgutils::enableBlend();
 		cgutils::drawSquareFill(getRect(), backColor);
 
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			Widget *w = (*wl_it);
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++) {
+			Widget * w = (*wl_it);
 
 			w->draw_wrapper();
 		}
@@ -262,9 +264,9 @@ void Panel::draw()
 		// a problem if a effect draws over another panel and this panel is drawn
 		// before the effect. If this case is a problem in future the effect drawing
 		// should be moved to the window class...
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			Widget *w = (*wl_it);
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++) {
+			Widget * w = (*wl_it);
 
 			w->drawOverlay();
 		}
@@ -273,19 +275,19 @@ void Panel::draw()
 	}
 }
 
-bool Panel::isMouseDraggedWidgets(const Point &inMousePos)
+bool Panel::isMouseDraggedWidgets(const Point & inMousePos)
 {
-	if (isVisible()) {
+	if(isVisible()) {
 		bool dragged = false;
 
 		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			Widget *w = (*wl_it);
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++) {
+			Widget * w = (*wl_it);
 
 			dragged = w->isMouseDragged(inMousePos);
-			if (dragged == true) {
+			if(dragged == true) {
 				break;
 			}
 
@@ -294,7 +296,7 @@ bool Panel::isMouseDraggedWidgets(const Point &inMousePos)
 			 * If it has then "reinitialize" the iterator because it is
 			 * possible that it became invalide because of this change
 			 * of the list! */
-			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
 				rememberedWidgetListChangedCount = widgetListChangedCount;
 				wl_it = widgetList.begin(); // reinitailize the iterator
 			}
@@ -306,19 +308,19 @@ bool Panel::isMouseDraggedWidgets(const Point &inMousePos)
 }
 
 // Check if mouse is over a widget
-bool Panel::isMouseOverWidgets(const Point &inMousePos)
+bool Panel::isMouseOverWidgets(const Point & inMousePos)
 {
-	if (isVisible()) {
+	if(isVisible()) {
 		bool isOver = false;
 
 		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++) {
-			Widget *w = (*wl_it);
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++) {
+			Widget * w = (*wl_it);
 
 			isOver = w->isMouseOver(inMousePos);
-			if (isOver == true) {
+			if(isOver == true) {
 				break;
 			}
 
@@ -327,7 +329,7 @@ bool Panel::isMouseOverWidgets(const Point &inMousePos)
 			 * If it has then "reinitialize" the iterator because it is
 			 * possible that it became invalide because of this change
 			 * of the list! */
-			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
 				rememberedWidgetListChangedCount = widgetListChangedCount;
 				wl_it = widgetList.begin(); // reinitailize the iterator
 			}
@@ -338,23 +340,23 @@ bool Panel::isMouseOverWidgets(const Point &inMousePos)
 }
 
 // Check if click is over a widget
-bool Panel::isMouseClickWidgets(const Point &inMousePos, int button, int state)
+bool Panel::isMouseClickWidgets(const Point & inMousePos, int button, int state)
 {
 	// cerr << "isMouseClickWidgets start" << endl;
-	if (isVisible()) {
+	if(isVisible()) {
 		bool isClick = false;
 
 		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-		for (list<Widget *>::iterator wl_it = widgetList.begin();
-		     wl_it != widgetList.end(); wl_it++)
+		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		    wl_it++)
 		/*for (unsigned int i = 0; i < widgetList.size (); i++)*/
 		{
-			Widget *w = (*wl_it);
+			Widget * w = (*wl_it);
 
 			isClick = w->isMouseClick(inMousePos, button, state);
 
-			if (isClick == true) {
+			if(isClick == true) {
 				break;
 			}
 
@@ -363,7 +365,7 @@ bool Panel::isMouseClickWidgets(const Point &inMousePos, int button, int state)
 			 * If it has then "reinitialize" the iterator because it is
 			 * possible that it became invalide because of this change
 			 * of the list! */
-			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
 				rememberedWidgetListChangedCount = widgetListChangedCount;
 				wl_it = widgetList.begin(); // reinitailize the iterator
 			}
@@ -378,15 +380,15 @@ bool Panel::isMouseClickWidgets(const Point &inMousePos, int button, int state)
 // Check keyboard events
 bool Panel::isKeyTypeWidgets(unsigned char key)
 {
-	if (isVisible()) {
+	if(isVisible()) {
 		bool keyType = false;
 
 		int rememberedWidgetListChangedCount = widgetListChangedCount;
 
 		list<Widget *>::const_iterator it = widgetList.begin();
-		while (it != widgetList.end()) {
+		while(it != widgetList.end()) {
 			keyType = (*it++)->isKeyType(key);
-			if (keyType == true) {
+			if(keyType == true) {
 				break;
 			}
 
@@ -395,7 +397,7 @@ bool Panel::isKeyTypeWidgets(unsigned char key)
 			 * If it has then "reinitialize" the iterator because it is
 			 * possible that it became invalide because of this change
 			 * of the list! */
-			if (widgetListChangedCount != rememberedWidgetListChangedCount) {
+			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
 				rememberedWidgetListChangedCount = widgetListChangedCount;
 				it = widgetList.begin(); // reinitailize the iterator
 			}
@@ -411,8 +413,8 @@ void Panel::show_all()
 	show();
 
 	list<Widget *>::const_iterator it = widgetList.begin();
-	while (it != widgetList.end()) {
-		Widget *w = *it++;
+	while(it != widgetList.end()) {
+		Widget * w = *it++;
 
 		assert(w);
 		// show all widgets in the current page of the panel
