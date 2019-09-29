@@ -48,7 +48,7 @@ namespace mhgui
 Window * g_mainWindow;
 
 // Constructor
-Window::Window(const Rect & rect, const char * t, const Color & inColor)
+Window::Window(const Rect & rect, const string &t, const Color & inColor)
         : Component(FOUR_CHAR_CONST('M', 'W', 'i', 'n'), rect)
         , title(t)          //!< The window title bar
         , fullscreen(false) //!< full screen no

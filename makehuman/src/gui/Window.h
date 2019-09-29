@@ -73,7 +73,7 @@ class Window : public Component
 	int      mWindowId; ///< The GLUT Window ID;
 
 public:
-	Window(const Rect & rect, const char * t, const Color & c);
+	Window(const Rect & rect, const std::string & t, const Color & c);
 	virtual ~Window();
 
 	Window & operator=(Window &) = delete;

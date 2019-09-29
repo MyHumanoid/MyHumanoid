@@ -374,11 +374,6 @@ static const uint32_t kComponentID_CharacterSettingPanel_Shape =
         FOUR_CHAR_CONST('S', 'h', 'p', 'a');
 
 // ------------------------------------------------------------------
-// The Splash Panel
-// ------------------------------------------------------------------
-static const uint32_t kComponentID_SplashPanel = FOUR_CHAR_CONST('S', 'p', 'l', 's');
-
-// ------------------------------------------------------------------
 // The Utilities Panel
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_UtilitiesPanel = FOUR_CHAR_CONST('U', 't', 'l', 't');

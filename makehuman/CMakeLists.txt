@@ -150,8 +150,6 @@ set(makehuman_sources
 	src/PoseTargetSliderListener.h
 	src/SelectorListener.cpp
 	src/SelectorListener.h
-	src/SplashPanel.cpp
-	src/SplashPanel.h
 	src/TargetPanel.cpp
 	src/TargetPanel.h
 	src/TargetSelectionListener.cpp

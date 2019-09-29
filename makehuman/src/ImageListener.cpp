@@ -34,7 +34,6 @@
 #include "HandsPanel.h"
 #include "PoseTargetPanel.h"
 #include "PosesBodyPanel.h"
-#include "SplashPanel.h"
 #include "TargetPanel.h"
 #include "TeethPanel.h"
 #include "ToolbarPanel.h"

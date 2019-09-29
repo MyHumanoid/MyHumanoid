@@ -44,6 +44,7 @@
 
 #include <glm/glm.hpp>
 
+#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
 #define IM_VEC2_CLASS_EXTRA                                                                        \
 	ImVec2(const glm::ivec2 & other)                                                           \
 	{                                                                                          \
@@ -86,7 +87,6 @@
 #include "ComponentID.h"
 #include "Global.h"
 #include "PoseTargetPanel.h"
-#include "SplashPanel.h"
 #include "TargetPanel.h"
 #include "ToolbarPanel.h"
 #include "TooltipPanel.h"
@@ -100,6 +100,10 @@ using json   = nlohmann::json;
 using namespace std;
 using namespace Animorph;
 
+static constexpr char mh_app_name[] = "MyHumanoid";
+static constexpr char mh_version[] = "0.1.0";
+
+
 static void loadTextures();
 static void drawBackground();
 static void renderMesh();
@@ -108,7 +112,6 @@ json g_jsonConfig;
 
 static TooltipPanel * tooltipPanel;
 static ToolbarPanel * toolbarPanel;
-static SplashPanel *  splashPanel;
 static Mesh *         mesh;
 static Camera *       camera;
 // static Texture               *headTexture;
@@ -118,7 +121,6 @@ static Autozoom * autozoom;
 static CharacterSettingPanel * characterSettingPanel;
 
 bool  init; // shows the init status
-int   splashMotionCount;
 float twopoints[6];
 int   average           = 0;
 int   n_display         = 0;
@@ -421,6 +423,7 @@ struct WindowVisibility {
 	bool morphTargetsApplied = false;
 	bool poseTargets         = false;
 	bool poseTargetsApplied  = false;
+	bool about               = false;
 };
 
 static WindowVisibility g_displayWin;
@@ -791,7 +794,50 @@ void DisplayLibraryPoses()
 	}
 }
 
-
+void DisplayAbout() {
+	
+	constexpr static ImGuiWindowFlags winFlags
+	    = ImGuiWindowFlags_NoScrollbar
+	    | ImGuiWindowFlags_NoResize
+	    | ImGuiWindowFlags_NoCollapse
+	    | ImGuiWindowFlags_NoSavedSettings;
+	
+	if(!ImGui::Begin("About", &g_displayWin.about, winFlags)) {
+		ImGui::End();
+		return;
+	}
+	
+	ImGui::Text(mh_app_name);
+	ImGui::SameLine();
+	ImGui::Text(mh_version);
+	
+	ImGui::Text("Developer:");
+	ImGui::Text("  Eli2");
+	ImGui::NewLine();
+	ImGui::NewLine();
+	ImGui::Text("Based on:");
+	ImGui::Separator();
+	ImGui::Text("Make Human 0.9.1 RC1");
+	ImGui::Text("Core Team:");
+	ImGui::Text("  Manuel Bastioni: project admin");
+	ImGui::Text("  Simone Re from Ninibelabs: main coder");
+	ImGui::Text("  Letizia Beriozza from Ninibelabs: webmaster");
+	ImGui::Text("  Alessandro Proglio: coder");
+	ImGui::Text("  Emanuele Di Mattia: coder");
+	ImGui::Text("  Giovanni Lanza: blogosphere");
+	ImGui::Text("Maintainers team:");
+	ImGui::Text("  Andreas Volz: Linux version");
+	ImGui::Text("  Hans-Peter Dusel: OSX version");
+	ImGui::Text("  Romaln Behar: Linux/OSX version");
+	ImGui::Text("Doc/Translations team:");
+	ImGui::Text("  Martin Mackinlay");
+	ImGui::Text("Artists:");
+	ImGui::Text("  Luca Miragoli");
+	ImGui::Text("  Cicca: targets");
+	ImGui::Text("  Laura Sclavi: logo concept");
+	
+	ImGui::End();
+}
 
 // ================================================================================================
 
@@ -999,17 +1045,8 @@ void DisplayMainMenu()
 		if(ImGui::BeginMenu("Help")) {
 			ImGui::Checkbox("Performance", &g_displayWin.performance);
 			ImGui::Separator();
-			if(ImGui::Button("About")) {
-				SplashPanel * splashScreen = (SplashPanel *)g_mainWindow->getPanel(
-				        kComponentID_SplashPanel);
-
-				if(splashScreen == NULL) {
-					g_global.setDrawGrid(false);
-					splashScreen = new SplashPanel(g_mainWindow->getSize());
-					g_mainWindow->addPanel(splashScreen);
-					splashScreen->createWidgets();
-					splashScreen->show_all();
-				}
+			if(ImGui::MenuItem("About ...")) {
+				g_displayWin.about = true;
 			}
 			ImGui::EndMenu();
 		}
@@ -1027,6 +1064,9 @@ void DisplayMainMenu()
 	}
 	if(g_displayWin.poseTargetsApplied) {
 		DisplayPoseTargetsApplied();
+	}
+	if(g_displayWin.about) {
+		DisplayAbout();
 	}
 }
 
@@ -1259,16 +1299,6 @@ static void timerTrigger(int val)
 static void motion(int x, int y)
 {
 	Window & mainWindow(*g_mainWindow);
-	splashPanel = (SplashPanel *)mainWindow.getPanel(kComponentID_SplashPanel);
-	if(splashPanel != NULL && splashMotionCount++ >= 5) {
-		mainWindow.removePanel(splashPanel);
-		delete splashPanel;
-		splashPanel = NULL;
-
-		splashMotionCount = 0;
-		glutPostRedisplay();
-	}
-
 	mainWindow.isMouseOverPanel(Point(x, y));
 }
 
@@ -1349,15 +1379,6 @@ static void keyboard(unsigned char key)
 static void mouse(int button, int state, int x, int y)
 {
 	Window & mainWindow(*g_mainWindow);
-	splashPanel = (SplashPanel *)mainWindow.getPanel(kComponentID_SplashPanel);
-	if(splashPanel != NULL) {
-		mainWindow.removePanel(splashPanel);
-		delete splashPanel;
-		splashPanel = NULL;
-
-		splashMotionCount = 0;
-		// glutPostRedisplay();
-	}
 
 	// cout << "mouse: " << button << endl;
 	camera->mouseRotateStart(x, y);
@@ -1446,22 +1467,19 @@ int main(int argc, char ** argv)
 	int mainWinSizeY = g_jsonConfig["mainWindow"]["size"][1]; // glutGet(GLUT_SCREEN_HEIGHT);
 
 	Rect mainWinRect = Rect(mainWinPosX, mainWinPosY, mainWinSizeX, mainWinSizeY);
-
-	g_mainWindow = new mhgui::Window(mainWinRect, "MakeHuman 0.9.1 RC1", Color(0, 0, 0));
+	
+	
+	std::string winTitle = mh_app_name + " "s + mh_version;
+	g_mainWindow = new mhgui::Window(mainWinRect, winTitle, Color(0, 0, 0));
 
 	Window & mainWindow(*g_mainWindow);
 
 	mainWindow.setPosition(mhgui::Point(mainWinPosX, mainWinPosY));
 
-	splashMotionCount = 0;
-
 	tooltipPanel = new TooltipPanel(mainWindow.getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();
-	splashPanel  = new SplashPanel(mainWindow.getSize());
 	mesh         = new Mesh();
 	camera       = new Camera();
-	// headTexture           = new Texture();
-	// bodyTexture           = new Texture();
 	autozoom = new Autozoom();
 
 	characterSettingPanel = new CharacterSettingPanel();
@@ -1556,7 +1574,6 @@ int main(int argc, char ** argv)
 	mainWindow.addPanel(tooltipPanel);
 	mainWindow.addPanel(toolbarPanel);
 	mainWindow.addPanel(characterSettingPanel);
-	mainWindow.addPanel(splashPanel);
 
 	// set initial camera position
 	// camera->rotate (-M_PI/2, X_AXIS);
@@ -1566,15 +1583,12 @@ int main(int argc, char ** argv)
 	tooltipPanel->createWidgets();
 	toolbarPanel->createWidgets();
 	characterSettingPanel->createWidgets();
-	splashPanel->createWidgets();
 
 	// Activate the images textures
 	// Note it's after context creation
 	toolbarPanel->show_all();
 	tooltipPanel->show_all();
 	characterSettingPanel->show_all();
-	splashPanel->show_all();
-
 
 
 	// Glut callbacks
