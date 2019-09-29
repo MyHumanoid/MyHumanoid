@@ -39,7 +39,7 @@ using namespace std;
 using namespace Animorph;
 
 CharacterSettingPanel::CharacterSettingPanel()
-    : Panel(kComponentID_CharacterSettingPanel, Rect(0, 32, 192, 580))
+    : Panel(kComponentID_CharacterSettingPanel, Rect(0, 16, 192, 580))
 {
 	setAlignment(VERTICAL);
 }
@@ -61,12 +61,12 @@ void CharacterSettingPanel::createWidgets()
 	const Color c(1.0, 0.0, 0.0);
 	const Point kTooltipPos(70, 12);
 	// --------------------------------------------------------------------------
-	//  Image *image = new Image(kComponentID_Dummy,
-	//                    searchPixmapFile ("ui/dummy_image.png"),
-	//                    Rect(0,0,192,10));
-	//  image->setKillMouseDrag(true);
-	//  imageVector.push_back(image);
-	//  addWidget (image);
+	  Image *image = new Image(kComponentID_Dummy,
+						searchPixmapFile ("ui/dummy_image.png"),
+						Rect(0,0,192,10));
+	  image->setKillMouseDrag(true);
+	  imageVector.push_back(image);
+	  addWidget (image);
 	// --------------------------------------------------------------------------
 
 	selector = new Selector(kComponentID_CharacterSettingPanel_Age,
@@ -88,12 +88,12 @@ void CharacterSettingPanel::createWidgets()
 	}
 	selectorListener.ageDists = selector->getDists();
 	// --------------------------------------------------------------------------
-	//  image = new Image(kComponentID_Dummy,
-	//                    searchPixmapFile ("ui/dummy_image.png"),
-	//                    Rect(0,0,192,10));
-	//  image->setKillMouseDrag(true);
-	//  imageVector.push_back(image);
-	//  addWidget (image);
+	  image = new Image(kComponentID_Dummy,
+	                    searchPixmapFile ("ui/dummy_image.png"),
+	                    Rect(0,0,192,10));
+	  image->setKillMouseDrag(true);
+	  imageVector.push_back(image);
+	  addWidget (image);
 	// -------------------------------------------------------------------------
 	selector = new Selector(kComponentID_CharacterSettingPanel_MuscleSize,
 	                        searchPixmapFile("ui/muscle_size_selector.png"),
@@ -113,12 +113,12 @@ void CharacterSettingPanel::createWidgets()
 	}
 	selectorListener.muscleSizeDists = selector->getDists();
 	// --------------------------------------------------------------------------
-	//  image = new Image(kComponentID_Dummy,
-	//                    searchPixmapFile ("ui/dummy_image.png"),
-	//                    Rect(0,0,192,10));
-	//  image->setKillMouseDrag(true);
-	//  imageVector.push_back(image);
-	//  addWidget (image);
+	  image = new Image(kComponentID_Dummy,
+	                    searchPixmapFile ("ui/dummy_image.png"),
+	                    Rect(0,0,192,10));
+	  image->setKillMouseDrag(true);
+	  imageVector.push_back(image);
+	  addWidget (image);
 	// -------------------------------------------------------------------------
 	selector = new Selector(kComponentID_CharacterSettingPanel_Breast,
 	                        searchPixmapFile("ui/breast_selector.png"),
@@ -138,12 +138,12 @@ void CharacterSettingPanel::createWidgets()
 	}
 	selectorListener.breastDists = selector->getDists();
 	// --------------------------------------------------------------------------
-	//  image = new Image(kComponentID_Dummy,
-	//                    searchPixmapFile ("ui/dummy_image.png"),
-	//                    Rect(0,0,192,10));
-	//  image->setKillMouseDrag(true);
-	//  imageVector.push_back(image);
-	//  addWidget (image);
+	  image = new Image(kComponentID_Dummy,
+	                    searchPixmapFile ("ui/dummy_image.png"),
+	                    Rect(0,0,192,10));
+	  image->setKillMouseDrag(true);
+	  imageVector.push_back(image);
+	  addWidget (image);
 	// -------------------------------------------------------------------------
 	selector = new Selector(kComponentID_CharacterSettingPanel_Shape,
 	                        searchPixmapFile("ui/shape_selector.png"),
