@@ -42,6 +42,12 @@
 
 #include <json.hpp>
 
+#include <glm/glm.hpp>
+
+#define IM_VEC2_CLASS_EXTRA                                                 \
+        ImVec2(const glm::ivec2 & other) { x = other.x; y = other.y; }                       \
+        operator glm::ivec2() const { return glm::ivec2(x,y); }
+
 #include <imgui.h>
 #include <examples/imgui_impl_glut.h>
 #include <examples/imgui_impl_opengl3.h>
@@ -121,12 +127,19 @@ const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
+// ================================================================================================
+
 namespace MhGui {
 
 template <typename... T>
 void Image(mh::Texture texture, T&&... p)
 {
 	ImGui::Image((void*)(intptr_t)texture.handle, std::forward<T>(p)...);
+}
+template <typename... T>
+bool ImageButton(mh::Texture texture, T&&... p)
+{
+	return ImGui::ImageButton((void*)(intptr_t)texture.handle, std::forward<T>(p)...);
 }
 
 }
@@ -404,7 +417,7 @@ static bool show_demo_window = false;
 static bool g_userRequestedQuit = false;
 static bool g_displayAxis = false;
 
-static bool g_displayCharacterSettings = false;
+static bool g_displayCharacterSettings = true;
 static bool g_displayPerformance = false;
 
 static bool g_displayMorphTargets = false;
@@ -419,6 +432,49 @@ static int  g_requestShaderVersion = 1;
 static bool g_requestBackgroundShaderReload = false;
 
 // ================================================================================================
+
+std::optional<mh::Texture> g_ageSelectBackground;
+std::optional<mh::Texture> g_muscle_size_selector;
+std::optional<mh::Texture> g_breastSizeShape;
+std::optional<mh::Texture> g_bodyShapeHeight;
+
+void loadUiTextures() {
+	g_ageSelectBackground  = LoadTextureFromFile("pixmaps/ui/age_selector.png");
+	g_muscle_size_selector = LoadTextureFromFile("pixmaps/ui/muscle_size_selector.png");
+	g_breastSizeShape = LoadTextureFromFile("pixmaps/ui/breast_selector.png");
+	g_bodyShapeHeight = LoadTextureFromFile("pixmaps/ui/shape_selector.png");
+}
+
+void XYfoobar(mh::Texture texture, glm::vec2 & value) {
+	
+	using glm::vec2;
+	using glm::ivec2;
+	
+	auto * dl = ImGui::GetForegroundDrawList();
+	ImGuiIO& io = ImGui::GetIO();
+	
+	MhGui::ImageButton(texture, ImVec2(192, 104));
+	ivec2 pMin = ImGui::GetItemRectMin();
+	ivec2 size = ImGui::GetItemRectSize();
+	if (ImGui::IsItemActive()) {
+		ivec2 relPos = ivec2(io.MousePos) - pMin;
+		relPos = glm::max(relPos, ivec2(0));
+		relPos = glm::min(relPos, size);
+		value = vec2(relPos) / vec2(size);
+	}
+	
+	ivec2 cursorPos = pMin + ivec2(value * vec2(size));
+	float radius = 6.0f;
+	const ImU32 col_white = IM_COL32(255,255,255,255);
+	const ImU32 col_midgrey = IM_COL32(128,128,128,255);
+	const ImU32 col_midgrey2 = IM_COL32(128,128,128,128);
+	dl->AddCircleFilled(cursorPos, radius, col_midgrey2, 12);
+	dl->AddCircle(cursorPos, radius+1, col_midgrey);
+	dl->AddCircle(cursorPos, radius, col_white);
+}
+
+// ================================================================================================
+
 
 void DisplayMorphTargetRow(const string & target_name, float & target_value, bool xBtn)
 {
@@ -971,77 +1027,86 @@ void DisplayMainMenu()
 
 void DisplayCharacterSettings()
 {
-	static std::array<float, 2> ageAndSex = {0.f, 0.f};
-	static std::array<float, 2> bodyWeightMuscle = {0.f, 0.f};
-	static std::array<float, 2> breastSizeShape = {0.f, 0.f};
-	static std::array<float, 2> bodyShapeHeight = {0.f, 0.f};
-
+	using glm::vec2;
+	using glm::ivec2;
+	
+	{
+		vec2 foo = vec2(192, 104);
+		
+		Point *agePos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
+		g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
+		
+		Point *mPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
+		g_global.bodyWeightMuscle = vec2(mPos->x, mPos->y) / foo;
+		
+		Point *bPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
+		if(bPos)
+		g_global.breastSizeShape = vec2(bPos->x, bPos->y) / foo;
+		
+		Point *sPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
+		g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
+	}
+	
+	
+	
+	ImGui::SetNextWindowSize(ivec2(220, 800));
 	ImGui::Begin("Character Setting");
+	
+	ImGui::Text("Age/Sex");
+	XYfoobar(g_ageSelectBackground.value(), g_global.ageAndSex);
+	ImGui::Text("Weight/Muscle");
+	XYfoobar(g_muscle_size_selector.value(), g_global.bodyWeightMuscle);
+	ImGui::Text("Breast Size / Shape");
+	XYfoobar(g_breastSizeShape.value(), g_global.breastSizeShape);
+	ImGui::Text("Body Shape/Height");
+	XYfoobar(g_bodyShapeHeight.value(), g_global.bodyShapeHeight);
 
-	if (ImGui::Button("Reset")) {
-		ageAndSex = {0.f, 0.f};
-		bodyWeightMuscle = {0.f, 0.f};
-		breastSizeShape = {0.f, 0.f};
-		bodyShapeHeight = {0.f, 0.f};
+//	if (ImGui::SliderFloat2("Age/Sex", ageAndSex.data(), 0.0f, 1.0f)) {
 
-		characterSettingPanel->selectorListener.ageDists.clear();
-		characterSettingPanel->selectorListener.muscleSizeDists.clear();
-		characterSettingPanel->selectorListener.breastDists.clear();
-		characterSettingPanel->selectorListener.shapeDists.clear();
+//		Point p(ageAndSex[0] * 100, ageAndSex[1] * 100);
+//		characterSettingPanel->m_age->cursorPos = p;
 
-		Mesh *mesh = g_global.getMesh();
-		assert(mesh);
-		mesh->resetMorph();
-		loadDefaultBodySettings();
-		g_global.resetFuzzyValues();
-	}
+//		characterSettingPanel->selectorListener.ageDists =
+//		    characterSettingPanel->m_age->getDists();
 
-	if (ImGui::SliderFloat2("Age/Sex", ageAndSex.data(), 0.0f, 1.0f)) {
+//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
+//	}
 
-		Point p(ageAndSex[0] * 100, ageAndSex[1] * 100);
-		characterSettingPanel->m_age->cursorPos = p;
+//	if (ImGui::SliderFloat2("Weight/Muscle", bodyWeightMuscle.data(), 0.0f,
+//	                        1.0f)) {
 
-		characterSettingPanel->selectorListener.ageDists =
-		    characterSettingPanel->m_age->getDists();
+//		Point p(bodyWeightMuscle[0] * 100, bodyWeightMuscle[1] * 100);
+//		characterSettingPanel->m_muscleSize->cursorPos = p;
 
-		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	}
+//		characterSettingPanel->selectorListener.muscleSizeDists =
+//		    characterSettingPanel->m_muscleSize->getDists();
 
-	if (ImGui::SliderFloat2("Weight/Muscle", bodyWeightMuscle.data(), 0.0f,
-	                        1.0f)) {
+//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
+//	}
 
-		Point p(bodyWeightMuscle[0] * 100, bodyWeightMuscle[1] * 100);
-		characterSettingPanel->m_muscleSize->cursorPos = p;
+//	if (ImGui::SliderFloat2("Breast Size / Shape", breastSizeShape.data(), 0.0f,
+//	                        1.0f)) {
 
-		characterSettingPanel->selectorListener.muscleSizeDists =
-		    characterSettingPanel->m_muscleSize->getDists();
+//		Point p(breastSizeShape[0] * 100, breastSizeShape[1] * 100);
+//		characterSettingPanel->m_breast->cursorPos = p;
 
-		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	}
+//		characterSettingPanel->selectorListener.breastDists =
+//		    characterSettingPanel->m_breast->getDists();
 
-	if (ImGui::SliderFloat2("Breast Size / Shape", breastSizeShape.data(), 0.0f,
-	                        1.0f)) {
+//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
+//	}
 
-		Point p(breastSizeShape[0] * 100, breastSizeShape[1] * 100);
-		characterSettingPanel->m_breast->cursorPos = p;
+//	if (ImGui::SliderFloat2("Body Shape/Height", bodyShapeHeight.data(), 0.0f,
+//	                        1.0f)) {
 
-		characterSettingPanel->selectorListener.breastDists =
-		    characterSettingPanel->m_breast->getDists();
+//		Point p(bodyShapeHeight[0] * 100, bodyShapeHeight[1] * 100);
+//		characterSettingPanel->m_shape->cursorPos = p;
 
-		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	}
+//		characterSettingPanel->selectorListener.shapeDists =
+//		    characterSettingPanel->m_shape->getDists();
 
-	if (ImGui::SliderFloat2("Body Shape/Height", bodyShapeHeight.data(), 0.0f,
-	                        1.0f)) {
-
-		Point p(bodyShapeHeight[0] * 100, bodyShapeHeight[1] * 100);
-		characterSettingPanel->m_shape->cursorPos = p;
-
-		characterSettingPanel->selectorListener.shapeDists =
-		    characterSettingPanel->m_shape->getDists();
-
-		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	}
+//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
+//	}
 
 	ImGui::End();
 }
@@ -1458,7 +1523,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	
-	
+	loadUiTextures();
 	CreateTargetImageTextures();
 	CreatePoseImageTextures();
 	CreateCaractersIconTextures();

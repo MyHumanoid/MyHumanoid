@@ -66,7 +66,6 @@ public:
 
 	const string dump() const;
 
-private:
 	int32_t x, y;
 }; // class Point
 
