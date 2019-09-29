@@ -1,5 +1,7 @@
 #include "MhPose.h"
 
+#include <glm/glm.hpp>
+
 #include "render/RenderUtils.h"
 
 #include "MhGui.h"
@@ -12,6 +14,7 @@
 
 void DisplayPoseTargetSelector() {
 	
+	using glm::vec2;
 	using glm::ivec2;
 	
 	constexpr static ImGuiWindowFlags winFlags
@@ -19,11 +22,14 @@ void DisplayPoseTargetSelector() {
 	      |ImGuiWindowFlags_NoSavedSettings
 	      | ImGuiWindowFlags_NoResize;
 	
-	ImGui::SetNextWindowSize(ivec2(219, 550));
+	ImGui::SetNextWindowSize(ivec2(380, 484));
 	if(!ImGui::Begin("Pose Target Groups", &g_displayWin.poseTargetFoo, winFlags)) {
 		ImGui::End();
 		return;
 	}
+	
+	static std::string category = "";
+	
 	
 	struct Goo {
 		
@@ -70,6 +76,7 @@ void DisplayPoseTargetSelector() {
 			
 			auto p = ImGui::GetCursorPos();
 			if(ImGui::InvisibleButton(as.c_str(), ivec2(32, 32))){
+				category = target;
 				click();
 			}
 			ImGui::SetCursorPos(p);
@@ -181,13 +188,85 @@ void DisplayPoseTargetSelector() {
 	};
 	// clang-format on
 	
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ivec2(0, 0));
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ivec2(0, 0));
-	ImGui::Columns(6, NULL, false);
-	for(const auto & tile: goobar) {
-		tile.gui();
+	{
+		//ImGui::SetNextWindowSize(ivec2(219, 550));
+		ImGui::BeginChild("Pose Groups", ivec2(195, 460), false);
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ivec2(0, 0));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ivec2(0, 0));
+		ImGui::Columns(6, NULL, false);
+		for(const auto & tile: goobar) {
+			tile.gui();
+		}
+		//ImGui::Columns();
+		ImGui::PopStyleVar(2);
+		ImGui::EndChild();
 	}
-	ImGui::PopStyleVar(2);
+	ImGui::SameLine();
+	{
+		ImGui::BeginChild("Pose Targets", ivec2(140, 440), false);
+		
+		Mesh * mesh = g_global.getMesh();
+		assert(mesh);
+		BodySettings bodyset = mesh->getPoses();
+		
+		for(const auto & [target_name, tarVal] : mesh->getPoseMapRef()) {
+			PoseTarget * poseTarget = mesh->getPoseTargetForName(target_name);
+			assert(poseTarget);
+			
+			BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
+			
+			// FIX: Make sure that a bodyset with the given name really exists!
+			float target_value = (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
+			
+			string::size_type loc = target_name.find("/", 0);
+			if(loc == string::npos)
+				continue;
+			
+			string sub = target_name.substr(0, loc);
+			
+			if(sub != category)
+				continue;
+			
+			ImGuiIO& io = ImGui::GetIO();
+			
+			
+			fs::path targetImageName = target_name;
+			targetImageName.replace_extension();
+			
+			const auto & texIdIt = g_poseImageTextures.find(targetImageName);
+			if(texIdIt != g_poseImageTextures.end()) {
+				auto texId = texIdIt->second;
+				MhGui::ImageButton(texId, ImVec2(64, 64));
+			} else {
+				ImGui::InvisibleButton(target_name.c_str(), ImVec2(48, 48));
+			}
+			if(ImGui::IsItemActive()) {
+				float posToValFactor = 0.2;
+//				if(!io.KeyCtrl) {
+//					posToValFactor = 0.01;
+//				}
+				
+				ivec2 delta = ivec2(io.MousePos) - ivec2(io.MouseClickedPos[0]);
+				
+				float xMin = poseTarget->getMinAngle();
+				float xMax = poseTarget->getMaxAngle();
+				
+				
+				
+				vec2 foo = glm::clamp(vec2(delta) * posToValFactor, vec2(xMin, 0.f), vec2(xMax, 1.f));
+				
+				g_global.getMesh()->setPose(target_name, foo.x);
+				
+				ImGui::GetForegroundDrawList()->AddLine(io.MouseClickedPos[0], io.MousePos, ImGui::GetColorU32(ImGuiCol_Button), 4.0f); // Draw a line between the button and the mouse cursor
+			}
+			
+			
+			ImGui::SameLine();
+			ImGui::Text("%.2f", target_value);
+		}
+		
+		ImGui::EndChild();
+	}
 	ImGui::End();
 }
 
