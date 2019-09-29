@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+mh_project_toplevel=$(git rev-parse --show-toplevel)
+shopt -s globstar
+clang-format -i "$mh_project_toplevel"/makehuman/src/**/*.{h,cpp}
