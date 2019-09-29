@@ -692,7 +692,6 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Edit")) {
-			ImGui::Checkbox("CharacterSettings", &g_displayWin.characterSettings);
 			ImGui::Separator();
 			if(ImGui::MenuItem("Reset Mesh")) {
 				switch(g_global.getAppMode()) {
@@ -740,13 +739,14 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Morph")) {
+			ImGui::Checkbox("Composite Morph", &g_displayWin.characterSettings);
 			ImGui::Checkbox("Morph Targets", &g_displayWin.morphTargets);
-			ImGui::Checkbox("Used Morph Targets", &g_displayWin.morphTargetsApplied);
+			ImGui::Checkbox("Applied Morph Targets", &g_displayWin.morphTargetsApplied);
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Pose")) {
-			ImGui::Checkbox("Pose Rotations", &g_displayWin.poseTargets);
-			ImGui::Checkbox("Used pose list", &g_displayWin.poseTargetsApplied);
+			ImGui::Checkbox("Pose Targets", &g_displayWin.poseTargets);
+			ImGui::Checkbox("Applied Pose Targets", &g_displayWin.poseTargetsApplied);
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
@@ -763,16 +763,16 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Shading")) {
-			if(ImGui::MenuItem("Reload Shaders")) {
+			if(ImGui::MenuItem("Load Shader 1")) {
 				g_requestShaderVersion = 1;
 				g_requestShaderReload  = true;
 			}
-			if(ImGui::MenuItem("Reload Shaders 2")) {
+			if(ImGui::MenuItem("Load Shader 2")) {
 				g_requestShaderVersion = 2;
 				g_requestShaderReload  = true;
 			}
 			ImGui::Separator();
-			if(ImGui::MenuItem("Reload Background Shader")) {
+			if(ImGui::MenuItem("Load Background Shader")) {
 				g_requestBackgroundShaderReload = true;
 			}
 
@@ -1363,6 +1363,8 @@ int main(int argc, char ** argv)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO & io = ImGui::GetIO();
+	io.IniSavingRate = 60.f;
+	io.IniFilename = "MyHumanoid-config-gui.ini";
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
 	ImGui::StyleColorsDark();

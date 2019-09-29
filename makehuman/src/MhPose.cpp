@@ -23,7 +23,7 @@ void DisplayPoseTargets() {
 	      | ImGuiWindowFlags_NoResize;
 	
 	ImGui::SetNextWindowSize(ivec2(380, 484));
-	if(!ImGui::Begin("Pose Target Groups", &g_displayWin.poseTargets, winFlags)) {
+	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
 		ImGui::End();
 		return;
 	}
@@ -279,12 +279,12 @@ void DisplayPoseTargets() {
 
 void DisplayPoseTargetsApplied()
 {
-	if(!ImGui::Begin("Applied Pose Rotations", &g_displayWin.poseTargetsApplied)) {
+	if(!ImGui::Begin("Applied Pose Targets", &g_displayWin.poseTargetsApplied)) {
 		ImGui::End();
 		return;
 	}
 	
-	ImGui::Columns(3, "Applied Pose Target Cols", false);
+	//ImGui::Columns(3, "Applied Pose Target Cols", false);
 	
 	Mesh * mesh = g_global.getMesh();
 	assert(mesh);
@@ -300,26 +300,24 @@ void DisplayPoseTargetsApplied()
 		fs::path targetImageName = target_name;
 		targetImageName.replace_extension();
 		
+		bool showTooltip = false;
+		
 		const auto & texIdIt = g_poseImageTextures.find(targetImageName);
-		if(texIdIt != g_poseImageTextures.end()) {
-			auto texId = texIdIt->second;
-			
-			MhGui::Image(texId, ImVec2(16, 16));
-			if(ImGui::IsItemHovered()) {
-				ImGui::BeginTooltip();
-				MhGui::Image(texId, ImVec2(128, 128));
-				ImGui::EndTooltip();
-			}
+		bool haveTexture = texIdIt != g_poseImageTextures.end();
+		if(haveTexture) {
+			MhGui::Image(texIdIt->second, ImVec2(16, 16));
+			showTooltip |= ImGui::IsItemHovered();
 		} else {
 			ImGui::Dummy(ImVec2(16, 16));
 		}
-		ImGui::NextColumn();
+		ImGui::SameLine();
 		
 		// FIXME only the button in the first line is working
-		if(ImGui::Button("X", ImVec2(16, 16))) {
+		if(ImGui::Button("X")) {
 			g_global.getMesh()->setPose(target_name, 0.f);
 		}
-		ImGui::NextColumn();
+		showTooltip |= ImGui::IsItemHovered();
+		ImGui::SameLine();
 		
 		if(ImGui::SliderFloat(target_name.c_str(), &target_value, poseTarget->getMinAngle(),
 		                       poseTarget->getMaxAngle())) {
@@ -328,7 +326,13 @@ void DisplayPoseTargetsApplied()
 				g_global.getMesh()->setPose(target_name, target_value);
 			}
 		}
-		ImGui::NextColumn();
+		showTooltip |= ImGui::IsItemHovered();
+		
+		if(showTooltip && haveTexture) {
+			ImGui::BeginTooltip();
+			MhGui::Image(texIdIt->second, ImVec2(128, 128));
+			ImGui::EndTooltip();
+		}
 	}
 	
 	ImGui::End();
