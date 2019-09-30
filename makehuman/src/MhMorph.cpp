@@ -141,14 +141,12 @@ void DisplayCharacterSettings()
 
 void doMorphFromGui(std::string morphTarget, float value)
 {
-	Mesh * mesh = g_global.getMesh();
-	
-	mesh->doMorph(morphTarget, value);
+	g_global.mesh->doMorph(morphTarget, value);
 	
 	//	mesh->doMorph(imgSliderSource->getTargetName(),
 	//	              imgSliderSource->getSliderValue());
 	
-	mesh->calcNormals();
+	g_global.mesh->calcNormals();
 }
 
 void DisplayMorphTargetRow(const string & target_name, float & target_value, bool xBtn)
@@ -206,9 +204,9 @@ void DisplayMorphTargets()
 		return;
 	}
 	
-	BodySettings bodyset = g_global.getMesh()->getBodySettings();
+	BodySettings bodyset = g_global.mesh->getBodySettings();
 	
-	for(const auto & targetEntry : g_global.getMesh()->getTargetMapRef()) {
+	for(const auto & targetEntry : g_global.mesh->getTargetMapRef()) {
 		const string & target_name(targetEntry.first);
 		
 		string::size_type loc = target_name.find("/", 0);
@@ -236,10 +234,7 @@ void DisplayMorphTargetsApplied()
 		return;
 	}
 	
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-	
-	for(const auto & bodyset_it : mesh->getBodySettings()) {
+	for(const auto & bodyset_it : g_global.mesh->getBodySettings()) {
 		
 		string target_name(bodyset_it.first);
 		

@@ -212,12 +212,10 @@ void DisplayPoseTargets() {
 	{
 		ImGui::BeginChild("Pose Targets", ivec2(140, 440), false);
 		
-		Mesh * mesh = g_global.getMesh();
-		assert(mesh);
-		BodySettings bodyset = mesh->getPoses();
+		BodySettings bodyset = g_global.mesh->getPoses();
 		
-		for(const auto & [target_name, tarVal] : mesh->getPoseMapRef()) {
-			PoseTarget * poseTarget = mesh->getPoseTargetForName(target_name);
+		for(const auto & [target_name, tarVal] : g_global.mesh->getPoseMapRef()) {
+			PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
 			assert(poseTarget);
 			
 			BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
@@ -262,7 +260,7 @@ void DisplayPoseTargets() {
 				
 				vec2 foo = glm::clamp(vec2(delta) * posToValFactor, vec2(xMin, 0.f), vec2(xMax, 1.f));
 				
-				g_global.getMesh()->setPose(target_name, foo.x);
+				g_global.mesh->setPose(target_name, foo.x);
 				
 				ImGui::GetForegroundDrawList()->AddLine(io.MouseClickedPos[0], io.MousePos, ImGui::GetColorU32(ImGuiCol_Button), 4.0f); // Draw a line between the button and the mouse cursor
 			}
@@ -286,15 +284,12 @@ void DisplayPoseTargetsApplied()
 	
 	//ImGui::Columns(3, "Applied Pose Target Cols", false);
 	
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-	
-	for(const auto & bodyset_it : mesh->getPoses()) {
+	for(const auto & bodyset_it : g_global.mesh->getPoses()) {
 		
 		const string & target_name(bodyset_it.first);
 		float          target_value = bodyset_it.second;
 		
-		PoseTarget * poseTarget = mesh->getPoseTargetForName(target_name);
+		PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);
 		
 		fs::path targetImageName = target_name;
@@ -314,7 +309,7 @@ void DisplayPoseTargetsApplied()
 		
 		// FIXME only the button in the first line is working
 		if(ImGui::Button("X")) {
-			g_global.getMesh()->setPose(target_name, 0.f);
+			g_global.mesh->setPose(target_name, 0.f);
 		}
 		showTooltip |= ImGui::IsItemHovered();
 		ImGui::SameLine();
@@ -323,7 +318,7 @@ void DisplayPoseTargetsApplied()
 		                       poseTarget->getMaxAngle())) {
 			// TODO used min so that rotation does not vanish
 			if(target_value != 0.f) {
-				g_global.getMesh()->setPose(target_name, target_value);
+				g_global.mesh->setPose(target_name, target_value);
 			}
 		}
 		showTooltip |= ImGui::IsItemHovered();

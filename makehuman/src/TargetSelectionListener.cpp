@@ -364,19 +364,15 @@ bool TargetSelectionListener::mouseReleased(const Point & inMousePos, int button
 			targetPanel->createWidgets();
 		}
 
-		Autozoom * autozoom = g_global.getAutozoom();
-		Camera *   camera   = g_global.getCamera();
-		assert(autozoom);
-
 		Mesh * mesh = g_global.getMesh();
 		assert(mesh);
 		VertexVector & vertexvector(mesh->getVertexVectorRef());
 
 		std::string pathAutozoom_data =
 		        searchDataDir("targets") + "/" + target + "/" + target + ".camera";
-		if(autozoom->lazyLoadData(pathAutozoom_data)) {
-			camera->moveCameraAnimated(pathAutozoom_data,
-			                           autozoom->getAutozoomData(pathAutozoom_data),
+		if(g_global.autozoom->lazyLoadData(pathAutozoom_data)) {
+			g_global.camera->moveCameraAnimated(pathAutozoom_data,
+			                           g_global.autozoom->getAutozoomData(pathAutozoom_data),
 			                           vertexvector);
 		}
 

@@ -104,11 +104,6 @@ json g_jsonConfig;
 
 static TooltipPanel * tooltipPanel;
 static ToolbarPanel * toolbarPanel;
-static Mesh *         mesh;
-static Camera *       camera;
-// static Texture               *headTexture;
-// static Texture               *bodyTexture;
-static Autozoom * autozoom;
 
 static CharacterSettingPanel * characterSettingPanel;
 
@@ -197,10 +192,7 @@ static void CreateCaractersIconTextures()
 
 static void saveBodySettings(const string & filename)
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-
-	BodySettings bodyset = mesh->getBodySettings();
+	BodySettings bodyset = g_global.mesh->getBodySettings();
 
 	bool state = bodyset.save(filename);
 
@@ -217,8 +209,6 @@ static void saveBodySettings(const string & filename)
 
 static void loadBodySettings(const string & filename)
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
 	Window & mainWindow = *g_mainWindow;
 
 	BodySettings bodyset;
@@ -239,8 +229,8 @@ static void loadBodySettings(const string & filename)
 	}
 
 	if(state) {
-		mesh->doMorph(bodyset);
-		mesh->calcNormals();
+		g_global.mesh->doMorph(bodyset);
+		g_global.mesh->calcNormals();
 		logger("BodySettings loaded");
 	} else {
 		logger("BodySettings load failed");
@@ -251,10 +241,7 @@ static void loadBodySettings(const string & filename)
 
 static void savePoses(const string & filename)
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-
-	BodySettings poses = mesh->getPoses();
+	BodySettings poses = g_global.mesh->getPoses();
 
 	bool state = poses.save(filename);
 
@@ -267,14 +254,11 @@ static void savePoses(const string & filename)
 
 static void loadPoses(const string & filename)
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-
 	BodySettings poses;
 	bool         state = poses.load(filename);
 
 	if(state) {
-		mesh->doPose(poses);
+		g_global.mesh->doPose(poses);
 		logger("Poses loaded");
 	} else {
 		logger_err("Poses load failed");
@@ -284,10 +268,7 @@ static void loadPoses(const string & filename)
 
 static void exportBodySettings(string & directory, bool full)
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-
-	ObjExporter obj_export(*mesh);
+	ObjExporter obj_export(*g_global.mesh);
 
 	if(directory.substr(directory.size() - 1, 1) != "/") {
 		directory.append("/");
@@ -306,10 +287,7 @@ static void exportBodySettings(string & directory, bool full)
 
 static void exportCollada(string & filename)
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-
-	ColladaExporter collada_export(*mesh);
+	ColladaExporter collada_export(*g_global.mesh);
 
 	if(filename.substr(filename.size() - 1, 1) != "/") {
 		filename.append("/");
@@ -328,11 +306,7 @@ static void exportCollada(string & filename)
 
 static void saveAutozoom(const string & filename)
 {
-	Autozoom * autozoom = g_global.getAutozoom();
-	Camera *   camera   = g_global.getCamera();
-	assert(autozoom);
-
-	bool state = autozoom->save(filename, *camera);
+	bool state = g_global.autozoom->save(filename, *g_global.camera);
 
 	if(state) {
 		logger("Autozoom saved");
@@ -345,16 +319,12 @@ static void saveAutozoom(const string & filename)
 
 static void ResetMeshPose()
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-	mesh->resetPose();
+	g_global.mesh->resetPose();
 }
 
 static void ResetMeshMorph()
 {
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-	mesh->resetMorph();
+	g_global.mesh->resetMorph();
 
 	loadDefaultBodySettings();
 
@@ -383,7 +353,7 @@ void DisplayLibraryCharacters()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	CharactersMap & charactersmap = mesh->getCharactersMapRef();
+	CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -415,16 +385,14 @@ void DisplayLibraryCharacters()
 
 
 				{ // not copy-paste
-					Mesh * mesh = g_global.getMesh();
-
 					if(g_global.getAppMode() == POSES) {
 						g_global.setAppMode(BODY_SETTINGS);
-						mesh->bodyDetailsMode();
+						g_global.mesh->bodyDetailsMode();
 					}
 
-					CharactersMap & charactersmap = mesh->getCharactersMapRef();
-					mesh->doMorph(charactersmap[character_name], 1.0, true);
-					mesh->calcNormals();
+					CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+					g_global.mesh->doMorph(charactersmap[character_name], 1.0, true);
+					g_global.mesh->calcNormals();
 
 					loadSelectorsPositions(
 					        charactersmap[character_name].cursorPositions);
@@ -440,7 +408,7 @@ void DisplayLibraryPoses()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	CharactersMap & charactersmap = mesh->getCharactersMapRef();
+	CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -475,15 +443,15 @@ void DisplayLibraryPoses()
 
 					if(g_global.getAppMode() != POSES) {
 						g_global.setAppMode(POSES);
-						mesh->poseMode();
+						g_global.mesh->poseMode();
 					}
 
-					CharactersMap & charactersmap = mesh->getCharactersMapRef();
+					CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
 
-					mesh->doPose(charactersmap[character_name], 1.0, true);
+					g_global.mesh->doPose(charactersmap[character_name], 1.0, true);
 					// mesh->doPose (charactersmap[imgSource->getTargetName ()],
 					// false);
-					mesh->calcNormals();
+					g_global.mesh->calcNormals();
 				}
 			}
 		}
@@ -620,9 +588,9 @@ void DisplayMainMenu()
 			ImGui::Separator();
 
 			if(ImGui::BeginMenu("Toggle Visibility")) {
-				for(auto & g : mesh->facegroup.m_groups) {
+				for(auto & g : g_global.mesh->facegroup.m_groups) {
 					if(ImGui::Button(g.first.c_str())) {
-						mesh->facegroup.toggleVisible(g.first);
+						g_global.mesh->facegroup.toggleVisible(g.first);
 					}
 				}
 				ImGui::EndMenu();
@@ -815,7 +783,7 @@ static void display()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGLUT_NewFrame();
 
-	camera->applyMatrix();
+	g_global.camera->applyMatrix();
 
 	renderMesh();
 
@@ -823,13 +791,13 @@ static void display()
 		cgutils::drawAxis();
 	}
 
-	if(g_global.getQuotedBox())
+	if(g_global.quotedBox)
 		cgutils::mhWireCube(twopoints);
 
 	drawBackground();
 	g_mainWindow->draw();
 
-	if(g_global.getDrawGrid()) {
+	if(g_global.drawGrid) {
 		cgutils::drawGrid(g_mainWindow->getSize(), 220, 70, grid_color, border_color, 50);
 	} else {
 		cgutils::drawSquare(Rect(0, 0, 1, 1), border_color);
@@ -893,8 +861,8 @@ static void display()
 static void reshape(int w, int h)
 {
 	Window & mainWindow(*g_mainWindow);
-	mainWindow.reshape(Size(w, h), *camera);
-	camera->reshape(w, h);
+	mainWindow.reshape(Size(w, h), *g_global.camera);
+	g_global.camera->reshape(w, h);
 }
 
 static void timerTrigger(int val)
@@ -904,9 +872,9 @@ static void timerTrigger(int val)
 	bool     tmp;
 	Window & mainWindow(*g_mainWindow);
 
-	tmp = camera->timerTrigger();
+	tmp = g_global.camera->timerTrigger();
 
-	if(!camera->isPerspective()) {
+	if(!g_global.camera->isPerspective()) {
 		reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
 	}
 	glutTimerFunc(50, timerTrigger, 1);
@@ -924,16 +892,16 @@ static void special(int key)
 	if(!mainWindow.isKeyTypePanel(key)) {
 		switch(key) {
 		case GLUT_KEY_UP:
-			camera->move(0, 1, 0);
+			g_global.camera->move(0, 1, 0);
 			break;
 		case GLUT_KEY_DOWN:
-			camera->move(0, -1, 0);
+			g_global.camera->move(0, -1, 0);
 			break;
 		case GLUT_KEY_LEFT:
-			camera->move(-1, 0, 0);
+			g_global.camera->move(-1, 0, 0);
 			break;
 		case GLUT_KEY_RIGHT:
-			camera->move(1, 0, 0);
+			g_global.camera->move(1, 0, 0);
 			break;
 		}
 	}
@@ -946,44 +914,44 @@ static void keyboard(unsigned char key)
 	if(!mainWindow.isKeyTypePanel(key)) {
 		switch(toupper(key)) {
 		case '+':
-			camera->move(0, 0, 1);
+			g_global.camera->move(0, 0, 1);
 			break;
 		case '-':
-			camera->move(0, 0, -1);
+			g_global.camera->move(0, 0, -1);
 			break;
 		case '8':
-			camera->rotate(-M_PI / 12, X_AXIS);
+			g_global.camera->rotate(-M_PI / 12, X_AXIS);
 			break;
 		case '2':
-			camera->rotate(M_PI / 12, X_AXIS);
+			g_global.camera->rotate(M_PI / 12, X_AXIS);
 			break;
 		case '1':
-			camera->resetRotation();
+			g_global.camera->resetRotation();
 			// camera->resetPosition();
 			// camera->rotate (-M_PI/2, X_AXIS);
 			// camera->move (0,0,-75);
 			break;
 		case '7':
-			camera->resetRotation();
-			camera->rotate(M_PI / 2, X_AXIS);
+			g_global.camera->resetRotation();
+			g_global.camera->rotate(M_PI / 2, X_AXIS);
 			break;
 		case '6':
-			camera->rotate(-M_PI / 12, Y_AXIS);
+			g_global.camera->rotate(-M_PI / 12, Y_AXIS);
 			break;
 		case '5':
-			camera->setPerspective(!camera->isPerspective());
+			g_global.camera->setPerspective(!g_global.camera->isPerspective());
 			reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
 			break;
 		case '4':
-			camera->rotate(M_PI / 12, Y_AXIS);
+			g_global.camera->rotate(M_PI / 12, Y_AXIS);
 			break;
 		case '3':
-			camera->resetRotation();
-			camera->rotate(-M_PI / 2, Y_AXIS);
+			g_global.camera->resetRotation();
+			g_global.camera->rotate(-M_PI / 2, Y_AXIS);
 			break;
 		case '.':
-			camera->resetPosition();
-			camera->move(0, 0, -125);
+			g_global.camera->resetPosition();
+			g_global.camera->move(0, 0, -125);
 			break;
 		default:
 			break;
@@ -997,7 +965,7 @@ static void mouse(int button, int state, int x, int y)
 	Window & mainWindow(*g_mainWindow);
 
 	// cout << "mouse: " << button << endl;
-	camera->mouseRotateStart(x, y);
+	g_global.camera->mouseRotateStart(x, y);
 
 	if(!mainWindow.isMouseClickPanel(Point(x, y), button, state)) {
 		switch(button) {
@@ -1015,8 +983,8 @@ static void mouse(int button, int state, int x, int y)
 
 #ifdef GLUT_WHEEL_UP
 		case GLUT_WHEEL_UP: // 3
-			camera->move(0, 0, 1);
-			if(!camera->isPerspective()) {
+			g_global.camera->move(0, 0, 1);
+			if(!g_global.camera->isPerspective()) {
 				reshape(mainWindow.getSize().getWidth(),
 				        mainWindow.getSize().getHeight());
 			}
@@ -1025,8 +993,8 @@ static void mouse(int button, int state, int x, int y)
 
 #ifdef GLUT_WHEEL_DOWN
 		case GLUT_WHEEL_DOWN: // 4
-			camera->move(0, 0, -1);
-			if(!camera->isPerspective()) {
+			g_global.camera->move(0, 0, -1);
+			if(!g_global.camera->isPerspective()) {
 				reshape(mainWindow.getSize().getWidth(),
 				        mainWindow.getSize().getHeight());
 			}
@@ -1054,9 +1022,9 @@ static void activeMotion(int x, int y)
 	Window & mainWindow(*g_mainWindow);
 	if(!mainWindow.isMouseDraggedPanel(Point(x, y))) {
 		if(right_button_down) {
-			camera->moveMouse(x, y);
+			g_global.camera->moveMouse(x, y);
 		} else {
-			camera->rotateMouse(x, y);
+			g_global.camera->rotateMouse(x, y);
 		}
 		glutPostRedisplay();
 	}
@@ -1090,9 +1058,9 @@ int main(int argc, char ** argv)
 
 	tooltipPanel = new TooltipPanel(g_mainWindow->getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();
-	mesh         = new Mesh();
-	camera       = new Camera();
-	autozoom = new Autozoom();
+	g_global.mesh = new Mesh();
+	g_global.camera       = new Camera();
+	g_global.autozoom = new Autozoom();
 
 	characterSettingPanel = new CharacterSettingPanel();
 	g_mainWindow->initWindow();
@@ -1100,36 +1068,36 @@ int main(int argc, char ** argv)
 	g_bodyShader       = LoadShader("shader/body.vert", "shader/body.frag");
 	g_backgroundShader = LoadShader("shader/background.vert", "shader/background.frag");
 
-	bool mesh_loaded = mesh->loadMeshFactory(searchDataFile("base.vertices"),
+	bool mesh_loaded = g_global.mesh->loadMeshFactory(searchDataFile("base.vertices"),
 	                                         searchDataFile("base.faces"));
 	if(!mesh_loaded) {
 		cerr << "couldn't load mesh geometry" << endl;
 		return 1;
 	}
 
-	bool material_loaded = mesh->loadMaterialFactory(searchDataFile("base.materials"),
+	bool material_loaded = g_global.mesh->loadMaterialFactory(searchDataFile("base.materials"),
 	                                                 searchDataFile("base.colors"));
 	if(!material_loaded) {
 		cerr << "couldn't load mesh material informations" << endl;
 		return 1;
 	}
 
-	mesh->texture_vector.load(searchDataFile("base.uv"));
+	g_global.mesh->texture_vector.load(searchDataFile("base.uv"));
 
 	// load face groups with factory function
-	bool groups_loaded = mesh->loadGroupsFactory(searchDataFile("base.parts"));
+	bool groups_loaded = g_global.mesh->loadGroupsFactory(searchDataFile("base.parts"));
 	if(!groups_loaded) {
 		cerr << "couldn't load face groups" << endl;
 		return 1;
 	}
 
-	bool skin_loaded = mesh->loadSkinFactory(searchDataFile("base.skin"));
+	bool skin_loaded = g_global.mesh->loadSkinFactory(searchDataFile("base.skin"));
 	if(!skin_loaded) {
 		cerr << "couldn't load skin info" << endl;
 		return 1;
 	}
 
-	bool smooth_loaded = mesh->loadSmoothVertexFactory(searchDataFile("base.smooth"));
+	bool smooth_loaded = g_global.mesh->loadSmoothVertexFactory(searchDataFile("base.smooth"));
 	if(!smooth_loaded) {
 		cerr << "couldn't load smooth info" << endl;
 		return 1;
@@ -1141,17 +1109,14 @@ int main(int argc, char ** argv)
 
 	loadTextures();
 	g_global.m_enableTexture = true;
-	g_global.setMesh(mesh);
-	g_global.setCamera(camera);
-	g_global.setAutozoom(autozoom);
 
-	mesh->loadTargetsFactory(searchDataDir("targets"));
-	mesh->loadTargetsFactory(searchDataDir("selectors"), 1, false);
-	mesh->loadPoseTargetsFactory(searchDataDir("rotations"));
-	mesh->loadCharactersFactory(searchDataDir("bs_data"));
+	g_global.mesh->loadTargetsFactory(searchDataDir("targets"));
+	g_global.mesh->loadTargetsFactory(searchDataDir("selectors"), 1, false);
+	g_global.mesh->loadPoseTargetsFactory(searchDataDir("rotations"));
+	g_global.mesh->loadCharactersFactory(searchDataDir("bs_data"));
 
 	init = false;
-	g_mainWindow->setCamera(camera);
+	g_mainWindow->setCamera(g_global.camera);
 
 	// Add panels to mainwindow
 	g_mainWindow->addPanel(tooltipPanel);
@@ -1159,7 +1124,7 @@ int main(int argc, char ** argv)
 	g_mainWindow->addPanel(characterSettingPanel);
 
 	// camera->rotate (-M_PI/2, X_AXIS);
-	camera->move(0, 0, -125.0f);
+	g_global.camera->move(0, 0, -125.0f);
 
 	tooltipPanel->createWidgets();
 	toolbarPanel->createWidgets();
@@ -1326,7 +1291,7 @@ void calcMinMax(const glm::vec3 & coords)
 
 void loadTextures()
 {
-	for(auto & [name, value] : mesh->facegroup.m_groups) {
+	for(auto & [name, value] : g_global.mesh->facegroup.m_groups) {
 
 		std::string fileName = "pixmaps/ui/" + name + "_color.png";
 		value.texture        = LoadTextureFromFile(fileName.c_str());
@@ -1382,18 +1347,18 @@ void drawBackground()
 
 void renderMesh()
 {
-	const MaterialVector & materialvector(mesh->getMaterialVectorRef());
-	const TextureVector &  texturevector(mesh->texture_vector);
+	const MaterialVector & materialvector(g_global.mesh->getMaterialVectorRef());
+	const TextureVector &  texturevector(g_global.mesh->texture_vector);
 
-	const FaceVector & facevector(mesh->getFaceVectorRef());
+	const FaceVector & facevector(g_global.mesh->getFaceVectorRef());
 
-	const VertexVector & vertexvector(mesh->getVertexVectorRef());
+	const VertexVector & vertexvector(g_global.mesh->getVertexVectorRef());
 
 	int facesize;
 	int istri = -1; // to remember which type was the latest drawn geometry and
 	                // avoid too many glBegin
 
-	if(g_global.getQuotedBox()) {
+	if(g_global.quotedBox) {
 		for(int i = 0; i < 6; i++) {
 			twopoints[i] = 0;
 		}
@@ -1403,7 +1368,7 @@ void renderMesh()
 
 	glUseProgram(g_bodyShader->handle);
 
-	for(auto & [goupName, groupValue] : mesh->facegroup.m_groups) {
+	for(auto & [goupName, groupValue] : g_global.mesh->facegroup.m_groups) {
 
 		if(groupValue.visible == false)
 			continue;
@@ -1464,7 +1429,7 @@ void renderMesh()
 					::glTexCoord2f(uv.x, uv.y);
 					::glVertex3fv(glm::value_ptr(vertex.co));
 
-					if(g_global.getQuotedBox()) {
+					if(g_global.quotedBox) {
 						calcMinMax(vertex.co);
 					}
 				}

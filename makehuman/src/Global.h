@@ -61,20 +61,7 @@ struct Global {
 	std::map<const uint32_t, Point *> fuzzyValues;
 
 public:
-	void   setMesh(Mesh * mesh) { this->mesh = mesh; }
 	Mesh * getMesh() { return mesh; }
-
-	void     setCamera(Camera * camera) { this->camera = camera; }
-	Camera * getCamera() { return camera; }
-
-	void       setAutozoom(Autozoom * autozoom) { this->autozoom = autozoom; }
-	Autozoom * getAutozoom() { return autozoom; }
-
-	void setDrawGrid(bool grid) { drawGrid = grid; }
-	bool getDrawGrid() { return drawGrid; }
-
-	void setQuotedBox(bool qbox) { quotedBox = qbox; }
-	bool getQuotedBox() { return quotedBox; }
 
 	void  setAppMode(Modes mode) { appMode = mode; }
 	Modes getAppMode() { return appMode; }
