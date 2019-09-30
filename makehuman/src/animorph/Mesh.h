@@ -550,7 +550,7 @@ public:
 	 * \return true if target was found in PoseMap and could be morphed
 	 * \return false if target wasn't found in PoseMap and couldn't be morphed
 	 */
-	bool setPose(const string & target_name, float morph_value);
+	bool setPose(const string & target_name, float morph_value, bool removeOnZero = true);
 
 	/// Reset the Mesh to loaded state without poses
 	// void resetPose (const PoseRotation &target);

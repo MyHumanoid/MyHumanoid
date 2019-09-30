@@ -672,7 +672,7 @@ void Mesh::resetPose()
 	vertexvector_morph_only = vertexvector_morph_copy;
 }
 
-bool Mesh::setPose(const std::string & target_name, float morph_value)
+bool Mesh::setPose(const std::string & target_name, float morph_value, bool removeOnZero)
 {
 	// return if target doesn't exist
 	if(!posemap.count(target_name)) {
@@ -681,7 +681,7 @@ bool Mesh::setPose(const std::string & target_name, float morph_value)
 		return false;
 	}
 
-	if(morph_value == 0.0) {
+	if(removeOnZero && morph_value == 0.0) {
 		poses.erase(target_name);
 	} else {
 		poses[target_name] = morph_value;
