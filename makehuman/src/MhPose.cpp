@@ -261,6 +261,7 @@ void DisplayPoseTargets() {
 				vec2 foo = glm::clamp(vec2(delta) * posToValFactor, vec2(xMin, 0.f), vec2(xMax, 1.f));
 				
 				g_global.mesh->setPose(target_name, foo.x);
+				g_global.mesh->calcNormals();
 				
 				ImGui::GetForegroundDrawList()->AddLine(io.MouseClickedPos[0], io.MousePos, ImGui::GetColorU32(ImGuiCol_Button), 4.0f); // Draw a line between the button and the mouse cursor
 			}
@@ -310,6 +311,7 @@ void DisplayPoseTargetsApplied()
 		// FIXME only the button in the first line is working
 		if(ImGui::Button("X")) {
 			g_global.mesh->setPose(target_name, 0.f);
+			g_global.mesh->calcNormals();
 		}
 		showTooltip |= ImGui::IsItemHovered();
 		ImGui::SameLine();
@@ -319,6 +321,7 @@ void DisplayPoseTargetsApplied()
 			// TODO used min so that rotation does not vanish
 			if(target_value != 0.f) {
 				g_global.mesh->setPose(target_name, target_value);
+				g_global.mesh->calcNormals();
 			}
 		}
 		showTooltip |= ImGui::IsItemHovered();
