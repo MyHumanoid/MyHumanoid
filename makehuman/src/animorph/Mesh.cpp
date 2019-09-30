@@ -639,16 +639,6 @@ void Mesh::initPoses()
 	}
 }
 
-void Mesh::animationMode()
-{
-	vertexvector_morph_copy = vertexvector_morph;
-
-	initPoses();
-
-	applySkin();
-	applySmooth(2);
-}
-
 void Mesh::poseMode()
 {
 	vertexvector_morph_copy = vertexvector_morph;

@@ -507,9 +507,6 @@ public:
 	/// Switch to pose mode
 	void poseMode();
 
-	/// Switch to animation mode
-	void animationMode();
-
 	/// Switch to body details mode
 	void bodyDetailsMode();
 
