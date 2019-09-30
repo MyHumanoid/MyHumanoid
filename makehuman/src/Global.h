@@ -96,11 +96,12 @@ extern Global g_global;
 
 struct WindowVisibility {
 	bool characterSettings   = false;
-	bool performance         = false;
 	bool morphTargets        = false;
 	bool morphTargetsApplied = false;
 	bool poseTargets         = false;
 	bool poseTargetsApplied  = false;
+	bool performance         = false;
+	bool show_demo_window    = false;
 	bool about               = false;
 };
 

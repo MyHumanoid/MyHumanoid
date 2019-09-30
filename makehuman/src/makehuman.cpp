@@ -364,8 +364,6 @@ static void ResetMeshMorph()
 // ================================================================================================
 // ================================================================================================
 
-static bool show_demo_window = false;
-
 static bool g_userRequestedQuit = false;
 static bool g_displayAxis       = false;
 
@@ -375,54 +373,8 @@ static int  g_requestShaderVersion = 1;
 static bool g_requestBackgroundShaderReload = false;
 
 // ================================================================================================
-
-std::optional<mh::Texture> g_ageSelectBackground;
-std::optional<mh::Texture> g_muscle_size_selector;
-std::optional<mh::Texture> g_breastSizeShape;
-std::optional<mh::Texture> g_bodyShapeHeight;
-
-void loadUiTextures()
-{
-	g_ageSelectBackground  = LoadTextureFromFile("pixmaps/ui/age_selector.png");
-	g_muscle_size_selector = LoadTextureFromFile("pixmaps/ui/muscle_size_selector.png");
-	g_breastSizeShape      = LoadTextureFromFile("pixmaps/ui/breast_selector.png");
-	g_bodyShapeHeight      = LoadTextureFromFile("pixmaps/ui/shape_selector.png");
-}
-
-void XYfoobar(mh::Texture texture, glm::vec2 & value)
-{
-
-	using glm::vec2;
-	using glm::ivec2;
-
-	auto *    dl = ImGui::GetForegroundDrawList();
-	ImGuiIO & io = ImGui::GetIO();
-
-	MhGui::ImageButton(texture, ImVec2(192, 104));
-	ivec2 pMin = ImGui::GetItemRectMin();
-	ivec2 size = ImGui::GetItemRectSize();
-	if(ImGui::IsItemActive()) {
-		ivec2 relPos = ivec2(io.MousePos) - pMin;
-		relPos       = glm::max(relPos, ivec2(0));
-		relPos       = glm::min(relPos, size);
-		value        = vec2(relPos) / vec2(size);
-	}
-
-	ivec2       cursorPos    = pMin + ivec2(value * vec2(size));
-	float       radius       = 6.0f;
-	const ImU32 col_white    = IM_COL32(255, 255, 255, 255);
-	const ImU32 col_midgrey  = IM_COL32(128, 128, 128, 255);
-	const ImU32 col_midgrey2 = IM_COL32(128, 128, 128, 128);
-	dl->AddCircleFilled(cursorPos, radius, col_midgrey2, 12);
-	dl->AddCircle(cursorPos, radius + 1, col_midgrey);
-	dl->AddCircle(cursorPos, radius, col_white);
-}
-
 // ================================================================================================
-
-
 // ================================================================================================
-
 // ================================================================================================
 
 void DisplayLibraryCharacters()
@@ -454,7 +406,7 @@ void DisplayLibraryCharacters()
 		character_image.replace(character_image.length() - kFilePrefixTarget.length(),
 		                        kFilePrefixTarget.length(), kFilePrefixPNG);
 
-		logger("asd {}", std::string(foobar));
+		//logger("asd {}", std::string(foobar));
 
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
@@ -511,7 +463,7 @@ void DisplayLibraryPoses()
 		character_image.replace(character_image.length() - kFilePrefixTarget.length(),
 		                        kFilePrefixTarget.length(), kFilePrefixPNG);
 
-		logger("asd {}", std::string(foobar));
+		//logger("asd {}", std::string(foobar));
 
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
@@ -536,6 +488,15 @@ void DisplayLibraryPoses()
 			}
 		}
 	}
+}
+
+void DisplayPerformance()
+{
+	ImGui::Begin("Performance");
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+	            1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Checkbox("Demo Window", &g_displayWin.show_demo_window);
+	ImGui::End();
 }
 
 void DisplayAbout() {
@@ -796,7 +757,11 @@ void DisplayMainMenu()
 		}
 		ImGui::EndMainMenuBar();
 	}
-
+	
+	
+	if(g_displayWin.characterSettings) {
+		DisplayCharacterSettings();
+	}
 	if(g_displayWin.morphTargets) {
 		DisplayMorphTargets();
 	}
@@ -809,122 +774,24 @@ void DisplayMainMenu()
 	if(g_displayWin.poseTargetsApplied) {
 		DisplayPoseTargetsApplied();
 	}
+	if(g_displayWin.performance) {
+		DisplayPerformance();
+		if(g_displayWin.show_demo_window) {
+			ImGui::ShowDemoWindow(&g_displayWin.show_demo_window);
+		}
+	}
 	if(g_displayWin.about) {
 		DisplayAbout();
 	}
 }
 
-void DisplayCharacterSettings()
-{
-	using glm::vec2;
-	using glm::ivec2;
 
-	{
-		vec2 foo = vec2(192, 104);
-
-		Point * agePos     = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
-		g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
-
-		Point * mPos =
-		        g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
-		g_global.bodyWeightMuscle = vec2(mPos->x, mPos->y) / foo;
-
-		Point * bPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
-		if(bPos)
-			g_global.breastSizeShape = vec2(bPos->x, bPos->y) / foo;
-
-		Point * sPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
-		g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
-	}
-
-
-
-	ImGui::SetNextWindowSize(ivec2(220, 800));
-	ImGui::Begin("Character Setting");
-
-	ImGui::Text("Age/Sex");
-	XYfoobar(g_ageSelectBackground.value(), g_global.ageAndSex);
-	ImGui::Text("Weight/Muscle");
-	XYfoobar(g_muscle_size_selector.value(), g_global.bodyWeightMuscle);
-	ImGui::Text("Breast Size / Shape");
-	XYfoobar(g_breastSizeShape.value(), g_global.breastSizeShape);
-	ImGui::Text("Body Shape/Height");
-	XYfoobar(g_bodyShapeHeight.value(), g_global.bodyShapeHeight);
-
-	//	if (ImGui::SliderFloat2("Age/Sex", ageAndSex.data(), 0.0f, 1.0f)) {
-
-	//		Point p(ageAndSex[0] * 100, ageAndSex[1] * 100);
-	//		characterSettingPanel->m_age->cursorPos = p;
-
-	//		characterSettingPanel->selectorListener.ageDists =
-	//		    characterSettingPanel->m_age->getDists();
-
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-
-	//	if (ImGui::SliderFloat2("Weight/Muscle", bodyWeightMuscle.data(), 0.0f,
-	//	                        1.0f)) {
-
-	//		Point p(bodyWeightMuscle[0] * 100, bodyWeightMuscle[1] * 100);
-	//		characterSettingPanel->m_muscleSize->cursorPos = p;
-
-	//		characterSettingPanel->selectorListener.muscleSizeDists =
-	//		    characterSettingPanel->m_muscleSize->getDists();
-
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-
-	//	if (ImGui::SliderFloat2("Breast Size / Shape", breastSizeShape.data(), 0.0f,
-	//	                        1.0f)) {
-
-	//		Point p(breastSizeShape[0] * 100, breastSizeShape[1] * 100);
-	//		characterSettingPanel->m_breast->cursorPos = p;
-
-	//		characterSettingPanel->selectorListener.breastDists =
-	//		    characterSettingPanel->m_breast->getDists();
-
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-
-	//	if (ImGui::SliderFloat2("Body Shape/Height", bodyShapeHeight.data(), 0.0f,
-	//	                        1.0f)) {
-
-	//		Point p(bodyShapeHeight[0] * 100, bodyShapeHeight[1] * 100);
-	//		characterSettingPanel->m_shape->cursorPos = p;
-
-	//		characterSettingPanel->selectorListener.shapeDists =
-	//		    characterSettingPanel->m_shape->getDists();
-
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-
-	ImGui::End();
-}
-
-void DisplayPerformance()
-{
-	ImGui::Begin("Performance");
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-	            1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::Checkbox("Demo Window", &show_demo_window);
-	ImGui::End();
-}
 
 void DisplayGui()
 {
 	DisplayMainMenu();
 
-	if(g_displayWin.characterSettings) {
-		DisplayCharacterSettings();
-	}
 
-	if(g_displayWin.performance) {
-		DisplayPerformance();
-	}
-
-	if(show_demo_window) {
-		ImGui::ShowDemoWindow(&show_demo_window);
-	}
 }
 
 // ================================================================================================
@@ -1279,7 +1146,6 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	loadUiTextures();
 	CreateTargetImageTextures();
 	CreatePoseImageTextures();
 	CreateCaractersIconTextures();
