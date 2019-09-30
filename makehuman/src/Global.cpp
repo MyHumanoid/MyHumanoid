@@ -30,3 +30,5 @@
 Global g_global;
 
 WindowVisibility g_displayWin;
+
+bool g_morphMode = true;

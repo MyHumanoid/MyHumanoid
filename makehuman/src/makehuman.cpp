@@ -385,10 +385,10 @@ void DisplayLibraryCharacters()
 
 
 				{ // not copy-paste
-					if(g_global.getAppMode() == POSES) {
-						g_global.setAppMode(BODY_SETTINGS);
-						g_global.mesh->bodyDetailsMode();
-					}
+//					if(g_global.getAppMode() == POSES) {
+//						g_global.setAppMode(BODY_SETTINGS);
+//						g_global.mesh->bodyDetailsMode();
+//					}
 
 					CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
 					g_global.mesh->doMorph(charactersmap[character_name], 1.0, true);
@@ -535,39 +535,11 @@ void DisplayMainMenu()
 {
 	if(ImGui::BeginMainMenuBar()) {
 		if(ImGui::BeginMenu("File")) {
-			if(ImGui::MenuItem("SaveBodysettings")) {
-				auto & global = g_global;
-
-				if(global.getAppMode() == BODY_DETAILS ||
-				   global.getAppMode() == CHARACTER_SETTING) {
-
-					saveBodySettings("foo-BodySettings");
-				} else if(global.getAppMode() == POSES) {
-
-					savePoses("foo-Poses");
-				}
-			}
-			if(ImGui::MenuItem("Load bodysetting", "Ctrl+O")) {
-
-				auto & global = g_global;
-
-				if(global.getAppMode() == BODY_DETAILS ||
-				   global.getAppMode() == CHARACTER_SETTING) {
-
-					loadBodySettings("foo-BodySettings");
-				} else if(global.getAppMode() == POSES) {
-
-					loadPoses("foo-Poses");
-				}
-			}
-
 			ImGui::Separator();
-
 			if(ImGui::MenuItem("Export wavefront (.obj)")) {
 				std::string filename = "foo-ObjExport";
 				exportBodySettings(filename, false);
 			}
-
 			if(ImGui::MenuItem("Export Collada (.dae)")) {
 				std::string filename = "foo-ColladaExport";
 				exportCollada(filename);
@@ -620,72 +592,76 @@ void DisplayMainMenu()
 
 			ImGui::EndMenu();
 		}
-		if(ImGui::BeginMenu("Edit")) {
+		ImGui::Separator();
+		if(ImGui::Checkbox("MorphMode", &g_morphMode)) {
+			if(g_morphMode) {
+				g_global.mesh->bodyDetailsMode();
+			} else {
+				g_global.mesh->poseMode();
+			}
+		}
+		ImGui::Separator();
+		if(ImGui::BeginMenu("Morph", g_morphMode)) {
+			ImGui::Checkbox("Composite Morph", &g_displayWin.characterSettings);
+			ImGui::Checkbox("Morph Targets", &g_displayWin.morphTargets);
+			ImGui::Checkbox("Applied Morph Targets", &g_displayWin.morphTargetsApplied);
 			ImGui::Separator();
-			if(ImGui::MenuItem("Reset Mesh")) {
-				switch(g_global.getAppMode()) {
-
-				case POSES: {
-					PoseTargetPanel * pt_p = dynamic_cast<PoseTargetPanel *>(
-					        g_mainWindow->getPanel(kComponentID_TargetPanel));
-					if(pt_p != NULL) {
-						pt_p->resetTargetValues();
+			if(ImGui::MenuItem("Load")) {
+				loadBodySettings("foo-BodySettings");
+			}
+			if(ImGui::MenuItem("Save")) {
+				saveBodySettings("foo-BodySettings");
+			}
+			ImGui::Separator();
+			if(ImGui::BeginMenu("Library")) {
+				DisplayLibraryCharacters();
+				ImGui::EndMenu();
+			}
+			ImGui::Separator();
+			if(ImGui::BeginMenu("Reset Morph? ...")) {
+				if(ImGui::MenuItem("YES")) {
+					CharacterSettingPanel * cs_p = dynamic_cast<
+					    CharacterSettingPanel *>(g_mainWindow->getPanel(
+					    kComponentID_CharacterSettingPanel));
+					if(cs_p != NULL) {
+						cs_p->resetSlidersValues();
 					}
-					ResetMeshPose();
-					break;
-				}
-				case POSES_BODY_SETTINGS: {
-					ResetMeshPose();
-					break;
-				}
-				case BODY_DETAILS: {
 					TargetPanel * tg_p = dynamic_cast<TargetPanel *>(
-					        g_mainWindow->getPanel(kComponentID_TargetPanel));
+					    g_mainWindow->getPanel(kComponentID_TargetPanel));
 					if(tg_p != NULL) {
 						tg_p->resetTargetValues();
 					}
 					ResetMeshMorph();
-					break;
 				}
-				case BODY_SETTINGS:
-					ResetMeshMorph();
-					break;
-				case CHARACTER_SETTING: {
-					CharacterSettingPanel * cs_p = dynamic_cast<
-					        CharacterSettingPanel *>(g_mainWindow->getPanel(
-					        kComponentID_CharacterSettingPanel));
-					if(cs_p != NULL) {
-						cs_p->resetSlidersValues();
-					}
-					ResetMeshMorph();
-					break;
-				}
-				default:
-					break;
-				}
-			}
-			ImGui::EndMenu();
-		}
-		ImGui::Separator();
-		if(ImGui::BeginMenu("Morph")) {
-			ImGui::Checkbox("Composite Morph", &g_displayWin.characterSettings);
-			ImGui::Checkbox("Morph Targets", &g_displayWin.morphTargets);
-			ImGui::Checkbox("Applied Morph Targets", &g_displayWin.morphTargetsApplied);
-			ImGui::EndMenu();
-		}
-		if(ImGui::BeginMenu("Pose")) {
-			ImGui::Checkbox("Pose Targets", &g_displayWin.poseTargets);
-			ImGui::Checkbox("Applied Pose Targets", &g_displayWin.poseTargetsApplied);
-			ImGui::EndMenu();
-		}
-		ImGui::Separator();
-		if(ImGui::BeginMenu("Library")) {
-			if(ImGui::BeginMenu("Characters")) {
-				DisplayLibraryCharacters();
 				ImGui::EndMenu();
 			}
-			if(ImGui::BeginMenu("Poses")) {
+			ImGui::EndMenu();
+		}
+		if(ImGui::BeginMenu("Pose", !g_morphMode)) {
+			ImGui::Checkbox("Pose Targets", &g_displayWin.poseTargets);
+			ImGui::Checkbox("Applied Pose Targets", &g_displayWin.poseTargetsApplied);
+			ImGui::Separator();
+			if(ImGui::MenuItem("Load")) {
+				loadPoses("foo-Poses");
+			}
+			if(ImGui::MenuItem("Save")) {
+				savePoses("foo-Poses");
+			}
+			ImGui::Separator();
+			if(ImGui::BeginMenu("Library")) {
 				DisplayLibraryPoses();
+				ImGui::EndMenu();
+			}
+			ImGui::Separator();
+			if(ImGui::BeginMenu("Reset Pose? ...")) {
+				if(ImGui::MenuItem("YES")) {
+					PoseTargetPanel * pt_p = dynamic_cast<PoseTargetPanel *>(
+					    g_mainWindow->getPanel(kComponentID_TargetPanel));
+					if(pt_p != NULL) {
+						pt_p->resetTargetValues();
+					}
+					ResetMeshPose();
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
@@ -726,22 +702,25 @@ void DisplayMainMenu()
 		ImGui::EndMainMenuBar();
 	}
 	
+	if(g_morphMode) {
+		if(g_displayWin.characterSettings) {
+			DisplayCharacterSettings();
+		}
+		if(g_displayWin.morphTargets) {
+			DisplayMorphTargets();
+		}
+		if(g_displayWin.morphTargetsApplied) {
+			DisplayMorphTargetsApplied();
+		}
+	}else{
+		if(g_displayWin.poseTargets) {
+			DisplayPoseTargets();
+		}
+		if(g_displayWin.poseTargetsApplied) {
+			DisplayPoseTargetsApplied();
+		}
+	}
 	
-	if(g_displayWin.characterSettings) {
-		DisplayCharacterSettings();
-	}
-	if(g_displayWin.morphTargets) {
-		DisplayMorphTargets();
-	}
-	if(g_displayWin.morphTargetsApplied) {
-		DisplayMorphTargetsApplied();
-	}
-	if(g_displayWin.poseTargets) {
-		DisplayPoseTargets();
-	}
-	if(g_displayWin.poseTargetsApplied) {
-		DisplayPoseTargetsApplied();
-	}
 	if(g_displayWin.performance) {
 		DisplayPerformance();
 		if(g_displayWin.show_demo_window) {

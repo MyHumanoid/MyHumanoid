@@ -140,8 +140,11 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 				   g_global.getAppMode() != BODY_SETTINGS) {
 					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
-
-					mesh->bodyDetailsMode();
+					
+					if(!g_morphMode) {
+						g_morphMode = !g_morphMode;
+						mesh->bodyDetailsMode();
+					}
 				}
 
 				g_global.setAppMode(CHARACTER_SETTING);
@@ -157,8 +160,11 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 				   g_global.getAppMode() != BODY_SETTINGS) {
 					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
-
-					mesh->bodyDetailsMode();
+					
+					if(!g_morphMode) {
+						g_morphMode = !g_morphMode;
+						mesh->bodyDetailsMode();
+					}
 				}
 
 				g_global.setAppMode(BODY_DETAILS);
@@ -173,7 +179,11 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 				if(g_global.getAppMode() != POSES_BODY_SETTINGS) {
 					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
-					mesh->poseMode();
+					
+					if(g_morphMode) {
+						g_morphMode = !g_morphMode;
+						mesh->poseMode();
+					}
 				}
 
 				g_global.setAppMode(POSES);

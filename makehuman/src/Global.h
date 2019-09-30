@@ -77,6 +77,8 @@ public:
 	glm::vec2 bodyWeightMuscle = {0.f, 0.f};
 	glm::vec2 breastSizeShape  = {0.f, 0.f};
 	glm::vec2 bodyShapeHeight  = {0.f, 0.f};
+	
+	
 };
 
 extern Global g_global;
@@ -94,4 +96,5 @@ struct WindowVisibility {
 
 extern WindowVisibility g_displayWin;
 
+extern bool g_morphMode;
 

@@ -62,18 +62,20 @@ void DisplayCharacterSettings()
 		vec2 foo = vec2(192, 104);
 		
 		Point * agePos     = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
-		g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
+		if(agePos)
+			g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
 		
-		Point * mPos =
-		    g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
-		g_global.bodyWeightMuscle = vec2(mPos->x, mPos->y) / foo;
+		Point * mPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
+		if(mPos)
+			g_global.bodyWeightMuscle = vec2(mPos->x, mPos->y) / foo;
 		
 		Point * bPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
 		if(bPos)
 			g_global.breastSizeShape = vec2(bPos->x, bPos->y) / foo;
 		
 		Point * sPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
-		g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
+		if(sPos)
+			g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
 	}
 	
 	ImGui::SetNextWindowSize(ivec2(220, 800));
