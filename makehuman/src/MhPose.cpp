@@ -12,6 +12,10 @@
 #include "ComponentID.h"
 #include "PoseTargetPanel.h"
 
+
+static std::string poseTargetTooltip = "";
+static float poseTargetDragStartValue = 0;
+
 void DisplayPoseTargets() {
 	
 	using glm::vec2;
@@ -22,14 +26,15 @@ void DisplayPoseTargets() {
 	//      |ImGuiWindowFlags_NoSavedSettings
 	      | ImGuiWindowFlags_NoResize;
 	
-	ImGui::SetNextWindowSize(ivec2(380, 484));
+	ImGui::SetNextWindowSize(ivec2(380, 510));
 	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
 		ImGui::End();
 		return;
 	}
 	
-	static std::string category = "";
+	poseTargetTooltip = "";
 	
+	static std::string category = "";
 	
 	struct Tile {
 		
@@ -81,8 +86,10 @@ void DisplayPoseTargets() {
 			}
 			ImGui::SetCursorPos(p);
 			if(ImGui::IsItemHovered()) {
-				if(texOver)
+				if(texOver) {
 					MhGui::Image(texOver.value(), ivec2(32, 32));
+					poseTargetTooltip = tip;
+				}
 			} else {
 				if(tex)
 					MhGui::Image(tex.value(), ivec2(32, 32));
@@ -209,6 +216,8 @@ void DisplayPoseTargets() {
 		ImGui::EndChild();
 	}
 	ImGui::SameLine();
+	ImGui::Separator();
+	ImGui::SameLine();
 	{
 		ImGui::BeginChild("Pose Targets", ivec2(140, 440), false);
 		
@@ -238,13 +247,44 @@ void DisplayPoseTargets() {
 			fs::path targetImageName = target_name;
 			targetImageName.replace_extension();
 			
-			const auto & texIdIt = g_poseImageTextures.find(targetImageName);
-			if(texIdIt != g_poseImageTextures.end()) {
-				auto texId = texIdIt->second;
-				MhGui::ImageButton(texId, ImVec2(64, 64));
-			} else {
-				ImGui::InvisibleButton(target_name.c_str(), ImVec2(48, 48));
-			}
+			using OptText = std::optional<mh::Texture>;
+			using TexPair = std::pair<OptText, OptText>;
+			const auto getImage = [](const std::string & name) -> TexPair {
+				const auto & t = g_poseImageTextures.find(name);
+				if(t != g_poseImageTextures.end()) {
+					const auto & over = g_poseImageTextures.find(name + "_over");
+					if(over != g_poseImageTextures.end()) {
+						return std::make_pair(t->second, over->second);
+					} else {
+						return std::make_pair(t->second, std::nullopt);
+					}
+				}
+				return std::make_pair(std::nullopt, std::nullopt);
+			};
+			
+			auto asd = getImage(targetImageName);
+			
+			const auto iconSize = ivec2(64, 64);
+			
+			const auto p = ImGui::GetCursorPos();
+			ImGui::InvisibleButton(target_name.c_str(), iconSize);
+			
+			
+
+			
+//			const auto & texIdIt = g_poseImageTextures.find(targetImageName);
+//			if(texIdIt != g_poseImageTextures.end()) {
+//				auto texId = texIdIt->second;
+//				MhGui::ImageButton(texId, ImVec2(64, 64));
+//			} else {
+//				ImGui::InvisibleButton(target_name.c_str(), ImVec2(64, 64));
+//			}
+//			if(ImGui::IsItemHovered()) {
+//				poseTargetTooltip = target_name;
+//			}
+			if(ImGui::IsMouseDown(0)) {
+				//poseTargetDragStartValue = target_value;
+			};
 			if(ImGui::IsItemActive()) {
 				float posToValFactor = 0.2;
 //				if(!io.KeyCtrl) {
@@ -252,27 +292,43 @@ void DisplayPoseTargets() {
 //				}
 				
 				ivec2 delta = ivec2(io.MousePos) - ivec2(io.MouseClickedPos[0]);
+				int deltaX = delta.x;
+				
+				auto scaled = deltaX * posToValFactor;
+				auto absVal = poseTargetDragStartValue + scaled;
 				
 				float xMin = poseTarget->getMinAngle();
 				float xMax = poseTarget->getMaxAngle();
+				float foo = glm::clamp(absVal, xMin, xMax);
 				
-				
-				
-				vec2 foo = glm::clamp(vec2(delta) * posToValFactor, vec2(xMin, 0.f), vec2(xMax, 1.f));
-				
-				g_global.mesh->setPose(target_name, foo.x);
+				g_global.mesh->setPose(target_name, foo);
 				g_global.mesh->calcNormals();
 				
 				ImGui::GetForegroundDrawList()->AddLine(io.MouseClickedPos[0], io.MousePos, ImGui::GetColorU32(ImGuiCol_Button), 4.0f); // Draw a line between the button and the mouse cursor
 			}
+			if(ImGui::IsItemHovered()) {
+				if(asd.second) {
+					ImGui::SetCursorPos(p);
+					MhGui::ImageButton(*asd.second, iconSize, ivec2(0,0), ivec2(1, 1), 0);
+				}
+				poseTargetTooltip = target_name;
+			} else {
+				if(asd.first) {
+					ImGui::SetCursorPos(p);
+					MhGui::ImageButton(*asd.first, iconSize, ivec2(0,0), ivec2(1, 1), 0);
+				}
+			}
+			
+			
 			
 			
 			ImGui::SameLine();
 			ImGui::Text("%.2f", target_value);
 		}
-		
 		ImGui::EndChild();
 	}
+	ImGui::Text("%s", poseTargetTooltip.c_str());
+	
 	ImGui::End();
 }
 
