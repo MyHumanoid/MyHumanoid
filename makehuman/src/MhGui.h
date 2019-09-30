@@ -5,13 +5,13 @@
 
 #define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
 #define IM_VEC2_CLASS_EXTRA                                                              \
-	ImVec2(const glm::ivec2 & other)                                                     \
+	ImVec2(const glm::vec2 & other)                                                     \
 	{                                                                                    \
 		x = other.x;                                                                     \
 		y = other.y;                                                                     \
 	}                                                                                    \
-	operator glm::ivec2() const {                                                        \
-		return glm::ivec2(x, y);                                                         \
+	operator glm::vec2() const {                                                        \
+		return glm::vec2(x, y);                                                         \
 	}                                                                                    \
 
 #include <imgui.h>

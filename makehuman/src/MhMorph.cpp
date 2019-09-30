@@ -13,26 +13,25 @@
 #include "PoseTargetPanel.h"
 
 
+using glm::vec2;
+
+
 void XYfoobar(mh::Texture texture, glm::vec2 & value)
 {
-	
-	using glm::vec2;
-	using glm::ivec2;
-	
 	auto *    dl = ImGui::GetForegroundDrawList();
 	ImGuiIO & io = ImGui::GetIO();
 	
 	MhGui::ImageButton(texture, ImVec2(192, 104));
-	ivec2 pMin = ImGui::GetItemRectMin();
-	ivec2 size = ImGui::GetItemRectSize();
+	vec2 pMin = ImGui::GetItemRectMin();
+	vec2 size = ImGui::GetItemRectSize();
 	if(ImGui::IsItemActive()) {
-		ivec2 relPos = ivec2(io.MousePos) - pMin;
-		relPos       = glm::max(relPos, ivec2(0));
+		vec2 relPos = vec2(io.MousePos) - pMin;
+		relPos       = glm::max(relPos, vec2(0));
 		relPos       = glm::min(relPos, size);
 		value        = vec2(relPos) / vec2(size);
 	}
 	
-	ivec2       cursorPos    = pMin + ivec2(value * vec2(size));
+	vec2       cursorPos    = pMin + vec2(value * vec2(size));
 	float       radius       = 6.0f;
 	const ImU32 col_white    = IM_COL32(255, 255, 255, 255);
 	const ImU32 col_midgrey  = IM_COL32(128, 128, 128, 255);
@@ -45,7 +44,6 @@ void XYfoobar(mh::Texture texture, glm::vec2 & value)
 void DisplayCharacterSettings()
 {
 	using glm::vec2;
-	using glm::ivec2;
 	
 	using OptTex = std::optional<mh::Texture>;
 	
@@ -78,7 +76,7 @@ void DisplayCharacterSettings()
 			g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
 	}
 	
-	ImGui::SetNextWindowSize(ivec2(220, 800));
+	ImGui::SetNextWindowSize(vec2(220, 800));
 	ImGui::Begin("Character Setting");
 	
 	ImGui::Text("Age/Sex");
@@ -229,13 +227,12 @@ void DisplayMorphTargets()
 //	ImGui::End();
 
 	using glm::vec2;
-	using glm::ivec2;
 	
 	constexpr static ImGuiWindowFlags winFlags
 	    = ImGuiWindowFlags_NoScrollbar
 	    | ImGuiWindowFlags_NoResize;
 	
-	ImGui::SetNextWindowSize(ivec2(380, 484));
+	ImGui::SetNextWindowSize(vec2(380, 484));
 	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets, winFlags)) {
 		ImGui::End();
 		return;
@@ -288,17 +285,17 @@ void DisplayMorphTargets()
 			//ImGui::SetColumnWidth(-1, 32);
 			
 			auto p = ImGui::GetCursorPos();
-			if(ImGui::InvisibleButton(as.c_str(), ivec2(32, 32))){
+			if(ImGui::InvisibleButton(as.c_str(), vec2(32, 32))){
 				category = target;
 				click();
 			}
 			ImGui::SetCursorPos(p);
 			if(ImGui::IsItemHovered()) {
 				if(texOver)
-					MhGui::Image(texOver.value(), ivec2(32, 32));
+					MhGui::Image(texOver.value(), vec2(32, 32));
 			} else {
 				if(tex)
-					MhGui::Image(tex.value(), ivec2(32, 32));
+					MhGui::Image(tex.value(), vec2(32, 32));
 			}
 			ImGui::NextColumn();
 		}
@@ -381,9 +378,9 @@ void DisplayMorphTargets()
 	//static_assert (goobar.size() == 84, "asd");
 	
 	{
-		ImGui::BeginChild("Pose Groups", ivec2(195, 460), false);
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ivec2(0, 0));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ivec2(0, 0));
+		ImGui::BeginChild("Pose Groups", vec2(195, 460), false);
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0, 0));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(0, 0));
 		ImGui::Columns(6, NULL, false);
 		for(const auto & tile: goobar) {
 			tile.gui();
@@ -393,7 +390,7 @@ void DisplayMorphTargets()
 	}
 	ImGui::SameLine();
 	{
-		ImGui::BeginChild("Pose Targets", ivec2(140, 440), false);
+		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
 		
 		BodySettings bodyset = g_global.mesh->getPoses();
 		

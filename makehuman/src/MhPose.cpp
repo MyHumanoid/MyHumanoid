@@ -13,7 +13,6 @@
 #include "PoseTargetPanel.h"
 
 using glm::vec2;
-using glm::ivec2;
 
 static std::string poseTargetCategory = "";
 static std::string poseTargetTooltip = "";
@@ -60,7 +59,7 @@ struct Tile {
 		targetPanel->show_all();
 	}
 	
-	glm::ivec2 tileSize = glm::ivec2(32, 32);
+	glm::vec2 tileSize = glm::vec2(32, 32);
 	std::string as;
 	std::string tip;
 	std::string target;
@@ -104,14 +103,14 @@ void DisplayPoseTargets() {
 	
 	struct WinStack{
 		WinStack() {
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ivec2(1, 1));
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(1, 1));
 		}
 		~WinStack() {
 			ImGui::PopStyleVar(1);
 		}
 	};
 	
-	ImGui::SetNextWindowSize(ivec2(380, 510));
+	ImGui::SetNextWindowSize(vec2(380, 510));
 	WinStack winStack;
 	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
 		ImGui::End();
@@ -226,9 +225,9 @@ void DisplayPoseTargets() {
 	
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ivec2(-1, 0));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ivec2(-1, 0));
-		ImGui::BeginChild("Pose Groups", ivec2(192, 460), false);
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(-1, 0));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(-1, 0));
+		ImGui::BeginChild("Pose Groups", vec2(192, 460), false);
 		ImGui::Columns(6, "Pose Groups Grid", false);
 		
 		// FIXME we still have black vertical lines ?!
@@ -246,7 +245,7 @@ void DisplayPoseTargets() {
 	}
 	ImGui::SameLine();
 	{
-		ImGui::BeginChild("Pose Targets", ivec2(140, 440), false);
+		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
 		
 		BodySettings bodyset = g_global.mesh->getPoses();
 		
@@ -273,7 +272,7 @@ void DisplayPoseTargets() {
 			fs::path targetImageName = target_name;
 			targetImageName.replace_extension();
 			
-			const auto iconSize = ivec2(64, 64);
+			const auto iconSize = vec2(64, 64);
 			
 			const auto p = ImGui::GetCursorPos();
 			ImGui::InvisibleButton(target_name.c_str(), iconSize);
@@ -285,7 +284,7 @@ void DisplayPoseTargets() {
 			if(active) {
 				float posToValFactor = 0.2;
 				
-				ivec2 delta = ivec2(io.MousePos) - ivec2(io.MouseClickedPos[0]);
+				vec2 delta = vec2(io.MousePos) - vec2(io.MouseClickedPos[0]);
 				int deltaX = delta.x;
 				
 				auto scaled = deltaX * posToValFactor;
@@ -304,13 +303,13 @@ void DisplayPoseTargets() {
 			if(hovered || active) {
 				if(icon.second) {
 					ImGui::SetCursorPos(p);
-					MhGui::ImageButton(*icon.second, iconSize, ivec2(0,0), ivec2(1, 1), 0);
+					MhGui::ImageButton(*icon.second, iconSize, vec2(0,0), vec2(1, 1), 0);
 				}
 				poseTargetTooltip = target_name;
 			} else {
 				if(icon.first) {
 					ImGui::SetCursorPos(p);
-					MhGui::ImageButton(*icon.first, iconSize, ivec2(0,0), ivec2(1, 1), 0);
+					MhGui::ImageButton(*icon.first, iconSize, vec2(0,0), vec2(1, 1), 0);
 				}
 			}
 			ImGui::SameLine();
