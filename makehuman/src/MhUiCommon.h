@@ -20,41 +20,35 @@ using vec2 = glm::vec2;
 
 struct Tile {
 	
-	void click() const {
-	}
-	
-	glm::vec2 tileSize = glm::vec2(32, 32);
-	std::string as;
-	std::string tip;
-	std::string target;
-	std::optional<mh::Texture> tex;
-	std::optional<mh::Texture> texOver;
+	glm::vec2 m_size = glm::vec2(32, 32);
+	std::string m_imageBase;
+	std::string m_tooltip;
+	std::string m_category;
+	std::optional<mh::Texture> m_tex;
+	std::optional<mh::Texture> m_texOver;
 	Tile(const std::string & img, const std::string & _tip, const std::string & _targ)
 	{
-		tip = _tip;
-		target = _targ;
-		as = "pixmaps/ui/" + img;
-		tex = LoadTextureFromFile(as + ".png");
-		texOver = LoadTextureFromFile(as + "_over.png");
+		m_tooltip = _tip;
+		m_category = _targ;
+		m_imageBase = "pixmaps/ui/" + img;
+		m_tex = LoadTextureFromFile(m_imageBase + ".png");
+		m_texOver = LoadTextureFromFile(m_imageBase + "_over.png");
 	}
 	
 	void gui(std::string & category, std::string & tooltip) const {
 		auto p = ImGui::GetCursorPos();
-		if(ImGui::InvisibleButton(as.c_str(), tileSize)){
-			category = target;
-			//poseTargetCategory = target;
-			click();
+		if(ImGui::InvisibleButton(m_imageBase.c_str(), m_size)){
+			category = m_category;
 		}
 		ImGui::SetCursorPos(p);
 		if(ImGui::IsItemHovered()) {
-			if(texOver) {
-				MhGui::Image(texOver.value(), tileSize);
-				tooltip = tip;
-				//poseTargetTooltip = tip;
+			if(m_texOver) {
+				MhGui::Image(m_texOver.value(), m_size);
+				tooltip = m_tooltip;
 			}
 		} else {
-			if(tex)
-				MhGui::Image(tex.value(), tileSize, vec2(0), vec2(1));
+			if(m_tex)
+				MhGui::Image(m_tex.value(), m_size);
 		}
 	}
 };
@@ -62,8 +56,8 @@ struct Tile {
 template <typename Derived>
 struct TileGroupChildWindow {
 	
-	std::string poseTargetCategory;
-	std::string poseTargetTooltip;
+	std::string m_category;
+	std::string m_tooltip;
 	
 	void DisplayGroupTiles() {
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
@@ -81,7 +75,7 @@ struct TileGroupChildWindow {
 		
 		const Derived & d = static_cast<Derived&>(*this);
 		for(const auto & tile: d.tiles) {
-			tile.gui(poseTargetCategory, poseTargetTooltip);
+			tile.gui(m_category, m_tooltip);
 			ImGui::NextColumn();
 		}
 		ImGui::Columns(1);

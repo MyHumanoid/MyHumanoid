@@ -100,102 +100,8 @@ void DisplayCharacterSettings()
 	ImGui::Text("Bodyshape Shape/Height");
 	XYfoobar(tex.shapeBkg.value(), g_global.bodyShapeHeight);
 	
-	//	if (ImGui::SliderFloat2("Age/Sex", ageAndSex.data(), 0.0f, 1.0f)) {
-	
-	//		Point p(ageAndSex[0] * 100, ageAndSex[1] * 100);
-	//		characterSettingPanel->m_age->cursorPos = p;
-	
-	//		characterSettingPanel->selectorListener.ageDists =
-	//		    characterSettingPanel->m_age->getDists();
-	
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-	
-	//	if (ImGui::SliderFloat2("Weight/Muscle", bodyWeightMuscle.data(), 0.0f,
-	//	                        1.0f)) {
-	
-	//		Point p(bodyWeightMuscle[0] * 100, bodyWeightMuscle[1] * 100);
-	//		characterSettingPanel->m_muscleSize->cursorPos = p;
-	
-	//		characterSettingPanel->selectorListener.muscleSizeDists =
-	//		    characterSettingPanel->m_muscleSize->getDists();
-	
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-	
-	//	if (ImGui::SliderFloat2("Breast Size / Shape", breastSizeShape.data(), 0.0f,
-	//	                        1.0f)) {
-	
-	//		Point p(breastSizeShape[0] * 100, breastSizeShape[1] * 100);
-	//		characterSettingPanel->m_breast->cursorPos = p;
-	
-	//		characterSettingPanel->selectorListener.breastDists =
-	//		    characterSettingPanel->m_breast->getDists();
-	
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-	
-	//	if (ImGui::SliderFloat2("Body Shape/Height", bodyShapeHeight.data(), 0.0f,
-	//	                        1.0f)) {
-	
-	//		Point p(bodyShapeHeight[0] * 100, bodyShapeHeight[1] * 100);
-	//		characterSettingPanel->m_shape->cursorPos = p;
-	
-	//		characterSettingPanel->selectorListener.shapeDists =
-	//		    characterSettingPanel->m_shape->getDists();
-	
-	//		characterSettingPanel->selectorListener.calcWidgetTargetsFOO();
-	//	}
-	
 	ImGui::End();
 }
-
-
-//void doMorphFromGui(std::string morphTarget, float value)
-//{
-//	g_global.mesh->doMorph(morphTarget, value);
-	
-//	//	mesh->doMorph(imgSliderSource->getTargetName(),
-//	//	              imgSliderSource->getSliderValue());
-	
-//	g_global.mesh->calcNormals();
-//}
-
-//void DisplayMorphTargetRow(const string & target_name, float & target_value, bool xBtn)
-//{
-//	fs::path targetImageName = target_name;
-//	targetImageName.replace_extension();
-	
-//	const auto & texIdIt = g_targetImageTextures.find(targetImageName);
-//	if(texIdIt != g_targetImageTextures.end()) {
-//		auto texId = texIdIt->second;
-		
-//		MhGui::Image(texId, ImVec2(16, 16));
-//		if(ImGui::IsItemHovered()) {
-//			ImGui::BeginTooltip();
-//			MhGui::Image(texId, ImVec2(128, 128));
-//			ImGui::EndTooltip();
-//		}
-//	} else {
-//		ImGui::Dummy(ImVec2(16, 16));
-//	}
-//	ImGui::SameLine(0, 4);
-	
-//	if(xBtn) {
-//		// FIXME only the button in the first line is working
-//		if(ImGui::Button("X", ImVec2(16, 16))) {
-//			doMorphFromGui(target_name, 0.f);
-//		}
-//		ImGui::SameLine(0, 4);
-//	}
-	
-//	ImGui::PushItemWidth(-400);
-//	// TODO used min so that morph does not vanish
-//	if(ImGui::SliderFloat(target_name.c_str(), &target_value, 0.001f, 1.f)) {
-//		doMorphFromGui(target_name, target_value);
-//	}
-//}
-
 
 bool isCompositeMorphTarget(const std::string & target_name)
 {
@@ -282,6 +188,7 @@ struct MorphGroupWin : public TileGroupChildWindow<MorphGroupWin> {
 		Tile("teeth_05", "X",     ""),
 		Tile("teeth_06", "X",     ""),
 	};
+	// clang-format on
 };
 
 auto applier = [](const std::string & name,
@@ -294,55 +201,25 @@ auto applier = [](const std::string & name,
 
 void DisplayMorphTargets()
 {
-	
-//	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets)) {
-//		ImGui::End();
-//		return;
-//	}
-	
-//	BodySettings bodyset = g_global.mesh->getBodySettings();
-	
-//	for(const auto & targetEntry : g_global.mesh->getTargetMapRef()) {
-//		const string & target_name(targetEntry.first);
-		
-//		string::size_type loc = target_name.find("/", 0);
-//		if(loc == string::npos)
-//			continue;
-//		else {
-//			string sub = target_name.substr(0, loc);
-			
-//			if(isCompositeMorphTarget(target_name)) {
-//				continue;
-//			}
-			
-//			float target_value = bodyset[target_name];
-			
-//			DisplayMorphTargetRow(target_name, target_value, false);
-//		}
-//	}
-//	ImGui::End();
-
-	using glm::vec2;
-	
 	constexpr static ImGuiWindowFlags winFlags
 	    = ImGuiWindowFlags_NoScrollbar
 	    | ImGuiWindowFlags_NoResize;
 	
-	ImGui::SetNextWindowSize(vec2(380, 484));
+	ImGui::SetNextWindowSize(vec2(380, 510));
 	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets, winFlags)) {
 		ImGui::End();
 		return;
 	}
 
-	static MorphGroupWin foobarMorph;
+	static MorphGroupWin tileWin;
 	
-	foobarMorph.DisplayGroupTiles();
-	
+	tileWin.m_tooltip = "";
+	tileWin.DisplayGroupTiles();
 	ImGui::SameLine();
 	{
-		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
+		ImGui::BeginChild("Morph Targets", vec2(140, 460), false);
 		
-		BodySettings bodyset = g_global.mesh->getPoses();
+		BodySettings bodyset = g_global.mesh->getBodySettings();
 		
 		for(const auto & targetEntry : g_global.mesh->getTargetMapRef()) {
 			const string & target_name(targetEntry.first);
@@ -351,7 +228,7 @@ void DisplayMorphTargets()
 				continue;
 			}
 			
-			if(!pathStartsWith(target_name, foobarMorph.poseTargetCategory)) {
+			if(!pathStartsWith(target_name, tileWin.m_category)) {
 				continue;
 			}
 			
@@ -363,30 +240,12 @@ void DisplayMorphTargets()
 			DrawTargetRow(g_targetImageTextures,
 			              minmax, target_name,
 			              target_value,
-			              foobarMorph.poseTargetTooltip,
+			              tileWin.m_tooltip,
 			              applier);
-
-
-			//ImGuiIO& io = ImGui::GetIO();
-			
-			
-//			fs::path targetImageName = target_name;
-//			targetImageName.replace_extension();
-			
-//			const auto & texIdIt = g_targetImageTextures.find(targetImageName);
-//			if(texIdIt != g_targetImageTextures.end()) {
-//				auto texId = texIdIt->second;
-//				MhGui::ImageButton(texId, ImVec2(64, 64));
-//			} else {
-//				ImGui::Text("%s", target_name.c_str());
-//				//ImGui::InvisibleButton(target_name.c_str(), ImVec2(48, 48));
-//			}
-			
-			//DisplayMorphTargetRow(target_name, target_value, false);
 		}
 		ImGui::EndChild();
 	}
-	ImGui::Text("%s", foobarMorph.poseTargetTooltip.c_str());
+	ImGui::Text("%s", tileWin.m_tooltip.c_str());
 	ImGui::End();
 }
 
@@ -406,8 +265,6 @@ void DisplayMorphTargetsApplied()
 		}
 		
 		float target_value = bodyset_it.second;
-		
-		//DisplayMorphTargetRow(target_name, target_value, true);
 
 		DrawAppliedRow(g_targetImageTextures,
 		               std::make_pair(0.f, 1.f),

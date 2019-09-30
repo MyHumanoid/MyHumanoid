@@ -29,7 +29,6 @@ void CreatePoseImageTextures()
 
 struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 	
-	//const auto & getPoseTiles() {
 	// clang-format off
 	const std::array<const Tile, 84> tiles = {
 		Tile("rotations_01", "Right collar",          "260_right_collar"),
@@ -131,8 +130,6 @@ struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 		Tile("rotations_84", "Left footfinger 1_2",   "029_left_footfinger_1_2"),
 	};
 	// clang-format on
-//	return tiles;
-//}
 };
 
 auto applier = [](const std::string & name,
@@ -167,13 +164,10 @@ void DisplayPoseTargets() {
 		return;
 	}
 	
-	static PoseGroupWin foobar;
+	static PoseGroupWin tileWin;
 	
-	foobar.poseTargetTooltip = "";
-	
-	//static_assert (tiles.size() == 84, "asd");
-	
-	foobar.DisplayGroupTiles();
+	tileWin.m_tooltip = "";
+	tileWin.DisplayGroupTiles();
 	ImGui::SameLine();
 	{
 		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
@@ -189,7 +183,7 @@ void DisplayPoseTargets() {
 			// FIX: Make sure that a bodyset with the given name really exists!
 			float target_value = (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
 			
-			if(!pathStartsWith(target_name, foobar.poseTargetCategory)) {
+			if(!pathStartsWith(target_name, tileWin.m_category)) {
 				continue;
 			}
 			
@@ -201,12 +195,12 @@ void DisplayPoseTargets() {
 			DrawTargetRow(g_poseImageTextures,
 			              minmax, target_name,
 			              target_value,
-			              foobar.poseTargetTooltip,
+			              tileWin.m_tooltip,
 			              applier);
 		}
 		ImGui::EndChild();
 	}
-	ImGui::Text("%s", foobar.poseTargetTooltip.c_str());
+	ImGui::Text("%s", tileWin.m_tooltip.c_str());
 	ImGui::End();
 }
 
