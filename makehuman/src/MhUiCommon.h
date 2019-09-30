@@ -4,10 +4,15 @@
 #include <array>
 #include <string>
 #include <optional>
+#include <experimental/filesystem>
 
 #include "MhGui.h"
+#include "MhGuiData.h"
 
 #include "render/RenderUtils.h"
+
+#include "animorph/PoseTarget.h"
+
 
 using vec2 = glm::vec2;
 
@@ -89,5 +94,51 @@ struct TileGroupChildWindow {
 	}
 };
 
+namespace fs = std::experimental::filesystem;
+
+
+template <typename Applier>
+void DrawAppliedRow(const IconMap & icons,
+                    const std::pair<float, float> minMax,
+                    const std::string & target_name,
+                    const float & target_value,
+                    Applier && applier)
+{
+	bool showTooltip = false;
+	
+	fs::path targetImageName = target_name;
+	targetImageName.replace_extension();
+	
+	const auto & texIdIt = icons.find(targetImageName);
+	bool haveTexture = texIdIt != icons.end();
+	if(haveTexture) {
+		MhGui::Image(texIdIt->second, ImVec2(16, 16));
+		showTooltip |= ImGui::IsItemHovered();
+	} else {
+		ImGui::Dummy(ImVec2(16, 16));
+	}
+	ImGui::SameLine();
+	
+	// FIXME only the button in the first line is working
+	if(ImGui::Button("X")) {
+		applier(target_name, 0.f, true);
+	}
+	showTooltip |= ImGui::IsItemHovered();
+	ImGui::SameLine();
+	
+	float val = target_value;
+	float min = minMax.first;
+	float max = minMax.second;
+	if(ImGui::SliderFloat(target_name.c_str(), &val, min, max)) {
+		applier(target_name, val, false);
+	}
+	showTooltip |= ImGui::IsItemHovered();
+	
+	if(showTooltip && haveTexture) {
+		ImGui::BeginTooltip();
+		MhGui::Image(texIdIt->second, ImVec2(128, 128));
+		ImGui::EndTooltip();
+	}
+}
 
 #endif // MHUICOMMON_H

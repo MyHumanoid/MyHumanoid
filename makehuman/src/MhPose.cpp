@@ -265,43 +265,20 @@ void DisplayPoseTargetsApplied()
 		PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);
 		
-		fs::path targetImageName = target_name;
-		targetImageName.replace_extension();
+		const auto & minmax = std::make_pair(
+			poseTarget->getMinAngle(),
+			poseTarget->getMaxAngle()
+		);
 		
-		bool showTooltip = false;
-		
-		const auto & texIdIt = g_poseImageTextures.find(targetImageName);
-		bool haveTexture = texIdIt != g_poseImageTextures.end();
-		if(haveTexture) {
-			MhGui::Image(texIdIt->second, ImVec2(16, 16));
-			showTooltip |= ImGui::IsItemHovered();
-		} else {
-			ImGui::Dummy(ImVec2(16, 16));
-		}
-		ImGui::SameLine();
-		
-		// FIXME only the button in the first line is working
-		if(ImGui::Button("X")) {
-			g_global.mesh->setPose(target_name, 0.f);
+		auto applier = [](const std::string & name,
+		                  const float & value,
+		                  const bool deleteOnZero)
+		{
+			g_global.mesh->setPose(name, value, deleteOnZero);
 			g_global.mesh->calcNormals();
-		}
-		showTooltip |= ImGui::IsItemHovered();
-		ImGui::SameLine();
+		};
 		
-		float val = target_value;
-		float min = poseTarget->getMinAngle();
-		float max = poseTarget->getMaxAngle();
-		if(ImGui::SliderFloat(target_name.c_str(), &val, min, max)) {
-			g_global.mesh->setPose(target_name, val, false);
-			g_global.mesh->calcNormals();
-		}
-		showTooltip |= ImGui::IsItemHovered();
-		
-		if(showTooltip && haveTexture) {
-			ImGui::BeginTooltip();
-			MhGui::Image(texIdIt->second, ImVec2(128, 128));
-			ImGui::EndTooltip();
-		}
+		DrawAppliedRow(g_poseImageTextures, minmax, target_name, target_value, applier);
 	}
 	ImGui::End();
 }

@@ -139,50 +139,50 @@ void DisplayCharacterSettings()
 }
 
 
-void doMorphFromGui(std::string morphTarget, float value)
-{
-	g_global.mesh->doMorph(morphTarget, value);
+//void doMorphFromGui(std::string morphTarget, float value)
+//{
+//	g_global.mesh->doMorph(morphTarget, value);
 	
-	//	mesh->doMorph(imgSliderSource->getTargetName(),
-	//	              imgSliderSource->getSliderValue());
+//	//	mesh->doMorph(imgSliderSource->getTargetName(),
+//	//	              imgSliderSource->getSliderValue());
 	
-	g_global.mesh->calcNormals();
-}
+//	g_global.mesh->calcNormals();
+//}
 
-void DisplayMorphTargetRow(const string & target_name, float & target_value, bool xBtn)
-{
-	fs::path targetImageName = target_name;
-	targetImageName.replace_extension();
+//void DisplayMorphTargetRow(const string & target_name, float & target_value, bool xBtn)
+//{
+//	fs::path targetImageName = target_name;
+//	targetImageName.replace_extension();
 	
-	const auto & texIdIt = g_targetImageTextures.find(targetImageName);
-	if(texIdIt != g_targetImageTextures.end()) {
-		auto texId = texIdIt->second;
+//	const auto & texIdIt = g_targetImageTextures.find(targetImageName);
+//	if(texIdIt != g_targetImageTextures.end()) {
+//		auto texId = texIdIt->second;
 		
-		MhGui::Image(texId, ImVec2(16, 16));
-		if(ImGui::IsItemHovered()) {
-			ImGui::BeginTooltip();
-			MhGui::Image(texId, ImVec2(128, 128));
-			ImGui::EndTooltip();
-		}
-	} else {
-		ImGui::Dummy(ImVec2(16, 16));
-	}
-	ImGui::SameLine(0, 4);
+//		MhGui::Image(texId, ImVec2(16, 16));
+//		if(ImGui::IsItemHovered()) {
+//			ImGui::BeginTooltip();
+//			MhGui::Image(texId, ImVec2(128, 128));
+//			ImGui::EndTooltip();
+//		}
+//	} else {
+//		ImGui::Dummy(ImVec2(16, 16));
+//	}
+//	ImGui::SameLine(0, 4);
 	
-	if(xBtn) {
-		// FIXME only the button in the first line is working
-		if(ImGui::Button("X", ImVec2(16, 16))) {
-			doMorphFromGui(target_name, 0.f);
-		}
-		ImGui::SameLine(0, 4);
-	}
+//	if(xBtn) {
+//		// FIXME only the button in the first line is working
+//		if(ImGui::Button("X", ImVec2(16, 16))) {
+//			doMorphFromGui(target_name, 0.f);
+//		}
+//		ImGui::SameLine(0, 4);
+//	}
 	
-	ImGui::PushItemWidth(-400);
-	// TODO used min so that morph does not vanish
-	if(ImGui::SliderFloat(target_name.c_str(), &target_value, 0.001f, 1.f)) {
-		doMorphFromGui(target_name, target_value);
-	}
-}
+//	ImGui::PushItemWidth(-400);
+//	// TODO used min so that morph does not vanish
+//	if(ImGui::SliderFloat(target_name.c_str(), &target_value, 0.001f, 1.f)) {
+//		doMorphFromGui(target_name, target_value);
+//	}
+//}
 
 
 bool isCompositeMorphTarget(const std::string & target_name)
@@ -391,7 +391,19 @@ void DisplayMorphTargetsApplied()
 		
 		float target_value = bodyset_it.second;
 		
-		DisplayMorphTargetRow(target_name, target_value, true);
+		//DisplayMorphTargetRow(target_name, target_value, true);
+
+		auto applier = [](const std::string & name,
+		              const float & value,
+		              const bool deleteOnZero)
+		{
+			g_global.mesh->doMorph(name, value);
+			g_global.mesh->calcNormals();
+		};
+		
+		DrawAppliedRow(g_targetImageTextures,
+		               std::make_pair(0.f, 1.f),
+		               target_name, target_value, applier);
 	}
 	ImGui::End();
 }
