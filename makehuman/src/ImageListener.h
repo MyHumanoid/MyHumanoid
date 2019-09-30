@@ -46,7 +46,6 @@ using namespace mhgui;
 class ImageListener : public AbstractListener
 {
 private:
-	void showPoses();
 	void showBodyDetails();
 	void showCharacterSetting();
 

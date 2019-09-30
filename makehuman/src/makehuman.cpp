@@ -77,7 +77,6 @@
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
-#include "PoseTargetPanel.h"
 #include "TargetPanel.h"
 #include "ToolbarPanel.h"
 #include "TooltipPanel.h"
@@ -439,12 +438,6 @@ void DisplayLibraryPoses()
 
 
 				{ // not copy-paste
-
-					if(g_global.getAppMode() != POSES) {
-						g_global.setAppMode(POSES);
-						g_global.mesh->poseMode();
-					}
-
 					CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
 
 					g_global.mesh->doPose(charactersmap[character_name], 1.0, true);
@@ -654,11 +647,6 @@ void DisplayMainMenu()
 			ImGui::Separator();
 			if(ImGui::BeginMenu("Reset Pose? ...")) {
 				if(ImGui::MenuItem("YES")) {
-					PoseTargetPanel * pt_p = dynamic_cast<PoseTargetPanel *>(
-					    g_mainWindow->getPanel(kComponentID_TargetPanel));
-					if(pt_p != NULL) {
-						pt_p->resetTargetValues();
-					}
 					ResetMeshPose();
 				}
 				ImGui::EndMenu();

@@ -84,14 +84,6 @@ void ToolbarPanel::createWidgets()
 	imageVector.push_back(image);
 	addWidget(image);
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_Poses,
-	                  searchPixmapFile("ui/toolbar_poses.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(Tooltip("Poses", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------

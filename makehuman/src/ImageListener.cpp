@@ -32,8 +32,6 @@
 #include "FacePanel.h"
 #include "Global.h"
 #include "HandsPanel.h"
-#include "PoseTargetPanel.h"
-#include "PosesBodyPanel.h"
 #include "TargetPanel.h"
 #include "TeethPanel.h"
 #include "ToolbarPanel.h"
@@ -170,25 +168,6 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 				g_global.setAppMode(BODY_DETAILS);
 				showBodyDetails();
 			} break;
-			case kComponentID_ImageToolbarPanel_Poses: {
-				if(g_global.getAppMode() == POSES)
-					return true;
-
-				hidePanels(g_global.getAppMode());
-
-				if(g_global.getAppMode() != POSES_BODY_SETTINGS) {
-					Mesh * mesh = g_global.getMesh();
-					assert(mesh);
-					
-					if(g_morphMode) {
-						g_morphMode = !g_morphMode;
-						mesh->poseMode();
-					}
-				}
-
-				g_global.setAppMode(POSES);
-				showPoses();
-			} break;
 			case kComponentID_ImageToolbarPanel_MorphingList: {
 				Panel * p = mainWindow.getPanel(kComponentID_TargetPanel);
 				mainWindow.removePanel(p);
@@ -204,15 +183,6 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 					mainWindow.addPanel(targetPanel);
 					targetPanel->createWidgets();
 					targetPanel->show();
-				} else if(g_global.getAppMode() == POSES) {
-					PoseTargetPanel * targetPanel;
-
-					int x       = mainWindow.getSize().getWidth() - 210;
-					targetPanel = new PoseTargetPanel(applied_target_list,
-					                                  Rect(x, 40, 210, 517));
-					mainWindow.addPanel(targetPanel);
-					targetPanel->createWidgets();
-					targetPanel->show_all();
 				}
 			} break;
 			// utilitybar buttons
@@ -342,13 +312,4 @@ void ImageListener::showBodyDetails()
 	mainWindow.addPanel(handsPanel);
 	handsPanel->createWidgets();
 	handsPanel->show_all();
-}
-
-void ImageListener::showPoses()
-{
-	Window &         mainWindow = *g_mainWindow;
-	PosesBodyPanel * posesPanel = new PosesBodyPanel();
-	mainWindow.addPanel(posesPanel);
-	posesPanel->createWidgets();
-	posesPanel->show_all();
 }

@@ -186,7 +186,6 @@ static const uint32_t kComponentID_ImageToolbarPanel_BodyDetailsRealistic =
         FOUR_CHAR_CONST('B', 'D', 'R', 'e');
 // static const uint32_t kComponentID_ImageToolbarPanel_BodyDetailsFantasy   =
 // FOUR_CHAR_CONST ('B', 'D', 'F', 'a');
-static const uint32_t kComponentID_ImageToolbarPanel_Poses = FOUR_CHAR_CONST('P', 'o', 's', 'e');
 static const uint32_t kComponentID_ImageToolbarPanel_MorphingList =
         FOUR_CHAR_CONST('M', 'o', 'L', 'i');
 

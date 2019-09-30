@@ -147,14 +147,6 @@ set(makehuman_sources
 	src/MhPose.cpp
 	src/PageTargetPanel.cpp
 	src/PageTargetPanel.h
-	src/PosesBodyPanel.cpp
-	src/PosesBodyPanel.h
-	src/PoseTargetPanel.cpp
-	src/PoseTargetPanel.h
-	src/PoseTargetSelectionListener.cpp
-	src/PoseTargetSelectionListener.h
-	src/PoseTargetSliderListener.cpp
-	src/PoseTargetSliderListener.h
 	src/SelectorListener.cpp
 	src/SelectorListener.h
 	src/TargetPanel.cpp

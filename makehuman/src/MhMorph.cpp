@@ -10,7 +10,6 @@
 #include "gui/Window.h"
 #include "Global.h"
 #include "ComponentID.h"
-#include "PoseTargetPanel.h"
 
 
 using glm::vec2;
@@ -244,26 +243,6 @@ void DisplayMorphTargets()
 	struct Tile {
 		
 		void click() const {
-			Window & mainWindow = *g_mainWindow;
-			
-			PoseTargetPanel * targetPanel = dynamic_cast<PoseTargetPanel *>(
-				mainWindow.getPanel(kComponentID_TargetPanel));
-			
-			// Check if this Target Panel is not the current one?
-			if((targetPanel == NULL) || (targetPanel->getCategory() != target)) {
-				// No? The create it
-				int x = mainWindow.getSize().getWidth() - 210;
-				
-				mainWindow.removePanel(targetPanel);
-				delete targetPanel;
-				
-				targetPanel = new PoseTargetPanel(target, Rect(x, 40, 210, 517));
-				
-				mainWindow.addPanel(targetPanel);
-				targetPanel->createWidgets();
-			}
-			
-			targetPanel->show_all();
 		}
 		
 		
