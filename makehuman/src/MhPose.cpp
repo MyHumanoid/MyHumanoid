@@ -89,9 +89,8 @@ struct Tile {
 			}
 		} else {
 			if(tex)
-				MhGui::Image(tex.value(), tileSize);
+				MhGui::Image(tex.value(), tileSize, vec2(0), vec2(1));
 		}
-		ImGui::NextColumn();
 	}
 };
 
@@ -103,7 +102,17 @@ void DisplayPoseTargets() {
 	//      |ImGuiWindowFlags_NoSavedSettings
 	      | ImGuiWindowFlags_NoResize;
 	
+	struct WinStack{
+		WinStack() {
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ivec2(1, 1));
+		}
+		~WinStack() {
+			ImGui::PopStyleVar(1);
+		}
+	};
+	
 	ImGui::SetNextWindowSize(ivec2(380, 510));
+	WinStack winStack;
 	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
 		ImGui::End();
 		return;
@@ -112,7 +121,7 @@ void DisplayPoseTargets() {
 	poseTargetTooltip = "";
 	
 	// clang-format off
-	static const auto goobar = {
+	static const auto tiles = {
 		Tile("rotations_01", "Right collar",          "260_right_collar"),
 		Tile("rotations_02", "Head",                  "300_head"),
 		Tile("rotations_03", "Left collar",           "280_left_collar"),
@@ -216,15 +225,24 @@ void DisplayPoseTargets() {
 	//static_assert (goobar.size() == 84, "asd");
 	
 	{
-		ImGui::BeginChild("Pose Groups", ivec2(195, 460), false);
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ivec2(0, 0));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ivec2(0, 0));
-		ImGui::Columns(6, NULL, false);
-		for(const auto & tile: goobar) {
-			tile.gui();
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ivec2(-1, 0));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ivec2(-1, 0));
+		ImGui::BeginChild("Pose Groups", ivec2(192, 460), false);
+		ImGui::Columns(6, "Pose Groups Grid", false);
+		
+		// FIXME we still have black vertical lines ?!
+		for(int i=0; i<6;++i) {
+			ImGui::SetColumnWidth(i, 32);
 		}
-		ImGui::PopStyleVar(2);
+		
+		for(const auto & tile: tiles) {
+			tile.gui();
+			ImGui::NextColumn();
+		}
+		ImGui::Columns(1);
 		ImGui::EndChild();
+		ImGui::PopStyleVar(3);
 	}
 	ImGui::SameLine();
 	{
@@ -262,7 +280,9 @@ void DisplayPoseTargets() {
 			if(ImGui::IsMouseDown(0)) {
 				//poseTargetDragStartValue = target_value;
 			};
-			if(ImGui::IsItemActive()) {
+			bool active = ImGui::IsItemActive();
+			bool hovered = ImGui::IsItemHovered();
+			if(active) {
 				float posToValFactor = 0.2;
 				
 				ivec2 delta = ivec2(io.MousePos) - ivec2(io.MouseClickedPos[0]);
@@ -281,7 +301,7 @@ void DisplayPoseTargets() {
 				ImGui::GetForegroundDrawList()->AddLine(io.MouseClickedPos[0], io.MousePos, ImGui::GetColorU32(ImGuiCol_Button), 4.0f); // Draw a line between the button and the mouse cursor
 			}
 			auto icon = getImage(targetImageName);
-			if(ImGui::IsItemHovered()) {
+			if(hovered || active) {
 				if(icon.second) {
 					ImGui::SetCursorPos(p);
 					MhGui::ImageButton(*icon.second, iconSize, ivec2(0,0), ivec2(1, 1), 0);
