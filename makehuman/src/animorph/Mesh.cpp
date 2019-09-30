@@ -395,19 +395,13 @@ bool Mesh::loadMeshFactory(const string & mesh_filename, const string & faces_fi
 
 PoseTarget * Mesh::getPoseTargetForName(const string & inTargetname) const
 {
-	// Check if a pose entry for the given name exists
 	PoseMap::const_iterator i = posemap.find(inTargetname);
 	if(i == posemap.end())
-		return NULL; // There is no PoseTarget for this named entry
+		return NULL;
 
-	PoseEntry * poseEntry = i->second;
-	if(!poseEntry)
-		return NULL; // There is no PoseEntry
-
-	// get the actual poseTarget for this entry (eventually by lazy loading)
-	PoseTarget * poseTarget = poseEntry->getTarget();
+	PoseTarget * poseTarget = i->second;
 	if(!poseTarget)
-		return NULL; // There is no poseTarget
+		return NULL;
 
 	return poseTarget;
 }
@@ -445,7 +439,14 @@ void Mesh::loadPoseTargetsFactory(const string & target_root_path, int recursive
 		if(loc == string::npos) {
 			continue;
 		}
-		posemap[target_name] = new PoseEntry(target_name, file, false);
+		
+		PoseTarget * poseTarget = new PoseTarget(target_name, file);
+		bool rc = poseTarget->load();
+		if(!rc) {
+			delete poseTarget;
+		} else {
+			posemap[target_name] = poseTarget;
+		}
 	}
 }
 
@@ -618,13 +619,12 @@ void Mesh::initPoses()
 {
 	for(PoseMap::iterator target_it = posemap.begin(); target_it != posemap.end();
 	    target_it++) {
-		PoseEntry * poseEntry = target_it->second;
-		assert(poseEntry);
-		PoseTarget * tmp = poseEntry->getTarget();
+		PoseTarget * poseTarget = target_it->second;
+		assert(poseTarget);
 
-		tmp->calcRotationsCenteroids(vertexvector_morph_copy);
-		tmp->calcTranslationsFormFactors(vertexvector_morph_copy);
-		tmp->calcNormalizations();
+		poseTarget->calcRotationsCenteroids(vertexvector_morph_copy);
+		poseTarget->calcTranslationsFormFactors(vertexvector_morph_copy);
+		poseTarget->calcNormalizations();
 	}
 
 	for(std::vector<SkinVertex>::iterator skin_it = skin.begin(); skin_it != skin.end();
@@ -894,10 +894,7 @@ void Mesh::prepareSkeleton()
 	for(int i = 0; i < SK_JOINT_END; i++) {
 
 		glm::vec3         v(0.f, 0.f, 0.f);
-		PoseTarget *      tmp;
-		PoseEntry *       poseEntry;
 		PoseMap::iterator temp = posemap.find(jointName[i] + "/ROT1");
-		//   jointvector[y] =
 
 		if(temp == posemap.end()) {
 
@@ -915,22 +912,15 @@ void Mesh::prepareSkeleton()
 			}
 		}
 
-		poseEntry = temp->second;
+		PoseTarget * poseTarget = temp->second;
 
-		if(poseEntry == NULL) {
+		if(poseTarget == NULL) {
 			jointvector.push_back(v);
 			continue;
 		}
 
-		tmp = poseEntry->getTarget();
-
-		if(tmp == NULL) {
-			jointvector.push_back(v);
-			continue;
-		}
-
-		tmp->calcRotationsCenteroids(vertexvector_morph_only);
-		v = tmp->getFirstRotationCenteroid();
+		poseTarget->calcRotationsCenteroids(vertexvector_morph_only);
+		v = poseTarget->getFirstRotationCenteroid();
 
 		jointvector.push_back(v);
 	}
@@ -1002,43 +992,4 @@ SKELETON_JOINT Mesh::getSymmetricJoint(SKELETON_JOINT joint)
 
 	else
 		return jointSymmetric[joint];
-}
-
-
-PoseEntry::PoseEntry(const string & inFilename, const string & inFullPath, bool inPreload)
-        : mFilename(new string(inFilename))
-        , mFullPath(new string(inFullPath))
-        , mTarget(NULL)
-        ,                     // not initialized yet
-        mTargetLoadTry(false) // not tried yet
-{
-	if(inPreload)
-		loadFromFile();
-}
-
-PoseEntry::~PoseEntry()
-{
-	delete mFilename;
-	delete mTarget;
-	delete mFullPath;
-}
-
-PoseTarget * PoseEntry::getTarget()
-{
-	if(!mTargetLoadTry)
-		loadFromFile();
-	return mTarget;
-}
-
-bool PoseEntry::loadFromFile()
-{
-	// if we didn't try to load the target then try it NOW
-	if(mTargetLoadTry == false) {
-		mTargetLoadTry = true; // marks as 'tried to load' for further attempts
-
-		mTarget = new(std::nothrow) PoseTarget(mFilename, mFullPath);
-		assert(mTarget);
-		mTarget->load();
-	}
-	return (mTarget != NULL); // when a target object exists, then return true
 }

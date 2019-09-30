@@ -156,63 +156,10 @@ typedef struct DummyJoint {
 	glm::vec3      v3;
 } DummyJoint;
 
-/*! \brief Wraps a PoseTarget object to make it capable of lazy loading.
- *
- * This class encapsulates a PoseTarget in order to load it lazily when
- * it is actually used.
- *
- * When an object of this class is created only the filename of the target
- * will be saved.  This enables to load the target when it is actually used
- * at run time.
- */
-class PoseEntry
-{
-public:
-	/** \brief The constructor remembers the filename associated with the target.
-	 *
-	 * @param inFilename The name of the PoseTarget to load.
-	 * @param inFullPath The path to inFilename in a format suitable
-	 *                  for opendir().
-	 * @param inPreload Set this to true if you want to preload the target ie.
-	 *                  to skip the lazy load.  If you omit this parameter,
-	 *                  it defaults to false ie. lazy loading.
-	 */
-	PoseEntry(const string & inFilename, const string & inFullPath, bool inPreload = false);
-
-	/// The destructor destroys all encapsulated members, including the
-	/// PoseTarget.
-	~PoseEntry();
-
-	/** \brief Get the PoseTarget.  If it has not been loaded then load it now.
-	 *
-	 * @return The PoseTarget or NULL if a target with the filename given in the
-	 * constructor does not exist.
-	 */
-	PoseTarget * getTarget();
-
-private:
-	/** \brief Try to load the target given in the constructor.  Loading is
-	 * attempted only once.
-	 *
-	 *  @return true when the file could be loaded or false otherwise.
-	 */
-	bool loadFromFile();
-
-	/// Intentionally not implemented
-	PoseEntry(const PoseEntry &);
-	/// Intentionally not implemented
-	PoseEntry & operator=(const PoseEntry &);
-
-	const string * mFilename;
-	const string * mFullPath;
-	PoseTarget *   mTarget;
-	bool           mTargetLoadTry;
-}; // class PoseEntry
-
 typedef map<string, Target *>     TargetMap;
 typedef map<string, glm::vec3>    Centeroid;
 typedef map<string, glm::vec3>    FormFactor;
-typedef map<string, PoseEntry *>  PoseMap;
+typedef map<string, PoseTarget *>  PoseMap;
 typedef map<string, BodySettings> CharactersMap;
 
 /*! \brief A poseable and morphable mesh.

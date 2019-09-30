@@ -91,16 +91,16 @@ class PoseTarget
 	                                 PoseTranslationVector & translations);
 
 public:
-	PoseTarget(const string * inTargetName, const string * inFullPath)
+	PoseTarget(const string & inTargetName, const string & inFullPath)
 	        : positiveTranslations()
 	        , negativeTranslations()
 	        , positiveRotations()
 	        , negativeRotations()
-	        , targetName(*inTargetName)
+	        , targetName(inTargetName)
 	        , negative(false)
 	        , positive(false)
 	        , normalizationInited(false)
-	        , fullPath(*inFullPath)
+	        , fullPath(inFullPath)
 	        , modVertex()
 	        , minAngle(0.0f)
 	        , maxAngle(0.0f)
