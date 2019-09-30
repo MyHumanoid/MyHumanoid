@@ -27,27 +27,6 @@ void CreatePoseImageTextures()
 	loadTexturesFromDir(g_poseImageTextures, baseDir);
 }
 
-
-//static std::string poseTargetCategory = "";
-//static std::string poseTargetTooltip = "";
-static float poseTargetDragStartValue = 0;
-
-using OptText = std::optional<mh::Texture>;
-using TexPair = std::pair<OptText, OptText>;
-
-TexPair getImage(const std::string & name) {
-	const auto & t = g_poseImageTextures.find(name);
-	if(t != g_poseImageTextures.end()) {
-		const auto & over = g_poseImageTextures.find(name + "_over");
-		if(over != g_poseImageTextures.end()) {
-			return std::make_pair(t->second, over->second);
-		} else {
-			return std::make_pair(t->second, std::nullopt);
-		}
-	}
-	return std::make_pair(std::nullopt, std::nullopt);
-};
-
 struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 	
 	//const auto & getPoseTiles() {
@@ -156,6 +135,15 @@ struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 //}
 };
 
+auto applier = [](const std::string & name,
+                  const float & value,
+                  const bool deleteOnZero)
+{
+	g_global.mesh->setPose(name, value, deleteOnZero);
+	g_global.mesh->calcNormals();
+};
+
+
 void DisplayPoseTargets() {
 	
 	constexpr static ImGuiWindowFlags winFlags
@@ -201,62 +189,20 @@ void DisplayPoseTargets() {
 			// FIX: Make sure that a bodyset with the given name really exists!
 			float target_value = (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
 			
-			string::size_type loc = target_name.find("/", 0);
-			if(loc == string::npos)
+			if(!pathStartsWith(target_name, foobar.poseTargetCategory)) {
 				continue;
-			
-			string sub = target_name.substr(0, loc);
-			
-			if(sub != foobar.poseTargetCategory)
-				continue;
-			
-			ImGuiIO& io = ImGui::GetIO();
-			
-			fs::path targetImageName = target_name;
-			targetImageName.replace_extension();
-			
-			const auto iconSize = vec2(64, 64);
-			
-			const auto p = ImGui::GetCursorPos();
-			ImGui::InvisibleButton(target_name.c_str(), iconSize);
-			if(ImGui::IsMouseDown(0)) {
-				//poseTargetDragStartValue = target_value;
-			};
-			bool active = ImGui::IsItemActive();
-			bool hovered = ImGui::IsItemHovered();
-			if(active) {
-				float posToValFactor = 0.2;
-				
-				vec2 delta = vec2(io.MousePos) - vec2(io.MouseClickedPos[0]);
-				int deltaX = delta.x;
-				
-				auto scaled = deltaX * posToValFactor;
-				auto absVal = poseTargetDragStartValue + scaled;
-				
-				float xMin = poseTarget->getMinAngle();
-				float xMax = poseTarget->getMaxAngle();
-				float foo = glm::clamp(absVal, xMin, xMax);
-				
-				g_global.mesh->setPose(target_name, foo);
-				g_global.mesh->calcNormals();
-				
-				ImGui::GetForegroundDrawList()->AddLine(io.MouseClickedPos[0], io.MousePos, ImGui::GetColorU32(ImGuiCol_Button), 4.0f); // Draw a line between the button and the mouse cursor
 			}
-			auto icon = getImage(targetImageName);
-			if(hovered || active) {
-				if(icon.second) {
-					ImGui::SetCursorPos(p);
-					MhGui::ImageButton(*icon.second, iconSize, vec2(0,0), vec2(1, 1), 0);
-				}
-				foobar.poseTargetTooltip = target_name;
-			} else {
-				if(icon.first) {
-					ImGui::SetCursorPos(p);
-					MhGui::ImageButton(*icon.first, iconSize, vec2(0,0), vec2(1, 1), 0);
-				}
-			}
-			ImGui::SameLine();
-			ImGui::Text("%.2f", target_value);
+			
+			const auto & minmax = std::make_pair(
+			    poseTarget->getMinAngle(),
+			    poseTarget->getMaxAngle()
+			);
+			
+			DrawTargetRow(g_poseImageTextures,
+			              minmax, target_name,
+			              target_value,
+			              foobar.poseTargetTooltip,
+			              applier);
 		}
 		ImGui::EndChild();
 	}
@@ -280,14 +226,6 @@ void DisplayPoseTargetsApplied()
 			poseTarget->getMinAngle(),
 			poseTarget->getMaxAngle()
 		);
-		
-		auto applier = [](const std::string & name,
-		                  const float & value,
-		                  const bool deleteOnZero)
-		{
-			g_global.mesh->setPose(name, value, deleteOnZero);
-			g_global.mesh->calcNormals();
-		};
 		
 		DrawAppliedRow(g_poseImageTextures, minmax, target_name, target_value, applier);
 	}

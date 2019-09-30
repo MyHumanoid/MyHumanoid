@@ -94,7 +94,92 @@ struct TileGroupChildWindow {
 	}
 };
 
-namespace fs = std::experimental::filesystem;
+inline bool pathStartsWith(const std::string & path, const std::string prefix) {
+	
+	string::size_type loc = path.find("/", 0);
+	if(loc == string::npos)
+		return false;
+	
+	string sub = path.substr(0, loc);
+	
+	return sub == prefix;
+}
+
+
+static float poseTargetDragStartValue = 0;
+
+using OptText = std::optional<mh::Texture>;
+using TexPair = std::pair<OptText, OptText>;
+
+inline TexPair getImage(const IconMap & icons, const std::string & name) {
+	const auto & t = icons.find(name);
+	if(t != icons.end()) {
+		const auto & over = icons.find(name + "_over");
+		if(over != icons.end()) {
+			return std::make_pair(t->second, over->second);
+		} else {
+			return std::make_pair(t->second, std::nullopt);
+		}
+	}
+	return std::make_pair(std::nullopt, std::nullopt);
+};
+
+#include <glm/glm.hpp>
+
+template <typename Applier>
+void DrawTargetRow(const IconMap & icons,
+                    const std::pair<float, float> minMax,
+                    const std::string & target_name,
+                    const float & target_value,
+                    std::string & tooltip,
+                    Applier && applier)
+{
+	ImGuiIO& io = ImGui::GetIO();
+	
+	fs::path targetImageName = target_name;
+	targetImageName.replace_extension();
+	
+	const auto iconSize = vec2(64, 64);
+	
+	const auto p = ImGui::GetCursorPos();
+	ImGui::InvisibleButton(target_name.c_str(), iconSize);
+	if(ImGui::IsMouseDown(0)) {
+		//poseTargetDragStartValue = target_value;
+	};
+	bool active = ImGui::IsItemActive();
+	bool hovered = ImGui::IsItemHovered();
+	if(active) {
+		float posToValFactor = 0.2;
+		
+		vec2 delta = vec2(io.MousePos) - vec2(io.MouseClickedPos[0]);
+		int deltaX = delta.x;
+		
+		auto scaled = deltaX * posToValFactor;
+		auto absVal = poseTargetDragStartValue + scaled;
+		
+		float foo = glm::clamp(absVal, minMax.first, minMax.second);
+		
+		applier(target_name, foo, true);
+		
+		ImGui::GetForegroundDrawList()->AddLine(io.MouseClickedPos[0], io.MousePos, ImGui::GetColorU32(ImGuiCol_Button), 4.0f); // Draw a line between the button and the mouse cursor
+	}
+	auto icon = getImage(icons, targetImageName);
+	if(hovered || active) {
+		if(icon.second) {
+			ImGui::SetCursorPos(p);
+			MhGui::ImageButton(*icon.second, iconSize, vec2(0,0), vec2(1, 1), 0);
+		}
+		tooltip = target_name;
+	} else {
+		if(icon.first) {
+			ImGui::SetCursorPos(p);
+			MhGui::ImageButton(*icon.first, iconSize, vec2(0,0), vec2(1, 1), 0);
+		}
+	}
+	ImGui::SameLine();
+	ImGui::Text("%.2f", target_value);
+}
+
 
 
 template <typename Applier>

@@ -284,6 +284,14 @@ struct MorphGroupWin : public TileGroupChildWindow<MorphGroupWin> {
 	};
 };
 
+auto applier = [](const std::string & name,
+			  const float & value,
+			  const bool deleteOnZero)
+{
+	g_global.mesh->doMorph(name, value);
+	g_global.mesh->calcNormals();
+};
+
 void DisplayMorphTargets()
 {
 	
@@ -336,53 +344,49 @@ void DisplayMorphTargets()
 		
 		BodySettings bodyset = g_global.mesh->getPoses();
 		
-		
-		
 		for(const auto & targetEntry : g_global.mesh->getTargetMapRef()) {
 			const string & target_name(targetEntry.first);
-	
-			string::size_type loc = target_name.find("/", 0);
-			if(loc == string::npos)
-				continue;
 			
 			if(isCompositeMorphTarget(target_name)) {
 				continue;
 			}
 			
-			string sub = target_name.substr(0, loc);
-
-
-
+			if(!pathStartsWith(target_name, foobarMorph.poseTargetCategory)) {
+				continue;
+			}
+			
 			float target_value = bodyset[target_name];
 			
+
+			const auto & minmax = std::make_pair(0, 1);
 			
-			
-			if(sub != foobarMorph.poseTargetCategory)
-				continue;
-			
+			DrawTargetRow(g_targetImageTextures,
+			              minmax, target_name,
+			              target_value,
+			              foobarMorph.poseTargetTooltip,
+			              applier);
+
+
 			//ImGuiIO& io = ImGui::GetIO();
 			
 			
-			fs::path targetImageName = target_name;
-			targetImageName.replace_extension();
+//			fs::path targetImageName = target_name;
+//			targetImageName.replace_extension();
 			
-			const auto & texIdIt = g_targetImageTextures.find(targetImageName);
-			if(texIdIt != g_targetImageTextures.end()) {
-				auto texId = texIdIt->second;
-				MhGui::ImageButton(texId, ImVec2(64, 64));
-			} else {
-				ImGui::Text("%s", target_name.c_str());
-				//ImGui::InvisibleButton(target_name.c_str(), ImVec2(48, 48));
-			}
+//			const auto & texIdIt = g_targetImageTextures.find(targetImageName);
+//			if(texIdIt != g_targetImageTextures.end()) {
+//				auto texId = texIdIt->second;
+//				MhGui::ImageButton(texId, ImVec2(64, 64));
+//			} else {
+//				ImGui::Text("%s", target_name.c_str());
+//				//ImGui::InvisibleButton(target_name.c_str(), ImVec2(48, 48));
+//			}
 			
 			//DisplayMorphTargetRow(target_name, target_value, false);
 		}
-		
-		
-		
-		
 		ImGui::EndChild();
 	}
+	ImGui::Text("%s", foobarMorph.poseTargetTooltip.c_str());
 	ImGui::End();
 }
 
@@ -405,14 +409,6 @@ void DisplayMorphTargetsApplied()
 		
 		//DisplayMorphTargetRow(target_name, target_value, true);
 
-		auto applier = [](const std::string & name,
-		              const float & value,
-		              const bool deleteOnZero)
-		{
-			g_global.mesh->doMorph(name, value);
-			g_global.mesh->calcNormals();
-		};
-		
 		DrawAppliedRow(g_targetImageTextures,
 		               std::make_pair(0.f, 1.f),
 		               target_name, target_value, applier);
