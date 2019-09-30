@@ -1027,6 +1027,9 @@ int main(int argc, char ** argv)
 #undef FOO
 	}
 	
+	// FIXME WTF why does it move ? window decoration ?
+	mainWinPosX -= 2;
+	mainWinPosY -= 21;
 
 	Rect mainWinRect = Rect(mainWinPosX, mainWinPosY, mainWinSizeX, mainWinSizeY);
 	
