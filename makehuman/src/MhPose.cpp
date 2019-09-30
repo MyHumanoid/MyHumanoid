@@ -17,6 +17,17 @@
 
 using glm::vec2;
 
+
+static IconMap g_poseImageTextures;
+
+void CreatePoseImageTextures()
+{
+	
+	fs::path baseDir = "pixmaps/rotimg/";
+	loadTexturesFromDir(g_poseImageTextures, baseDir);
+}
+
+
 //static std::string poseTargetCategory = "";
 //static std::string poseTargetTooltip = "";
 static float poseTargetDragStartValue = 0;

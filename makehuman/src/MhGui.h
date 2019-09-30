@@ -33,8 +33,12 @@
 #include <examples/imgui_impl_opengl3.h>
 
 #include <utility>
+#include <string>
+#include <unordered_map>
 
 #include "render/GlTypes.h"
+
+using IconMap = std::unordered_map<std::string, mh::Texture>;
 
 namespace MhGui
 {

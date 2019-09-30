@@ -13,7 +13,19 @@
 
 #include "MhUiCommon.h"
 
+#include "render/RenderUtils.h"
+
 using glm::vec2;
+
+
+static IconMap g_targetImageTextures;
+
+void CreateTargetImageTextures()
+{
+	
+	fs::path baseDir = "pixmaps/tgimg/";
+	loadTexturesFromDir(g_targetImageTextures, baseDir);
+}
 
 
 void XYfoobar(mh::Texture texture, glm::vec2 & value)

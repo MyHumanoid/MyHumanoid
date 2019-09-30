@@ -118,73 +118,17 @@ const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
+
+
 // ================================================================================================
 
-std::vector<std::string> filesInDirRecursive(const fs::path & directoryPath)
-{
-	using Iter = fs::recursive_directory_iterator;
-
-	std::vector<std::string> files;
-	auto                     it  = Iter(directoryPath);
-	auto                     end = Iter();
-	while(it != end) {
-		auto & path = it->path();
-		if(fs::is_regular_file(path)) {
-			files.push_back(path);
-		}
-		error_code ec;
-		it.increment(ec);
-		if(ec) {
-			std::cerr << "Error While Accessing : " << path.string()
-			          << " :: " << ec.message() << '\n';
-		}
-	}
-	return files;
-}
-
-
-
-void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
-{
-	auto files = filesInDirRecursive(baseDir);
-
-	for(auto & file : files) {
-		auto ret = LoadTextureFromFile(file.c_str());
-
-		if(ret) {
-			auto foo = file;
-			foo.erase(0, baseDir.string().length());
-			fs::path foobar = foo;
-			foobar.replace_extension();
-
-			logger("Loaded {} as {}", std::string(file), std::string(foobar));
-			target.insert(IconMap::value_type(foobar, ret.value()));
-		} else {
-			std::cout << fmt::format("Failed to load file {}\n", file) << std::endl;
-		}
-	}
-}
-
-static void CreateTargetImageTextures()
-{
-
-	fs::path baseDir = "pixmaps/tgimg/";
-	loadTexturesFromDir(g_targetImageTextures, baseDir);
-}
-
-static void CreatePoseImageTextures()
-{
-
-	fs::path baseDir = "pixmaps/rotimg/";
-	loadTexturesFromDir(g_poseImageTextures, baseDir);
-}
+static IconMap g_charactersIconTextures;
 
 static void CreateCaractersIconTextures()
 {
 	fs::path baseDir = "pixmaps/bsimg/";
 	loadTexturesFromDir(g_charactersIconTextures, baseDir);
 }
-
 
 // ================================================================================================
 
