@@ -429,7 +429,7 @@ void DisplayMorphTargets()
 				auto texId = texIdIt->second;
 				MhGui::ImageButton(texId, ImVec2(64, 64));
 			} else {
-				ImGui::Text(target_name.c_str());
+				ImGui::Text("%s", target_name.c_str());
 				//ImGui::InvisibleButton(target_name.c_str(), ImVec2(48, 48));
 			}
 			

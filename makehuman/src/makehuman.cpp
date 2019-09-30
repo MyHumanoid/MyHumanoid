@@ -42,13 +42,12 @@
 
 #include <json.hpp>
 
-#include <glm/glm.hpp>
-
 #include "MhGui.h"
 #include "MhGuiData.h"
 #include "MhMorph.h"
 #include "MhPose.h"
 
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <animorph/Mesh.h>

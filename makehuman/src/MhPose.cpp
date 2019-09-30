@@ -225,14 +225,16 @@ void DisplayPoseTargets() {
 	
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(-1, 0));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(-1, 0));
-		ImGui::BeginChild("Pose Groups", vec2(192, 460), false);
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(0));
+		ImGui::BeginChild("Pose Groups", vec2(192 + 5, 460), false);
 		ImGui::Columns(6, "Pose Groups Grid", false);
 		
 		// FIXME we still have black vertical lines ?!
+		// Maybe a ImGui ClipRect bug ?
+		// Wait for new ImGui Column Api/Impl ?
 		for(int i=0; i<6;++i) {
-			ImGui::SetColumnWidth(i, 32);
+			ImGui::SetColumnWidth(i, 33);
 		}
 		
 		for(const auto & tile: tiles) {
