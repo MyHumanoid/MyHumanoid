@@ -13,5 +13,6 @@ template <typename TAG, typename T> struct GlType {
 };
 
 using Texture = GlType<struct Texture_TAG, unsigned int>;
+using Shader  = GlType<struct Shader_TAG, unsigned int>;
 
 } // namespace mh

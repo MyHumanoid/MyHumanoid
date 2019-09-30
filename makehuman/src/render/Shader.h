@@ -2,6 +2,6 @@
 
 #include <optional>
 
-#include "GL/glew.h"
+#include "render/GlTypes.h"
 
-std::optional<GLuint> LoadShader(const char * vertex_path, const char * fragment_path);
+std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * fragment_path);

@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 
+#include <GL/glew.h>
 
 std::string readFile(const char * filePath)
 {
@@ -29,7 +30,7 @@ std::string readFile(const char * filePath)
 }
 
 
-std::optional<GLuint> LoadShader(const char * vertex_path, const char * fragment_path)
+std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * fragment_path)
 {
 	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -89,7 +90,7 @@ std::optional<GLuint> LoadShader(const char * vertex_path, const char * fragment
 	glDeleteShader(fragShader);
 
 	if(result == GL_TRUE) {
-		return program;
+		return mh::Shader(program);
 	} else {
 		return std::nullopt;
 	}

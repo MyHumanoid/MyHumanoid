@@ -806,8 +806,8 @@ FooRect g_mainWinRect;
 int g_mainWindowPosX;
 int g_mainWindowPosY;
 
-GLuint g_bodyShader       = 0;
-GLuint g_backgroundShader = 0;
+std::optional<mh::Shader> g_bodyShader;
+std::optional<mh::Shader> g_backgroundShader;
 
 // Display function
 static void display()
@@ -854,8 +854,8 @@ static void display()
 		g_requestShaderReload = false;
 
 		logger("Loading Shader set {}", g_requestShaderVersion);
-
-		std::optional<GLuint> shader;
+		
+		std::optional<mh::Shader> shader;
 		if(g_requestShaderVersion == 1) {
 			shader = LoadShader("shader/body.vert", "shader/body.frag");
 		} else {
@@ -863,7 +863,7 @@ static void display()
 		}
 
 		if(shader) {
-			glDeleteProgram(g_bodyShader);
+			glDeleteProgram(g_bodyShader->handle);
 			g_bodyShader = shader.value();
 		}
 	}
@@ -871,11 +871,10 @@ static void display()
 		g_requestBackgroundShaderReload = false;
 		logger("Loading Background Shader");
 
-		std::optional<GLuint> shader;
-		shader = LoadShader("shader/background.vert", "shader/background.frag");
+		auto shader = LoadShader("shader/background.vert", "shader/background.frag");
 
 		if(shader) {
-			glDeleteProgram(g_backgroundShader);
+			glDeleteProgram(g_backgroundShader->handle);
 			g_backgroundShader = shader.value();
 		}
 	}
@@ -1098,18 +1097,8 @@ int main(int argc, char ** argv)
 	characterSettingPanel = new CharacterSettingPanel();
 	g_mainWindow->initWindow();
 
-	{
-		auto shader = LoadShader("shader/body.vert", "shader/body.frag");
-		if(shader) {
-			g_bodyShader = shader.value();
-		}
-	}
-	{
-		auto shader = LoadShader("shader/background.vert", "shader/background.frag");
-		if(shader) {
-			g_backgroundShader = shader.value();
-		}
-	}
+	g_bodyShader       = LoadShader("shader/body.vert", "shader/body.frag");
+	g_backgroundShader = LoadShader("shader/background.vert", "shader/background.frag");
 
 	bool mesh_loaded = mesh->loadMeshFactory(searchDataFile("base.vertices"),
 	                                         searchDataFile("base.faces"));
@@ -1359,10 +1348,10 @@ void drawBackground()
 {
 	auto inSize = g_mainWindow->getSize();
 
-	glUseProgram(g_backgroundShader);
-	GLint myLoc = glGetUniformLocation(g_backgroundShader, "u_viewportResolution");
+	glUseProgram(g_backgroundShader->handle);
+	GLint myLoc = glGetUniformLocation(g_backgroundShader->handle, "u_viewportResolution");
 	if(myLoc != -1) {
-		glProgramUniform2f(g_backgroundShader, myLoc, inSize.getWidth(),
+		glProgramUniform2f(g_backgroundShader->handle, myLoc, inSize.getWidth(),
 		                   inSize.getHeight());
 	}
 
@@ -1412,7 +1401,7 @@ void renderMesh()
 
 	cgutils::enableBlend();
 
-	glUseProgram(g_bodyShader);
+	glUseProgram(g_bodyShader->handle);
 
 	for(auto & [goupName, groupValue] : mesh->facegroup.m_groups) {
 
@@ -1423,17 +1412,17 @@ void renderMesh()
 			if(groupValue.texture) {
 				glActiveTexture(GL_TEXTURE0);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader, "texture0"), 0);
+				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture0"), 0);
 			}
 			if(groupValue.specular) {
 				glActiveTexture(GL_TEXTURE1);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader, "texture1"), 1);
+				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture1"), 1);
 			}
 			if(groupValue.bump) {
 				glActiveTexture(GL_TEXTURE2);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader, "texture2"), 2);
+				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture2"), 2);
 			}
 		}
 
