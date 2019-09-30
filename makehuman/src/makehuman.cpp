@@ -732,15 +732,6 @@ void DisplayMainMenu()
 	}
 }
 
-
-
-void DisplayGui()
-{
-	DisplayMainMenu();
-
-
-}
-
 // ================================================================================================
 
 struct FooRect {
@@ -749,9 +740,6 @@ struct FooRect {
 };
 
 FooRect g_mainWinRect;
-
-int g_mainWindowPosX;
-int g_mainWindowPosY;
 
 std::optional<mh::Shader> g_bodyShader;
 std::optional<mh::Shader> g_backgroundShader;
@@ -782,7 +770,7 @@ static void display()
 		cgutils::drawSquare(Rect(0, 0, 1, 1), border_color);
 	}
 
-	DisplayGui();
+	DisplayMainMenu();
 
 	ImGui::Render();
 	// ImGuiIO& io = ImGui::GetIO();
@@ -1028,6 +1016,17 @@ int main(int argc, char ** argv)
 
 	int mainWinSizeX = g_jsonConfig["mainWindow"]["size"][0]; // glutGet(GLUT_SCREEN_WIDTH);
 	int mainWinSizeY = g_jsonConfig["mainWindow"]["size"][1]; // glutGet(GLUT_SCREEN_HEIGHT);
+	
+	{
+#define FOO(XX) do{g_displayWin.XX = g_jsonConfig["windowsOpen"][#XX];}while(false)
+		FOO(characterSettings);
+		FOO(morphTargets);
+		FOO(morphTargetsApplied);
+		FOO(poseTargets);
+		FOO(poseTargetsApplied);
+#undef FOO
+	}
+	
 
 	Rect mainWinRect = Rect(mainWinPosX, mainWinPosY, mainWinSizeX, mainWinSizeY);
 	
@@ -1237,7 +1236,16 @@ int main(int argc, char ** argv)
 
 	g_jsonConfig["mainWindow"]["pos"]  = {g_mainWinRect.pos.x, g_mainWinRect.pos.y};
 	g_jsonConfig["mainWindow"]["size"] = {g_mainWinRect.size.x, g_mainWinRect.size.y};
-
+	
+	{
+		auto & windows = g_jsonConfig["windowsOpen"];
+		windows["characterSettings"]   = g_displayWin.characterSettings;
+		windows["morphTargets"]        = g_displayWin.morphTargets; 
+		windows["morphTargetsApplied"] = g_displayWin.morphTargetsApplied;
+		windows["poseTargets"]         = g_displayWin.poseTargets         ;
+		windows["poseTargetsApplied"]  = g_displayWin.poseTargetsApplied  ;
+	}
+	
 	{
 		std::ofstream o(configFilePath);
 		o << std::setw(4) << g_jsonConfig << std::endl;
