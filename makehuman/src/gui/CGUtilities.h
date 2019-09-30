@@ -78,7 +78,7 @@ void drawSquareFill(const Rect & inRect, const Color & c);
 void drawSquare(const Rect & inRect, const Color & c);
 
 int initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
-               const glm::vec3 & light1Pos, float light0Lum, float light1Lum, const Color & c);
+               const glm::vec3 & light1Pos, float light0Lum, float light1Lum);
 
 void drawString(const Point & inPoint, FontType font, const string & str, const Color & c);
 

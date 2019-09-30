@@ -929,6 +929,13 @@ void DisplayGui()
 
 // ================================================================================================
 
+struct FooRect {
+	glm::ivec2 pos;
+	glm::ivec2 size;
+};
+
+FooRect g_mainWinRect;
+
 int g_mainWindowPosX;
 int g_mainWindowPosY;
 
@@ -1006,12 +1013,11 @@ static void display()
 		}
 	}
 
-
-
 	// TODO this is a hack
-	g_mainWindowPosX = glutGet(GLUT_WINDOW_X);
-	g_mainWindowPosY = glutGet(GLUT_WINDOW_Y);
-
+	g_mainWinRect.pos.x = glutGet(GLUT_WINDOW_X);
+	g_mainWinRect.pos.y = glutGet(GLUT_WINDOW_Y);
+	g_mainWinRect.size.x = glutGet(GLUT_WINDOW_WIDTH);
+	g_mainWinRect.size.y = glutGet(GLUT_WINDOW_HEIGHT);
 
 	if(g_userRequestedQuit) {
 		glutLeaveMainLoop();
@@ -1214,20 +1220,16 @@ int main(int argc, char ** argv)
 	
 	
 	std::string winTitle = mh_app_name + " "s + mh_version;
-	g_mainWindow = new mhgui::Window(mainWinRect, winTitle, Color(0, 0, 0));
+	g_mainWindow = new mhgui::Window(mainWinRect, winTitle);
 
-	Window & mainWindow(*g_mainWindow);
-
-	mainWindow.setPosition(mhgui::Point(mainWinPosX, mainWinPosY));
-
-	tooltipPanel = new TooltipPanel(mainWindow.getSize().getHeight());
+	tooltipPanel = new TooltipPanel(g_mainWindow->getSize().getHeight());
 	toolbarPanel = new ToolbarPanel();
 	mesh         = new Mesh();
 	camera       = new Camera();
 	autozoom = new Autozoom();
 
 	characterSettingPanel = new CharacterSettingPanel();
-	mainWindow.initWindow();
+	g_mainWindow->initWindow();
 
 	{
 		auto shader = LoadShader("shader/body.vert", "shader/body.frag");
@@ -1242,9 +1244,6 @@ int main(int argc, char ** argv)
 		}
 	}
 
-	// TODO: put animorph mesh loading stuff in extra function
-
-	// load mesh with factory function
 	bool mesh_loaded = mesh->loadMeshFactory(searchDataFile("base.vertices"),
 	                                         searchDataFile("base.faces"));
 	if(!mesh_loaded) {
@@ -1252,7 +1251,6 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	// load material for mesh
 	bool material_loaded = mesh->loadMaterialFactory(searchDataFile("base.materials"),
 	                                                 searchDataFile("base.colors"));
 	if(!material_loaded) {
@@ -1260,7 +1258,6 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	// load UV texture data, currently no Factory function
 	mesh->texture_vector.load(searchDataFile("base.uv"));
 
 	// load face groups with factory function
@@ -1270,14 +1267,12 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	// load skin info with factory function
 	bool skin_loaded = mesh->loadSkinFactory(searchDataFile("base.skin"));
 	if(!skin_loaded) {
 		cerr << "couldn't load skin info" << endl;
 		return 1;
 	}
 
-	// load smooth info with factory function
 	bool smooth_loaded = mesh->loadSmoothVertexFactory(searchDataFile("base.smooth"));
 	if(!smooth_loaded) {
 		cerr << "couldn't load smooth info" << endl;
@@ -1291,51 +1286,33 @@ int main(int argc, char ** argv)
 
 	loadTextures();
 	g_global.m_enableTexture = true;
-
-	// put mesh container into the Global Singleton
 	g_global.setMesh(mesh);
-
-	// put camera into the Global Singleton
 	g_global.setCamera(camera);
-
-	// put meshTexture into the Global Singleton
-	// g_global.setBodyTexture (bodyTexture);
-	// g_global.setHeadTexture (headTexture);
-
-	// put autozoom into the Global Singleton
 	g_global.setAutozoom(autozoom);
 
 	mesh->loadTargetsFactory(searchDataDir("targets"));
 	mesh->loadTargetsFactory(searchDataDir("selectors"), 1, false);
 	mesh->loadPoseTargetsFactory(searchDataDir("rotations"));
 	mesh->loadCharactersFactory(searchDataDir("bs_data"));
-	// mesh->loadCharactersFactory(searchDataDir ("my"));
 
 	init = false;
-	mainWindow.setCamera(camera);
+	g_mainWindow->setCamera(camera);
 
 	// Add panels to mainwindow
-	mainWindow.addPanel(tooltipPanel);
-	mainWindow.addPanel(toolbarPanel);
-	mainWindow.addPanel(characterSettingPanel);
+	g_mainWindow->addPanel(tooltipPanel);
+	g_mainWindow->addPanel(toolbarPanel);
+	g_mainWindow->addPanel(characterSettingPanel);
 
-	// set initial camera position
 	// camera->rotate (-M_PI/2, X_AXIS);
 	camera->move(0, 0, -125.0f);
 
-	// create after adding
 	tooltipPanel->createWidgets();
 	toolbarPanel->createWidgets();
 	characterSettingPanel->createWidgets();
-
-	// Activate the images textures
-	// Note it's after context creation
 	toolbarPanel->show_all();
 	tooltipPanel->show_all();
 	characterSettingPanel->show_all();
 
-
-	// Glut callbacks
 	glutDisplayFunc(display);
 	glutTimerFunc(1000, timerTrigger, 1); // Autozoom
 	glutCloseFunc([]() -> void {
@@ -1349,10 +1326,7 @@ int main(int argc, char ** argv)
 		// mainWindow.mainLoop();
 	});
 
-	mainWindow.show();
-
-	// glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
-
+	g_mainWindow->show();
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
 	::glPolygonOffset(1.0, 1.0);
@@ -1462,13 +1436,8 @@ int main(int argc, char ** argv)
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui::DestroyContext();
 
-	{
-		Window & w = *g_mainWindow;
-
-		g_jsonConfig["mainWindow"]["pos"]  = {g_mainWindowPosX, g_mainWindowPosY};
-		g_jsonConfig["mainWindow"]["size"] = {w.getSize().getWidth(),
-		                                      w.getSize().getHeight()};
-	}
+	g_jsonConfig["mainWindow"]["pos"]  = {g_mainWinRect.pos.x, g_mainWinRect.pos.y};
+	g_jsonConfig["mainWindow"]["size"] = {g_mainWinRect.size.x, g_mainWinRect.size.y};
 
 	{
 		std::ofstream o(configFilePath);

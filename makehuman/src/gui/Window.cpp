@@ -48,11 +48,10 @@ namespace mhgui
 Window * g_mainWindow;
 
 // Constructor
-Window::Window(const Rect & rect, const string &t, const Color & inColor)
+Window::Window(const Rect & rect, const string &t)
         : Component(FOUR_CHAR_CONST('M', 'W', 'i', 'n'), rect)
         , title(t)          //!< The window title bar
         , fullscreen(false) //!< full screen no
-        , c(inColor)
         , light0Lum(+1.0)             //!< light 0 luminosity
         , light1Lum(+1.0)             //!< light 1 luminosity
         , light0Pos(+1.0, +1.0, +1.0) //!< light 0 position
@@ -304,7 +303,7 @@ bool Window::isMouseDraggedPanel(const Point & inMousePos)
 void Window::initWindow()
 {
 	mWindowId = cgutils::initWindow(getRect(), title.c_str(), light0Pos, light1Pos, light0Lum,
-	                                light1Lum, c);
+	                                light1Lum);
 }
 
 // Glut call back functions

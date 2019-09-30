@@ -60,7 +60,6 @@ class Window : public Component
 {
 	string    title;
 	bool      fullscreen;
-	Color     c;
 	float     light0Lum;
 	float     light1Lum;
 	glm::vec3 light0Pos;
@@ -73,7 +72,7 @@ class Window : public Component
 	int      mWindowId; ///< The GLUT Window ID;
 
 public:
-	Window(const Rect & rect, const std::string & t, const Color & c);
+	Window(const Rect & rect, const std::string & t);
 	virtual ~Window();
 
 	Window & operator=(Window &) = delete;

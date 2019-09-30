@@ -299,8 +299,7 @@ void cgutils::reshape(const Size & inSize, const Camera & inCamera)
 
 // Init window with some classic openGL commands
 int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
-                        const glm::vec3 & light1Pos, float light0Lum, float light1Lum,
-                        const Color & c)
+                        const glm::vec3 & light1Pos, float light0Lum, float light1Lum)
 {
 
 	glutInitContextVersion(3, 3);
@@ -326,25 +325,11 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 
 	initDebugGl();
 
-
-	// Enables
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
-	// glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
-
-	// Standard material
-	// float mat_ambient[] = {0.7, 0.7, 0.7, 1.0};
-	// float mat_diffuse[] = {0.8, 0.8, 0.8, 1.0};
-	// float mat_specular[] = {1.0, 1.0, 1.0, 1.0};
-	// float high_shininess[] = {100.0};
-
-	// glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-	// glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-	// glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	// glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 
 	// Light0 features
 	float light_diffuse0[]  = {light0Lum, light0Lum, light0Lum, light0Lum};
@@ -370,7 +355,7 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
 
 	// Clear the background
-	glClearColor(c.red(), c.green(), c.blue(), c.alpha());
+	glClearColor(0, 0, 0, 1);
 
 	return winID;
 }
