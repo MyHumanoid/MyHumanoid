@@ -11,6 +11,7 @@
 #include "Global.h"
 #include "ComponentID.h"
 
+#include "MhUiCommon.h"
 
 using glm::vec2;
 
@@ -195,93 +196,10 @@ bool isCompositeMorphTarget(const std::string & target_name)
 	return false;
 }
 
-void DisplayMorphTargets()
-{
-	
-//	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets)) {
-//		ImGui::End();
-//		return;
-//	}
-	
-//	BodySettings bodyset = g_global.mesh->getBodySettings();
-	
-//	for(const auto & targetEntry : g_global.mesh->getTargetMapRef()) {
-//		const string & target_name(targetEntry.first);
-		
-//		string::size_type loc = target_name.find("/", 0);
-//		if(loc == string::npos)
-//			continue;
-//		else {
-//			string sub = target_name.substr(0, loc);
-			
-//			if(isCompositeMorphTarget(target_name)) {
-//				continue;
-//			}
-			
-//			float target_value = bodyset[target_name];
-			
-//			DisplayMorphTargetRow(target_name, target_value, false);
-//		}
-//	}
-//	ImGui::End();
-
-	using glm::vec2;
-	
-	constexpr static ImGuiWindowFlags winFlags
-	    = ImGuiWindowFlags_NoScrollbar
-	    | ImGuiWindowFlags_NoResize;
-	
-	ImGui::SetNextWindowSize(vec2(380, 484));
-	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets, winFlags)) {
-		ImGui::End();
-		return;
-	}
-	
-	static std::string category = "";
-	
-	
-	struct Tile {
-		
-		void click() const {
-		}
-		
-		
-		std::string as;
-		std::string tip;
-		std::string target;
-		std::optional<mh::Texture> tex;
-		std::optional<mh::Texture> texOver;
-		Tile(const std::string & img, const std::string & _tip, const std::string & _targ)
-		{
-			tip = _tip;
-			target = _targ;
-			as = "pixmaps/ui/" + img;
-			tex = LoadTextureFromFile(as + ".png");
-			texOver = LoadTextureFromFile(as + "_over.png");
-		}
-		
-		void gui() const {
-			//ImGui::SetColumnWidth(-1, 32);
-			
-			auto p = ImGui::GetCursorPos();
-			if(ImGui::InvisibleButton(as.c_str(), vec2(32, 32))){
-				category = target;
-				click();
-			}
-			ImGui::SetCursorPos(p);
-			if(ImGui::IsItemHovered()) {
-				if(texOver)
-					MhGui::Image(texOver.value(), vec2(32, 32));
-			} else {
-				if(tex)
-					MhGui::Image(tex.value(), vec2(32, 32));
-			}
-			ImGui::NextColumn();
-		}
-	};
+struct MorphGroupWin : public TileGroupChildWindow<MorphGroupWin> {
 
 	// clang-format off
-	static const auto goobar = {
+	const std::array<const Tile, 60> tiles = {
 		Tile("body_01",  "Torso parameters",         "torso"),
 		Tile("body_02",  "Head parameters",          "head"),
 		Tile("face_01",  "X",                        ""),
@@ -352,21 +270,54 @@ void DisplayMorphTargets()
 		Tile("teeth_05", "X",     ""),
 		Tile("teeth_06", "X",     ""),
 	};
-	// clang-format on
+};
+
+void DisplayMorphTargets()
+{
 	
-	//static_assert (goobar.size() == 84, "asd");
+//	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets)) {
+//		ImGui::End();
+//		return;
+//	}
 	
-	{
-		ImGui::BeginChild("Pose Groups", vec2(195, 460), false);
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0, 0));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(0, 0));
-		ImGui::Columns(6, NULL, false);
-		for(const auto & tile: goobar) {
-			tile.gui();
-		}
-		ImGui::PopStyleVar(2);
-		ImGui::EndChild();
+//	BodySettings bodyset = g_global.mesh->getBodySettings();
+	
+//	for(const auto & targetEntry : g_global.mesh->getTargetMapRef()) {
+//		const string & target_name(targetEntry.first);
+		
+//		string::size_type loc = target_name.find("/", 0);
+//		if(loc == string::npos)
+//			continue;
+//		else {
+//			string sub = target_name.substr(0, loc);
+			
+//			if(isCompositeMorphTarget(target_name)) {
+//				continue;
+//			}
+			
+//			float target_value = bodyset[target_name];
+			
+//			DisplayMorphTargetRow(target_name, target_value, false);
+//		}
+//	}
+//	ImGui::End();
+
+	using glm::vec2;
+	
+	constexpr static ImGuiWindowFlags winFlags
+	    = ImGuiWindowFlags_NoScrollbar
+	    | ImGuiWindowFlags_NoResize;
+	
+	ImGui::SetNextWindowSize(vec2(380, 484));
+	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets, winFlags)) {
+		ImGui::End();
+		return;
 	}
+
+	static MorphGroupWin foobarMorph;
+	
+	foobarMorph.DisplayGroupTiles();
+	
 	ImGui::SameLine();
 	{
 		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
@@ -394,7 +345,7 @@ void DisplayMorphTargets()
 			
 			
 			
-			if(sub != category)
+			if(sub != foobarMorph.poseTargetCategory)
 				continue;
 			
 			//ImGuiIO& io = ImGui::GetIO();

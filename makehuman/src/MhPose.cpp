@@ -1,5 +1,7 @@
 #include "MhPose.h"
 
+#include <array>
+
 #include <glm/glm.hpp>
 
 #include "render/RenderUtils.h"
@@ -11,10 +13,12 @@
 #include "Global.h"
 #include "ComponentID.h"
 
+#include "MhUiCommon.h"
+
 using glm::vec2;
 
-static std::string poseTargetCategory = "";
-static std::string poseTargetTooltip = "";
+//static std::string poseTargetCategory = "";
+//static std::string poseTargetTooltip = "";
 static float poseTargetDragStartValue = 0;
 
 using OptText = std::optional<mh::Texture>;
@@ -33,73 +37,11 @@ TexPair getImage(const std::string & name) {
 	return std::make_pair(std::nullopt, std::nullopt);
 };
 
-struct Tile {
+struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 	
-	void click() const {
-	}
-	
-	glm::vec2 tileSize = glm::vec2(32, 32);
-	std::string as;
-	std::string tip;
-	std::string target;
-	std::optional<mh::Texture> tex;
-	std::optional<mh::Texture> texOver;
-	Tile(const std::string & img, const std::string & _tip, const std::string & _targ)
-	{
-		tip = _tip;
-		target = _targ;
-		as = "pixmaps/ui/" + img;
-		tex = LoadTextureFromFile(as + ".png");
-		texOver = LoadTextureFromFile(as + "_over.png");
-	}
-	
-	void gui() const {
-		auto p = ImGui::GetCursorPos();
-		if(ImGui::InvisibleButton(as.c_str(), tileSize)){
-			poseTargetCategory = target;
-			click();
-		}
-		ImGui::SetCursorPos(p);
-		if(ImGui::IsItemHovered()) {
-			if(texOver) {
-				MhGui::Image(texOver.value(), tileSize);
-				poseTargetTooltip = tip;
-			}
-		} else {
-			if(tex)
-				MhGui::Image(tex.value(), tileSize, vec2(0), vec2(1));
-		}
-	}
-};
-
-
-void DisplayPoseTargets() {
-	
-	constexpr static ImGuiWindowFlags winFlags
-	    = ImGuiWindowFlags_NoScrollbar
-	//      |ImGuiWindowFlags_NoSavedSettings
-	      | ImGuiWindowFlags_NoResize;
-	
-	struct WinStack{
-		WinStack() {
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(1, 1));
-		}
-		~WinStack() {
-			ImGui::PopStyleVar(1);
-		}
-	};
-	
-	ImGui::SetNextWindowSize(vec2(380, 510));
-	WinStack winStack;
-	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
-		ImGui::End();
-		return;
-	}
-	
-	poseTargetTooltip = "";
-	
+	//const auto & getPoseTiles() {
 	// clang-format off
-	static const auto tiles = {
+	const std::array<const Tile, 84> tiles = {
 		Tile("rotations_01", "Right collar",          "260_right_collar"),
 		Tile("rotations_02", "Head",                  "300_head"),
 		Tile("rotations_03", "Left collar",           "280_left_collar"),
@@ -199,31 +141,40 @@ void DisplayPoseTargets() {
 		Tile("rotations_84", "Left footfinger 1_2",   "029_left_footfinger_1_2"),
 	};
 	// clang-format on
+//	return tiles;
+//}
+};
+
+void DisplayPoseTargets() {
 	
-	//static_assert (goobar.size() == 84, "asd");
+	constexpr static ImGuiWindowFlags winFlags
+	    = ImGuiWindowFlags_NoScrollbar
+	//      |ImGuiWindowFlags_NoSavedSettings
+	      | ImGuiWindowFlags_NoResize;
 	
-	{
-		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(0));
-		ImGui::BeginChild("Pose Groups", vec2(192 + 5, 460), false);
-		ImGui::Columns(6, "Pose Groups Grid", false);
-		
-		// FIXME we still have black vertical lines ?!
-		// Maybe a ImGui ClipRect bug ?
-		// Wait for new ImGui Column Api/Impl ?
-		for(int i=0; i<6;++i) {
-			ImGui::SetColumnWidth(i, 33);
+	struct WinStack{
+		WinStack() {
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(1, 1));
 		}
-		
-		for(const auto & tile: tiles) {
-			tile.gui();
-			ImGui::NextColumn();
+		~WinStack() {
+			ImGui::PopStyleVar(1);
 		}
-		ImGui::Columns(1);
-		ImGui::EndChild();
-		ImGui::PopStyleVar(3);
+	};
+	
+	ImGui::SetNextWindowSize(vec2(380, 510));
+	WinStack winStack;
+	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
+		ImGui::End();
+		return;
 	}
+	
+	static PoseGroupWin foobar;
+	
+	foobar.poseTargetTooltip = "";
+	
+	//static_assert (tiles.size() == 84, "asd");
+	
+	foobar.DisplayGroupTiles();
 	ImGui::SameLine();
 	{
 		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
@@ -245,7 +196,7 @@ void DisplayPoseTargets() {
 			
 			string sub = target_name.substr(0, loc);
 			
-			if(sub != poseTargetCategory)
+			if(sub != foobar.poseTargetCategory)
 				continue;
 			
 			ImGuiIO& io = ImGui::GetIO();
@@ -286,7 +237,7 @@ void DisplayPoseTargets() {
 					ImGui::SetCursorPos(p);
 					MhGui::ImageButton(*icon.second, iconSize, vec2(0,0), vec2(1, 1), 0);
 				}
-				poseTargetTooltip = target_name;
+				foobar.poseTargetTooltip = target_name;
 			} else {
 				if(icon.first) {
 					ImGui::SetCursorPos(p);
@@ -298,7 +249,7 @@ void DisplayPoseTargets() {
 		}
 		ImGui::EndChild();
 	}
-	ImGui::Text("%s", poseTargetTooltip.c_str());
+	ImGui::Text("%s", foobar.poseTargetTooltip.c_str());
 	ImGui::End();
 }
 
