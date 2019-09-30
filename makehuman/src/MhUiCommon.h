@@ -14,13 +14,9 @@
 
 #include "animorph/PoseTarget.h"
 
-using vec2 = glm::vec2;
+#include <glm/glm.hpp>
 
-//template <typename V, typename... T>
-//constexpr auto array_of(T&&... t) -> std::array<V, sizeof...(T)>
-//{
-//	return {{ std::forward<T>(t)... }};
-//}
+using vec2 = glm::vec2;
 
 struct Tile {
 	
@@ -124,7 +120,6 @@ inline TexPair getImage(const IconMap & icons, const std::string & name) {
 	return std::make_pair(std::nullopt, std::nullopt);
 };
 
-#include <glm/glm.hpp>
 
 template <typename Applier>
 void DrawTargetRow(const IconMap & icons,
@@ -134,6 +129,8 @@ void DrawTargetRow(const IconMap & icons,
                     std::string & tooltip,
                     Applier && applier)
 {
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, vec2(0));
+	
 	ImGuiIO& io = ImGui::GetIO();
 	
 	fs::path targetImageName = target_name;
@@ -149,12 +146,14 @@ void DrawTargetRow(const IconMap & icons,
 	bool active = ImGui::IsItemActive();
 	bool hovered = ImGui::IsItemHovered();
 	if(active) {
+		
 		float posToValFactor = 0.2;
 		
 		vec2 delta = vec2(io.MousePos) - vec2(io.MouseClickedPos[0]);
-		int deltaX = delta.x;
 		
-		auto scaled = deltaX * posToValFactor;
+		float scaled = glm::mix(minMax.first, minMax.second, delta.x / 200);
+		
+		//auto scaled = deltaX;// * posToValFactor;
 		auto absVal = poseTargetDragStartValue + scaled;
 		
 		float foo = glm::clamp(absVal, minMax.first, minMax.second);
@@ -165,19 +164,24 @@ void DrawTargetRow(const IconMap & icons,
 	}
 	auto icon = getImage(icons, targetImageName);
 	if(hovered || active) {
+		tooltip = target_name;
 		if(icon.second) {
 			ImGui::SetCursorPos(p);
-			MhGui::ImageButton(*icon.second, iconSize, vec2(0,0), vec2(1, 1), 0);
+			MhGui::ImageButton(*icon.second, iconSize);
+		} else {
+			ImGui::SetCursorPos(p);
+			MhGui::ImageButton(*icon.first, iconSize);
 		}
-		tooltip = target_name;
 	} else {
 		if(icon.first) {
 			ImGui::SetCursorPos(p);
-			MhGui::ImageButton(*icon.first, iconSize, vec2(0,0), vec2(1, 1), 0);
+			MhGui::ImageButton(*icon.first, iconSize);
 		}
 	}
 	ImGui::SameLine();
 	ImGui::Text("%.2f", target_value);
+	
+	ImGui::PopStyleVar();
 }
 
 
