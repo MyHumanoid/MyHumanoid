@@ -82,7 +82,7 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 	float                            minX = 0, maxX = 0;
 	float                            minY = 0, maxY = 0;
 	float                            minZ = 0, maxZ = 0;
-	pair<set<float>::iterator, bool> pr;
+	//pair<set<float>::iterator, bool> pr;
 
 	Target & tmpTarget = getTarget();
 
@@ -134,25 +134,25 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 		}
 	}
 
-	for(multiset<float>::const_iterator it = minXSet.begin(); it != minXSet.end(); it++) {
-		minX += (*it);
+	for(const auto & it : minXSet) {
+		minX += it;
 	}
-	for(multiset<float>::const_iterator it = maxXSet.begin(); it != maxXSet.end(); it++) {
-		maxX += (*it);
-	}
-
-	for(multiset<float>::const_iterator it = minYSet.begin(); it != minYSet.end(); it++) {
-		minY += (*it);
-	}
-	for(multiset<float>::const_iterator it = maxYSet.begin(); it != maxYSet.end(); it++) {
-		maxY += (*it);
+	for(const auto & it : maxXSet) {
+		maxX += it;
 	}
 
-	for(multiset<float>::const_iterator it = minZSet.begin(); it != minZSet.end(); it++) {
-		minZ += (*it);
+	for(const auto & it : minYSet) {
+		minY += it;
 	}
-	for(multiset<float>::const_iterator it = maxZSet.begin(); it != maxZSet.end(); it++) {
-		maxZ += (*it);
+	for(const auto & it : maxYSet) {
+		maxY += it;
+	}
+
+	for(const auto & it : minZSet) {
+		minZ += it;
+	}
+	for(const auto & it : maxZSet) {
+		maxZ += it;
 	}
 
 	int xsize = maxXSet.size();
