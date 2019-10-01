@@ -2,12 +2,12 @@
 
 using namespace Animorph;
 
-void Vertex::addSharedFace(int shared_face)
+void VertexMeta::addSharedFace(int shared_face)
 {
 	shared_faces_vector.push_back(shared_face);
 }
 
-std::vector<int> & Vertex::getSharedFaces()
+const std::vector<int> & VertexMeta::getSharedFaces() const
 {
 	return shared_faces_vector;
 }

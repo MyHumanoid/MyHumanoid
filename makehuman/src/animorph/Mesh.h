@@ -177,6 +177,8 @@ class Mesh
 	VertexVector      m_vert_morph_copy; //!< copy container for morphed mesh
 	VertexVector      m_vert_morph_only;
 	vector<glm::vec3> m_vert_orginal; //!< container for orginal mesh
+	vector<VertexMeta> m_vert_meta;
+	
 	BodySettings      m_morphTargets;
 	TargetMap         m_targets;
 	MaterialVector    m_materials;

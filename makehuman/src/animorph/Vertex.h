@@ -46,9 +46,6 @@ namespace Animorph
  */
 class Vertex
 {
-protected:
-	std::vector<int> shared_faces_vector;
-
 public:
 	/// vertex coordinate
 	glm::vec3 co;
@@ -76,16 +73,21 @@ public:
 	        , no(0.f)
 	{
 	}
+};
 
+class VertexMeta {
+protected:
+	std::vector<int> shared_faces_vector;
+public:
 	/*!
 	 * \param shared_face add the index number to which face this Vertex belongs
 	 */
 	void addSharedFace(int shared_face);
-
+	
 	/*!
 	 * \return get a vector with all faces this Vertex belongs to
 	 */
-	std::vector<int> & getSharedFaces();
+	const std::vector<int> & getSharedFaces() const;
 };
 
 class origVertex : public Vertex

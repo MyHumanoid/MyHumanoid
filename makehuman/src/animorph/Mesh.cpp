@@ -285,6 +285,12 @@ void Mesh::clearPosemap()
 
 void Mesh::calcSharedVertices()
 {
+	if(m_vert_meta.size() != 0) {
+		m_vert_meta.clear();
+	}
+	
+	m_vert_meta.resize(m_vert_morph.size());
+	
 	for(unsigned int i = 0; i < m_faces.size(); i++) {
 		int vertex_number;
 
@@ -293,7 +299,7 @@ void Mesh::calcSharedVertices()
 		for(unsigned int j = 0; j < face.getSize(); j++) {
 			vertex_number = face.getVertexAtIndex(j);
 
-			Vertex & vertex = m_vert_morph[vertex_number];
+			VertexMeta & vertex = m_vert_meta[vertex_number];
 
 			vertex.addSharedFace(i);
 		}
@@ -302,11 +308,14 @@ void Mesh::calcSharedVertices()
 
 void Mesh::calcVertexNormals()
 {
+	assert(m_vert_morph.size() == m_vert_meta.size());
+	
 	for(unsigned int i = 0; i < m_vert_morph.size(); i++) {
+		const VertexMeta & vMeta = m_vert_meta[i];
 		Vertex & vertex(m_vert_morph[i]);
 
 		// sum up the normals of all shared faces
-		vector<int> & faces(vertex.getSharedFaces());
+		const vector<int> & faces(vMeta.getSharedFaces());
 		for(unsigned int j = 0; j < faces.size(); j++) {
 			try {
 				const glm::vec3 & face_normal(m_faces.at(faces[j]).no);
