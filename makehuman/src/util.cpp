@@ -163,7 +163,7 @@ bool GetSymmVertexConfig(int * symm_vertex)
 	file_reader.close();
 	return true;
 }
-int getSymmJoint(int joint) { return g_global.mesh->getSymmetricJoint((SKELETON_JOINT)joint); }
+int getSymmJoint(int joint) { return g_mesh.getSymmetricJoint((SKELETON_JOINT)joint); }
 
 void CreateWeightsFile()
 {
@@ -178,7 +178,7 @@ void CreateWeightsFile()
 	int  weight[SK_JOINT_END];
 	int  actual_weight[SK_JOINT_END];
 
-	const VertexVector & vertexvector(g_global.mesh->getVertexVectorMorphOnlyRef());
+	const VertexVector & vertexvector(g_mesh.getVertexVectorMorphOnlyRef());
 	unsigned int         size_vx = vertexvector.size();
 
 	int *                symm_vertex = new int[size_vx];
@@ -285,8 +285,8 @@ void loadDefaultBodySettings()
 	}
 
 	if(state) {
-		g_global.mesh->doMorph(bodyset);
-		g_global.mesh->calcNormals();
+		g_mesh.doMorph(bodyset);
+		g_mesh.calcNormals();
 	}
 }
 

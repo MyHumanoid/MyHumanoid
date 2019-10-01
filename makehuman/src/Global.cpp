@@ -27,8 +27,7 @@
 
 #include "Global.h"
 
+Animorph::Mesh g_mesh;
 Global g_global;
-
 WindowVisibility g_displayWin;
-
 bool g_morphMode = true;

@@ -73,9 +73,7 @@ bool TargetSliderListener::mouseDragged(const Point & inMousePos, Component * so
 	TargetSlider * imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Mesh * mesh = g_global.getMesh();
-
-	mesh->doMorph(imgSliderSource->getTargetName(), imgSliderSource->getSliderValue());
+	g_mesh.doMorph(imgSliderSource->getTargetName(), imgSliderSource->getSliderValue());
 
 	/* TODO:
 	 * It's a little slow to calc normals in realtime while morphing.
@@ -99,11 +97,8 @@ bool TargetSliderListener::mouseReleased(const Point & inMousePos, int button, C
 	TargetSlider * imgSliderSource = dynamic_cast<TargetSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really a TargetSlider object?
 
-	Mesh * mesh = g_global.getMesh();
-
-	mesh->doMorph(imgSliderSource->getTargetName(), imgSliderSource->getSliderValue());
-
-	mesh->calcNormals();
+	g_mesh.doMorph(imgSliderSource->getTargetName(), imgSliderSource->getSliderValue());
+	g_mesh.calcNormals();
 
 	return false;
 }

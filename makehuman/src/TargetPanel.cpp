@@ -77,15 +77,12 @@ void TargetPanel::createWidgets()
 	Panel * tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
 	assert(tooltipPanel);
 
-	Mesh * mesh = g_global.getMesh();
-	assert(mesh);
-
-	const TargetMap & targetmap = mesh->targets();
+	const TargetMap & targetmap = g_mesh.targets();
 
 	const Color c(1.0, 0.0, 0.0);
 	const Point kTooltipPos(70, 12);
 
-	BodySettings bodyset = mesh->morphTargets();
+	BodySettings bodyset = g_mesh.morphTargets();
 
 	TargetSlider * image_slider;
 

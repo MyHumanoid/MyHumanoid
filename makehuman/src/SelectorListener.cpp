@@ -115,8 +115,7 @@ bool SelectorListener::mouseReleased(const Point & inMousePos, int button, Compo
 	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 	calcWidgetTargets(*selectorSource);
 
-	Mesh * mesh = g_global.getMesh();
-	mesh->calcNormals();
+	g_mesh.calcNormals();
 
 	return true;
 }
@@ -153,8 +152,6 @@ void SelectorListener::calcWidgetTargetsFOO()
 	unsigned int j = 0;
 	unsigned int k = 0;
 
-	Mesh * mesh = g_global.getMesh();
-
 	// std::cout << "--------------------------" << std::endl;
 	vector<float>::const_iterator di_end = ageDists.end();
 	for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end; di_it++) {
@@ -166,7 +163,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 			//  std::cout << tmpTargetName << " " << (*di_it) << std::endl;
 			//}
 
-			mesh->doMorph(tmpTargetName, (*di_it));
+			g_mesh.doMorph(tmpTargetName, (*di_it));
 		}
 	}
 
@@ -189,7 +186,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 				//  << " " << tmpTargetValue << std::endl;
 				//}
 
-				mesh->doMorph(tmpTargetName, tmpTargetValue);
+				g_mesh.doMorph(tmpTargetName, tmpTargetValue);
 
 				// breast widget
 
@@ -212,7 +209,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 							//  tmpTargetValue << std::endl;
 							//}
 
-							mesh->doMorph(tmpTargetName,
+							g_mesh.doMorph(tmpTargetName,
 							              tmpTargetValue);
 						}
 						k++;
@@ -235,7 +232,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 			//  std::cout << tmpTargetName << " " << (*sh_it) << std::endl;
 			//}
 
-			mesh->doMorph(tmpTargetName, (*sh_it));
+			g_mesh.doMorph(tmpTargetName, (*sh_it));
 		}
 	}
 	// std::cout << "--------------------------" << std::endl;

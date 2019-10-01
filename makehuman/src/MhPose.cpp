@@ -133,8 +133,8 @@ struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 };
 
 auto applier = [](const std::string & name, const float & value, const bool deleteOnZero) {
-	g_global.mesh->setPose(name, value, deleteOnZero);
-	g_global.mesh->calcNormals();
+	g_mesh.setPose(name, value, deleteOnZero);
+	g_mesh.calcNormals();
 };
 
 
@@ -165,10 +165,10 @@ void DisplayPoseTargets()
 	{
 		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
 
-		BodySettings bodyset = g_global.mesh->poseTargets();
+		BodySettings bodyset = g_mesh.poseTargets();
 
-		for(const auto & [target_name, tarVal] : g_global.mesh->posemap()) {
-			PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
+		for(const auto & [target_name, tarVal] : g_mesh.posemap()) {
+			PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
 			assert(poseTarget);
 
 			BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
@@ -200,9 +200,9 @@ void DisplayPoseTargetsApplied()
 		return;
 	}
 
-	for(const auto & [target_name, target_value] : g_global.mesh->poseTargets()) {
+	for(const auto & [target_name, target_value] : g_mesh.poseTargets()) {
 
-		PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
+		PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
 		assert(poseTarget);
 
 		const auto & minmax =

@@ -193,8 +193,8 @@ struct MorphGroupWin : public TileGroupChildWindow<MorphGroupWin> {
 };
 
 auto applier = [](const std::string & name, const float & value, const bool deleteOnZero) {
-	g_global.mesh->doMorph(name, value);
-	g_global.mesh->calcNormals();
+	g_mesh.doMorph(name, value);
+	g_mesh.calcNormals();
 };
 
 void DisplayMorphTargets()
@@ -216,9 +216,9 @@ void DisplayMorphTargets()
 	{
 		ImGui::BeginChild("Morph Targets", vec2(140, 460), false);
 
-		BodySettings bodyset = g_global.mesh->morphTargets();
+		BodySettings bodyset = g_mesh.morphTargets();
 
-		for(const auto & targetEntry : g_global.mesh->targets()) {
+		for(const auto & targetEntry : g_mesh.targets()) {
 			const string & target_name(targetEntry.first);
 
 			if(isCompositeMorphTarget(target_name)) {
@@ -250,7 +250,7 @@ void DisplayMorphTargetsApplied()
 		return;
 	}
 
-	for(const auto & bodyset_it : g_global.mesh->morphTargets()) {
+	for(const auto & bodyset_it : g_mesh.morphTargets()) {
 
 		string target_name(bodyset_it.first);
 

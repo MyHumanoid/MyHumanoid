@@ -35,6 +35,8 @@
 using namespace Animorph;
 using namespace mhgui;
 
+extern Animorph::Mesh g_mesh;
+
 enum Modes {
 	BODY_DETAILS,
 	POSES,
@@ -49,7 +51,6 @@ struct GlobalPaths {
 struct Global {
 	GlobalPaths paths;
 
-	Mesh *     mesh            = NULL;
 	Camera *   camera          = NULL;
 	Autozoom * autozoom        = NULL;
 	bool       drawGrid        = false;
@@ -61,8 +62,6 @@ struct Global {
 	std::map<const uint32_t, Point *> fuzzyValues;
 
 public:
-	Mesh * getMesh() { return mesh; }
-
 	void  setAppMode(Modes mode) { appMode = mode; }
 	Modes getAppMode() { return appMode; }
 

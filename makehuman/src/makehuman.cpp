@@ -134,7 +134,7 @@ static void CreateCaractersIconTextures()
 
 static void saveBodySettings(const string & filename)
 {
-	BodySettings bodyset = g_global.mesh->morphTargets();
+	BodySettings bodyset = g_mesh.morphTargets();
 
 	bool state = bodyset.save(filename);
 
@@ -171,8 +171,8 @@ static void loadBodySettings(const string & filename)
 	}
 
 	if(state) {
-		g_global.mesh->doMorph(bodyset);
-		g_global.mesh->calcNormals();
+		g_mesh.doMorph(bodyset);
+		g_mesh.calcNormals();
 		logger("BodySettings loaded");
 	} else {
 		logger("BodySettings load failed");
@@ -183,7 +183,7 @@ static void loadBodySettings(const string & filename)
 
 static void savePoses(const string & filename)
 {
-	BodySettings poses = g_global.mesh->poseTargets();
+	BodySettings poses = g_mesh.poseTargets();
 
 	bool state = poses.save(filename);
 
@@ -200,7 +200,7 @@ static void loadPoses(const string & filename)
 	bool         state = poses.load(filename);
 
 	if(state) {
-		g_global.mesh->doPose(poses);
+		g_mesh.doPose(poses);
 		logger("Poses loaded");
 	} else {
 		logger_err("Poses load failed");
@@ -210,7 +210,7 @@ static void loadPoses(const string & filename)
 
 static void exportBodySettings(string & directory, bool full)
 {
-	ObjExporter obj_export(*g_global.mesh);
+	ObjExporter obj_export(g_mesh);
 
 	if(directory.substr(directory.size() - 1, 1) != "/") {
 		directory.append("/");
@@ -229,7 +229,7 @@ static void exportBodySettings(string & directory, bool full)
 
 static void exportCollada(string & filename)
 {
-	ColladaExporter collada_export(*g_global.mesh);
+	ColladaExporter collada_export(g_mesh);
 
 	if(filename.substr(filename.size() - 1, 1) != "/") {
 		filename.append("/");
@@ -259,11 +259,11 @@ static void saveAutozoom(const string & filename)
 
 
 
-static void ResetMeshPose() { g_global.mesh->resetPose(); }
+static void ResetMeshPose() { g_mesh.resetPose(); }
 
 static void ResetMeshMorph()
 {
-	g_global.mesh->resetMorph();
+	g_mesh.resetMorph();
 
 	loadDefaultBodySettings();
 
@@ -292,7 +292,7 @@ void DisplayLibraryCharacters()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	const CharactersMap & charactersmap = g_global.mesh->characters();
+	const CharactersMap & charactersmap = g_mesh.characters();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -326,16 +326,16 @@ void DisplayLibraryCharacters()
 				{       // not copy-paste
 					//					if(g_global.getAppMode() ==
 					//POSES) { 						g_global.setAppMode(BODY_SETTINGS);
-					//						g_global.mesh->bodyDetailsMode();
+					//						g_mesh.bodyDetailsMode();
 					//					}
 
 					const CharactersMap & charactersmap =
-					        g_global.mesh->characters();
+					        g_mesh.characters();
 
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {
-						g_global.mesh->doMorph(f->second, 1.0, true);
-						g_global.mesh->calcNormals();
+						g_mesh.doMorph(f->second, 1.0, true);
+						g_mesh.calcNormals();
 						loadSelectorsPositions(f->second.cursorPositions);
 					}
 				}
@@ -350,7 +350,7 @@ void DisplayLibraryPoses()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	const CharactersMap & charactersmap = g_global.mesh->characters();
+	const CharactersMap & charactersmap = g_mesh.characters();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -382,15 +382,15 @@ void DisplayLibraryPoses()
 
 				{ // not copy-paste
 					const CharactersMap & charactersmap =
-					        g_global.mesh->characters();
+					        g_mesh.characters();
 
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {
-						g_global.mesh->doPose(f->second, 1.0, true);
+						g_mesh.doPose(f->second, 1.0, true);
 						// mesh->doPose
 						// (charactersmap[imgSource->getTargetName ()],
 						// false);
-						g_global.mesh->calcNormals();
+						g_mesh.calcNormals();
 					} else {
 						logger("Character {} not found", character_name);
 					}
@@ -501,9 +501,9 @@ void DisplayMainMenu()
 			ImGui::Separator();
 
 			if(ImGui::BeginMenu("Toggle Visibility")) {
-				for(auto & g : g_global.mesh->facegroup().m_groups) {
+				for(auto & g : g_mesh.facegroup().m_groups) {
 					if(ImGui::Button(g.first.c_str())) {
-						g_global.mesh->facegroup().toggleVisible(g.first);
+						g_mesh.facegroup().toggleVisible(g.first);
 					}
 				}
 				ImGui::EndMenu();
@@ -536,9 +536,9 @@ void DisplayMainMenu()
 		ImGui::Separator();
 		if(ImGui::Checkbox("MorphMode", &g_morphMode)) {
 			if(g_morphMode) {
-				g_global.mesh->bodyDetailsMode();
+				g_mesh.bodyDetailsMode();
 			} else {
-				g_global.mesh->poseMode();
+				g_mesh.poseMode();
 			}
 		}
 		ImGui::Separator();
@@ -978,7 +978,7 @@ int main(int argc, char ** argv)
 
 	tooltipPanel      = new TooltipPanel(g_mainWindow->getSize().getHeight());
 	toolbarPanel      = new ToolbarPanel();
-	g_global.mesh     = new Mesh();
+	//g_global.mesh     = new Mesh();
 	g_global.camera   = new Camera();
 	g_global.autozoom = new Autozoom();
 
@@ -988,36 +988,36 @@ int main(int argc, char ** argv)
 	g_bodyShader       = LoadShader("shader/body.vert", "shader/body.frag");
 	g_backgroundShader = LoadShader("shader/background.vert", "shader/background.frag");
 
-	bool mesh_loaded = g_global.mesh->loadMesh(searchDataFile("base.vertices"),
+	bool mesh_loaded = g_mesh.loadMesh(searchDataFile("base.vertices"),
 	                                           searchDataFile("base.faces"));
 	if(!mesh_loaded) {
 		cerr << "couldn't load mesh geometry" << endl;
 		return 1;
 	}
 
-	bool material_loaded = g_global.mesh->loadMaterial(searchDataFile("base.materials"),
+	bool material_loaded = g_mesh.loadMaterial(searchDataFile("base.materials"),
 	                                                   searchDataFile("base.colors"));
 	if(!material_loaded) {
 		cerr << "couldn't load mesh material informations" << endl;
 		return 1;
 	}
 	
-	g_global.mesh->loadTextureVector(searchDataFile("base.uv"));
+	g_mesh.loadTextureVector(searchDataFile("base.uv"));
 
 	// load face groups with factory function
-	bool groups_loaded = g_global.mesh->loadGroups(searchDataFile("base.parts"));
+	bool groups_loaded = g_mesh.loadGroups(searchDataFile("base.parts"));
 	if(!groups_loaded) {
 		cerr << "couldn't load face groups" << endl;
 		return 1;
 	}
 
-	bool skin_loaded = g_global.mesh->loadSkin(searchDataFile("base.skin"));
+	bool skin_loaded = g_mesh.loadSkin(searchDataFile("base.skin"));
 	if(!skin_loaded) {
 		cerr << "couldn't load skin info" << endl;
 		return 1;
 	}
 
-	bool smooth_loaded = g_global.mesh->loadSmoothVertex(searchDataFile("base.smooth"));
+	bool smooth_loaded = g_mesh.loadSmoothVertex(searchDataFile("base.smooth"));
 	if(!smooth_loaded) {
 		cerr << "couldn't load smooth info" << endl;
 		return 1;
@@ -1030,10 +1030,10 @@ int main(int argc, char ** argv)
 	loadTextures();
 	g_global.m_enableTexture = true;
 
-	g_global.mesh->loadTargets(searchDataDir("targets"));
-	g_global.mesh->loadTargets(searchDataDir("selectors"), 1, false);
-	g_global.mesh->loadPoseTargets(searchDataDir("rotations"));
-	g_global.mesh->loadCharacters(searchDataDir("bs_data"));
+	g_mesh.loadTargets(searchDataDir("targets"));
+	g_mesh.loadTargets(searchDataDir("selectors"), 1, false);
+	g_mesh.loadPoseTargets(searchDataDir("rotations"));
+	g_mesh.loadCharacters(searchDataDir("bs_data"));
 
 	init = false;
 	g_mainWindow->setCamera(g_global.camera);
@@ -1220,7 +1220,7 @@ void calcMinMax(const glm::vec3 & coords)
 
 void loadTextures()
 {
-	for(auto & [name, value] : g_global.mesh->facegroup().m_groups) {
+	for(auto & [name, value] : g_mesh.facegroup().m_groups) {
 
 		std::string fileName = "pixmaps/ui/" + name + "_color.png";
 		value.texture        = LoadTextureFromFile(fileName.c_str());
@@ -1276,12 +1276,12 @@ void drawBackground()
 
 void renderMesh()
 {
-	const MaterialVector & materialvector(g_global.mesh->materials());
-	const TextureVector &  texturevector(g_global.mesh->textureVector());
+	const MaterialVector & materialvector(g_mesh.materials());
+	const TextureVector &  texturevector(g_mesh.textureVector());
 
-	const FaceVector & facevector(g_global.mesh->faces());
+	const FaceVector & facevector(g_mesh.faces());
 
-	const VertexVector & vertexvector(g_global.mesh->getVertexVectorRef());
+	const VertexVector & vertexvector(g_mesh.getVertexVectorRef());
 
 	int facesize;
 	int istri = -1; // to remember which type was the latest drawn geometry and
@@ -1297,7 +1297,7 @@ void renderMesh()
 
 	glUseProgram(g_bodyShader->handle);
 
-	for(auto & [goupName, groupValue] : g_global.mesh->facegroup().m_groups) {
+	for(auto & [goupName, groupValue] : g_mesh.facegroup().m_groups) {
 
 		if(groupValue.visible == false)
 			continue;
