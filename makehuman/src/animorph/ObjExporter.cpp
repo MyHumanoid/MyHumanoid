@@ -5,12 +5,12 @@ using namespace Animorph;
 
 void ObjExporter::createOBJStream(ostringstream & out_stream, const string & basename)
 {
-	FaceGroup & facegroup(mesh.m_facegroup);
-	facegroup.calcVertexes(mesh.faces());
+	mesh.facegroupCalcVertexes();
+	const FaceGroup & facegroup(mesh.facegroup());
 
 	const VertexVector &   vertexvector(mesh.getVertexVectorRef());
 	const FaceVector &     facevector(mesh.faces());
-	const TextureVector &  texturevector(mesh.m_texture_vector);
+	const TextureVector &  texturevector(mesh.textureVector());
 	const MaterialVector & materialvector = mesh.materials();
 
 	// write header
@@ -124,7 +124,7 @@ void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string &
 	const VertexVector &   vertexvector   = mesh.getVertexVectorRef();
 	const FaceVector &     facevector     = mesh.faces();
 	const MaterialVector & materialvector = mesh.materials();
-	const TextureVector &  texturevector  = mesh.m_texture_vector;
+	const TextureVector &  texturevector  = mesh.textureVector();
 
 	// TODO: decide how much accracy we need
 	// out_stream << setprecision (12);
@@ -283,9 +283,8 @@ void ObjExporter::createOBJStream (ostringstream &out_stream,
 */
 bool ObjExporter::exportFile(const string & exportpath, bool full)
 {
-
-	FaceGroup & facegroup(mesh.m_facegroup);
-	facegroup.calcVertexes(mesh.faces());
+	mesh.facegroupCalcVertexes();
+	const FaceGroup & facegroup(mesh.facegroup());
 
 	// FaceVector &facevector (mesh.getFaceVectorRef());
 

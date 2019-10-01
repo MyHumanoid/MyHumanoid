@@ -187,10 +187,8 @@ class Mesh
 	Skin              m_skin;
 	SmoothVertex      m_smoothvertex;
 	vector<glm::vec3> m_jointvector;
-
-public:
-	TextureVector m_texture_vector;
-	FaceGroup     m_facegroup;
+	TextureVector     m_texture_vector;
+	FaceGroup         m_facegroup;
 
 private:
 	/// Save with each vertex to which faces it belongs
@@ -300,28 +298,29 @@ public:
 	const BodySettings & morphTargets() const { return m_morphTargets; }
 
 	const BodySettings & poseTargets() const { return m_poseTargets; }
-
+	
+	const TextureVector & textureVector() const {
+		return m_texture_vector;
+	}
+	
+	// TODO make const
+	FaceGroup & facegroup() {
+		return m_facegroup;
+	}
+	
+	void facegroupCalcVertexes() {
+		m_facegroup.calcVertexes(faces());
+	}
+	
 	/** @name Loading
 	 */
 	//@{
-	/// Load the Mesh geometry files.
-	/*!
-	 * \param mesh_filename the file with Vertex data to load
-	 * \param faces_filename the file with Face data to load
-	 * \return true if files are found
-	 * \return false if files aren't found
-	 */
 	bool loadMesh(const string & mesh_filename, const string & faces_filename);
 
-	/// Load the Material files.
-	/*!
-	 * \param material_filename the file with Material data to load
-	 * \param face_colors_filename the file with Face Color data to load
-	 * \return true if files are found
-	 * \return false if files aren't found
-	 */
 	bool loadMaterial(const string & material_filename, const string & face_colors_filename);
-
+	
+	bool loadTextureVector(const string & filename);
+	
 	/// Load all (pose) Targets recursively from a directory.
 	/*!
 	 * \param target_root_path the root path with targets to load

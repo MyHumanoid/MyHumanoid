@@ -395,6 +395,11 @@ bool Mesh::loadMaterial(const string & material_filename, const string & face_co
 	return true;
 }
 
+bool Mesh::loadTextureVector(const string & filename)
+{
+	return m_texture_vector.load(filename);
+}
+
 void Mesh::loadPoseTargets(const string & target_root_path, int recursive_level)
 {
 	clearPosemap(); // wipe out all old posemap entries first
