@@ -183,10 +183,10 @@ class Mesh
 
 	// VertexGroup       vgroup;
 	BodySettings   bodyset;
-	TargetMap      targetmap;
-	MaterialVector materialvector;
+	TargetMap      m_targets;
+	MaterialVector m_materials;
 	BodySettings   poses;   ///< Currently active PoseTargets
-	PoseMap        posemap; ///< Possible pose transformations
+	PoseMap        m_posemap; ///< Possible pose transformations
 	CharactersMap  charactersmap;
 
 	Skin skin;
@@ -307,17 +307,11 @@ public:
 	/*!
 	 * \return a reference to the MaterialVector of this Mesh
 	 */
-	MaterialVector & getMaterialVectorRef() { return materialvector; }
+	const MaterialVector & materials() { return m_materials; }
 
-	/*!
-	 * \return a reference to the TargetMap of this Mesh
-	 */
-	TargetMap & getTargetMapRef() { return targetmap; }
+	const TargetMap & targets() { return m_targets; }
 
-	/*!
-	 * \return a reference to the PoseMap of this Mesh
-	 */
-	PoseMap & getPoseMapRef() { return posemap; }
+	const PoseMap & posemap() { return m_posemap; }
 
 	/*!
 	 * \return a reference to the CharactersMap of this Mesh

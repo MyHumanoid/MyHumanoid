@@ -11,7 +11,7 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 	const VertexVector &   vertexvector(mesh.getVertexVectorRef());
 	const FaceVector &     facevector(mesh.getFaceVectorRef());
 	const TextureVector &  texturevector(mesh.texture_vector);
-	const MaterialVector & materialvector = mesh.getMaterialVectorRef();
+	const MaterialVector & materialvector = mesh.materials();
 
 	// write header
 	out_stream << "# OBJ File" << endl;
@@ -121,10 +121,10 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 
 void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string & basename)
 {
-	VertexVector &   vertexvector(mesh.getVertexVectorRef());
-	FaceVector &     facevector(mesh.getFaceVectorRef());
-	MaterialVector & materialvector(mesh.getMaterialVectorRef());
-	TextureVector &  texturevector(mesh.texture_vector);
+	VertexVector &   vertexvector = mesh.getVertexVectorRef();
+	FaceVector &     facevector = mesh.getFaceVectorRef();
+	const MaterialVector & materialvector = mesh.materials();
+	TextureVector &  texturevector = mesh.texture_vector;
 
 	// TODO: decide how much accracy we need
 	// out_stream << setprecision (12);
@@ -326,12 +326,12 @@ bool ObjExporter::exportFile(const string & exportpath, bool full)
 
 void ObjExporter::createMTLStream(std::ostringstream & out_stream, const std::string & basename)
 {
-	MaterialVector & materialvector = mesh.getMaterialVectorRef();
+	const MaterialVector & materialvector = mesh.materials();
 
 	out_stream << "# Material file for " << basename << endl << endl;
 
 	for(unsigned int i = 0; i < materialvector.size(); i++) {
-		Material &    material = materialvector[i];
+		const Material &    material = materialvector[i];
 		const Color & colRGB   = material.getRGBCol();
 
 		out_stream << "newmtl " << material.getName() << endl;

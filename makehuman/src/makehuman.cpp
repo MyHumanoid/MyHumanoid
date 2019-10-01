@@ -1268,7 +1268,7 @@ void drawBackground()
 
 void renderMesh()
 {
-	const MaterialVector & materialvector(g_global.mesh->getMaterialVectorRef());
+	const MaterialVector & materialvector(g_global.mesh->materials());
 	const TextureVector &  texturevector(g_global.mesh->texture_vector);
 
 	const FaceVector & facevector(g_global.mesh->getFaceVectorRef());

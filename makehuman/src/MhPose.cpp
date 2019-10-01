@@ -174,7 +174,7 @@ void DisplayPoseTargets() {
 		
 		BodySettings bodyset = g_global.mesh->getPoses();
 		
-		for(const auto & [target_name, tarVal] : g_global.mesh->getPoseMapRef()) {
+		for(const auto & [target_name, tarVal] : g_global.mesh->posemap()) {
 			PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
 			assert(poseTarget);
 			

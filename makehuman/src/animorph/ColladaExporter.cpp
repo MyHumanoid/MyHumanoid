@@ -60,7 +60,7 @@ bool ColladaExporter::exportFile(const string & filename)
 	AddController(&xNode_library_controller, temp);
 
 	// THE SCENE
-	MaterialVector & materialvector = mesh.getMaterialVectorRef();
+	const MaterialVector & materialvector = mesh.materials();
 
 	XMLNode xNode_visual_scene;
 	XMLNode xNode_matrix, xNode_node, xNode_instance_geometry, xNode_bind_material,
@@ -153,7 +153,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	VertexVector &   vertexvector(mesh.getVertexVectorMorphOnlyRef());
 	TextureVector &  texturevector(mesh.texture_vector);
 	FaceVector &     facevector(mesh.getFaceVectorRef());
-	MaterialVector & materialvector = mesh.getMaterialVectorRef();
+	const MaterialVector & materialvector = mesh.materials();
 	// number << "_" << index_material <<"_";
 
 	// name += number;
@@ -331,7 +331,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int material,
                                      unsigned int & texture_number)
 {
-	MaterialVector & materialvector = mesh.getMaterialVectorRef();
+	const MaterialVector & materialvector = mesh.materials();
 	// int number_p = facevector.size();
 	FaceVector & facevector(mesh.getFaceVectorRef());
 	XMLNode      xNode_p, xNode_t, xNode_polygons, xNode_triangles, xNode_input;
@@ -466,18 +466,18 @@ void ColladaExporter::WriteTriangle(int uno, int due, int tre, XMLNode & p, cons
 void ColladaExporter::CreateLibraryMaterialsNode(XMLNode * xNode_library_materials,
                                                  XMLNode * xNode_library_effects)
 {
-	MaterialVector & materialvector = mesh.getMaterialVectorRef();
+	const MaterialVector & materialvector = mesh.materials();
 	XMLNode xNode_diffuse, xNode_color, xNode_material, xNode_effect, xNode_istance_effects,
 	        xNode_profile_common, xNode_technique, xNode_phong;
 
 	for(unsigned int i = 0; i < materialvector.size(); i++) {
 		std::ostringstream out_stream;
-		Material &         material = materialvector[i];
+		const Material &         material = materialvector[i];
 		Material           material_2;
 		const Color &      colRGB          = material.getRGBCol();
 		bool               found_duplicate = false;
 		for(unsigned int j = 0; j < i; j++) {
-			Material & material_2 = materialvector[j];
+			const Material & material_2 = materialvector[j];
 			if(material_2.getName() == material.getName())
 				found_duplicate = true;
 		}

@@ -80,7 +80,7 @@ void TargetPanel::createWidgets()
 	Mesh * mesh = g_global.getMesh();
 	assert(mesh);
 
-	TargetMap & targetmap = mesh->getTargetMapRef();
+	const TargetMap & targetmap = mesh->targets();
 
 	const Color c(1.0, 0.0, 0.0);
 	const Point kTooltipPos(70, 12);

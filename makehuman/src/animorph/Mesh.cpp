@@ -262,11 +262,10 @@ Mesh::Mesh()
         , vertexvector_morph_only()
         , vertexvector_orginal() //!< container for orginal mesh
         , bodyset()
-        , targetmap()
-        , materialvector()
+        , m_targets()
+        , m_materials()
         , texture_vector()
         , poses()         //!< container for applied poses
-        , posemap()       //!< container for all poses
         , charactersmap() //!< container for all characters
         , facegroup()
         , skin()
@@ -283,19 +282,19 @@ Mesh::~Mesh()
 void Mesh::clearTargetmap()
 {
 	TargetMap::iterator i;
-	for(i = targetmap.begin(); i != targetmap.end(); ++i) {
+	for(i = m_targets.begin(); i != m_targets.end(); ++i) {
 		delete i->second;
 	}
-	targetmap.clear();
+	m_targets.clear();
 }
 
 void Mesh::clearPosemap()
 {
 	PoseMap::iterator i;
-	for(i = posemap.begin(); i != posemap.end(); ++i) {
+	for(i = m_posemap.begin(); i != m_posemap.end(); ++i) {
 		delete i->second;
 	}
-	posemap.clear();
+	m_posemap.clear();
 }
 
 void Mesh::calcSharedVertices()
@@ -398,8 +397,8 @@ bool Mesh::loadMeshFactory(const string & mesh_filename, const string & faces_fi
 
 PoseTarget * Mesh::getPoseTargetForName(const string & inTargetname) const
 {
-	PoseMap::const_iterator i = posemap.find(inTargetname);
-	if(i == posemap.end())
+	PoseMap::const_iterator i = m_posemap.find(inTargetname);
+	if(i == m_posemap.end())
 		return NULL;
 
 	PoseTarget * poseTarget = i->second;
@@ -412,7 +411,7 @@ PoseTarget * Mesh::getPoseTargetForName(const string & inTargetname) const
 bool Mesh::loadMaterialFactory(const string & material_filename,
                                const string & face_colors_filename)
 {
-	bool mload  = materialvector.loadMaterials(material_filename);
+	bool mload  = m_materials.loadMaterials(material_filename);
 	bool fcload = facevector.loadColors(face_colors_filename);
 
 	if(!mload || !fcload)
@@ -447,7 +446,7 @@ void Mesh::loadPoseTargetsFactory(const string & target_root_path, int recursive
 		if(!rc) {
 			delete poseTarget;
 		} else {
-			posemap[target_name] = poseTarget;
+			m_posemap[target_name] = poseTarget;
 		}
 	}
 }
@@ -499,14 +498,14 @@ void Mesh::loadTargetsFactory(const string & target_root_path, int recursive_lev
 			targetEntry = nullptr;
 		}
 
-		targetmap[target_name] = targetEntry;
+		m_targets[target_name] = targetEntry;
 	}
 }
 
 const Target * Mesh::getTargetForName(const string & inTargetname)
 {
-	TargetMap::iterator i = targetmap.find(inTargetname);
-	if(i == targetmap.end())
+	TargetMap::iterator i = m_targets.find(inTargetname);
+	if(i == m_targets.end())
 		return NULL;
 
 	return i->second;
@@ -521,7 +520,7 @@ bool Mesh::doMorph(const string & target_name, float morph_value)
 #endif // DEBUG
 
 	// return if target doesn't exist
-	if(!targetmap.count(target_name)) {
+	if(!m_targets.count(target_name)) {
 		cerr << "a target with name \"" << target_name << "\" wasn't found in targetmap"
 		     << endl;
 		return false;
@@ -602,7 +601,7 @@ void Mesh::doMorph(const BodySettings & bs, float value, bool clear)
 
 void Mesh::initPoses()
 {
-	for(auto & [key, poseTarget] : posemap) {
+	for(auto & [key, poseTarget] : m_posemap) {
 		assert(poseTarget);
 		poseTarget->calcRotationsCenteroids(vertexvector_morph_copy);
 		poseTarget->calcTranslationsFormFactors(vertexvector_morph_copy);
@@ -647,7 +646,7 @@ void Mesh::resetPose()
 bool Mesh::setPose(const std::string & target_name, float morph_value, bool removeOnZero)
 {
 	// return if target doesn't exist
-	if(!posemap.count(target_name)) {
+	if(!m_posemap.count(target_name)) {
 		cerr << "a target with name \"" << target_name << "\" wasn't found in posemap"
 		     << endl;
 		return false;
@@ -852,13 +851,13 @@ void Mesh::prepareSkeleton()
 	for(int i = 0; i < SK_JOINT_END; i++) {
 
 		glm::vec3         v(0.f, 0.f, 0.f);
-		PoseMap::iterator temp = posemap.find(jointName[i] + "/ROT1");
+		PoseMap::iterator temp = m_posemap.find(jointName[i] + "/ROT1");
 
-		if(temp == posemap.end()) {
+		if(temp == m_posemap.end()) {
 
-			temp = posemap.find(jointName[i] + "/ROT_BASE1");
+			temp = m_posemap.find(jointName[i] + "/ROT_BASE1");
 
-			if(temp == posemap.end()) {
+			if(temp == m_posemap.end()) {
 				glm::vec3 v3;
 				if(IsADummyJoint((SKELETON_JOINT)i, v3) == true) {
 					jointvector.push_back(v3);

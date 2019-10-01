@@ -221,7 +221,7 @@ void DisplayMorphTargets()
 		
 		BodySettings bodyset = g_global.mesh->getBodySettings();
 		
-		for(const auto & targetEntry : g_global.mesh->getTargetMapRef()) {
+		for(const auto & targetEntry : g_global.mesh->targets()) {
 			const string & target_name(targetEntry.first);
 			
 			if(isCompositeMorphTarget(target_name)) {
