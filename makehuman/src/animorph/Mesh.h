@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef MESH_H
-#define MESH_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "BodySettings.h"
 #include "DirectoryList.h"
@@ -58,10 +52,13 @@
 #include <string>
 #include <vector>
 
+
 using std::map;
 using std::ostringstream;
 using std::string;
 using std::vector;
+
+
 #define MAX_NUMBER_SUBJOINT 6
 typedef enum SKELETON_JOINT {
 	SK_NONE = -1,
@@ -156,11 +153,9 @@ typedef struct DummyJoint {
 	glm::vec3      v3;
 } DummyJoint;
 
-typedef map<string, Target *>     TargetMap;
-typedef map<string, glm::vec3>    Centeroid;
-typedef map<string, glm::vec3>    FormFactor;
-typedef map<string, PoseTarget *>  PoseMap;
-typedef map<string, BodySettings> CharactersMap;
+using TargetMap = map<string, Target *>;
+using PoseMap = map<string, PoseTarget *>;
+using CharactersMap = map<string, BodySettings>;
 
 /*! \brief A poseable and morphable mesh.
 
@@ -190,7 +185,6 @@ class Mesh
 	BodySettings   bodyset;
 	TargetMap      targetmap;
 	MaterialVector materialvector;
-	Centeroid      centeroid;
 	BodySettings   poses;   ///< Currently active PoseTargets
 	PoseMap        posemap; ///< Possible pose transformations
 	CharactersMap  charactersmap;
@@ -513,5 +507,3 @@ public:
 }; // class Mesh
 
 } // namespace Animorph
-
-#endif // MESH_H

@@ -264,7 +264,6 @@ Mesh::Mesh()
         , bodyset()
         , targetmap()
         , materialvector()
-        , centeroid()
         , texture_vector()
         , poses()         //!< container for applied poses
         , posemap()       //!< container for all poses
@@ -603,11 +602,8 @@ void Mesh::doMorph(const BodySettings & bs, float value, bool clear)
 
 void Mesh::initPoses()
 {
-	for(PoseMap::iterator target_it = posemap.begin(); target_it != posemap.end();
-	    target_it++) {
-		PoseTarget * poseTarget = target_it->second;
+	for(auto & [key, poseTarget] : posemap) {
 		assert(poseTarget);
-
 		poseTarget->calcRotationsCenteroids(vertexvector_morph_copy);
 		poseTarget->calcTranslationsFormFactors(vertexvector_morph_copy);
 		poseTarget->calcNormalizations();
@@ -933,9 +929,8 @@ void Mesh::doPose(const BodySettings & bs, const float value, bool clear)
 		vertexvector_morph_only = vertexvector_morph_copy;
 	}
 
-	for(BodySettings::const_iterator bs_it = bs.begin(); bs_it != bs.end(); bs_it++) {
-		string target_name = (*bs_it).first;
-		float  morph_value = (*bs_it).second;
+	for(const auto & [target_name, val] : bs) {
+		float morph_value = val;
 		morph_value *= value;
 
 		PoseTarget * poseTarget = getPoseTargetForName(target_name);
