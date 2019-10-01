@@ -83,13 +83,24 @@ Panel * Window::getPanel(uint32_t inPanelId)
 	return NULL;
 }
 
-void Window::setCamera(Camera * p_camera) { inCamera = p_camera; }
+void Window::setCamera(Camera * p_camera)
+{
+	inCamera = p_camera;
+}
 
-void Window::draw() { drawPanels(); }
+void Window::draw()
+{
+	drawPanels();
+}
 
-void Window::show() { setVisible(true); }
+void Window::show()
+{
+	setVisible(true);
+}
 
-void Window::hide() {}
+void Window::hide()
+{
+}
 
 // Add panel into window
 bool Window::addPanel(Panel * p)

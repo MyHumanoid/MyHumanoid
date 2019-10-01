@@ -109,7 +109,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-inline int mmin(const int t1, const int t2) { return t1 < t2 ? t1 : t2; }
+inline int mmin(const int t1, const int t2)
+{
+	return t1 < t2 ? t1 : t2;
+}
 
 // You can modify the initialization of the variable "XMLClearTags" below
 // to change the clearTags that are currently recognized by the library.
@@ -241,7 +244,10 @@ static const char XML_utf8ByteTable[256] = {
 // you have to do is to edit the following lines.
 #ifdef WIN32
 // for Microsoft Visual Studio 6.0 and Microsoft Visual Studio .NET,
-char myIsTextUnicode(const void * b, int l) { return IsTextUnicode((CONST LPVOID)b, l, NULL); };
+char myIsTextUnicode(const void * b, int l)
+{
+	return IsTextUnicode((CONST LPVOID)b, l, NULL);
+};
 #ifdef _XMLUNICODE
 wchar_t * myMultiByteToWideChar(const char * s, int l)
 {
@@ -292,7 +298,10 @@ char * myWideCharToMultiByte(const wchar_t * s, int l)
 }
 #endif
 #ifdef __BORLANDC__
-int _strnicmp(char * c1, char * c2, int l) { return strnicmp(c1, c2, l); }
+int _strnicmp(char * c1, char * c2, int l)
+{
+	return strnicmp(c1, c2, l);
+}
 #endif
 #else
 // for gcc and CC
@@ -356,19 +365,40 @@ wchar_t * myMultiByteToWideChar(const char * s, int l)
 	d[i] = 0;
 	return d;
 }
-int _tcslen(XMLCSTR c) { return wcslen(c); }
+int _tcslen(XMLCSTR c)
+{
+	return wcslen(c);
+}
 #include <widec.h>
 #ifdef sun
 // for CC
-int    _tcsnicmp(XMLCSTR c1, XMLCSTR c2, int l) { return wsncasecmp(c1, c2, l); }
-int    _tcsicmp(XMLCSTR c1, XMLCSTR c2) { return wscasecmp(c1, c2); }
+int _tcsnicmp(XMLCSTR c1, XMLCSTR c2, int l)
+{
+	return wsncasecmp(c1, c2, l);
+}
+int _tcsicmp(XMLCSTR c1, XMLCSTR c2)
+{
+	return wscasecmp(c1, c2);
+}
 #else
 // for gcc
-int _tcsnicmp(XMLCSTR c1, XMLCSTR c2, int l) { return wcsncasecmp(c1, c2, l); }
-int _tcsicmp(XMLCSTR c1, XMLCSTR c2) { return wcscasecmp(c1, c2); }
+int _tcsnicmp(XMLCSTR c1, XMLCSTR c2, int l)
+{
+	return wcsncasecmp(c1, c2, l);
+}
+int _tcsicmp(XMLCSTR c1, XMLCSTR c2)
+{
+	return wcscasecmp(c1, c2);
+}
 #endif
-XMLSTR _tcsstr(XMLCSTR c1, XMLCSTR c2) { return (XMLSTR)wcsstr(c1, c2); }
-XMLSTR _tcscpy(XMLSTR c1, XMLCSTR c2) { return (XMLSTR)wcscpy(c1, c2); }
+XMLSTR _tcsstr(XMLCSTR c1, XMLCSTR c2)
+{
+	return (XMLSTR)wcsstr(c1, c2);
+}
+XMLSTR _tcscpy(XMLSTR c1, XMLCSTR c2)
+{
+	return (XMLSTR)wcscpy(c1, c2);
+}
 FILE * _tfopen(XMLCSTR filename, XMLCSTR mode)
 {
 	char * filenameAscii = myWideCharToMultiByte(filename, 0);
@@ -381,14 +411,35 @@ FILE * _tfopen(XMLCSTR filename, XMLCSTR mode)
 	return f;
 }
 #else
-FILE * _tfopen(XMLCSTR filename, XMLCSTR mode) { return fopen(filename, mode); }
-int    _tcslen(XMLCSTR c) { return strlen(c); }
-int    _tcsnicmp(XMLCSTR c1, XMLCSTR c2, int l) { return strncasecmp(c1, c2, l); }
-int    _tcsicmp(XMLCSTR c1, XMLCSTR c2) { return strcasecmp(c1, c2); }
-XMLSTR _tcsstr(XMLCSTR c1, XMLCSTR c2) { return (XMLSTR)strstr(c1, c2); }
-XMLSTR _tcscpy(XMLSTR c1, XMLCSTR c2) { return (XMLSTR)strcpy(c1, c2); }
+FILE * _tfopen(XMLCSTR filename, XMLCSTR mode)
+{
+	return fopen(filename, mode);
+}
+int _tcslen(XMLCSTR c)
+{
+	return strlen(c);
+}
+int _tcsnicmp(XMLCSTR c1, XMLCSTR c2, int l)
+{
+	return strncasecmp(c1, c2, l);
+}
+int _tcsicmp(XMLCSTR c1, XMLCSTR c2)
+{
+	return strcasecmp(c1, c2);
+}
+XMLSTR _tcsstr(XMLCSTR c1, XMLCSTR c2)
+{
+	return (XMLSTR)strstr(c1, c2);
+}
+XMLSTR _tcscpy(XMLSTR c1, XMLCSTR c2)
+{
+	return (XMLSTR)strcpy(c1, c2);
+}
 #endif
-int _strnicmp(const char * c1, const char * c2, int l) { return strncasecmp(c1, c2, l); }
+int _strnicmp(const char * c1, const char * c2, int l)
+{
+	return strncasecmp(c1, c2, l);
+}
 #endif
 
 /////////////////////////////////////////////////////////////////////////
@@ -2123,7 +2174,10 @@ XMLSTR XMLNode::createXMLString(int nFormat, int * pnSize)
 	return lpszResult;
 }
 
-XMLNode::~XMLNode() { deleteNodeContent(); }
+XMLNode::~XMLNode()
+{
+	deleteNodeContent();
+}
 
 void XMLNode::detachFromParent(XMLNodeData * d)
 {
@@ -2300,7 +2354,10 @@ void XMLNode::deleteText(int i)
 	removeOrderElement(d, eNodeText, i);
 }
 
-void XMLNode::deleteText(XMLCSTR lpszValue) { deleteText(indexText(lpszValue)); }
+void XMLNode::deleteText(XMLCSTR lpszValue)
+{
+	deleteText(indexText(lpszValue));
+}
 
 XMLCSTR XMLNode::updateText_WOSD(XMLCSTR lpszNewValue, int i)
 {
@@ -2359,7 +2416,10 @@ int XMLNode::indexClear(XMLCSTR lpszValue)
 	return -1;
 }
 
-void XMLNode::deleteClear(XMLCSTR lpszValue) { deleteClear(indexClear(lpszValue)); }
+void XMLNode::deleteClear(XMLCSTR lpszValue)
+{
+	deleteClear(indexClear(lpszValue));
+}
 void XMLNode::deleteClear(XMLClear * a)
 {
 	if(a)
@@ -2480,8 +2540,14 @@ int XMLNode::positionOfChildNode(int i)
 		i = d->nChild - 1;
 	return findPosition(d, i, eNodeChild);
 }
-int XMLNode::positionOfText(XMLCSTR lpszValue) { return positionOfText(indexText(lpszValue)); }
-int XMLNode::positionOfClear(XMLCSTR lpszValue) { return positionOfClear(indexClear(lpszValue)); }
+int XMLNode::positionOfText(XMLCSTR lpszValue)
+{
+	return positionOfText(indexText(lpszValue));
+}
+int XMLNode::positionOfClear(XMLCSTR lpszValue)
+{
+	return positionOfClear(indexClear(lpszValue));
+}
 int XMLNode::positionOfClear(XMLClear * a)
 {
 	if(a)
@@ -2706,7 +2772,10 @@ char XMLNode::isDeclaration()
 		return 0;
 	return d->isDeclaration;
 }
-char XMLNode::isEmpty() { return (d == NULL); }
+char XMLNode::isEmpty()
+{
+	return (d == NULL);
+}
 
 XMLNode XMLNode::addChild(XMLCSTR lpszName, int isDeclaration, int pos)
 {
@@ -2724,7 +2793,10 @@ XMLClear * XMLNode::addClear(XMLCSTR lpszValue, XMLCSTR lpszOpen, XMLCSTR lpszCl
 {
 	return addClear_WOSD(stringDup(lpszValue), lpszOpen, lpszClose, pos);
 }
-XMLCSTR XMLNode::updateName(XMLCSTR lpszName) { return updateName_WOSD(stringDup(lpszName)); }
+XMLCSTR XMLNode::updateName(XMLCSTR lpszName)
+{
+	return updateName_WOSD(stringDup(lpszName));
+}
 XMLAttribute * XMLNode::updateAttribute(XMLAttribute * newAttribute, XMLAttribute * oldAttribute)
 {
 	return updateAttribute_WOSD(stringDup(newAttribute->lpszValue),
@@ -2869,7 +2941,10 @@ const unsigned char base64DecodeTable[] = {
         98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98 // 240 -255
 };
 
-XMLParserBase64Tool::~XMLParserBase64Tool() { freeBuffer(); }
+XMLParserBase64Tool::~XMLParserBase64Tool()
+{
+	freeBuffer();
+}
 
 void XMLParserBase64Tool::freeBuffer()
 {

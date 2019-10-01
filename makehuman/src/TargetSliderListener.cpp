@@ -46,9 +46,14 @@ TargetSliderListener::TargetSliderListener()
 {
 }
 
-TargetSliderListener::~TargetSliderListener() {}
+TargetSliderListener::~TargetSliderListener()
+{
+}
 
-bool TargetSliderListener::mouseOver(const Point & inMousePos, Component * source) { return false; }
+bool TargetSliderListener::mouseOver(const Point & inMousePos, Component * source)
+{
+	return false;
+}
 
 bool TargetSliderListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
 {
@@ -103,4 +108,7 @@ bool TargetSliderListener::mouseReleased(const Point & inMousePos, int button, C
 	return false;
 }
 
-bool TargetSliderListener::keyType(unsigned char key, Component * source) { return false; }
+bool TargetSliderListener::keyType(unsigned char key, Component * source)
+{
+	return false;
+}

@@ -150,9 +150,15 @@ void Selector::setDisabledTexture(const std::string & inFilename)
 	imageFilenameDisabled = inFilename;
 }
 
-void Selector::setCursorTexture(const std::string & inFilename) { cursorFilename = inFilename; }
+void Selector::setCursorTexture(const std::string & inFilename)
+{
+	cursorFilename = inFilename;
+}
 
-void Selector::setAlpha(float a) { alpha = a; }
+void Selector::setAlpha(float a)
+{
+	alpha = a;
+}
 
 void Selector::show()
 {
@@ -161,7 +167,10 @@ void Selector::show()
 	lazyLoadTexture();
 }
 
-void Selector::hide() { setVisible(false); }
+void Selector::hide()
+{
+	setVisible(false);
+}
 
 // Return the ID assigned
 const Texture & Selector::getTextures()
@@ -197,7 +206,10 @@ std::vector<float> Selector::getDists()
 	return ret;
 }
 
-void Selector::drawOverlay() { draw(); }
+void Selector::drawOverlay()
+{
+	draw();
+}
 
 // draw function
 void Selector::draw()

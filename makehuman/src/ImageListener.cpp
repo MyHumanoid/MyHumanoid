@@ -62,7 +62,9 @@ ImageListener::ImageListener()
 {
 }
 
-ImageListener::~ImageListener() {}
+ImageListener::~ImageListener()
+{
+}
 
 bool ImageListener::mouseOver(const Point & inMousePos, Component * source)
 {
@@ -210,7 +212,10 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 	return false;
 }
 
-bool ImageListener::keyType(unsigned char key, Component * source) { return false; }
+bool ImageListener::keyType(unsigned char key, Component * source)
+{
+	return false;
+}
 
 void ImageListener::hidePanels(const Modes currentMode)
 {

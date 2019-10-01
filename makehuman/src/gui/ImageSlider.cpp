@@ -54,7 +54,10 @@ ImageSlider::ImageSlider(uint32_t inImageID, const std::string & inSliderImageFi
 	setSysListener(imageSliderSysListener);
 }
 
-ImageSlider::~ImageSlider() { delete imageSliderSysListener; }
+ImageSlider::~ImageSlider()
+{
+	delete imageSliderSysListener;
+}
 
 void ImageSlider::draw()
 {
@@ -114,7 +117,10 @@ void ImageSlider::drawOverlay()
 	}
 }
 
-float ImageSlider::getSliderValue() { return sliderValue; }
+float ImageSlider::getSliderValue()
+{
+	return sliderValue;
+}
 
 void ImageSlider::setSliderValue(float newValue)
 {
@@ -128,12 +134,24 @@ void ImageSlider::setSliderValue(float newValue)
 		sliderValue = newValue;
 }
 
-void ImageSlider::setOldMouseX(int mouseX) { oldMouseX = mouseX; }
+void ImageSlider::setOldMouseX(int mouseX)
+{
+	oldMouseX = mouseX;
+}
 
-int ImageSlider::getOldMouseX() { return oldMouseX; }
+int ImageSlider::getOldMouseX()
+{
+	return oldMouseX;
+}
 
-void ImageSlider::decreaseValue(int n) { setSliderValue(sliderValue - (n * valueStep)); }
+void ImageSlider::decreaseValue(int n)
+{
+	setSliderValue(sliderValue - (n * valueStep));
+}
 
-void ImageSlider::increaseValue(int n) { setSliderValue(sliderValue + (n * valueStep)); }
+void ImageSlider::increaseValue(int n)
+{
+	setSliderValue(sliderValue + (n * valueStep));
+}
 
 } // namespace mhgui

@@ -79,14 +79,20 @@ Image::~Image()
 	delete imageSysListener; // remove the listener again
 }
 
-void Image::setOverlayTexture(const std::string & inFilename) { imageFilenameOver = inFilename; }
+void Image::setOverlayTexture(const std::string & inFilename)
+{
+	imageFilenameOver = inFilename;
+}
 
 void Image::setDisabledTexture(const std::string & inFilename)
 {
 	imageFilenameDisabled = inFilename;
 }
 
-void Image::setAlpha(float a) { alpha = a; }
+void Image::setAlpha(float a)
+{
+	alpha = a;
+}
 
 void Image::show()
 {
@@ -95,7 +101,10 @@ void Image::show()
 	lazyLoadTexture();
 }
 
-void Image::hide() { setVisible(false); }
+void Image::hide()
+{
+	setVisible(false);
+}
 
 // Return the ID assigned
 const Texture & Image::getTextures()
@@ -117,7 +126,10 @@ void Image::setOverlayRectangle(const Color & c)
 	overlayEffect = true;
 }
 
-void Image::setOverlayRectangle(bool overlayEffect) { this->overlayEffect = overlayEffect; }
+void Image::setOverlayRectangle(bool overlayEffect)
+{
+	this->overlayEffect = overlayEffect;
+}
 
 void Image::drawOverlay()
 {

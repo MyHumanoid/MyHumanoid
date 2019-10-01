@@ -63,9 +63,15 @@ Panel::~Panel()
 		parentWindow->removePanel(this);
 }
 
-const Window * Panel::getParentWindow() const { return parentWindow; }
+const Window * Panel::getParentWindow() const
+{
+	return parentWindow;
+}
 
-void Panel::setParentWindow(Window * w) { parentWindow = w; }
+void Panel::setParentWindow(Window * w)
+{
+	parentWindow = w;
+}
 
 // Put widget into panel
 bool Panel::addWidget(Widget * w)
@@ -129,9 +135,15 @@ Widget * Panel::getWidget(uint32_t inWidgetId)
 	return NULL;
 }
 
-void Panel::show() { setVisible(true); }
+void Panel::show()
+{
+	setVisible(true);
+}
 
-void Panel::hide() { setVisible(false); }
+void Panel::hide()
+{
+	setVisible(false);
+}
 
 void Panel::calcWidgetPosition()
 {

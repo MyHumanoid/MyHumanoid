@@ -223,11 +223,17 @@ void Camera::applyMatrix()
 }
 
 /*! Set the camera mode. Ortho (false) or perspective (true). */
-void Camera::setPerspective(bool m) { mode = m; }
+void Camera::setPerspective(bool m)
+{
+	mode = m;
+}
 
 float kTimePerRaster(0.03f);
 
-int Camera::steps() { return static_cast<int>(timeForMorph / kTimePerRaster); }
+int Camera::steps()
+{
+	return static_cast<int>(timeForMorph / kTimePerRaster);
+}
 
 float Camera::getYForX(float x)
 {
@@ -348,7 +354,10 @@ bool Autozoom::lazyLoadData(const std::string & filename)
 }
 
 /*! Return the autozoom data for the body part. */
-AutozoomData Autozoom::getAutozoomData(const std::string & filename) { return (*this)[filename]; }
+AutozoomData Autozoom::getAutozoomData(const std::string & filename)
+{
+	return (*this)[filename];
+}
 
 /*! Save the current camera position to the .camera file of the active target
  * panel. */

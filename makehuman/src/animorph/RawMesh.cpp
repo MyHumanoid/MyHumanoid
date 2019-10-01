@@ -19,4 +19,6 @@ RawMesh::RawMesh()
 {
 }
 
-RawMesh::~RawMesh() {}
+RawMesh::~RawMesh()
+{
+}

@@ -50,7 +50,9 @@ TargetSelectionListener::TargetSelectionListener()
 {
 }
 
-TargetSelectionListener::~TargetSelectionListener() {}
+TargetSelectionListener::~TargetSelectionListener()
+{
+}
 
 bool TargetSelectionListener::mouseOver(const Point & inMousePos, Component * source)
 {
@@ -384,4 +386,7 @@ bool TargetSelectionListener::mouseReleased(const Point & inMousePos, int button
 	return false;
 }
 
-bool TargetSelectionListener::keyType(unsigned char key, Component * source) { return false; }
+bool TargetSelectionListener::keyType(unsigned char key, Component * source)
+{
+	return false;
+}

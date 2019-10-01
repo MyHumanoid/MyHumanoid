@@ -42,25 +42,37 @@ ImageData::~ImageData()
 /**
  */
 /* ========================================================================== */
-unsigned long ImageData::getWidth() const { return width; }
+unsigned long ImageData::getWidth() const
+{
+	return width;
+}
 
 /* ========================================================================== */
 /**
  */
 /* ========================================================================== */
-unsigned long ImageData::getHeight() const { return height; }
+unsigned long ImageData::getHeight() const
+{
+	return height;
+}
 
 /* ========================================================================== */
 /**
  */
 /* ========================================================================== */
-const void * ImageData::getData() const { return image_data; }
+const void * ImageData::getData() const
+{
+	return image_data;
+}
 
 /* ========================================================================== */
 /**
  */
 /* ========================================================================== */
-bool ImageData::hasAlpha() const { return alpha; }
+bool ImageData::hasAlpha() const
+{
+	return alpha;
+}
 
 /** Load a given png file (OS even loads a couple of additional filetypes jpg,
  *  tiff, gif, bmp, psd ...)
@@ -68,7 +80,10 @@ bool ImageData::hasAlpha() const { return alpha; }
  * @param filename The name of the PNG file to load to.
  * @return true if successful, false otherwise
  */
-bool ImageData::pngLoad(const string & filename) { return pngLoadPNGLib(filename); }
+bool ImageData::pngLoad(const string & filename)
+{
+	return pngLoadPNGLib(filename);
+}
 
 bool ImageData::pngLoadPNGLib(const string & filename)
 {

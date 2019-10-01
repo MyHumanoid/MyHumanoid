@@ -255,7 +255,9 @@ const DummyJoint dummyJoints[DUMMY_JOINTS] = {
 
 const float M_PI_180 = (M_PI / 180.0);
 
-Mesh::Mesh() {}
+Mesh::Mesh()
+{
+}
 
 Mesh::~Mesh()
 {
@@ -344,9 +346,15 @@ void Mesh::calcNormals()
 	calcVertexNormals();
 }
 
-bool Mesh::loadGroups(const string & groups_filename) { return m_facegroup.load(groups_filename); }
+bool Mesh::loadGroups(const string & groups_filename)
+{
+	return m_facegroup.load(groups_filename);
+}
 
-bool Mesh::loadSmoothVertex(const string & filename) { return m_smoothvertex.load(filename); }
+bool Mesh::loadSmoothVertex(const string & filename)
+{
+	return m_smoothvertex.load(filename);
+}
 
 bool Mesh::loadMesh(const string & mesh_filename, const string & faces_filename)
 {
@@ -597,7 +605,10 @@ void Mesh::poseMode()
 	doPose(m_poseTargets, false);
 }
 
-void Mesh::bodyDetailsMode() { m_vert_morph = m_vert_morph_copy; }
+void Mesh::bodyDetailsMode()
+{
+	m_vert_morph = m_vert_morph_copy;
+}
 
 void Mesh::resetMorph()
 {

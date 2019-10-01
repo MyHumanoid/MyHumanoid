@@ -71,11 +71,19 @@ SelectorListener::SelectorListener()
 	shapeLabels.push_back("longilinear_peershape");
 }
 
-SelectorListener::~SelectorListener() {}
+SelectorListener::~SelectorListener()
+{
+}
 
-bool SelectorListener::mouseOver(const Point & inMousePos, Component * source) { return false; }
+bool SelectorListener::mouseOver(const Point & inMousePos, Component * source)
+{
+	return false;
+}
 
-bool SelectorListener::mouseOut(const Point & inMousePos, Component * source) { return false; }
+bool SelectorListener::mouseOut(const Point & inMousePos, Component * source)
+{
+	return false;
+}
 
 bool SelectorListener::mouseDragged(const Point & inMousePos, Component * source)
 {
@@ -120,7 +128,10 @@ bool SelectorListener::mouseReleased(const Point & inMousePos, int button, Compo
 	return true;
 }
 
-bool SelectorListener::keyType(unsigned char key, Component * source) { return false; }
+bool SelectorListener::keyType(unsigned char key, Component * source)
+{
+	return false;
+}
 
 void SelectorListener::calcWidgetTargets(Selector & selectorSource)
 {
@@ -210,7 +221,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 							//}
 
 							g_mesh.doMorph(tmpTargetName,
-							              tmpTargetValue);
+							               tmpTargetValue);
 						}
 						k++;
 					}

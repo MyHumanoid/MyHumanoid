@@ -122,7 +122,10 @@ void Matrix::setRotation(float theta, const glm::vec3 & axis)
 	data[14] = 0;
 }
 
-void Matrix::setScale(const glm::vec3 & s) { setScale(s.x, s.y, s.z); }
+void Matrix::setScale(const glm::vec3 & s)
+{
+	setScale(s.x, s.y, s.z);
+}
 
 void Matrix::setScale(float x, float y, float z)
 {
@@ -144,7 +147,10 @@ void Matrix::setScale(float x, float y, float z)
 	data[15] = 1.0;
 }
 
-void Matrix::setTranslation(const glm::vec3 & t) { setTranslation(t.x, t.y, t.z); }
+void Matrix::setTranslation(const glm::vec3 & t)
+{
+	setTranslation(t.x, t.y, t.z);
+}
 
 void Matrix::setTranslation(float x, float y, float z)
 {
@@ -166,7 +172,10 @@ void Matrix::setTranslation(float x, float y, float z)
 	data[15] = 1.0;
 }
 
-glm::vec3 Matrix::getTranslation() { return glm::vec3(data[12], data[13], data[14]); }
+glm::vec3 Matrix::getTranslation()
+{
+	return glm::vec3(data[12], data[13], data[14]);
+}
 
 /**************************************/
 /* Non-Member operators and functions */

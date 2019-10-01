@@ -42,7 +42,9 @@ MultiPanel::MultiPanel(uint32_t inMultiPanelId, const Rect & inGeometry)
 {
 }
 
-MultiPanel::~MultiPanel() {}
+MultiPanel::~MultiPanel()
+{
+}
 
 // Put panel into multipanel
 bool MultiPanel::addPanel(Panel * p)
@@ -102,9 +104,15 @@ void MultiPanel::draw()
 	}
 }
 
-bool MultiPanel::hasNextPage() { return (currentPage < numPages - 1); }
+bool MultiPanel::hasNextPage()
+{
+	return (currentPage < numPages - 1);
+}
 
-bool MultiPanel::hasPrevPage() { return (currentPage > 0); }
+bool MultiPanel::hasPrevPage()
+{
+	return (currentPage > 0);
+}
 
 void MultiPanel::checkControlsVisibility()
 {

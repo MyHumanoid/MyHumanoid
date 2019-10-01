@@ -45,7 +45,9 @@ ImageSliderSysListener::ImageSliderSysListener()
 {
 }
 
-ImageSliderSysListener::~ImageSliderSysListener() {}
+ImageSliderSysListener::~ImageSliderSysListener()
+{
+}
 
 bool ImageSliderSysListener::mouseOver(const Point & inMousePos, Component * source)
 {
@@ -134,6 +136,9 @@ bool ImageSliderSysListener::mouseReleased(const Point & inMousePos, int button,
 	return false;
 }
 
-bool ImageSliderSysListener::keyType(unsigned char key, Component * source) { return false; }
+bool ImageSliderSysListener::keyType(unsigned char key, Component * source)
+{
+	return false;
+}
 
 } // namespace mhgui

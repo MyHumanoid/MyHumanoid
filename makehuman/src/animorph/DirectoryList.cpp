@@ -16,7 +16,10 @@ DirectoryList::DirectoryList()
 {
 }
 
-void DirectoryList::setFileFilter(const string & file_filter) { this->file_filter = file_filter; }
+void DirectoryList::setFileFilter(const string & file_filter)
+{
+	this->file_filter = file_filter;
+}
 
 bool DirectoryList::hasFileFilterEnding(const string & file) const
 {
@@ -26,9 +29,15 @@ bool DirectoryList::hasFileFilterEnding(const string & file) const
 	return (file.find(file_filter, file.length() - file_filter.length()) != string::npos);
 }
 
-void DirectoryList::setRecursive(int recursive_level) { this->recursive_level = recursive_level; }
+void DirectoryList::setRecursive(int recursive_level)
+{
+	this->recursive_level = recursive_level;
+}
 
-void DirectoryList::setRootPath(const string & path) { this->path = path; }
+void DirectoryList::setRootPath(const string & path)
+{
+	this->path = path;
+}
 
 #define kUndetermined 0
 #define kDirectory 1
@@ -105,4 +114,7 @@ const StringList & DirectoryList::getDirectoryList()
 	return file_list;
 }
 
-void DirectoryList::setFileType(FileType file_type) { this->file_type = file_type; }
+void DirectoryList::setFileType(FileType file_type)
+{
+	this->file_type = file_type;
+}

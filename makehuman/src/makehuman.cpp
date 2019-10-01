@@ -259,7 +259,10 @@ static void saveAutozoom(const string & filename)
 
 
 
-static void ResetMeshPose() { g_mesh.resetPose(); }
+static void ResetMeshPose()
+{
+	g_mesh.resetPose();
+}
 
 static void ResetMeshMorph()
 {
@@ -323,14 +326,14 @@ void DisplayLibraryCharacters()
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
 
 
-				{       // not copy-paste
-					//					if(g_global.getAppMode() ==
-					//POSES) { 						g_global.setAppMode(BODY_SETTINGS);
+				{ // not copy-paste
+					//					if(g_global.getAppMode()
+					//== POSES) {
+					// g_global.setAppMode(BODY_SETTINGS);
 					//						g_mesh.bodyDetailsMode();
 					//					}
 
-					const CharactersMap & charactersmap =
-					        g_mesh.characters();
+					const CharactersMap & charactersmap = g_mesh.characters();
 
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {
@@ -381,8 +384,7 @@ void DisplayLibraryPoses()
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
 
 				{ // not copy-paste
-					const CharactersMap & charactersmap =
-					        g_mesh.characters();
+					const CharactersMap & charactersmap = g_mesh.characters();
 
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {
@@ -976,9 +978,9 @@ int main(int argc, char ** argv)
 	std::string winTitle = mh_app_name + " "s + mh_version;
 	g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
 
-	tooltipPanel      = new TooltipPanel(g_mainWindow->getSize().getHeight());
-	toolbarPanel      = new ToolbarPanel();
-	//g_global.mesh     = new Mesh();
+	tooltipPanel = new TooltipPanel(g_mainWindow->getSize().getHeight());
+	toolbarPanel = new ToolbarPanel();
+	// g_global.mesh     = new Mesh();
 	g_global.camera   = new Camera();
 	g_global.autozoom = new Autozoom();
 
@@ -988,20 +990,20 @@ int main(int argc, char ** argv)
 	g_bodyShader       = LoadShader("shader/body.vert", "shader/body.frag");
 	g_backgroundShader = LoadShader("shader/background.vert", "shader/background.frag");
 
-	bool mesh_loaded = g_mesh.loadMesh(searchDataFile("base.vertices"),
-	                                           searchDataFile("base.faces"));
+	bool mesh_loaded =
+	        g_mesh.loadMesh(searchDataFile("base.vertices"), searchDataFile("base.faces"));
 	if(!mesh_loaded) {
 		cerr << "couldn't load mesh geometry" << endl;
 		return 1;
 	}
 
 	bool material_loaded = g_mesh.loadMaterial(searchDataFile("base.materials"),
-	                                                   searchDataFile("base.colors"));
+	                                           searchDataFile("base.colors"));
 	if(!material_loaded) {
 		cerr << "couldn't load mesh material informations" << endl;
 		return 1;
 	}
-	
+
 	g_mesh.loadTextureVector(searchDataFile("base.uv"));
 
 	// load face groups with factory function

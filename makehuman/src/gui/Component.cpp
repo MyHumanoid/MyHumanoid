@@ -67,7 +67,9 @@ Component::Component(uint32_t inId, const Rect & inGeometry)
 /** dtor.
  */
 /* ========================================================================== */
-Component::~Component() {}
+Component::~Component()
+{
+}
 
 void Component::setPosition(const Point & inPos)
 {
@@ -95,13 +97,17 @@ void Component::setRect(const Rect & inRect)
 /**
  */
 /* ========================================================================== */
-void Component::show() {}
+void Component::show()
+{
+}
 
 /* ========================================================================== */
 /**
  */
 /* ========================================================================== */
-void Component::hide() {}
+void Component::hide()
+{
+}
 
 void Component::setZeroPoint(const Point & inZero)
 {

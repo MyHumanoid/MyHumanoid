@@ -45,7 +45,9 @@ SelectorSysListener::SelectorSysListener()
 {
 }
 
-SelectorSysListener::~SelectorSysListener() {}
+SelectorSysListener::~SelectorSysListener()
+{
+}
 
 bool SelectorSysListener::mouseOver(const Point & inMousePos, Component * source)
 {
@@ -104,5 +106,8 @@ bool SelectorSysListener::mouseReleased(const Point & inMousePos, int button, Co
 	return false;
 }
 
-bool SelectorSysListener::keyType(unsigned char key, Component * source) { return false; }
+bool SelectorSysListener::keyType(unsigned char key, Component * source)
+{
+	return false;
+}
 } // namespace mhgui

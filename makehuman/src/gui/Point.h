@@ -81,7 +81,9 @@ inline Point::Point(const Point & inPoint)
 {
 }
 
-inline Point::~Point() {}
+inline Point::~Point()
+{
+}
 
 inline bool Point::operator==(const Point & inPoint) const
 {

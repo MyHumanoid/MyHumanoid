@@ -294,29 +294,23 @@ public:
 	const BodySettings & morphTargets() const { return m_morphTargets; }
 
 	const BodySettings & poseTargets() const { return m_poseTargets; }
-	
-	const TextureVector & textureVector() const {
-		return m_texture_vector;
-	}
-	
+
+	const TextureVector & textureVector() const { return m_texture_vector; }
+
 	// TODO make const
-	FaceGroup & facegroup() {
-		return m_facegroup;
-	}
-	
-	void facegroupCalcVertexes() {
-		m_facegroup.calcVertexes(faces());
-	}
-	
+	FaceGroup & facegroup() { return m_facegroup; }
+
+	void facegroupCalcVertexes() { m_facegroup.calcVertexes(faces()); }
+
 	/** @name Loading
 	 */
 	//@{
 	bool loadMesh(const string & mesh_filename, const string & faces_filename);
 
 	bool loadMaterial(const string & material_filename, const string & face_colors_filename);
-	
+
 	bool loadTextureVector(const string & filename);
-	
+
 	/// Load all (pose) Targets recursively from a directory.
 	/*!
 	 * \param target_root_path the root path with targets to load

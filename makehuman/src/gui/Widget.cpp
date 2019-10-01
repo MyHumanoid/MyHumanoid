@@ -58,9 +58,13 @@ void Widget::setTooltip(const Tooltip & inTooltip)
 	tooltip = new Tooltip(inTooltip);
 }
 
-void Widget::draw() {}
+void Widget::draw()
+{
+}
 
-void Widget::drawOverlay() {}
+void Widget::drawOverlay()
+{
+}
 
 void Widget::draw_wrapper()
 {
@@ -70,8 +74,14 @@ void Widget::draw_wrapper()
 	draw();
 }
 
-void Widget::show() { setVisible(true); }
+void Widget::show()
+{
+	setVisible(true);
+}
 
-void Widget::hide() { setVisible(false); }
+void Widget::hide()
+{
+	setVisible(false);
+}
 
 } // namespace mhgui

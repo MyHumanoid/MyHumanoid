@@ -45,7 +45,9 @@ ImageSysListener::ImageSysListener()
 {
 }
 
-ImageSysListener::~ImageSysListener() {}
+ImageSysListener::~ImageSysListener()
+{
+}
 
 bool ImageSysListener::mouseOver(const Point & inMousePos, Component * source)
 {
@@ -61,7 +63,10 @@ bool ImageSysListener::mouseOut(const Point & inMousePos, Component * source)
 	return false;
 }
 
-bool ImageSysListener::mouseDragged(const Point & inMousePos, Component * source) { return false; }
+bool ImageSysListener::mouseDragged(const Point & inMousePos, Component * source)
+{
+	return false;
+}
 
 bool ImageSysListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
 {
@@ -90,5 +95,8 @@ bool ImageSysListener::mouseReleased(const Point & inMousePos, int button, Compo
 	return false;
 }
 
-bool ImageSysListener::keyType(unsigned char key, Component * source) { return false; }
+bool ImageSysListener::keyType(unsigned char key, Component * source)
+{
+	return false;
+}
 } // namespace mhgui

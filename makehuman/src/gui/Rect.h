@@ -113,7 +113,9 @@ inline Rect::Rect(const Rect & inRect)
 {
 }
 
-inline Rect::~Rect() {}
+inline Rect::~Rect()
+{
+}
 
 inline Rect & Rect::operator=(const Rect & inPoint)
 {
@@ -130,13 +132,25 @@ inline bool Rect::operator==(const Rect & inRect) const
 	return (pos == inRect.pos && size == inRect.size);
 }
 
-inline void Rect::moveTo(const Point & inPos) { pos = inPos; }
+inline void Rect::moveTo(const Point & inPos)
+{
+	pos = inPos;
+}
 
-inline void Rect::moveBy(const Point & inDeltaPos) { pos.moveBy(inDeltaPos); }
+inline void Rect::moveBy(const Point & inDeltaPos)
+{
+	pos.moveBy(inDeltaPos);
+}
 
-inline void Rect::resizeTo(const Size & inSize) { size = inSize; }
+inline void Rect::resizeTo(const Size & inSize)
+{
+	size = inSize;
+}
 
-inline void Rect::resizeBy(const Size & inDeltaSize) { size.resizeBy(inDeltaSize); }
+inline void Rect::resizeBy(const Size & inDeltaSize)
+{
+	size.resizeBy(inDeltaSize);
+}
 
 inline void Rect::inset(int32_t inInsetX, int32_t inInsetY)
 {

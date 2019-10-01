@@ -42,10 +42,16 @@ namespace Animorph
 float wrapPi(float theta);
 
 /// convert angle from radians to degree
-inline double rad2deg(double x) { return x * 180.0 / M_PI; }
+inline double rad2deg(double x)
+{
+	return x * 180.0 / M_PI;
+}
 
 /// convert angle from degree to radians
-inline double deg2rad(double x) { return x * M_PI / 180.0; }
+inline double deg2rad(double x)
+{
+	return x * M_PI / 180.0;
+}
 
 /***********************
  * some math templates *

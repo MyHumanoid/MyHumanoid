@@ -210,7 +210,10 @@ bool TextureCharacteristics::initData(const buffer_color_rgb_t * inDataBuffer, s
 /**
  */
 /* ========================================================================== */
-TextureCharacteristics::~TextureCharacteristics() { ::glDeleteTextures(1, &mTextureId); }
+TextureCharacteristics::~TextureCharacteristics()
+{
+	::glDeleteTextures(1, &mTextureId);
+}
 
 /** Determine the 2^n fragments of a given integer and return them.
  */
@@ -267,13 +270,19 @@ Texture::Texture()
 /**
  */
 /* ========================================================================== */
-Texture::~Texture() { releaseAll(); }
+Texture::~Texture()
+{
+	releaseAll();
+}
 
 /* ========================================================================== */
 /**
  */
 /* ========================================================================== */
-bool Texture::load(const std::string & inFilename) { return buildTiledImageBuffers(inFilename); }
+bool Texture::load(const std::string & inFilename)
+{
+	return buildTiledImageBuffers(inFilename);
+}
 
 /* ========================================================================== */
 /**

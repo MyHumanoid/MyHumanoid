@@ -137,11 +137,20 @@ const string searchDir(const StringVector & name_vector)
 	return string();
 }
 
-const string getUserWorkDir() { return "./userdata"; }
+const string getUserWorkDir()
+{
+	return "./userdata";
+}
 
-const string getMyPosesBasePath() { return string(getUserWorkDir() + "makehuman/myposes/"); }
+const string getMyPosesBasePath()
+{
+	return string(getUserWorkDir() + "makehuman/myposes/");
+}
 
-const string getMyBodysettingsBasePath() { return string(getUserWorkDir() + "makehuman/mybs/"); }
+const string getMyBodysettingsBasePath()
+{
+	return string(getUserWorkDir() + "makehuman/mybs/");
+}
 
 bool GetSymmVertexConfig(int * symm_vertex)
 {
@@ -163,7 +172,10 @@ bool GetSymmVertexConfig(int * symm_vertex)
 	file_reader.close();
 	return true;
 }
-int getSymmJoint(int joint) { return g_mesh.getSymmetricJoint((SKELETON_JOINT)joint); }
+int getSymmJoint(int joint)
+{
+	return g_mesh.getSymmetricJoint((SKELETON_JOINT)joint);
+}
 
 void CreateWeightsFile()
 {
