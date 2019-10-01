@@ -114,6 +114,8 @@ set(render_sources
 set(log_sources
 	src/log/log.h
 	src/log/log.cpp
+	src/log/Profiler.h
+	src/log/Profiler.cpp
 )
 
 set(makehuman_sources

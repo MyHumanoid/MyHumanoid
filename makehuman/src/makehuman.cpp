@@ -68,6 +68,7 @@
 #include <gui/Window.h>
 
 #include "log/log.h"
+#include "log/Profiler.h"
 
 #include "render/RenderUtils.h"
 #include "render/Shader.h"
@@ -630,6 +631,14 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Help")) {
+#if PROFILER_ENABLED
+			if(ImGui::MenuItem("Print Profiler Data")) {
+				ProfilerPrint();
+			}
+			if(ImGui::MenuItem("Clear Profiler Data")) {
+				ProfilerClear();
+			}
+#endif
 			ImGui::Checkbox("Performance", &g_displayWin.performance);
 			ImGui::Separator();
 			if(ImGui::MenuItem("About ...")) {

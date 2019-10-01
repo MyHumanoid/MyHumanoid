@@ -4,6 +4,8 @@
 
 #include <assert.h>
 
+#include "log/Profiler.h"
+
 const SKELETON_JOINT subjoint[][MAX_NUMBER_SUBJOINT] = {
         /*SK_JOINT_0*/ {SK_JOINT_1, SK_JOINT_8, SK_JOINT_9, SK_NONE, SK_NONE, SK_NONE},
         /*SK_JOINT_1*/
@@ -503,11 +505,7 @@ const Target * Mesh::getTargetForName(const string & inTargetname)
 
 bool Mesh::doMorph(const string & target_name, float morph_value)
 {
-#ifdef DEBUG
-	StopClock sc;
-	float     elapsed_time;
-	sc.resetClock();
-#endif // DEBUG
+	PROFILE
 
 	// return if target doesn't exist
 	if(!m_targets.count(target_name)) {
@@ -544,21 +542,12 @@ bool Mesh::doMorph(const string & target_name, float morph_value)
 		m_morphTargets[target_name] = morph_value;
 	}
 
-#ifdef DEBUG
-	elapsed_time = sc.getElapsedTime(StopClock::TIME_UNIT_SECONDS);
-	printf("morph time: %f\n", elapsed_time);
-#endif // DEBUG
-
 	return true;
 }
 
 void Mesh::doMorph(const BodySettings & bs, bool clear)
 {
-#ifdef DEBUG
-	StopClock sc;
-	float     elapsed_time;
-	sc.resetClock();
-#endif // DEBUG
+	PROFILE
 
 	if(clear) {
 		m_morphTargets.clear();
@@ -569,11 +558,6 @@ void Mesh::doMorph(const BodySettings & bs, bool clear)
 	for(const auto & [target_name, morph_value] : bs) {
 		doMorph(target_name, morph_value);
 	}
-
-#ifdef DEBUG
-	elapsed_time = sc.getElapsedTime(StopClock::TIME_UNIT_SECONDS);
-	printf("bodyset morph time: %f\n", elapsed_time);
-#endif // DEBUG
 }
 
 void Mesh::doMorph(const BodySettings & bs, float value, bool clear)
@@ -849,12 +833,8 @@ void Mesh::prepareSkeleton()
 
 void Mesh::doPose(const BodySettings & bs, bool clear)
 {
-#ifdef DEBUG
-	StopClock sc;
-	float     elapsed_time;
-	sc.resetClock();
-#endif // DEBUG
-       //  bool pose = false;
+	PROFILE
+	//  bool pose = false;
 
 	if(clear) {
 		m_poseTargets.clear();
@@ -876,11 +856,6 @@ void Mesh::doPose(const BodySettings & bs, bool clear)
 	}
 
 	applySmooth(2);
-
-#ifdef DEBUG
-	elapsed_time = sc.getElapsedTime(StopClock::TIME_UNIT_SECONDS);
-	printf("bodyset morph time: %f\n", elapsed_time);
-#endif // DEBUG
 }
 
 void Mesh::doPose(const BodySettings & bs, const float value, bool clear)

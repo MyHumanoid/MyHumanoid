@@ -1,8 +1,5 @@
 #include "animorph/PoseTranslation.h"
 #include <cstdio>
-#ifdef DEBUG
-#include <StopClock/StopClock.h>
-#endif
 
 #define FF_VERTEX_N 10
 

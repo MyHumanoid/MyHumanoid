@@ -1,8 +1,5 @@
 #include "animorph/PoseSemiTarget.h"
 #include <cstdio>
-#ifdef DEBUG
-#include <StopClock/StopClock.h>
-#endif
 
 using namespace std;
 using namespace Animorph;
