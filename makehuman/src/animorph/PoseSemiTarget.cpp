@@ -1,5 +1,6 @@
 #include "animorph/PoseSemiTarget.h"
-#include <cstdio>
+
+#include "log/log.h"
 
 using namespace std;
 using namespace Animorph;
@@ -69,8 +70,7 @@ bool PoseSemiTarget::load(const std::string & filename)
 			break;
 
 		if((ret != 2) && (ret != 0)) {
-			std::cerr << "Illegal line while reading target '" << filename << "'!"
-			          << std::endl;
+			log_error("Illegal line while reading target '{}'!", filename);
 			clear();
 			rc = false; // mark the error
 			break;

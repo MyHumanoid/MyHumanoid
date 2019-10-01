@@ -1,9 +1,10 @@
 #include "animorph/Mesh.h"
 
-#include <glm/glm.hpp>
-
 #include <assert.h>
 
+#include <glm/glm.hpp>
+
+#include "log/log.h"
 #include "log/Profiler.h"
 
 const SKELETON_JOINT subjoint[][MAX_NUMBER_SUBJOINT] = {
@@ -614,8 +615,7 @@ bool Mesh::setPose(const std::string & target_name, float morph_value, bool remo
 {
 	// return if target doesn't exist
 	if(!m_posemap.count(target_name)) {
-		cerr << "a target with name \"" << target_name << "\" wasn't found in posemap"
-		     << endl;
+		log_error("a target with name '{}' wasn't found in posemap", target_name);
 		return false;
 	}
 

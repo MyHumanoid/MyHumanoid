@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "log/log.h"
+
 using namespace std;
 using namespace Animorph;
 
@@ -34,7 +36,7 @@ void VertexVector::fromStream(std::ifstream & in_stream)
 
 			push_back(vertex);
 		} else {
-			cerr << "illegal line in vertex data file:" << endl << buffer << endl;
+			log_error("illegal line in vertex data file: {}", buffer);
 		}
 	}
 }

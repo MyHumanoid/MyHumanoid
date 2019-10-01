@@ -1,6 +1,8 @@
 #include "animorph/VertexGroup.h"
 #include "animorph/util.h"
 
+#include "log/log.h"
+
 using namespace std;
 using namespace Animorph;
 
@@ -41,8 +43,7 @@ void VertexGroup::fromStream(std::ifstream & in_stream)
 					vgd[vertex_number] = weight;
 				}
 			} else {
-				cerr << "illegal VertexGroup format line:" << endl
-				     << buffer << endl;
+				log_error("illegal VertexGroup format line: {}", buffer);
 			}
 		}
 	}

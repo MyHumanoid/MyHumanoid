@@ -67,7 +67,6 @@ template <typename T> void delete_array(T * t)
 	t = NULL;
 }
 
-/// print Vector on std::cout
 template <typename T> void printVector(std::vector<T> iv)
 {
 	std::cout << "[";

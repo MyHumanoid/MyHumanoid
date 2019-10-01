@@ -1,65 +1,58 @@
 #include "render/DebugGl.h"
 
-#include <iostream>
-
 #include "GL/glew.h"
+#include "log/log.h"
 
 using namespace std;
 
 static void openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity,
                                    GLsizei length, const GLchar * message, const void * userParam)
 {
-
-
 	if(type == GL_DEBUG_TYPE_OTHER) {
 		return;
 	}
 
-	cout << "---------------------opengl-callback-start------------" << endl;
-	cout << "message: " << message << endl;
-	cout << "type: ";
+	const char * typeStr;
 	switch(type) {
 	case GL_DEBUG_TYPE_ERROR:
-		cout << "ERROR";
+		typeStr = "ERROR";
 		break;
 	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-		cout << "DEPRECATED_BEHAVIOR";
+		typeStr = "DEPRECATED_BEHAVIOR";
 		break;
 	case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-		cout << "UNDEFINED_BEHAVIOR";
+		typeStr = "UNDEFINED_BEHAVIOR";
 		break;
 	case GL_DEBUG_TYPE_PORTABILITY:
-		cout << "PORTABILITY";
+		typeStr = "PORTABILITY";
 		break;
 	case GL_DEBUG_TYPE_PERFORMANCE:
-		cout << "PERFORMANCE";
+		typeStr = "PERFORMANCE";
 		break;
 	case GL_DEBUG_TYPE_OTHER:
-		cout << "OTHER";
+		typeStr = "OTHER";
 		break;
 	}
-	cout << endl;
-
-	cout << "id: " << id << endl;
-	cout << "severity: ";
+	
+	const char * severityStr;
 	switch(severity) {
 	case GL_DEBUG_SEVERITY_LOW:
-		cout << "LOW";
+		severityStr = "LOW   ";
 		break;
 	case GL_DEBUG_SEVERITY_MEDIUM:
-		cout << "MEDIUM";
+		severityStr = "MEDIUM";
 		break;
 	case GL_DEBUG_SEVERITY_HIGH:
-		cout << "HIGH";
+		severityStr = "HIGH  ";
 		break;
 	}
-	cout << endl;
-	cout << "---------------------opengl-callback-end--------------" << endl;
+	
+	log_error("OpenGl:id{} {}: {} {}", id, severityStr, typeStr, message);
 }
 
 void initDebugGl()
 {
-	cout << "Register OpenGL debug callback " << endl;
+	log_info("Register OpenGL debug callback");
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(openglCallbackFunction, nullptr);
 	GLuint unusedIds = 0;

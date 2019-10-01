@@ -1,5 +1,7 @@
 #include "animorph/ObjExporter.h"
 
+#include "log/log.h"
+
 using namespace std;
 using namespace Animorph;
 
@@ -56,8 +58,8 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 				}
 			}
 		} else {
-			cerr << "Couldn't export texture coordinates! " << facevector.size()
-			     << " != " << texturevector.size() << endl;
+			log_error("Couldn't export texture coordinates! {} != {}",
+			          facevector.size(), texturevector.size());
 		}
 	}
 
@@ -159,8 +161,8 @@ void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string &
 			}
 		}
 	} else {
-		cerr << "Couldn't export texture coordinates! " << facevector.size()
-		     << " != " << texturevector.size() << endl;
+		log_error("Couldn't export texture coordinates! {} != {}",
+		          facevector.size(), texturevector.size());
 	}
 
 	// write faces

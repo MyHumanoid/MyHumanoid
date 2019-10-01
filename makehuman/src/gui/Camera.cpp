@@ -29,6 +29,8 @@
 #include "gui/CGUtilities.h"
 #include <iostream>
 
+#include "log/log.h"
+
 #define MAX_LINE 3500
 
 using namespace Animorph;
@@ -327,8 +329,8 @@ void Autozoom::fromStream(std::ifstream & in_stream, const std::string & filenam
 
 		(*this)[filename] = data;
 	} else {
-		std::cout << "illegal data format:" << std::endl << buffer << std::endl;
-	};
+		log_error("illegal data format: {}", buffer);
+	}
 }
 
 bool Autozoom::lazyLoadData(const std::string & filename)

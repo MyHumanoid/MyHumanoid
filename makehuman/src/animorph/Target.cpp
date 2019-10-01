@@ -1,5 +1,6 @@
 #include "animorph/Target.h"
-#include <cstdio>
+
+#include "log/log.h"
 
 using namespace std;
 using namespace Animorph;
@@ -43,8 +44,8 @@ bool Target::load(const std::string & filename)
 			break;
 
 		if((ret != 4) && (ret != 0)) {
-
-			cerr << "Illegal line while reading target '" << filename << "'!" << endl;
+			
+			log_error("Illegal line while reading target '{}'!", filename);
 			clear();
 			rc = false; // mark the error
 			break;

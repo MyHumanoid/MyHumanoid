@@ -63,8 +63,7 @@ std::vector<std::string> filesInDirRecursive(const fs::path & directoryPath)
 		std::error_code ec;
 		it.increment(ec);
 		if(ec) {
-			std::cerr << "Error While Accessing : " << path.string()
-			          << " :: " << ec.message() << '\n';
+			log_error("Error While Accessing : {} -> {}", path.string(), ec.message());
 		}
 	}
 	return files;
@@ -85,10 +84,10 @@ void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
 			fs::path foobar = foo;
 			foobar.replace_extension();
 
-			log_info("Loaded {} as {}", std::string(file), std::string(foobar));
+			log_debug("Loaded {} as {}", std::string(file), std::string(foobar));
 			target.insert(IconMap::value_type(foobar, ret.value()));
 		} else {
-			std::cout << fmt::format("Failed to load file {}\n", file) << std::endl;
+			log_error("Failed to load file {}", file);
 		}
 	}
 }

@@ -35,9 +35,6 @@
 #include "Image.h"
 #include <iostream>
 
-using std::cerr;
-using std::endl;
-
 namespace mhgui
 {
 

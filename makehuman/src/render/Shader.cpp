@@ -8,14 +8,15 @@
 
 #include <GL/glew.h>
 
+#include "log/log.h"
+
 std::string readFile(const char * filePath)
 {
 	std::string   content;
 	std::ifstream fileStream(filePath, std::ios::in);
 
 	if(!fileStream.is_open()) {
-		std::cerr << "Could not read file " << filePath << ". File does not exist."
-		          << std::endl;
+		log_error("Could not read file {}. File does not exist.", filePath);
 		return "";
 	}
 
@@ -44,8 +45,7 @@ std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * frag
 	GLint result = GL_FALSE;
 	int   logLength;
 
-	// Compile vertex shader
-	std::cout << "Compiling vertex shader." << std::endl;
+	log_info("Compiling vertex shader");
 	glShaderSource(vertShader, 1, &vertShaderSrc, NULL);
 	glCompileShader(vertShader);
 
@@ -55,11 +55,10 @@ std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * frag
 	if(logLength) {
 		std::vector<char> vertShaderError(logLength);
 		glGetShaderInfoLog(vertShader, logLength, NULL, vertShaderError.data());
-		std::cout << &vertShaderError[0] << std::endl;
+		log_error("{}", vertShaderError[0]);
 	}
 
-	// Compile fragment shader
-	std::cout << "Compiling fragment shader." << std::endl;
+	log_info("Compiling fragment shader");
 	glShaderSource(fragShader, 1, &fragShaderSrc, NULL);
 	glCompileShader(fragShader);
 
@@ -69,10 +68,10 @@ std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * frag
 	if(logLength) {
 		std::vector<char> fragShaderError(logLength);
 		glGetShaderInfoLog(fragShader, logLength, NULL, fragShaderError.data());
-		std::cout << &fragShaderError[0] << std::endl;
+		log_error("{}", fragShaderError[0]);
 	}
-
-	std::cout << "Linking program" << std::endl;
+	
+	log_info("Linking program");
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vertShader);
 	glAttachShader(program, fragShader);
@@ -83,7 +82,7 @@ std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * frag
 	if(logLength) {
 		std::vector<char> programError(logLength);
 		glGetProgramInfoLog(program, logLength, NULL, programError.data());
-		std::cout << &programError[0] << std::endl;
+		log_error("{}", programError[0]);
 	}
 
 	glDeleteShader(vertShader);
