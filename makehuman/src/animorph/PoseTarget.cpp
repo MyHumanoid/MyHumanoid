@@ -1,11 +1,8 @@
 #include "animorph/PoseTarget.h"
 
 #include <cstdio>
-#ifdef DEBUG
-#include <StopClock/StopClock.h>
-#endif
 
-using namespace std;
+using std::string;
 using namespace Animorph;
 
 namespace Animorph
@@ -25,10 +22,8 @@ bool PoseTarget::load()
 
 	const StringList & str_list(dir_list.getDirectoryList());
 
-	for(StringList::const_iterator sl_it = str_list.begin(); sl_it != str_list.end(); sl_it++) {
-		const string & file(*sl_it);
+	for(const string & file : str_list) {
 		string         target_name(file);
-
 		target_name.erase(0, fullPath.length() + 1);
 
 		if(target_name.find(negative_rotation_type) ==
@@ -104,15 +99,14 @@ bool PoseTarget::load()
 			}
 		}
 	}
-	return true; // TODO:verify if considering exceptions is required.
+	return true;
 }
 
 void PoseTarget::calcTranslationsFormFactors(const VertexVector &    vertexvector,
                                              PoseTranslationVector & translations)
 {
-	for(list<PoseTranslation>::iterator translations_it = translations.begin();
-	    translations_it != translations.end(); translations_it++) {
-		(*translations_it).calcFormFactor(vertexvector);
+	for(PoseTranslation & t: translations) {
+		t.calcFormFactor(vertexvector);
 	}
 }
 
@@ -130,13 +124,8 @@ void PoseTarget::calcTranslationsFormFactors(const VertexVector & vertexvector)
 void PoseTarget::calcRotationsCenteroids(const VertexVector & vertexvector,
                                          PoseRotationVector & rotations)
 {
-	for(list<PoseRotation>::iterator rotations_it = rotations.begin();
-	    rotations_it != rotations.end(); rotations_it++) {
-		// cout << calcCenteroid((*rotations_it).getCenterVertexNumbers(),
-		// vertexvector) << endl;
-		(*rotations_it)
-		        .setCenter(calcCenteroid((*rotations_it).getCenterVertexNumbers(),
-		                                 vertexvector));
+	for(PoseRotation & r : rotations) {
+		r.setCenter(calcCenteroid(r.getCenterVertexNumbers(), vertexvector));
 	}
 }
 
@@ -145,24 +134,18 @@ const glm::vec3 PoseTarget::getFirstRotationCenteroid()
 	glm::vec3 res(0.f, 0.f, 0.f);
 
 	if(positive) {
-		for(list<PoseRotation>::iterator rotations_it = positiveRotations.begin();
-		    rotations_it != positiveRotations.end(); rotations_it++) {
-			// cout << calcCenteroid((*rotations_it).getCenterVertexNumbers(),
-			// vertexvector) << endl;
-			if((*rotations_it).getLimb() == false)
+		for(const PoseRotation & r: positiveRotations) {
+			if(r.getLimb() == false)
 				continue;
-			return res = (*rotations_it).getCenter();
+			return res = r.getCenter();
 		}
 	}
 
 	if(negative) {
-		for(list<PoseRotation>::iterator rotations_it = negativeRotations.begin();
-		    rotations_it != negativeRotations.end(); rotations_it++) {
-			// cout << calcCenteroid((*rotations_it).getCenterVertexNumbers(),
-			// vertexvector) << endl;
-			if((*rotations_it).getLimb() == false)
+		for(const PoseRotation & r: negativeRotations) {
+			if(r.getLimb() == false)
 				continue;
-			return res = (*rotations_it).getCenter();
+			return res = r.getCenter();
 		}
 	}
 	return res;

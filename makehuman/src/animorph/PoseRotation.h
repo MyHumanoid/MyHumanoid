@@ -145,7 +145,7 @@ public:
 	void           setCat(string inCat) { cat = inCat; }
 
 	void setLimb(bool limb) { mbLimb = limb; }
-	bool getLimb() { return mbLimb; }
+	bool getLimb() const { return mbLimb; }
 };
 
 } // namespace Animorph
