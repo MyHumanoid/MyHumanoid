@@ -272,7 +272,7 @@ private:
 	 * morph_value, const UsedVertex& modVertex).
 	 *
 	 */
-	void doPoseTranslation(PoseTranslation & pt, float morph_value,
+	void doPoseTranslation(const PoseTranslation & pt, float morph_value,
 	                       const UsedVertex & modVertex);
 
 public:

@@ -110,11 +110,11 @@ public:
 	/// The distance between startVertexNumbers and endVertexNumbers, divided by
 	/// originalSize
 	void        calcFormFactor(const VertexVector & vertexvector);
-	Target &    getTarget() { return *target; }
-	glm::vec3 & getFormFactor() { return formFactor; }
-	const float getMinAngle() const { return minAngle; }
-	const float getMaxAngle() const { return maxAngle; }
-	const bool  getNormalize() const { return normalize; }
+	Target &    getTarget() const { return *target; }
+	glm::vec3   getFormFactor() const { return formFactor; }
+	float getMinAngle() const { return minAngle; }
+	float getMaxAngle() const { return maxAngle; }
+	bool  getNormalize() const { return normalize; }
 	void        setNormalize(bool inNormalize) { normalize = inNormalize; }
 	// const string &getFilename() const {return inFilename;}
 	const string & getCat() const { return cat; }
