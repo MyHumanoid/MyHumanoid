@@ -313,13 +313,13 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	glewInit();
 
 	{
-		logger("GLEW Version: {}.{}.{}", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR,
+		log_info("GLEW Version: {}.{}.{}", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR,
 		       GLEW_VERSION_MICRO);
 
 		glewExperimental = true;
 		GLenum err       = glewInit();
 		if(err != GLEW_OK) {
-			logger_err("GLEW error: {}", glewGetErrorString(err));
+			log_error("GLEW error: {}", glewGetErrorString(err));
 		}
 	}
 

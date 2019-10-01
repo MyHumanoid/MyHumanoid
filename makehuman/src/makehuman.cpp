@@ -144,9 +144,9 @@ static void saveBodySettings(const string & filename)
 	}
 
 	if(state) {
-		logger("BodySettings saved");
+		log_info("BodySettings saved");
 	} else {
-		logger_err("Error: couldn't save file.");
+		log_error("Error: couldn't save file.");
 	}
 }
 
@@ -174,9 +174,9 @@ static void loadBodySettings(const string & filename)
 	if(state) {
 		g_mesh.doMorph(bodyset);
 		g_mesh.calcNormals();
-		logger("BodySettings loaded");
+		log_info("BodySettings loaded");
 	} else {
-		logger("BodySettings load failed");
+		log_info("BodySettings load failed");
 	}
 }
 
@@ -189,9 +189,9 @@ static void savePoses(const string & filename)
 	bool state = poses.save(filename);
 
 	if(state) {
-		logger("Poses saved");
+		log_info("Poses saved");
 	} else {
-		logger_err("Save pose failed");
+		log_error("Save pose failed");
 	}
 }
 
@@ -202,9 +202,9 @@ static void loadPoses(const string & filename)
 
 	if(state) {
 		g_mesh.doPose(poses);
-		logger("Poses loaded");
+		log_info("Poses loaded");
 	} else {
-		logger_err("Poses load failed");
+		log_error("Poses load failed");
 	}
 }
 
@@ -222,9 +222,9 @@ static void exportBodySettings(string & directory, bool full)
 	bool state = obj_export.exportFile(directory, full);
 
 	if(state) {
-		logger("OBJ exported");
+		log_info("OBJ exported");
 	} else {
-		logger_err("OBJ export failed");
+		log_error("OBJ export failed");
 	}
 }
 
@@ -241,9 +241,9 @@ static void exportCollada(string & filename)
 	bool state = collada_export.exportFile(filename);
 
 	if(state) {
-		logger("Collada exported");
+		log_info("Collada exported");
 	} else {
-		logger_err("Collada export failed");
+		log_error("Collada export failed");
 	}
 }
 
@@ -252,9 +252,9 @@ static void saveAutozoom(const string & filename)
 	bool state = g_global.autozoom->save(filename, *g_global.camera);
 
 	if(state) {
-		logger("Autozoom saved");
+		log_info("Autozoom saved");
 	} else {
-		logger_err("Autozoom save failed");
+		log_error("Autozoom save failed");
 	}
 }
 
@@ -395,7 +395,7 @@ void DisplayLibraryPoses()
 						// false);
 						g_mesh.calcNormals();
 					} else {
-						logger("Character {} not found", character_name);
+						log_info("Character {} not found", character_name);
 					}
 				}
 			}
@@ -735,7 +735,7 @@ static void display()
 	if(g_requestShaderReload) {
 		g_requestShaderReload = false;
 
-		logger("Loading Shader set {}", g_requestShaderVersion);
+		log_info("Loading Shader set {}", g_requestShaderVersion);
 
 		std::optional<mh::Shader> shader;
 		if(g_requestShaderVersion == 1) {
@@ -751,7 +751,7 @@ static void display()
 	}
 	if(g_requestBackgroundShaderReload) {
 		g_requestBackgroundShaderReload = false;
-		logger("Loading Background Shader");
+		log_info("Loading Background Shader");
 
 		auto shader = LoadShader("shader/background.vert", "shader/background.frag");
 

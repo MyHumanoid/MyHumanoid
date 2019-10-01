@@ -85,7 +85,7 @@ void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
 			fs::path foobar = foo;
 			foobar.replace_extension();
 
-			logger("Loaded {} as {}", std::string(file), std::string(foobar));
+			log_info("Loaded {} as {}", std::string(file), std::string(foobar));
 			target.insert(IconMap::value_type(foobar, ret.value()));
 		} else {
 			std::cout << fmt::format("Failed to load file {}\n", file) << std::endl;
