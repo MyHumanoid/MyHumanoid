@@ -37,7 +37,6 @@
 #include "MathUtil.h"
 #include "Matrix.h"
 #include "PoseTarget.h"
-#include "Skin.h"
 #include "SmoothVertex.h"
 #include "Target.h"
 #include "TextureVector.h"
@@ -184,7 +183,6 @@ class Mesh
 	BodySettings      m_poseTargets; ///< Currently active PoseTargets
 	PoseMap           m_posemap;     ///< Possible pose transformations
 	CharactersMap     m_characters;  //!< container for all characters
-	Skin              m_skin;
 	SmoothVertex      m_smoothvertex;
 	vector<glm::vec3> m_jointvector;
 	TextureVector     m_texture_vector;
@@ -226,8 +224,6 @@ private:
 	void initPoses();
 
 	void applySmooth(const int recursive_level = 1);
-
-	void applySkin();
 
 	void prepareSkeleton();
 
@@ -350,7 +346,6 @@ public:
 	void loadCharacters(const string & characters_root_path, int recursive_level = 1);
 
 	bool loadGroups(const string & groups_filename);
-	bool loadSkin(const string & filename);
 	bool loadSmoothVertex(const string & filename);
 
 	//@}

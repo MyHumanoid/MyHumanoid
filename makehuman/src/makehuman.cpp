@@ -1011,12 +1011,6 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	bool skin_loaded = g_mesh.loadSkin(searchDataFile("base.skin"));
-	if(!skin_loaded) {
-		cerr << "couldn't load skin info" << endl;
-		return 1;
-	}
-
 	bool smooth_loaded = g_mesh.loadSmoothVertex(searchDataFile("base.smooth"));
 	if(!smooth_loaded) {
 		cerr << "couldn't load smooth info" << endl;

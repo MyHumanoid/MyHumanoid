@@ -138,7 +138,4 @@ int replaceString(const std::string & match, const std::string & replace, std::s
  */
 glm::vec3 calcCenteroid(const std::vector<int> & vertexNumbers, const VertexVector & vertexvector);
 
-glm::vec3 calcAverageNormalLength(const std::vector<int> vertexNumbers,
-                                  const VertexVector &   vertexvector);
-
 } // namespace Animorph

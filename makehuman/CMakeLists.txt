@@ -15,8 +15,6 @@ set(animorph_sources
 	src/animorph/ObjExporter.cpp
 	src/animorph/PoseSemiTarget.h
 	src/animorph/PoseSemiTarget.cpp
-	src/animorph/Skin.h
-	src/animorph/Skin.cpp
 	src/animorph/Target.h
 	src/animorph/Target.cpp
 	src/animorph/Vertex.h
@@ -35,8 +33,6 @@ set(animorph_sources
 	src/animorph/PoseTarget.cpp
 	src/animorph/RawMesh.h
 	src/animorph/RawMesh.cpp
-	src/animorph/SkinVertex.h
-	src/animorph/SkinVertex.cpp
 	src/animorph/TextureVector.h
 	src/animorph/TextureVector.cpp
 	src/animorph/VertexGroup.h

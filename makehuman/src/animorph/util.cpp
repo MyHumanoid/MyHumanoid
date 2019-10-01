@@ -127,23 +127,3 @@ glm::vec3 Animorph::calcCenteroid(const vector<int> &  vertexNumbers,
 
 	return center;
 }
-
-glm::vec3 Animorph::calcAverageNormalLength(const vector<int>    vertexNumbers,
-                                            const VertexVector & vertexvector)
-{
-	glm::vec3 averageNormal = glm::vec3(0);
-
-	for(vector<int>::const_iterator v_it = vertexNumbers.begin(); v_it != vertexNumbers.end();
-	    v_it++) {
-		int vn = *v_it;
-
-		const Vertex & vertex(vertexvector[vn]);
-		averageNormal += vertex.no;
-	}
-
-	if(vertexNumbers.size()) {
-		averageNormal /= vertexNumbers.size();
-	}
-
-	return averageNormal;
-}

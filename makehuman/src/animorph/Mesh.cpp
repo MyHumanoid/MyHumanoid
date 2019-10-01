@@ -346,8 +346,6 @@ void Mesh::calcNormals()
 
 bool Mesh::loadGroups(const string & groups_filename) { return m_facegroup.load(groups_filename); }
 
-bool Mesh::loadSkin(const string & filename) { return m_skin.load(filename); }
-
 bool Mesh::loadSmoothVertex(const string & filename) { return m_smoothvertex.load(filename); }
 
 bool Mesh::loadMesh(const string & mesh_filename, const string & faces_filename)
@@ -588,13 +586,6 @@ void Mesh::initPoses()
 		poseTarget->calcTranslationsFormFactors(m_vert_morph_copy);
 		poseTarget->calcNormalizations();
 	}
-
-	for(SkinVertex & skinVertex : m_skin) {
-		glm::vec3 centeroid(calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
-
-		glm::vec3 oriDist = m_vert_morph[skinVertex.getSkinVertex()].co - centeroid;
-		skinVertex.setOriginalDist(glm::length(oriDist));
-	}
 }
 
 void Mesh::poseMode()
@@ -644,7 +635,6 @@ bool Mesh::setPose(const std::string & target_name, float morph_value, bool remo
 		doPose(target_name, morph_value, poseTarget->getModVertex());
 	}
 
-	applySkin();
 	applySmooth(2);
 
 	return true;
@@ -792,22 +782,6 @@ void Mesh::applySmooth(const int recursive_level)
 	}
 }
 
-void Mesh::applySkin()
-{
-	for(SkinVertex & skinVertex : m_skin) {
-
-		glm::vec3 centeroid(calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
-
-		glm::vec3 normal(
-		        calcAverageNormalLength(skinVertex.getLinkedMuscles(), m_vert_morph));
-
-		float r = skinVertex.getOriginalDist() /
-		          glm::length(normal); // normal.getMagnitude();
-		glm::vec3 delta                             = normal * r;
-		m_vert_morph[skinVertex.getSkinVertex()].co = centeroid + delta;
-	}
-}
-
 bool Mesh::IsADummyJoint(SKELETON_JOINT joint, glm::vec3 & v3)
 {
 	for(int i = 0; i < DUMMY_JOINTS; i++) {
@@ -887,7 +861,6 @@ void Mesh::doPose(const BodySettings & bs, bool clear)
 		doPose(target_name, morph_value, modVertex);
 	}
 
-	applySkin();
 	applySmooth(2);
 
 #ifdef DEBUG

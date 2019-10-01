@@ -47,19 +47,11 @@ namespace Animorph
  */
 class Material
 {
-private:
 	Color  rgbCol;
 	Color  edgeCol;
 	string name;
 
 public:
-	Material()
-	        : rgbCol()
-	        , edgeCol()
-	        , name()
-	{
-	}
-	~Material() {}
 	/*!
 	 * \return rgbCol the RGB Color values from this Material
 	 */
