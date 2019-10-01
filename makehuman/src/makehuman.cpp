@@ -1364,10 +1364,10 @@ void renderMesh()
 
 					::glNormal3fv(glm::value_ptr(vertex.no));
 					::glTexCoord2f(uv.x, uv.y);
-					::glVertex3fv(glm::value_ptr(vertex.co));
+					::glVertex3fv(glm::value_ptr(vertex.pos));
 
 					if(g_global.quotedBox) {
-						calcMinMax(vertex.co);
+						calcMinMax(vertex.pos);
 					}
 				}
 			}

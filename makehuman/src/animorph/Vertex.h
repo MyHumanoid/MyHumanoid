@@ -48,7 +48,7 @@ class Vertex
 {
 public:
 	/// vertex coordinate
-	glm::vec3 co;
+	glm::vec3 pos;
 
 	/// vertex normal
 	glm::vec3 no;
@@ -57,7 +57,7 @@ public:
 	// Color color;
 
 	Vertex()
-	        : co(0.f)
+	        : pos(0.f)
 	        , no(0.f)
 	{
 	}
@@ -69,7 +69,7 @@ public:
 	 * \param z the z component to the vertex coordinate
 	 */
 	Vertex(float x, float y, float z)
-	        : co(x, y, z)
+	        : pos(x, y, z)
 	        , no(0.f)
 	{
 	}

@@ -180,7 +180,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	for(unsigned int i = 0; i < vertexvector.size(); i++) {
 		const Vertex & vertex = vertexvector[i];
 
-		glm::vec3 vector = vertex.co * tm;
+		glm::vec3 vector = vertex.pos * tm;
 
 		vertex_stream << vector.x << " " << vector.y << " " << vector.z << " ";
 	}

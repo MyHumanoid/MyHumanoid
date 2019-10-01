@@ -51,7 +51,7 @@ int VertexVector::setCoordinates(std::vector<glm::vec3> & vertexvector_orginal)
 		Vertex &    vertex_morph   = vertexvector_morph[i];
 		glm::vec3 & vertex_orginal = vertexvector_orginal[i];
 
-		vertex_morph.co = vertex_orginal;
+		vertex_morph.pos = vertex_orginal;
 	}
 
 	return 0;
