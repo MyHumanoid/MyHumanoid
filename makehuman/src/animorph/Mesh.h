@@ -174,36 +174,28 @@ using CharactersMap = map<string, BodySettings>;
 class Mesh
 {
 	FaceVector m_faces;
-	// HotspotMap        hotspotmap;
-	VertexVector vertexvector_morph; //!< container for modified mesh
-	VertexVector vertexvector_morph_copy; //!< copy container for morphed mesh
-	VertexVector vertexvector_morph_only;
-
-	vector<glm::vec3> vertexvector_orginal; //!< container for orginal mesh
-
-	// VertexGroup       vgroup;
+	VertexVector m_vert_morph; //!< container for modified mesh
+	VertexVector m_vert_morph_copy; //!< copy container for morphed mesh
+	VertexVector m_vert_morph_only;
+	vector<glm::vec3> m_vert_orginal; //!< container for orginal mesh
 	BodySettings   m_morphTargets;
 	TargetMap      m_targets;
 	MaterialVector m_materials;
 	BodySettings   m_poseTargets;   ///< Currently active PoseTargets
 	PoseMap        m_posemap; ///< Possible pose transformations
 	CharactersMap  m_characters; //!< container for all characters
-
-	Skin skin;
-
-	SmoothVertex smoothvertex;
-
-	/// Save with each vertex to which faces it belongs
-	void calcSharedVertices();
-
-	vector<glm::vec3> jointvector;
+	Skin m_skin;
+	SmoothVertex m_smoothvertex;
+	vector<glm::vec3> m_jointvector;
 
 public:
-	TextureVector texture_vector;
-	FaceGroup     facegroup;
-
+	TextureVector m_texture_vector;
+	FaceGroup     m_facegroup;
 
 private:
+	/// Save with each vertex to which faces it belongs
+	void calcSharedVertices();
+	
 	/*! \brief Releases all targets in targetmap
 	 *
 	 * Used by the destructor.
@@ -285,14 +277,14 @@ public:
 	 */
 	//@{
 
-	const vector<glm::vec3> & getJointVector() { return jointvector; }
+	const vector<glm::vec3> & getJointVector() { return m_jointvector; }
 	glm::vec3           GetJoint0_Pos() { return getJointVector().at(0); }
 	//@}
 
 	//@{
-	const VertexVector & getVertexVectorRef() { return vertexvector_morph; }
+	const VertexVector & getVertexVectorRef() { return m_vert_morph; }
 
-	const VertexVector & getVertexVectorMorphOnlyRef() { return vertexvector_morph_only; }
+	const VertexVector & getVertexVectorMorphOnlyRef() { return m_vert_morph_only; }
 
 	const FaceVector & faces() { return m_faces; }
 

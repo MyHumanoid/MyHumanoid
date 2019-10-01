@@ -293,7 +293,7 @@ void Mesh::calcSharedVertices()
 		for(unsigned int j = 0; j < face.getSize(); j++) {
 			vertex_number = face.getVertexAtIndex(j);
 
-			Vertex & vertex = vertexvector_morph[vertex_number];
+			Vertex & vertex = m_vert_morph[vertex_number];
 
 			vertex.addSharedFace(i);
 		}
@@ -302,8 +302,8 @@ void Mesh::calcSharedVertices()
 
 void Mesh::calcVertexNormals()
 {
-	for(unsigned int i = 0; i < vertexvector_morph.size(); i++) {
-		Vertex & vertex(vertexvector_morph[i]);
+	for(unsigned int i = 0; i < m_vert_morph.size(); i++) {
+		Vertex & vertex(m_vert_morph[i]);
 
 		// sum up the normals of all shared faces
 		vector<int> & faces(vertex.getSharedFaces());
@@ -325,9 +325,9 @@ void Mesh::calcFaceNormals()
 	for(unsigned int i = 0; i < m_faces.size(); i++) {
 		Face & face = m_faces[i];
 		if(face.getSize() >= 3) {
-			const Vertex & vertex1(vertexvector_morph[face.getVertexAtIndex(0)]);
-			const Vertex & vertex2(vertexvector_morph[face.getVertexAtIndex(1)]);
-			const Vertex & vertex3(vertexvector_morph[face.getVertexAtIndex(2)]);
+			const Vertex & vertex1(m_vert_morph[face.getVertexAtIndex(0)]);
+			const Vertex & vertex2(m_vert_morph[face.getVertexAtIndex(1)]);
+			const Vertex & vertex3(m_vert_morph[face.getVertexAtIndex(2)]);
 
 			const glm::vec3 v1_tmp(vertex2.co - vertex1.co);
 			const glm::vec3 v2_tmp(vertex3.co - vertex1.co);
@@ -348,34 +348,34 @@ void Mesh::calcNormals()
 
 bool Mesh::loadGroups(const string & groups_filename)
 {
-	return facegroup.load(groups_filename);
+	return m_facegroup.load(groups_filename);
 }
 
 bool Mesh::loadSkin(const string & filename) {
-	return skin.load(filename);
+	return m_skin.load(filename);
 }
 
 bool Mesh::loadSmoothVertex(const string & filename) {
-	return smoothvertex.load(filename);
+	return m_smoothvertex.load(filename);
 }
 
 bool Mesh::loadMesh(const string & mesh_filename, const string & faces_filename)
 {
-	bool vload = vertexvector_morph.load(mesh_filename);
+	bool vload = m_vert_morph.load(mesh_filename);
 	bool fload = m_faces.loadGeometry(faces_filename);
 
 	if(!vload || !fload)
 		return false;
 
-	vertexvector_morph_only.load(mesh_filename);
+	m_vert_morph_only.load(mesh_filename);
 	calcSharedVertices();
 	calcNormals();
 
 	// create initial copy for original mesh
-	vertexvector_orginal.clear();
-	for(unsigned int i = 0; i < vertexvector_morph.size(); i++) {
-		const Vertex & vertex_morph(vertexvector_morph[i]);
-		vertexvector_orginal.push_back(vertex_morph.co);
+	m_vert_orginal.clear();
+	for(unsigned int i = 0; i < m_vert_morph.size(); i++) {
+		const Vertex & vertex_morph(m_vert_morph[i]);
+		m_vert_orginal.push_back(vertex_morph.co);
 	}
 
 	return true;
@@ -529,9 +529,9 @@ bool Mesh::doMorph(const string & target_name, float morph_value)
 	for(const TargetData & td : *target) {
 		// vertexvector_morph[td.vertex_number].co += (td.morph_vector -
 		// vertexvector_orginal[td.vertex_number]) * real_morph_value;
-		vertexvector_morph[td.vertex_number].co += td.morph_vector * real_morph_value;
+		m_vert_morph[td.vertex_number].co += td.morph_vector * real_morph_value;
 
-		vertexvector_morph_only[td.vertex_number].co += td.morph_vector * real_morph_value;
+		m_vert_morph_only[td.vertex_number].co += td.morph_vector * real_morph_value;
 	}
 
 	if(morph_value == 0.0) {
@@ -558,8 +558,8 @@ void Mesh::doMorph(const BodySettings & bs, bool clear)
 
 	if(clear) {
 		m_morphTargets.clear();
-		vertexvector_morph.setCoordinates(vertexvector_orginal);
-		vertexvector_morph_only.setCoordinates(vertexvector_orginal);
+		m_vert_morph.setCoordinates(m_vert_orginal);
+		m_vert_morph_only.setCoordinates(m_vert_orginal);
 	}
 
 	for(const auto &[target_name, morph_value] : bs) {
@@ -576,8 +576,8 @@ void Mesh::doMorph(const BodySettings & bs, float value, bool clear)
 {
 	if(clear) {
 		m_morphTargets.clear();
-		vertexvector_morph.setCoordinates(vertexvector_orginal);
-		vertexvector_morph_only.setCoordinates(vertexvector_orginal);
+		m_vert_morph.setCoordinates(m_vert_orginal);
+		m_vert_morph_only.setCoordinates(m_vert_orginal);
 	}
 
 	for(const auto &[target_name, morph_value] : bs) {
@@ -589,23 +589,23 @@ void Mesh::initPoses()
 {
 	for(auto & [key, poseTarget] : m_posemap) {
 		assert(poseTarget);
-		poseTarget->calcRotationsCenteroids(vertexvector_morph_copy);
-		poseTarget->calcTranslationsFormFactors(vertexvector_morph_copy);
+		poseTarget->calcRotationsCenteroids(m_vert_morph_copy);
+		poseTarget->calcTranslationsFormFactors(m_vert_morph_copy);
 		poseTarget->calcNormalizations();
 	}
 
-	for(SkinVertex & skinVertex : skin) {
+	for(SkinVertex & skinVertex : m_skin) {
 		glm::vec3 centeroid(
-		        calcCenteroid(skinVertex.getLinkedMuscles(), vertexvector_morph));
+		        calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
 
-		glm::vec3 oriDist = vertexvector_morph[skinVertex.getSkinVertex()].co - centeroid;
+		glm::vec3 oriDist = m_vert_morph[skinVertex.getSkinVertex()].co - centeroid;
 		skinVertex.setOriginalDist(glm::length(oriDist));
 	}
 }
 
 void Mesh::poseMode()
 {
-	vertexvector_morph_copy = vertexvector_morph;
+	m_vert_morph_copy = m_vert_morph;
 
 	initPoses();
 
@@ -613,7 +613,7 @@ void Mesh::poseMode()
 }
 
 void Mesh::bodyDetailsMode() {
-	vertexvector_morph = vertexvector_morph_copy;
+	m_vert_morph = m_vert_morph_copy;
 }
 
 void Mesh::resetMorph()
@@ -625,8 +625,8 @@ void Mesh::resetMorph()
 void Mesh::resetPose()
 {
 	m_poseTargets.clear();
-	vertexvector_morph      = vertexvector_morph_copy;
-	vertexvector_morph_only = vertexvector_morph_copy;
+	m_vert_morph      = m_vert_morph_copy;
+	m_vert_morph_only = m_vert_morph_copy;
 }
 
 bool Mesh::setPose(const std::string & target_name, float morph_value, bool removeOnZero)
@@ -644,7 +644,7 @@ bool Mesh::setPose(const std::string & target_name, float morph_value, bool remo
 		m_poseTargets[target_name] = morph_value;
 	}
 
-	vertexvector_morph = vertexvector_morph_copy;
+	m_vert_morph = m_vert_morph_copy;
 
 	for(const auto &[target_name, morph_value] : m_poseTargets) {
 		PoseTarget * poseTarget = getPoseTargetForName(target_name);
@@ -690,8 +690,8 @@ void Mesh::doPoseRotation(const PoseRotation & pr, float morph_value, const Used
 		theta = real_value * td.rotation;
 		rotMatrix.setRotation(theta * M_PI_180, axis);
 
-		vertexvector_morph[td.vertex_number].co =
-		        ((vertexvector_morph[td.vertex_number].co - pr.getCenter()) * rotMatrix) +
+		m_vert_morph[td.vertex_number].co =
+		        ((m_vert_morph[td.vertex_number].co - pr.getCenter()) * rotMatrix) +
 		        pr.getCenter();
 	}
 }
@@ -727,7 +727,7 @@ void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value, cons
 		// vertexvector_morph[td.vertex_number].co) * (morph_value * formFactor);
 		// vertexvector_morph[td.vertex_number].co += (td.morph_vector * formFactor)
 		// * real_value;
-		vertexvector_morph[td.vertex_number].co +=
+		m_vert_morph[td.vertex_number].co +=
 		        glm::vec3(formFactor.x * td.morph_vector.x,
 		                  formFactor.y * td.morph_vector.y,
 		                  formFactor.z * td.morph_vector.z) *
@@ -785,36 +785,36 @@ void Mesh::applySmooth(const int recursive_level)
 	int i, vToMove;
 
 	for(i = 0; i < recursive_level; i++) {
-		for(std::vector<SmoothData>::iterator smooth_it = smoothvertex.begin();
-		    smooth_it != smoothvertex.end(); smooth_it++) {
+		for(std::vector<SmoothData>::iterator smooth_it = m_smoothvertex.begin();
+		    smooth_it != m_smoothvertex.end(); smooth_it++) {
 			SmoothData &               smooth        = (*smooth_it);
 			std::vector<int>::iterator smoothData_it = smooth.begin();
 
 			vToMove = (*smoothData_it);
 
 			glm::vec3 centeroid(calcCenteroid(
-			        vector<int>(smoothData_it++, smooth.end()), vertexvector_morph));
-			vertexvector_morph[vToMove].co =
-			        (centeroid + vertexvector_morph[vToMove].co);
-			vertexvector_morph[vToMove].co /= 2;
+			        vector<int>(smoothData_it++, smooth.end()), m_vert_morph));
+			m_vert_morph[vToMove].co =
+			        (centeroid + m_vert_morph[vToMove].co);
+			m_vert_morph[vToMove].co /= 2;
 		}
 	}
 }
 
 void Mesh::applySkin()
 {
-	for(SkinVertex & skinVertex: skin) {
+	for(SkinVertex & skinVertex: m_skin) {
 
 		glm::vec3 centeroid(
-		        calcCenteroid(skinVertex.getLinkedMuscles(), vertexvector_morph));
+		        calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
 
 		glm::vec3 normal(
-		        calcAverageNormalLength(skinVertex.getLinkedMuscles(), vertexvector_morph));
+		        calcAverageNormalLength(skinVertex.getLinkedMuscles(), m_vert_morph));
 
 		float r = skinVertex.getOriginalDist() /
 		          glm::length(normal); // normal.getMagnitude();
 		glm::vec3 delta                                   = normal * r;
-		vertexvector_morph[skinVertex.getSkinVertex()].co = centeroid + delta;
+		m_vert_morph[skinVertex.getSkinVertex()].co = centeroid + delta;
 	}
 }
 
@@ -832,7 +832,7 @@ bool Mesh::IsADummyJoint(SKELETON_JOINT joint, glm::vec3 & v3)
 }
 void Mesh::prepareSkeleton()
 {
-	jointvector.clear();
+	m_jointvector.clear();
 
 	for(int i = 0; i < SK_JOINT_END; i++) {
 
@@ -846,11 +846,11 @@ void Mesh::prepareSkeleton()
 			if(temp == m_posemap.end()) {
 				glm::vec3 v3;
 				if(IsADummyJoint((SKELETON_JOINT)i, v3) == true) {
-					jointvector.push_back(v3);
+					m_jointvector.push_back(v3);
 					continue;
 				}
 
-				jointvector.push_back(v);
+				m_jointvector.push_back(v);
 				continue;
 			}
 		}
@@ -858,14 +858,14 @@ void Mesh::prepareSkeleton()
 		PoseTarget * poseTarget = temp->second;
 
 		if(poseTarget == NULL) {
-			jointvector.push_back(v);
+			m_jointvector.push_back(v);
 			continue;
 		}
 
-		poseTarget->calcRotationsCenteroids(vertexvector_morph_only);
+		poseTarget->calcRotationsCenteroids(m_vert_morph_only);
 		v = poseTarget->getFirstRotationCenteroid();
 
-		jointvector.push_back(v);
+		m_jointvector.push_back(v);
 	}
 }
 
@@ -880,8 +880,8 @@ void Mesh::doPose(const BodySettings & bs, bool clear)
 
 	if(clear) {
 		m_poseTargets.clear();
-		vertexvector_morph      = vertexvector_morph_copy;
-		vertexvector_morph_only = vertexvector_morph_copy;
+		m_vert_morph      = m_vert_morph_copy;
+		m_vert_morph_only = m_vert_morph_copy;
 	}
 
 	for(const auto & [target_name, morph_value] : bs) {
@@ -910,8 +910,8 @@ void Mesh::doPose(const BodySettings & bs, const float value, bool clear)
 {
 	if(clear) {
 		m_poseTargets.clear();
-		vertexvector_morph      = vertexvector_morph_copy;
-		vertexvector_morph_only = vertexvector_morph_copy;
+		m_vert_morph      = m_vert_morph_copy;
+		m_vert_morph_only = m_vert_morph_copy;
 	}
 
 	for(const auto & [target_name, val] : bs) {

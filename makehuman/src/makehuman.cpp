@@ -502,9 +502,9 @@ void DisplayMainMenu()
 			ImGui::Separator();
 
 			if(ImGui::BeginMenu("Toggle Visibility")) {
-				for(auto & g : g_global.mesh->facegroup.m_groups) {
+				for(auto & g : g_global.mesh->m_facegroup.m_groups) {
 					if(ImGui::Button(g.first.c_str())) {
-						g_global.mesh->facegroup.toggleVisible(g.first);
+						g_global.mesh->m_facegroup.toggleVisible(g.first);
 					}
 				}
 				ImGui::EndMenu();
@@ -1000,7 +1000,7 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	g_global.mesh->texture_vector.load(searchDataFile("base.uv"));
+	g_global.mesh->m_texture_vector.load(searchDataFile("base.uv"));
 
 	// load face groups with factory function
 	bool groups_loaded = g_global.mesh->loadGroups(searchDataFile("base.parts"));
@@ -1218,7 +1218,7 @@ void calcMinMax(const glm::vec3 & coords)
 
 void loadTextures()
 {
-	for(auto & [name, value] : g_global.mesh->facegroup.m_groups) {
+	for(auto & [name, value] : g_global.mesh->m_facegroup.m_groups) {
 
 		std::string fileName = "pixmaps/ui/" + name + "_color.png";
 		value.texture        = LoadTextureFromFile(fileName.c_str());
@@ -1275,7 +1275,7 @@ void drawBackground()
 void renderMesh()
 {
 	const MaterialVector & materialvector(g_global.mesh->materials());
-	const TextureVector &  texturevector(g_global.mesh->texture_vector);
+	const TextureVector &  texturevector(g_global.mesh->m_texture_vector);
 
 	const FaceVector & facevector(g_global.mesh->faces());
 
@@ -1295,7 +1295,7 @@ void renderMesh()
 
 	glUseProgram(g_bodyShader->handle);
 
-	for(auto & [goupName, groupValue] : g_global.mesh->facegroup.m_groups) {
+	for(auto & [goupName, groupValue] : g_global.mesh->m_facegroup.m_groups) {
 
 		if(groupValue.visible == false)
 			continue;
