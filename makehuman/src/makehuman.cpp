@@ -25,11 +25,6 @@
  *
  */
 
-// TODO: create makehuman.h
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <iostream>
 #include <unordered_map>
 
@@ -41,7 +36,6 @@
 #include <experimental/filesystem>
 
 #include "MhGui.h"
-#include "MhGuiData.h"
 #include "MhMorph.h"
 #include "MhPose.h"
 

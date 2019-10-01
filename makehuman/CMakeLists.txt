@@ -139,8 +139,6 @@ set(makehuman_sources
 	src/MhConfig.h
 	src/MhConfig.cpp
 	src/MhGui.h
-	src/MhGuiData.h
-	src/MhGuiData.cpp
 	src/MhUiCommon.h
 	src/MhMorph.h
 	src/MhMorph.cpp

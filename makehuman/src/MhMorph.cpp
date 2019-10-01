@@ -5,7 +5,6 @@
 #include "render/RenderUtils.h"
 
 #include "MhGui.h"
-#include "MhGuiData.h"
 
 #include "gui/Window.h"
 #include "Global.h"
