@@ -256,20 +256,6 @@ const DummyJoint dummyJoints[DUMMY_JOINTS] = {
 const float M_PI_180 = (M_PI / 180.0);
 
 Mesh::Mesh()
-        : facevector()
-        , vertexvector_morph()      //!< container for modified mesh
-        , vertexvector_morph_copy() //!< copy container for morphed mesh
-        , vertexvector_morph_only()
-        , vertexvector_orginal() //!< container for orginal mesh
-        , bodyset()
-        , m_targets()
-        , m_materials()
-        , texture_vector()
-        , poses()         //!< container for applied poses
-        , charactersmap() //!< container for all characters
-        , facegroup()
-        , skin()
-        , smoothvertex()
 {
 }
 
@@ -299,10 +285,10 @@ void Mesh::clearPosemap()
 
 void Mesh::calcSharedVertices()
 {
-	for(unsigned int i = 0; i < facevector.size(); i++) {
+	for(unsigned int i = 0; i < m_faces.size(); i++) {
 		int vertex_number;
 
-		const Face & face(facevector[i]);
+		const Face & face(m_faces[i]);
 
 		for(unsigned int j = 0; j < face.getSize(); j++) {
 			vertex_number = face.getVertexAtIndex(j);
@@ -323,7 +309,7 @@ void Mesh::calcVertexNormals()
 		vector<int> & faces(vertex.getSharedFaces());
 		for(unsigned int j = 0; j < faces.size(); j++) {
 			try {
-				const glm::vec3 & face_normal(facevector.at(faces[j]).no);
+				const glm::vec3 & face_normal(m_faces.at(faces[j]).no);
 				vertex.no += face_normal;
 			} catch(const exception & e) {
 				return;
@@ -336,8 +322,8 @@ void Mesh::calcVertexNormals()
 
 void Mesh::calcFaceNormals()
 {
-	for(unsigned int i = 0; i < facevector.size(); i++) {
-		Face & face = facevector[i];
+	for(unsigned int i = 0; i < m_faces.size(); i++) {
+		Face & face = m_faces[i];
 		if(face.getSize() >= 3) {
 			const Vertex & vertex1(vertexvector_morph[face.getVertexAtIndex(0)]);
 			const Vertex & vertex2(vertexvector_morph[face.getVertexAtIndex(1)]);
@@ -376,7 +362,7 @@ bool Mesh::loadSmoothVertexFactory(const string & filename) {
 bool Mesh::loadMeshFactory(const string & mesh_filename, const string & faces_filename)
 {
 	bool vload = vertexvector_morph.load(mesh_filename);
-	bool fload = facevector.loadGeometry(faces_filename);
+	bool fload = m_faces.loadGeometry(faces_filename);
 
 	if(!vload || !fload)
 		return false;
@@ -412,7 +398,7 @@ bool Mesh::loadMaterialFactory(const string & material_filename,
                                const string & face_colors_filename)
 {
 	bool mload  = m_materials.loadMaterials(material_filename);
-	bool fcload = facevector.loadColors(face_colors_filename);
+	bool fcload = m_faces.loadColors(face_colors_filename);
 
 	if(!mload || !fcload)
 		return false;
@@ -467,7 +453,7 @@ void Mesh::loadCharactersFactory(const string & characters_root_path, int recurs
 
 		BodySettings character;
 		character.load(file);
-		charactersmap[character_name] = character;
+		m_characters[character_name] = character;
 	}
 }
 

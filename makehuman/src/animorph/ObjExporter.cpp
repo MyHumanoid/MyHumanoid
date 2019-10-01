@@ -6,10 +6,10 @@ using namespace Animorph;
 void ObjExporter::createOBJStream(ostringstream & out_stream, const string & basename)
 {
 	FaceGroup & facegroup(mesh.facegroup);
-	facegroup.calcVertexes(mesh.getFaceVectorRef());
+	facegroup.calcVertexes(mesh.faces());
 
 	const VertexVector &   vertexvector(mesh.getVertexVectorRef());
-	const FaceVector &     facevector(mesh.getFaceVectorRef());
+	const FaceVector &     facevector(mesh.faces());
 	const TextureVector &  texturevector(mesh.texture_vector);
 	const MaterialVector & materialvector = mesh.materials();
 
@@ -122,7 +122,7 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string & basename)
 {
 	const VertexVector &   vertexvector = mesh.getVertexVectorRef();
-	const FaceVector &     facevector = mesh.getFaceVectorRef();
+	const FaceVector &     facevector = mesh.faces();
 	const MaterialVector & materialvector = mesh.materials();
 	const TextureVector &  texturevector = mesh.texture_vector;
 
@@ -285,7 +285,7 @@ bool ObjExporter::exportFile(const string & exportpath, bool full)
 {
 
 	FaceGroup & facegroup(mesh.facegroup);
-	facegroup.calcVertexes(mesh.getFaceVectorRef());
+	facegroup.calcVertexes(mesh.faces());
 
 	// FaceVector &facevector (mesh.getFaceVectorRef());
 

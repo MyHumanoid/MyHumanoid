@@ -1277,7 +1277,7 @@ void renderMesh()
 	const MaterialVector & materialvector(g_global.mesh->materials());
 	const TextureVector &  texturevector(g_global.mesh->texture_vector);
 
-	const FaceVector & facevector(g_global.mesh->getFaceVectorRef());
+	const FaceVector & facevector(g_global.mesh->faces());
 
 	const VertexVector & vertexvector(g_global.mesh->getVertexVectorRef());
 

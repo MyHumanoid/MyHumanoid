@@ -152,7 +152,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 
 	const VertexVector &   vertexvector = mesh.getVertexVectorMorphOnlyRef();
 	const TextureVector &  texturevector = mesh.texture_vector;
-	const FaceVector &     facevector = mesh.getFaceVectorRef();
+	const FaceVector &     facevector = mesh.faces();
 	const MaterialVector & materialvector = mesh.materials();
 	// number << "_" << index_material <<"_";
 
@@ -334,7 +334,7 @@ void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int mate
 {
 	const MaterialVector & materialvector = mesh.materials();
 	// int number_p = facevector.size();
-	const FaceVector & facevector = mesh.getFaceVectorRef();
+	const FaceVector & facevector = mesh.faces();
 	XMLNode      xNode_p, xNode_t, xNode_polygons, xNode_triangles, xNode_input;
 	// register unsigned int i,j;
 

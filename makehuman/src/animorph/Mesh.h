@@ -173,13 +173,13 @@ using CharactersMap = map<string, BodySettings>;
  */
 class Mesh
 {
-	FaceVector facevector;
+	FaceVector m_faces;
 	// HotspotMap        hotspotmap;
-	VertexVector vertexvector_morph; ///< Modified mesh
-	VertexVector vertexvector_morph_copy;
+	VertexVector vertexvector_morph; //!< container for modified mesh
+	VertexVector vertexvector_morph_copy; //!< copy container for morphed mesh
 	VertexVector vertexvector_morph_only;
 
-	vector<glm::vec3> vertexvector_orginal; ///< Orginal mesh
+	vector<glm::vec3> vertexvector_orginal; //!< container for orginal mesh
 
 	// VertexGroup       vgroup;
 	BodySettings   bodyset;
@@ -187,7 +187,7 @@ class Mesh
 	MaterialVector m_materials;
 	BodySettings   poses;   ///< Currently active PoseTargets
 	PoseMap        m_posemap; ///< Possible pose transformations
-	CharactersMap  charactersmap;
+	CharactersMap  m_characters; //!< container for all characters
 
 	Skin skin;
 
@@ -289,14 +289,12 @@ public:
 	glm::vec3           GetJoint0_Pos() { return getJointVector()->at(0); }
 	//@}
 
-	/** @name Getting references to member variables
-	 */
 	//@{
 	const VertexVector & getVertexVectorRef() { return vertexvector_morph; }
 
 	const VertexVector & getVertexVectorMorphOnlyRef() { return vertexvector_morph_only; }
 
-	const FaceVector & getFaceVectorRef() { return facevector; }
+	const FaceVector & faces() { return m_faces; }
 
 	const MaterialVector & materials() { return m_materials; }
 
@@ -304,17 +302,11 @@ public:
 
 	const PoseMap & posemap() { return m_posemap; }
 
-	const CharactersMap & getCharactersMapRef() { return charactersmap; }
+	const CharactersMap & getCharactersMapRef() { return m_characters; }
 	//@}
 
-	/*!
-	 * \return the Mesh's BodySetting
-	 */
 	const BodySettings & getBodySettings() const { return bodyset; }
 
-	/*!
-	 * \return the Mesh's Poses
-	 */
 	const BodySettings & getPoses() const { return poses; }
 
 	/** @name Loading
