@@ -35,9 +35,9 @@
 
 #include <experimental/filesystem>
 
-#include "MhGui.h"
-#include "MhMorph.h"
-#include "MhPose.h"
+#include "MhUi.h"
+#include "MhUiMorph.h"
+#include "MhUiPose.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>

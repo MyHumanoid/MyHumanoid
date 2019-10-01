@@ -1,4 +1,4 @@
-#include "MhPose.h"
+#include "MhUiPose.h"
 
 #include <array>
 
@@ -6,7 +6,7 @@
 
 #include "render/RenderUtils.h"
 
-#include "MhGui.h"
+#include "MhUi.h"
 
 #include "gui/Window.h"
 #include "Global.h"

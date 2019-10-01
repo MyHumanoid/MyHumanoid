@@ -135,15 +135,15 @@ set(makehuman_sources
 	src/ImageButton.h
 	src/ImageListener.cpp
 	src/ImageListener.h
-	src/makehuman.cpp
 	src/MhConfig.h
 	src/MhConfig.cpp
-	src/MhGui.h
+	src/MhMain.cpp
+	src/MhUi.h
 	src/MhUiCommon.h
-	src/MhMorph.h
-	src/MhMorph.cpp
-	src/MhPose.h
-	src/MhPose.cpp
+	src/MhUiMorph.h
+	src/MhUiMorph.cpp
+	src/MhUiPose.h
+	src/MhUiPose.cpp
 	src/PageTargetPanel.cpp
 	src/PageTargetPanel.h
 	src/SelectorListener.cpp

@@ -1,10 +1,10 @@
-#include "MhMorph.h"
+#include "MhUiMorph.h"
 
 #include <glm/glm.hpp>
 
 #include "render/RenderUtils.h"
 
-#include "MhGui.h"
+#include "MhUi.h"
 
 #include "gui/Window.h"
 #include "Global.h"

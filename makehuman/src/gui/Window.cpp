@@ -27,7 +27,7 @@
 
 #include <GL/freeglut.h>
 
-#include "MhGui.h"
+#include "MhUi.h"
 #include <examples/imgui_impl_glut.h>
 #include <examples/imgui_impl_opengl2.h>
 
