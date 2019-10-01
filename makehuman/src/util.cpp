@@ -181,7 +181,7 @@ void CreateWeightsFile()
 	int  weight[SK_JOINT_END];
 	int  actual_weight[SK_JOINT_END];
 
-	VertexVector & vertexvector(g_global.mesh->getVertexVectorMorphOnlyRef());
+	const VertexVector & vertexvector(g_global.mesh->getVertexVectorMorphOnlyRef());
 	unsigned int   size_vx = vertexvector.size();
 
 	int *                symm_vertex = new int[size_vx];

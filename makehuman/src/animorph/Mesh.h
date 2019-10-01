@@ -292,32 +292,19 @@ public:
 	/** @name Getting references to member variables
 	 */
 	//@{
-	/*!
-	 * \return a reference to the morphed VertexVector of this Mesh
-	 */
-	VertexVector & getVertexVectorRef() { return vertexvector_morph; }
+	const VertexVector & getVertexVectorRef() { return vertexvector_morph; }
 
-	VertexVector & getVertexVectorMorphOnlyRef() { return vertexvector_morph_only; }
+	const VertexVector & getVertexVectorMorphOnlyRef() { return vertexvector_morph_only; }
 
-	/*!
-	 * \return a reference to the FaceVector of this Mesh
-	 */
-	FaceVector & getFaceVectorRef() { return facevector; }
+	const FaceVector & getFaceVectorRef() { return facevector; }
 
-	/*!
-	 * \return a reference to the MaterialVector of this Mesh
-	 */
 	const MaterialVector & materials() { return m_materials; }
 
 	const TargetMap & targets() { return m_targets; }
 
 	const PoseMap & posemap() { return m_posemap; }
 
-	/*!
-	 * \return a reference to the CharactersMap of this Mesh
-	 */
-	CharactersMap & getCharactersMapRef() { return charactersmap; }
-
+	const CharactersMap & getCharactersMapRef() { return charactersmap; }
 	//@}
 
 	/*!

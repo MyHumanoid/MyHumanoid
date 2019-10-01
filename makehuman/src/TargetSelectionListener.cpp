@@ -366,7 +366,7 @@ bool TargetSelectionListener::mouseReleased(const Point & inMousePos, int button
 
 		Mesh * mesh = g_global.getMesh();
 		assert(mesh);
-		VertexVector & vertexvector(mesh->getVertexVectorRef());
+		const VertexVector & vertexvector = mesh->getVertexVectorRef();
 
 		std::string pathAutozoom_data =
 		        searchDataDir("targets") + "/" + target + "/" + target + ".camera";

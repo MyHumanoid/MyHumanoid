@@ -121,10 +121,10 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 
 void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string & basename)
 {
-	VertexVector &   vertexvector = mesh.getVertexVectorRef();
-	FaceVector &     facevector = mesh.getFaceVectorRef();
+	const VertexVector &   vertexvector = mesh.getVertexVectorRef();
+	const FaceVector &     facevector = mesh.getFaceVectorRef();
 	const MaterialVector & materialvector = mesh.materials();
-	TextureVector &  texturevector = mesh.texture_vector;
+	const TextureVector &  texturevector = mesh.texture_vector;
 
 	// TODO: decide how much accracy we need
 	// out_stream << setprecision (12);
@@ -139,7 +139,7 @@ void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string &
 
 	// write vertices
 	for(unsigned int i = 0; i < vertexvector.size(); i++) {
-		Vertex &  vertex = vertexvector[i];
+		const Vertex &  vertex = vertexvector[i];
 		glm::vec3 vector(vertex.co * tm);
 
 		out_stream << "v " << vector.x << " " << vector.y << " " << vector.z << endl;
@@ -148,10 +148,10 @@ void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string &
 	// write texture UV coordinates
 	if(facevector.size() == texturevector.size()) {
 		for(unsigned int i = 0; i < facevector.size(); i++) {
-			TextureFace & texture_face = texturevector[i];
+			const TextureFace & texture_face = texturevector[i];
 
 			for(unsigned int n = 0; n < texture_face.size(); n++) {
-				glm::vec2 & uv = texture_face[n];
+				const glm::vec2 & uv = texture_face[n];
 
 				// the -uv.y+1.0 stuff is a hack for renderman input UV data
 				// TODO: change renderman import UV data

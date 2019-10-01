@@ -295,7 +295,7 @@ void DisplayLibraryCharacters()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+	const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -332,12 +332,14 @@ void DisplayLibraryCharacters()
 //						g_global.mesh->bodyDetailsMode();
 //					}
 
-					CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
-					g_global.mesh->doMorph(charactersmap[character_name], 1.0, true);
-					g_global.mesh->calcNormals();
-
-					loadSelectorsPositions(
-					        charactersmap[character_name].cursorPositions);
+					const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+					
+					auto f = charactersmap.find(character_name);
+					if(f != charactersmap.end()) {
+						g_global.mesh->doMorph(f->second, 1.0, true);
+						g_global.mesh->calcNormals();
+						loadSelectorsPositions(f->second.cursorPositions);
+					}
 				}
 			}
 		}
@@ -350,7 +352,7 @@ void DisplayLibraryPoses()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+	const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -380,14 +382,18 @@ void DisplayLibraryPoses()
 			const auto & tex = icon->second;
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
 
-
 				{ // not copy-paste
-					CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
-
-					g_global.mesh->doPose(charactersmap[character_name], 1.0, true);
-					// mesh->doPose (charactersmap[imgSource->getTargetName ()],
-					// false);
-					g_global.mesh->calcNormals();
+					const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+					
+					auto f = charactersmap.find(character_name);
+					if(f != charactersmap.end()) {
+						g_global.mesh->doPose(f->second, 1.0, true);
+						// mesh->doPose (charactersmap[imgSource->getTargetName ()],
+						// false);
+						g_global.mesh->calcNormals();
+					} else {
+						logger("Character {} not found", character_name);
+					}
 				}
 			}
 		}

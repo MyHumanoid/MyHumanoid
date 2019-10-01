@@ -150,9 +150,9 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	        xNode_accessor, xNode_param;
 	XMLNode xNode_source_normals, xNode_source_uv, xNode_vertices, xNode_input;
 
-	VertexVector &   vertexvector(mesh.getVertexVectorMorphOnlyRef());
-	TextureVector &  texturevector(mesh.texture_vector);
-	FaceVector &     facevector(mesh.getFaceVectorRef());
+	const VertexVector &   vertexvector = mesh.getVertexVectorMorphOnlyRef();
+	const TextureVector &  texturevector = mesh.texture_vector;
+	const FaceVector &     facevector = mesh.getFaceVectorRef();
 	const MaterialVector & materialvector = mesh.materials();
 	// number << "_" << index_material <<"_";
 
@@ -178,7 +178,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	xNode_float_array.addAttribute("id", (temp2 + "-array").c_str());
 
 	for(unsigned int i = 0; i < vertexvector.size(); i++) {
-		Vertex & vertex = vertexvector[i];
+		const Vertex & vertex = vertexvector[i];
 
 		glm::vec3 vector = vertex.co * tm;
 
@@ -221,7 +221,8 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	xNode_float_array.addAttribute("id", (temp2 + "-array").c_str());
 
 	for(unsigned int i = 0; i < vertexvector.size(); i++) {
-		Vertex &  vertex = vertexvector[i];
+		const Vertex &  vertex = vertexvector[i];
+		
 		glm::vec3 vector = vertex.no * tm;
 
 		normals_stream << vector.x << " " << vector.y << " " << vector.z << " ";
@@ -261,10 +262,10 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	unsigned int counteruv = 0;
 
 	for(unsigned int i = 0; i < facevector.size(); i++) {
-		TextureFace & texture_face = texturevector[i];
+		const TextureFace & texture_face = texturevector[i];
 
 		for(unsigned int n = 0; n < texture_face.size(); n++) {
-			glm::vec2 & uv = texture_face[n];
+			const glm::vec2 & uv = texture_face[n];
 			counteruv++;
 			// the -uv.y+1.0 stuff is a hack for renderman input UV data
 			// TODO: change renderman import UV data
@@ -333,7 +334,7 @@ void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int mate
 {
 	const MaterialVector & materialvector = mesh.materials();
 	// int number_p = facevector.size();
-	FaceVector & facevector(mesh.getFaceVectorRef());
+	const FaceVector & facevector = mesh.getFaceVectorRef();
 	XMLNode      xNode_p, xNode_t, xNode_polygons, xNode_triangles, xNode_input;
 	// register unsigned int i,j;
 
@@ -519,7 +520,7 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	XMLNode xNode_tecnique_common_3, xNode_accessor_3, xNode_param_3;
 	XMLNode xNode_joints, xNode_inputA, xNode_inputB, xNode_bind_shape_matrix;
 
-	VertexVector &     vertexvector(mesh.getVertexVectorMorphOnlyRef());
+	const VertexVector &     vertexvector = mesh.getVertexVectorMorphOnlyRef();
 	std::ostringstream out_stream;
 
 	xNode_controller = xNode_library_controller->addChild("controller");
@@ -836,7 +837,7 @@ void ColladaExporter::loadBindPoses(const std::string & filename, XMLNode * xNod
 void ColladaExporter::loadVertexWeights(const std::string & filename, XMLNode * xNode_binding,
                                         int jointcounter)
 {
-	VertexVector & vertexvector(mesh.getVertexVectorMorphOnlyRef());
+	const VertexVector & vertexvector = mesh.getVertexVectorMorphOnlyRef();
 
 	FileReader         file_reader;
 	std::ostringstream out_stream;
