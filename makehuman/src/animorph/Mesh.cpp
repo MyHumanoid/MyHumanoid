@@ -442,8 +442,8 @@ void Mesh::loadPoseTargetsFactory(const string & target_root_path, int recursive
 			continue;
 		}
 		
-		PoseTarget * poseTarget = new PoseTarget(target_name, file);
-		bool rc = poseTarget->load();
+		PoseTarget * poseTarget = new PoseTarget();
+		bool rc = poseTarget->load(file);
 		if(!rc) {
 			delete poseTarget;
 		} else {

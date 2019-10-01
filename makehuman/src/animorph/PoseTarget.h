@@ -71,17 +71,15 @@ class PoseTarget
 	/// Rotations to be applied on Mesh::doPose() with morph_value < 0
 	PoseRotationVector negativeRotations;
 
-	const string targetName;
 	/// flags whether wehave special transformations for Mesh::doPose() with
 	/// morph_value < 0
-	bool negative;
-	bool positive;
+	bool negative = false;
+	bool positive = false;
 	/// flag for calcNormalizations()
-	bool         normalizationInited;
-	const string fullPath;
+	bool         normalizationInited = false;
 	UsedVertex   modVertex;
-	float        minAngle;
-	float        maxAngle;
+	float        minAngle = 0.0f;
+	float        maxAngle = 0.0f;
 
 	/// Initializes the center of all rotations with the controid of their
 	/// centerVertexNumbers
@@ -91,22 +89,6 @@ class PoseTarget
 	                                 PoseTranslationVector & translations);
 
 public:
-	PoseTarget(const string & inTargetName, const string & inFullPath)
-	        : positiveTranslations()
-	        , negativeTranslations()
-	        , positiveRotations()
-	        , negativeRotations()
-	        , targetName(inTargetName)
-	        , negative(false)
-	        , positive(false)
-	        , normalizationInited(false)
-	        , fullPath(inFullPath)
-	        , modVertex()
-	        , minAngle(0.0f)
-	        , maxAngle(0.0f)
-	{
-	}
-
 	/// Initializes the center of all rotations with the controid of their
 	/// centerVertexNumbers
 	void            calcRotationsCenteroids(const VertexVector & vertexvector);
@@ -127,7 +109,7 @@ public:
 	float        getMinAngle() const { return minAngle; }
 	float        getMaxAngle() const { return maxAngle; }
 
-	bool load();
+	bool load(const std::string &fullPath);
 };
 
 } // namespace Animorph

@@ -8,7 +8,7 @@ using namespace Animorph;
 namespace Animorph
 {
 
-bool PoseTarget::load()
+bool PoseTarget::load(const string & fullPath)
 {
 	const string positive_rotation_type(".rot");
 	const string negative_rotation_type("-.rot");
