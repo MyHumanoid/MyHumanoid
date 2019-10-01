@@ -121,10 +121,10 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 
 void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string & basename)
 {
-	const VertexVector &   vertexvector = mesh.getVertexVectorRef();
-	const FaceVector &     facevector = mesh.faces();
+	const VertexVector &   vertexvector   = mesh.getVertexVectorRef();
+	const FaceVector &     facevector     = mesh.faces();
 	const MaterialVector & materialvector = mesh.materials();
-	const TextureVector &  texturevector = mesh.m_texture_vector;
+	const TextureVector &  texturevector  = mesh.m_texture_vector;
 
 	// TODO: decide how much accracy we need
 	// out_stream << setprecision (12);
@@ -139,8 +139,8 @@ void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string &
 
 	// write vertices
 	for(unsigned int i = 0; i < vertexvector.size(); i++) {
-		const Vertex &  vertex = vertexvector[i];
-		glm::vec3 vector(vertex.co * tm);
+		const Vertex & vertex = vertexvector[i];
+		glm::vec3      vector(vertex.co * tm);
 
 		out_stream << "v " << vector.x << " " << vector.y << " " << vector.z << endl;
 	}
@@ -331,8 +331,8 @@ void ObjExporter::createMTLStream(std::ostringstream & out_stream, const std::st
 	out_stream << "# Material file for " << basename << endl << endl;
 
 	for(unsigned int i = 0; i < materialvector.size(); i++) {
-		const Material &    material = materialvector[i];
-		const Color & colRGB   = material.getRGBCol();
+		const Material & material = materialvector[i];
+		const Color &    colRGB   = material.getRGBCol();
 
 		out_stream << "newmtl " << material.getName() << endl;
 		out_stream << "Kd " << colRGB.red() << " " << colRGB.green() << " " << colRGB.blue()

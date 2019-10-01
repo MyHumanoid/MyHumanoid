@@ -51,7 +51,7 @@ std::optional<mh::Texture> LoadTextureFromFile(const std::string & file)
 std::vector<std::string> filesInDirRecursive(const fs::path & directoryPath)
 {
 	using Iter = fs::recursive_directory_iterator;
-	
+
 	std::vector<std::string> files;
 	auto                     it  = Iter(directoryPath);
 	auto                     end = Iter();
@@ -75,16 +75,16 @@ std::vector<std::string> filesInDirRecursive(const fs::path & directoryPath)
 void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
 {
 	auto files = filesInDirRecursive(baseDir);
-	
+
 	for(auto & file : files) {
 		auto ret = LoadTextureFromFile(file.c_str());
-		
+
 		if(ret) {
 			auto foo = file;
 			foo.erase(0, baseDir.string().length());
 			fs::path foobar = foo;
 			foobar.replace_extension();
-			
+
 			logger("Loaded {} as {}", std::string(file), std::string(foobar));
 			target.insert(IconMap::value_type(foobar, ret.value()));
 		} else {
@@ -92,6 +92,3 @@ void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
 		}
 	}
 }
-
-
-

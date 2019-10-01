@@ -76,10 +76,10 @@ class PoseTarget
 	bool negative = false;
 	bool positive = false;
 	/// flag for calcNormalizations()
-	bool         normalizationInited = false;
-	UsedVertex   modVertex;
-	float        minAngle = 0.0f;
-	float        maxAngle = 0.0f;
+	bool       normalizationInited = false;
+	UsedVertex modVertex;
+	float      minAngle = 0.0f;
+	float      maxAngle = 0.0f;
 
 	/// Initializes the center of all rotations with the controid of their
 	/// centerVertexNumbers
@@ -109,7 +109,7 @@ public:
 	float        getMinAngle() const { return minAngle; }
 	float        getMaxAngle() const { return maxAngle; }
 
-	bool load(const std::string &fullPath);
+	bool load(const std::string & fullPath);
 };
 
 } // namespace Animorph

@@ -22,13 +22,13 @@ static IconMap g_poseImageTextures;
 
 void CreatePoseImageTextures()
 {
-	
+
 	fs::path baseDir = "pixmaps/rotimg/";
 	loadTexturesFromDir(g_poseImageTextures, baseDir);
 }
 
 struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
-	
+
 	// clang-format off
 	const std::array<const Tile, 84> tiles = {
 		Tile("rotations_01", "Right collar",          "260_right_collar"),
@@ -132,71 +132,60 @@ struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 	// clang-format on
 };
 
-auto applier = [](const std::string & name,
-                  const float & value,
-                  const bool deleteOnZero)
-{
+auto applier = [](const std::string & name, const float & value, const bool deleteOnZero) {
 	g_global.mesh->setPose(name, value, deleteOnZero);
 	g_global.mesh->calcNormals();
 };
 
 
-void DisplayPoseTargets() {
-	
-	constexpr static ImGuiWindowFlags winFlags
-	    = ImGuiWindowFlags_NoScrollbar
-	//      |ImGuiWindowFlags_NoSavedSettings
-	      | ImGuiWindowFlags_NoResize;
-	
-	struct WinStack{
-		WinStack() {
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(1, 1));
-		}
-		~WinStack() {
-			ImGui::PopStyleVar(1);
-		}
+void DisplayPoseTargets()
+{
+
+	constexpr static ImGuiWindowFlags winFlags = ImGuiWindowFlags_NoScrollbar
+	                                             //      |ImGuiWindowFlags_NoSavedSettings
+	                                             | ImGuiWindowFlags_NoResize;
+
+	struct WinStack {
+		WinStack() { ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(1, 1)); }
+		~WinStack() { ImGui::PopStyleVar(1); }
 	};
-	
+
 	ImGui::SetNextWindowSize(vec2(380, 510));
 	WinStack winStack;
 	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
 		ImGui::End();
 		return;
 	}
-	
+
 	static PoseGroupWin tileWin;
-	
+
 	tileWin.m_tooltip = "";
 	tileWin.DisplayGroupTiles();
 	ImGui::SameLine();
 	{
 		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
-		
+
 		BodySettings bodyset = g_global.mesh->poseTargets();
-		
+
 		for(const auto & [target_name, tarVal] : g_global.mesh->posemap()) {
 			PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
 			assert(poseTarget);
-			
+
 			BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
-			
+
 			// FIX: Make sure that a bodyset with the given name really exists!
-			float target_value = (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
-			
+			float target_value =
+			        (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
+
 			if(!pathStartsWith(target_name, tileWin.m_category)) {
 				continue;
 			}
-			
-			const auto & minmax = std::make_pair(
-			    poseTarget->getMinAngle(),
-			    poseTarget->getMaxAngle()
-			);
-			
-			DrawTargetRow(g_poseImageTextures,
-			              minmax, target_name,
-			              target_value,
-			              tileWin.m_tooltip,
-			              applier);
+
+			const auto & minmax = std::make_pair(poseTarget->getMinAngle(),
+			                                     poseTarget->getMaxAngle());
+
+			DrawTargetRow(g_poseImageTextures, minmax, target_name, target_value,
+			              tileWin.m_tooltip, applier);
 		}
 		ImGui::EndChild();
 	}
@@ -210,17 +199,15 @@ void DisplayPoseTargetsApplied()
 		ImGui::End();
 		return;
 	}
-	
+
 	for(const auto & [target_name, target_value] : g_global.mesh->poseTargets()) {
-		
+
 		PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);
-		
-		const auto & minmax = std::make_pair(
-			poseTarget->getMinAngle(),
-			poseTarget->getMaxAngle()
-		);
-		
+
+		const auto & minmax =
+		        std::make_pair(poseTarget->getMinAngle(), poseTarget->getMaxAngle());
+
 		DrawAppliedRow(g_poseImageTextures, minmax, target_name, target_value, applier);
 	}
 	ImGui::End();

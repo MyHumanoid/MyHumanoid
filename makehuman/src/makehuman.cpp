@@ -91,7 +91,7 @@ using namespace std;
 using namespace Animorph;
 
 static constexpr char mh_app_name[] = "MyHumanoid";
-static constexpr char mh_version[] = "0.1.0";
+static constexpr char mh_version[]  = "0.1.0";
 
 
 static void loadTextures();
@@ -259,10 +259,7 @@ static void saveAutozoom(const string & filename)
 
 
 
-static void ResetMeshPose()
-{
-	g_global.mesh->resetPose();
-}
+static void ResetMeshPose() { g_global.mesh->resetPose(); }
 
 static void ResetMeshMorph()
 {
@@ -318,7 +315,7 @@ void DisplayLibraryCharacters()
 		character_image.replace(character_image.length() - kFilePrefixTarget.length(),
 		                        kFilePrefixTarget.length(), kFilePrefixPNG);
 
-		//logger("asd {}", std::string(foobar));
+		// logger("asd {}", std::string(foobar));
 
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
@@ -326,14 +323,15 @@ void DisplayLibraryCharacters()
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
 
 
-				{ // not copy-paste
-//					if(g_global.getAppMode() == POSES) {
-//						g_global.setAppMode(BODY_SETTINGS);
-//						g_global.mesh->bodyDetailsMode();
-//					}
+				{       // not copy-paste
+					//					if(g_global.getAppMode() ==
+					//POSES) { 						g_global.setAppMode(BODY_SETTINGS);
+					//						g_global.mesh->bodyDetailsMode();
+					//					}
 
-					const CharactersMap & charactersmap = g_global.mesh->characters();
-					
+					const CharactersMap & charactersmap =
+					        g_global.mesh->characters();
+
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {
 						g_global.mesh->doMorph(f->second, 1.0, true);
@@ -375,7 +373,7 @@ void DisplayLibraryPoses()
 		character_image.replace(character_image.length() - kFilePrefixTarget.length(),
 		                        kFilePrefixTarget.length(), kFilePrefixPNG);
 
-		//logger("asd {}", std::string(foobar));
+		// logger("asd {}", std::string(foobar));
 
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
@@ -383,12 +381,14 @@ void DisplayLibraryPoses()
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
 
 				{ // not copy-paste
-					const CharactersMap & charactersmap = g_global.mesh->characters();
-					
+					const CharactersMap & charactersmap =
+					        g_global.mesh->characters();
+
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {
 						g_global.mesh->doPose(f->second, 1.0, true);
-						// mesh->doPose (charactersmap[imgSource->getTargetName ()],
+						// mesh->doPose
+						// (charactersmap[imgSource->getTargetName ()],
 						// false);
 						g_global.mesh->calcNormals();
 					} else {
@@ -409,23 +409,22 @@ void DisplayPerformance()
 	ImGui::End();
 }
 
-void DisplayAbout() {
-	
-	constexpr static ImGuiWindowFlags winFlags
-	    = ImGuiWindowFlags_NoScrollbar
-	    | ImGuiWindowFlags_NoResize
-	    | ImGuiWindowFlags_NoCollapse
-	    | ImGuiWindowFlags_NoSavedSettings;
-	
+void DisplayAbout()
+{
+
+	constexpr static ImGuiWindowFlags winFlags =
+	        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize |
+	        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings;
+
 	if(!ImGui::Begin("About", &g_displayWin.about, winFlags)) {
 		ImGui::End();
 		return;
 	}
-	
+
 	ImGui::Text(mh_app_name);
 	ImGui::SameLine();
 	ImGui::Text(mh_version);
-	
+
 	ImGui::Text("Developer:");
 	ImGui::Text("  Eli2");
 	ImGui::NewLine();
@@ -450,7 +449,7 @@ void DisplayAbout() {
 	ImGui::Text("  Luca Miragoli");
 	ImGui::Text("  Cicca: targets");
 	ImGui::Text("  Laura Sclavi: logo concept");
-	
+
 	ImGui::End();
 }
 
@@ -563,13 +562,13 @@ void DisplayMainMenu()
 			if(ImGui::BeginMenu("Reset Morph? ...")) {
 				if(ImGui::MenuItem("YES")) {
 					CharacterSettingPanel * cs_p = dynamic_cast<
-					    CharacterSettingPanel *>(g_mainWindow->getPanel(
-					    kComponentID_CharacterSettingPanel));
+					        CharacterSettingPanel *>(g_mainWindow->getPanel(
+					        kComponentID_CharacterSettingPanel));
 					if(cs_p != NULL) {
 						cs_p->resetSlidersValues();
 					}
 					TargetPanel * tg_p = dynamic_cast<TargetPanel *>(
-					    g_mainWindow->getPanel(kComponentID_TargetPanel));
+					        g_mainWindow->getPanel(kComponentID_TargetPanel));
 					if(tg_p != NULL) {
 						tg_p->resetTargetValues();
 					}
@@ -638,7 +637,7 @@ void DisplayMainMenu()
 		}
 		ImGui::EndMainMenuBar();
 	}
-	
+
 	if(g_morphMode) {
 		if(g_displayWin.characterSettings) {
 			DisplayCharacterSettings();
@@ -649,7 +648,7 @@ void DisplayMainMenu()
 		if(g_displayWin.morphTargetsApplied) {
 			DisplayMorphTargetsApplied();
 		}
-	}else{
+	} else {
 		if(g_displayWin.poseTargets) {
 			DisplayPoseTargets();
 		}
@@ -657,7 +656,7 @@ void DisplayMainMenu()
 			DisplayPoseTargetsApplied();
 		}
 	}
-	
+
 	if(g_displayWin.performance) {
 		DisplayPerformance();
 		if(g_displayWin.show_demo_window) {
@@ -726,7 +725,7 @@ static void display()
 		g_requestShaderReload = false;
 
 		logger("Loading Shader set {}", g_requestShaderVersion);
-		
+
 		std::optional<mh::Shader> shader;
 		if(g_requestShaderVersion == 1) {
 			shader = LoadShader("shader/body.vert", "shader/body.frag");
@@ -752,8 +751,8 @@ static void display()
 	}
 
 	// TODO this is a hack
-	g_mainWinRect.pos.x = glutGet(GLUT_WINDOW_X);
-	g_mainWinRect.pos.y = glutGet(GLUT_WINDOW_Y);
+	g_mainWinRect.pos.x  = glutGet(GLUT_WINDOW_X);
+	g_mainWinRect.pos.y  = glutGet(GLUT_WINDOW_Y);
 	g_mainWinRect.size.x = glutGet(GLUT_WINDOW_WIDTH);
 	g_mainWinRect.size.y = glutGet(GLUT_WINDOW_HEIGHT);
 
@@ -953,9 +952,12 @@ int main(int argc, char ** argv)
 
 	int mainWinSizeX = g_jsonConfig["mainWindow"]["size"][0]; // glutGet(GLUT_SCREEN_WIDTH);
 	int mainWinSizeY = g_jsonConfig["mainWindow"]["size"][1]; // glutGet(GLUT_SCREEN_HEIGHT);
-	
+
 	{
-#define FOO(XX) do{g_displayWin.XX = g_jsonConfig["windowsOpen"][#XX];}while(false)
+#define FOO(XX)                                                                                    \
+	do {                                                                                       \
+		g_displayWin.XX = g_jsonConfig["windowsOpen"][#XX];                                \
+	} while(false)
 		FOO(characterSettings);
 		FOO(morphTargets);
 		FOO(morphTargetsApplied);
@@ -963,21 +965,21 @@ int main(int argc, char ** argv)
 		FOO(poseTargetsApplied);
 #undef FOO
 	}
-	
+
 	// FIXME WTF why does it move ? window decoration ?
 	mainWinPosX -= 2;
 	mainWinPosY -= 21;
 
 	Rect mainWinRect = Rect(mainWinPosX, mainWinPosY, mainWinSizeX, mainWinSizeY);
-	
-	
-	std::string winTitle = mh_app_name + " "s + mh_version;
-	g_mainWindow = new mhgui::Window(mainWinRect, winTitle);
 
-	tooltipPanel = new TooltipPanel(g_mainWindow->getSize().getHeight());
-	toolbarPanel = new ToolbarPanel();
-	g_global.mesh = new Mesh();
-	g_global.camera       = new Camera();
+
+	std::string winTitle = mh_app_name + " "s + mh_version;
+	g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
+
+	tooltipPanel      = new TooltipPanel(g_mainWindow->getSize().getHeight());
+	toolbarPanel      = new ToolbarPanel();
+	g_global.mesh     = new Mesh();
+	g_global.camera   = new Camera();
 	g_global.autozoom = new Autozoom();
 
 	characterSettingPanel = new CharacterSettingPanel();
@@ -987,14 +989,14 @@ int main(int argc, char ** argv)
 	g_backgroundShader = LoadShader("shader/background.vert", "shader/background.frag");
 
 	bool mesh_loaded = g_global.mesh->loadMesh(searchDataFile("base.vertices"),
-	                                         searchDataFile("base.faces"));
+	                                           searchDataFile("base.faces"));
 	if(!mesh_loaded) {
 		cerr << "couldn't load mesh geometry" << endl;
 		return 1;
 	}
 
 	bool material_loaded = g_global.mesh->loadMaterial(searchDataFile("base.materials"),
-	                                                 searchDataFile("base.colors"));
+	                                                   searchDataFile("base.colors"));
 	if(!material_loaded) {
 		cerr << "couldn't load mesh material informations" << endl;
 		return 1;
@@ -1074,9 +1076,9 @@ int main(int argc, char ** argv)
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO & io = ImGui::GetIO();
+	ImGuiIO & io     = ImGui::GetIO();
 	io.IniSavingRate = 60.f;
-	io.IniFilename = "MyHumanoid-config-gui.ini";
+	io.IniFilename   = "MyHumanoid-config-gui.ini";
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
 	ImGui::StyleColorsDark();
@@ -1176,16 +1178,16 @@ int main(int argc, char ** argv)
 
 	g_jsonConfig["mainWindow"]["pos"]  = {g_mainWinRect.pos.x, g_mainWinRect.pos.y};
 	g_jsonConfig["mainWindow"]["size"] = {g_mainWinRect.size.x, g_mainWinRect.size.y};
-	
+
 	{
-		auto & windows = g_jsonConfig["windowsOpen"];
+		auto & windows                 = g_jsonConfig["windowsOpen"];
 		windows["characterSettings"]   = g_displayWin.characterSettings;
-		windows["morphTargets"]        = g_displayWin.morphTargets; 
+		windows["morphTargets"]        = g_displayWin.morphTargets;
 		windows["morphTargetsApplied"] = g_displayWin.morphTargetsApplied;
-		windows["poseTargets"]         = g_displayWin.poseTargets         ;
-		windows["poseTargetsApplied"]  = g_displayWin.poseTargetsApplied  ;
+		windows["poseTargets"]         = g_displayWin.poseTargets;
+		windows["poseTargetsApplied"]  = g_displayWin.poseTargetsApplied;
 	}
-	
+
 	{
 		std::ofstream o(configFilePath);
 		o << std::setw(4) << g_jsonConfig << std::endl;
@@ -1304,17 +1306,20 @@ void renderMesh()
 			if(groupValue.texture) {
 				glActiveTexture(GL_TEXTURE0);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture0"), 0);
+				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture0"),
+				            0);
 			}
 			if(groupValue.specular) {
 				glActiveTexture(GL_TEXTURE1);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture1"), 1);
+				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture1"),
+				            1);
 			}
 			if(groupValue.bump) {
 				glActiveTexture(GL_TEXTURE2);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture2"), 2);
+				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture2"),
+				            2);
 			}
 		}
 

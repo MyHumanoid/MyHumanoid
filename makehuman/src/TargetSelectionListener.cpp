@@ -371,9 +371,10 @@ bool TargetSelectionListener::mouseReleased(const Point & inMousePos, int button
 		std::string pathAutozoom_data =
 		        searchDataDir("targets") + "/" + target + "/" + target + ".camera";
 		if(g_global.autozoom->lazyLoadData(pathAutozoom_data)) {
-			g_global.camera->moveCameraAnimated(pathAutozoom_data,
-			                           g_global.autozoom->getAutozoomData(pathAutozoom_data),
-			                           vertexvector);
+			g_global.camera->moveCameraAnimated(
+			        pathAutozoom_data,
+			        g_global.autozoom->getAutozoomData(pathAutozoom_data),
+			        vertexvector);
 		}
 
 		targetPanel->show();

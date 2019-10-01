@@ -77,12 +77,12 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 	multiset<float> minYSet, maxYSet;
 	multiset<float> minZSet, maxZSet;
 
-	int                              counter  = 0;
-	int                              n_vertex = FF_VERTEX_N;
-	float                            minX = 0, maxX = 0;
-	float                            minY = 0, maxY = 0;
-	float                            minZ = 0, maxZ = 0;
-	//pair<set<float>::iterator, bool> pr;
+	int   counter  = 0;
+	int   n_vertex = FF_VERTEX_N;
+	float minX = 0, maxX = 0;
+	float minY = 0, maxY = 0;
+	float minZ = 0, maxZ = 0;
+	// pair<set<float>::iterator, bool> pr;
 
 	Target & tmpTarget = getTarget();
 

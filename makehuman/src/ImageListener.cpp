@@ -138,7 +138,7 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 				   g_global.getAppMode() != BODY_SETTINGS) {
 					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
-					
+
 					if(!g_morphMode) {
 						g_morphMode = !g_morphMode;
 						mesh->bodyDetailsMode();
@@ -158,7 +158,7 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 				   g_global.getAppMode() != BODY_SETTINGS) {
 					Mesh * mesh = g_global.getMesh();
 					assert(mesh);
-					
+
 					if(!g_morphMode) {
 						g_morphMode = !g_morphMode;
 						mesh->bodyDetailsMode();

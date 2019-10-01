@@ -153,8 +153,8 @@ typedef struct DummyJoint {
 	glm::vec3      v3;
 } DummyJoint;
 
-using TargetMap = map<string, Target *>;
-using PoseMap = map<string, PoseTarget *>;
+using TargetMap     = map<string, Target *>;
+using PoseMap       = map<string, PoseTarget *>;
 using CharactersMap = map<string, BodySettings>;
 
 /*! \brief A poseable and morphable mesh.
@@ -173,19 +173,19 @@ using CharactersMap = map<string, BodySettings>;
  */
 class Mesh
 {
-	FaceVector m_faces;
-	VertexVector m_vert_morph; //!< container for modified mesh
-	VertexVector m_vert_morph_copy; //!< copy container for morphed mesh
-	VertexVector m_vert_morph_only;
+	FaceVector        m_faces;
+	VertexVector      m_vert_morph;      //!< container for modified mesh
+	VertexVector      m_vert_morph_copy; //!< copy container for morphed mesh
+	VertexVector      m_vert_morph_only;
 	vector<glm::vec3> m_vert_orginal; //!< container for orginal mesh
-	BodySettings   m_morphTargets;
-	TargetMap      m_targets;
-	MaterialVector m_materials;
-	BodySettings   m_poseTargets;   ///< Currently active PoseTargets
-	PoseMap        m_posemap; ///< Possible pose transformations
-	CharactersMap  m_characters; //!< container for all characters
-	Skin m_skin;
-	SmoothVertex m_smoothvertex;
+	BodySettings      m_morphTargets;
+	TargetMap         m_targets;
+	MaterialVector    m_materials;
+	BodySettings      m_poseTargets; ///< Currently active PoseTargets
+	PoseMap           m_posemap;     ///< Possible pose transformations
+	CharactersMap     m_characters;  //!< container for all characters
+	Skin              m_skin;
+	SmoothVertex      m_smoothvertex;
 	vector<glm::vec3> m_jointvector;
 
 public:
@@ -195,7 +195,7 @@ public:
 private:
 	/// Save with each vertex to which faces it belongs
 	void calcSharedVertices();
-	
+
 	/*! \brief Releases all targets in targetmap
 	 *
 	 * Used by the destructor.
@@ -278,7 +278,7 @@ public:
 	//@{
 
 	const vector<glm::vec3> & getJointVector() { return m_jointvector; }
-	glm::vec3           GetJoint0_Pos() { return getJointVector().at(0); }
+	glm::vec3                 GetJoint0_Pos() { return getJointVector().at(0); }
 	//@}
 
 	//@{
@@ -320,8 +320,7 @@ public:
 	 * \return true if files are found
 	 * \return false if files aren't found
 	 */
-	bool loadMaterial(const string & material_filename,
-	                         const string & face_colors_filename);
+	bool loadMaterial(const string & material_filename, const string & face_colors_filename);
 
 	/// Load all (pose) Targets recursively from a directory.
 	/*!
@@ -331,7 +330,7 @@ public:
 	 * if files aren't found
 	 */
 	void loadTargets(const string & target_root_path, int recursive_level = 1,
-	                        bool clearmap = true);
+	                 bool clearmap = true);
 
 	/// Load all PoseTargets recursively from a directory.
 	/*!

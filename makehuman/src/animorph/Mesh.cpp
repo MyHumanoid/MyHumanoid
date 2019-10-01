@@ -255,9 +255,7 @@ const DummyJoint dummyJoints[DUMMY_JOINTS] = {
 
 const float M_PI_180 = (M_PI / 180.0);
 
-Mesh::Mesh()
-{
-}
+Mesh::Mesh() {}
 
 Mesh::~Mesh()
 {
@@ -346,18 +344,11 @@ void Mesh::calcNormals()
 	calcVertexNormals();
 }
 
-bool Mesh::loadGroups(const string & groups_filename)
-{
-	return m_facegroup.load(groups_filename);
-}
+bool Mesh::loadGroups(const string & groups_filename) { return m_facegroup.load(groups_filename); }
 
-bool Mesh::loadSkin(const string & filename) {
-	return m_skin.load(filename);
-}
+bool Mesh::loadSkin(const string & filename) { return m_skin.load(filename); }
 
-bool Mesh::loadSmoothVertex(const string & filename) {
-	return m_smoothvertex.load(filename);
-}
+bool Mesh::loadSmoothVertex(const string & filename) { return m_smoothvertex.load(filename); }
 
 bool Mesh::loadMesh(const string & mesh_filename, const string & faces_filename)
 {
@@ -394,8 +385,7 @@ PoseTarget * Mesh::getPoseTargetForName(const string & inTargetname) const
 	return poseTarget;
 }
 
-bool Mesh::loadMaterial(const string & material_filename,
-                               const string & face_colors_filename)
+bool Mesh::loadMaterial(const string & material_filename, const string & face_colors_filename)
 {
 	bool mload  = m_materials.loadMaterials(material_filename);
 	bool fcload = m_faces.loadColors(face_colors_filename);
@@ -419,16 +409,16 @@ void Mesh::loadPoseTargets(const string & target_root_path, int recursive_level)
 	const StringList & str_list(dir_list.getDirectoryList());
 
 	for(const string & file : str_list) {
-		string         target_name(file);
+		string target_name(file);
 
 		target_name.erase(0, target_root_path.length() + 1);
 		string::size_type loc = target_name.find("/", 0);
 		if(loc == string::npos) {
 			continue;
 		}
-		
+
 		PoseTarget * poseTarget = new PoseTarget();
-		bool rc = poseTarget->load(file);
+		bool         rc         = poseTarget->load(file);
 		if(!rc) {
 			delete poseTarget;
 		} else {
@@ -447,7 +437,7 @@ void Mesh::loadCharacters(const string & characters_root_path, int recursive_lev
 	dir_list.setFileFilter(".bs");
 
 	for(const string & file : dir_list.getDirectoryList()) {
-		string         character_name(file);
+		string character_name(file);
 
 		character_name.erase(0, characters_root_path.length() + 1);
 
@@ -474,7 +464,7 @@ void Mesh::loadTargets(const string & target_root_path, int recursive_level, boo
 	const StringList & str_list(dir_list.getDirectoryList());
 
 	for(const string & file : str_list) {
-		string         target_name(file);
+		string target_name(file);
 		target_name.erase(0, target_root_path.length() + 1);
 
 		Target * targetEntry = new Target();
@@ -562,7 +552,7 @@ void Mesh::doMorph(const BodySettings & bs, bool clear)
 		m_vert_morph_only.setCoordinates(m_vert_orginal);
 	}
 
-	for(const auto &[target_name, morph_value] : bs) {
+	for(const auto & [target_name, morph_value] : bs) {
 		doMorph(target_name, morph_value);
 	}
 
@@ -580,7 +570,7 @@ void Mesh::doMorph(const BodySettings & bs, float value, bool clear)
 		m_vert_morph_only.setCoordinates(m_vert_orginal);
 	}
 
-	for(const auto &[target_name, morph_value] : bs) {
+	for(const auto & [target_name, morph_value] : bs) {
 		doMorph(target_name, morph_value * value);
 	}
 }
@@ -595,8 +585,7 @@ void Mesh::initPoses()
 	}
 
 	for(SkinVertex & skinVertex : m_skin) {
-		glm::vec3 centeroid(
-		        calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
+		glm::vec3 centeroid(calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
 
 		glm::vec3 oriDist = m_vert_morph[skinVertex.getSkinVertex()].co - centeroid;
 		skinVertex.setOriginalDist(glm::length(oriDist));
@@ -612,9 +601,7 @@ void Mesh::poseMode()
 	doPose(m_poseTargets, false);
 }
 
-void Mesh::bodyDetailsMode() {
-	m_vert_morph = m_vert_morph_copy;
-}
+void Mesh::bodyDetailsMode() { m_vert_morph = m_vert_morph_copy; }
 
 void Mesh::resetMorph()
 {
@@ -646,7 +633,7 @@ bool Mesh::setPose(const std::string & target_name, float morph_value, bool remo
 
 	m_vert_morph = m_vert_morph_copy;
 
-	for(const auto &[target_name, morph_value] : m_poseTargets) {
+	for(const auto & [target_name, morph_value] : m_poseTargets) {
 		PoseTarget * poseTarget = getPoseTargetForName(target_name);
 		assert(poseTarget);
 		doPose(target_name, morph_value, poseTarget->getModVertex());
@@ -680,7 +667,7 @@ void Mesh::doPoseRotation(const PoseRotation & pr, float morph_value, const Used
 
 	RotateAxis axis = pr.getAxis();
 
-	for(const PoseTargetData & td: pr) {
+	for(const PoseTargetData & td : pr) {
 
 		// continue if the Pose Target datas Vertex is not part of the modVertex
 		if(modVertex.find(td.vertex_number) == modVertex.end()) {
@@ -696,11 +683,12 @@ void Mesh::doPoseRotation(const PoseRotation & pr, float morph_value, const Used
 	}
 }
 
-void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value, const UsedVertex & modVertex)
+void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value,
+                             const UsedVertex & modVertex)
 {
 	const Target &  tmpTarget  = pt.getTarget();
 	const glm::vec3 formFactor = pt.getFormFactor();
-	float     real_value = 0;
+	float           real_value = 0;
 
 	if(pt.getNormalize()) {
 		if(morph_value < 0) {
@@ -716,7 +704,7 @@ void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value, cons
 		real_value = morph_value;
 	}
 
-	for(const TargetData & td: tmpTarget) {
+	for(const TargetData & td : tmpTarget) {
 
 		// continue if the Pose Target datas Vertex is not part of the modVertex
 		if(modVertex.find(td.vertex_number) == modVertex.end()) {
@@ -727,11 +715,10 @@ void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value, cons
 		// vertexvector_morph[td.vertex_number].co) * (morph_value * formFactor);
 		// vertexvector_morph[td.vertex_number].co += (td.morph_vector * formFactor)
 		// * real_value;
-		m_vert_morph[td.vertex_number].co +=
-		        glm::vec3(formFactor.x * td.morph_vector.x,
-		                  formFactor.y * td.morph_vector.y,
-		                  formFactor.z * td.morph_vector.z) *
-		        real_value;
+		m_vert_morph[td.vertex_number].co += glm::vec3(formFactor.x * td.morph_vector.x,
+		                                               formFactor.y * td.morph_vector.y,
+		                                               formFactor.z * td.morph_vector.z) *
+		                                     real_value;
 	}
 }
 
@@ -753,7 +740,7 @@ void Mesh::doPose(const string & target_name, float morph_value, const UsedVerte
 	list<PoseRotation>::iterator    rotations_it = rotations.begin();
 
 	// translations
-	for(const PoseTranslation & pt: translations) {
+	for(const PoseTranslation & pt : translations) {
 
 		if(cat != pt.getCat()) {
 			while(rotations_it != rotations.end()) {
@@ -794,8 +781,7 @@ void Mesh::applySmooth(const int recursive_level)
 
 			glm::vec3 centeroid(calcCenteroid(
 			        vector<int>(smoothData_it++, smooth.end()), m_vert_morph));
-			m_vert_morph[vToMove].co =
-			        (centeroid + m_vert_morph[vToMove].co);
+			m_vert_morph[vToMove].co = (centeroid + m_vert_morph[vToMove].co);
 			m_vert_morph[vToMove].co /= 2;
 		}
 	}
@@ -803,17 +789,16 @@ void Mesh::applySmooth(const int recursive_level)
 
 void Mesh::applySkin()
 {
-	for(SkinVertex & skinVertex: m_skin) {
+	for(SkinVertex & skinVertex : m_skin) {
 
-		glm::vec3 centeroid(
-		        calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
+		glm::vec3 centeroid(calcCenteroid(skinVertex.getLinkedMuscles(), m_vert_morph));
 
 		glm::vec3 normal(
 		        calcAverageNormalLength(skinVertex.getLinkedMuscles(), m_vert_morph));
 
 		float r = skinVertex.getOriginalDist() /
 		          glm::length(normal); // normal.getMagnitude();
-		glm::vec3 delta                                   = normal * r;
+		glm::vec3 delta                             = normal * r;
 		m_vert_morph[skinVertex.getSkinVertex()].co = centeroid + delta;
 	}
 }

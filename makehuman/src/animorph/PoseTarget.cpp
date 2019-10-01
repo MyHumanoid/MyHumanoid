@@ -23,7 +23,7 @@ bool PoseTarget::load(const string & fullPath)
 	const StringList & str_list(dir_list.getDirectoryList());
 
 	for(const string & file : str_list) {
-		string         target_name(file);
+		string target_name(file);
 		target_name.erase(0, fullPath.length() + 1);
 
 		if(target_name.find(negative_rotation_type) ==
@@ -105,7 +105,7 @@ bool PoseTarget::load(const string & fullPath)
 void PoseTarget::calcTranslationsFormFactors(const VertexVector &    vertexvector,
                                              PoseTranslationVector & translations)
 {
-	for(PoseTranslation & t: translations) {
+	for(PoseTranslation & t : translations) {
 		t.calcFormFactor(vertexvector);
 	}
 }
@@ -134,7 +134,7 @@ const glm::vec3 PoseTarget::getFirstRotationCenteroid()
 	glm::vec3 res(0.f, 0.f, 0.f);
 
 	if(positive) {
-		for(const PoseRotation & r: positiveRotations) {
+		for(const PoseRotation & r : positiveRotations) {
 			if(r.getLimb() == false)
 				continue;
 			return res = r.getCenter();
@@ -142,7 +142,7 @@ const glm::vec3 PoseTarget::getFirstRotationCenteroid()
 	}
 
 	if(negative) {
-		for(const PoseRotation & r: negativeRotations) {
+		for(const PoseRotation & r : negativeRotations) {
 			if(r.getLimb() == false)
 				continue;
 			return res = r.getCenter();

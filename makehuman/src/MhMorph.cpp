@@ -22,7 +22,7 @@ static IconMap g_targetImageTextures;
 
 void CreateTargetImageTextures()
 {
-	
+
 	fs::path baseDir = "pixmaps/tgimg/";
 	loadTexturesFromDir(g_targetImageTextures, baseDir);
 }
@@ -32,18 +32,18 @@ void XYfoobar(mh::Texture texture, glm::vec2 & value)
 {
 	auto *    dl = ImGui::GetForegroundDrawList();
 	ImGuiIO & io = ImGui::GetIO();
-	
+
 	MhGui::ImageButton(texture, ImVec2(192, 104));
 	vec2 pMin = ImGui::GetItemRectMin();
 	vec2 size = ImGui::GetItemRectSize();
 	if(ImGui::IsItemActive()) {
 		vec2 relPos = vec2(io.MousePos) - pMin;
-		relPos       = glm::max(relPos, vec2(0));
-		relPos       = glm::min(relPos, size);
-		value        = vec2(relPos) / vec2(size);
+		relPos      = glm::max(relPos, vec2(0));
+		relPos      = glm::min(relPos, size);
+		value       = vec2(relPos) / vec2(size);
 	}
-	
-	vec2       cursorPos    = pMin + vec2(value * vec2(size));
+
+	vec2        cursorPos    = pMin + vec2(value * vec2(size));
 	float       radius       = 6.0f;
 	const ImU32 col_white    = IM_COL32(255, 255, 255, 255);
 	const ImU32 col_midgrey  = IM_COL32(128, 128, 128, 255);
@@ -56,41 +56,42 @@ void XYfoobar(mh::Texture texture, glm::vec2 & value)
 void DisplayCharacterSettings()
 {
 	using glm::vec2;
-	
+
 	using OptTex = std::optional<mh::Texture>;
-	
+
 	struct Textures {
-		OptTex ageGenderBkg  = LoadTextureFromFile("pixmaps/ui/age_selector.png");
-		OptTex massBkg = LoadTextureFromFile("pixmaps/ui/muscle_size_selector.png");
-		OptTex breastBkg      = LoadTextureFromFile("pixmaps/ui/breast_selector.png");
-		OptTex shapeBkg      = LoadTextureFromFile("pixmaps/ui/shape_selector.png");
+		OptTex ageGenderBkg = LoadTextureFromFile("pixmaps/ui/age_selector.png");
+		OptTex massBkg      = LoadTextureFromFile("pixmaps/ui/muscle_size_selector.png");
+		OptTex breastBkg    = LoadTextureFromFile("pixmaps/ui/breast_selector.png");
+		OptTex shapeBkg     = LoadTextureFromFile("pixmaps/ui/shape_selector.png");
 	};
-	
+
 	static const Textures tex;
-	
+
 	{
 		vec2 foo = vec2(192, 104);
-		
-		Point * agePos     = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
+
+		Point * agePos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
 		if(agePos)
 			g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
-		
-		Point * mPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
+
+		Point * mPos =
+		        g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
 		if(mPos)
 			g_global.bodyWeightMuscle = vec2(mPos->x, mPos->y) / foo;
-		
+
 		Point * bPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
 		if(bPos)
 			g_global.breastSizeShape = vec2(bPos->x, bPos->y) / foo;
-		
+
 		Point * sPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
 		if(sPos)
 			g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
 	}
-	
+
 	ImGui::SetNextWindowSize(vec2(220, 800));
 	ImGui::Begin("Character Setting");
-	
+
 	ImGui::Text("Age/Sex");
 	XYfoobar(tex.ageGenderBkg.value(), g_global.ageAndSex);
 	ImGui::Text("Bodymass Weight/Muscle");
@@ -99,16 +100,16 @@ void DisplayCharacterSettings()
 	XYfoobar(tex.breastBkg.value(), g_global.breastSizeShape);
 	ImGui::Text("Bodyshape Shape/Height");
 	XYfoobar(tex.shapeBkg.value(), g_global.bodyShapeHeight);
-	
+
 	ImGui::End();
 }
 
 bool isCompositeMorphTarget(const std::string & target_name)
 {
 	if(target_name.find("ages", 0) != string::npos ||
-	    target_name.find("breast", 0) != string::npos ||
-	    target_name.find("muscleSize", 0) != string::npos ||
-	    target_name.find("shapes", 0) != string::npos) {
+	   target_name.find("breast", 0) != string::npos ||
+	   target_name.find("muscleSize", 0) != string::npos ||
+	   target_name.find("shapes", 0) != string::npos) {
 		return true;
 	}
 	return false;
@@ -191,20 +192,16 @@ struct MorphGroupWin : public TileGroupChildWindow<MorphGroupWin> {
 	// clang-format on
 };
 
-auto applier = [](const std::string & name,
-			  const float & value,
-			  const bool deleteOnZero)
-{
+auto applier = [](const std::string & name, const float & value, const bool deleteOnZero) {
 	g_global.mesh->doMorph(name, value);
 	g_global.mesh->calcNormals();
 };
 
 void DisplayMorphTargets()
 {
-	constexpr static ImGuiWindowFlags winFlags
-	    = ImGuiWindowFlags_NoScrollbar
-	    | ImGuiWindowFlags_NoResize;
-	
+	constexpr static ImGuiWindowFlags winFlags =
+	        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize;
+
 	ImGui::SetNextWindowSize(vec2(380, 510));
 	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets, winFlags)) {
 		ImGui::End();
@@ -212,36 +209,33 @@ void DisplayMorphTargets()
 	}
 
 	static MorphGroupWin tileWin;
-	
+
 	tileWin.m_tooltip = "";
 	tileWin.DisplayGroupTiles();
 	ImGui::SameLine();
 	{
 		ImGui::BeginChild("Morph Targets", vec2(140, 460), false);
-		
+
 		BodySettings bodyset = g_global.mesh->morphTargets();
-		
+
 		for(const auto & targetEntry : g_global.mesh->targets()) {
 			const string & target_name(targetEntry.first);
-			
+
 			if(isCompositeMorphTarget(target_name)) {
 				continue;
 			}
-			
+
 			if(!pathStartsWith(target_name, tileWin.m_category)) {
 				continue;
 			}
-			
+
 			float target_value = bodyset[target_name];
-			
+
 
 			const auto & minmax = std::make_pair(0, 1);
-			
-			DrawTargetRow(g_targetImageTextures,
-			              minmax, target_name,
-			              target_value,
-			              tileWin.m_tooltip,
-			              applier);
+
+			DrawTargetRow(g_targetImageTextures, minmax, target_name, target_value,
+			              tileWin.m_tooltip, applier);
 		}
 		ImGui::EndChild();
 	}
@@ -255,20 +249,19 @@ void DisplayMorphTargetsApplied()
 		ImGui::End();
 		return;
 	}
-	
+
 	for(const auto & bodyset_it : g_global.mesh->morphTargets()) {
-		
+
 		string target_name(bodyset_it.first);
-		
+
 		if(isCompositeMorphTarget(target_name)) {
 			continue;
 		}
-		
+
 		float target_value = bodyset_it.second;
 
-		DrawAppliedRow(g_targetImageTextures,
-		               std::make_pair(0.f, 1.f),
-		               target_name, target_value, applier);
+		DrawAppliedRow(g_targetImageTextures, std::make_pair(0.f, 1.f), target_name,
+		               target_value, applier);
 	}
 	ImGui::End();
 }
