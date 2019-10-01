@@ -182,10 +182,10 @@ class Mesh
 	vector<glm::vec3> vertexvector_orginal; //!< container for orginal mesh
 
 	// VertexGroup       vgroup;
-	BodySettings   bodyset;
+	BodySettings   m_morphTargets;
 	TargetMap      m_targets;
 	MaterialVector m_materials;
-	BodySettings   poses;   ///< Currently active PoseTargets
+	BodySettings   m_poseTargets;   ///< Currently active PoseTargets
 	PoseMap        m_posemap; ///< Possible pose transformations
 	CharactersMap  m_characters; //!< container for all characters
 
@@ -302,12 +302,12 @@ public:
 
 	const PoseMap & posemap() { return m_posemap; }
 
-	const CharactersMap & getCharactersMapRef() { return m_characters; }
+	const CharactersMap & characters() { return m_characters; }
 	//@}
 
-	const BodySettings & getBodySettings() const { return bodyset; }
+	const BodySettings & morphTargets() const { return m_morphTargets; }
 
-	const BodySettings & getPoses() const { return poses; }
+	const BodySettings & poseTargets() const { return m_poseTargets; }
 
 	/** @name Loading
 	 */

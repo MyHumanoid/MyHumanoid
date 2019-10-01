@@ -134,7 +134,7 @@ static void CreateCaractersIconTextures()
 
 static void saveBodySettings(const string & filename)
 {
-	BodySettings bodyset = g_global.mesh->getBodySettings();
+	BodySettings bodyset = g_global.mesh->morphTargets();
 
 	bool state = bodyset.save(filename);
 
@@ -183,7 +183,7 @@ static void loadBodySettings(const string & filename)
 
 static void savePoses(const string & filename)
 {
-	BodySettings poses = g_global.mesh->getPoses();
+	BodySettings poses = g_global.mesh->poseTargets();
 
 	bool state = poses.save(filename);
 
@@ -295,7 +295,7 @@ void DisplayLibraryCharacters()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+	const CharactersMap & charactersmap = g_global.mesh->characters();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -332,7 +332,7 @@ void DisplayLibraryCharacters()
 //						g_global.mesh->bodyDetailsMode();
 //					}
 
-					const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+					const CharactersMap & charactersmap = g_global.mesh->characters();
 					
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {
@@ -352,7 +352,7 @@ void DisplayLibraryPoses()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+	const CharactersMap & charactersmap = g_global.mesh->characters();
 	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
 	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
 		const string & character_name((*charactersmap_it).first);
@@ -383,7 +383,7 @@ void DisplayLibraryPoses()
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
 
 				{ // not copy-paste
-					const CharactersMap & charactersmap = g_global.mesh->getCharactersMapRef();
+					const CharactersMap & charactersmap = g_global.mesh->characters();
 					
 					auto f = charactersmap.find(character_name);
 					if(f != charactersmap.end()) {

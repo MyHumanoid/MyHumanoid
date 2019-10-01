@@ -513,7 +513,7 @@ bool Mesh::doMorph(const string & target_name, float morph_value)
 	}
 
 	float real_morph_value;
-	float bs_morph_value = bodyset[target_name];
+	float bs_morph_value = m_morphTargets[target_name];
 
 	// TODO: round morph value??
 
@@ -535,9 +535,9 @@ bool Mesh::doMorph(const string & target_name, float morph_value)
 	}
 
 	if(morph_value == 0.0) {
-		bodyset.erase(target_name);
+		m_morphTargets.erase(target_name);
 	} else {
-		bodyset[target_name] = morph_value;
+		m_morphTargets[target_name] = morph_value;
 	}
 
 #ifdef DEBUG
@@ -557,7 +557,7 @@ void Mesh::doMorph(const BodySettings & bs, bool clear)
 #endif // DEBUG
 
 	if(clear) {
-		bodyset.clear();
+		m_morphTargets.clear();
 		vertexvector_morph.setCoordinates(vertexvector_orginal);
 		vertexvector_morph_only.setCoordinates(vertexvector_orginal);
 	}
@@ -575,7 +575,7 @@ void Mesh::doMorph(const BodySettings & bs, bool clear)
 void Mesh::doMorph(const BodySettings & bs, float value, bool clear)
 {
 	if(clear) {
-		bodyset.clear();
+		m_morphTargets.clear();
 		vertexvector_morph.setCoordinates(vertexvector_orginal);
 		vertexvector_morph_only.setCoordinates(vertexvector_orginal);
 	}
@@ -609,7 +609,7 @@ void Mesh::poseMode()
 
 	initPoses();
 
-	doPose(poses, false);
+	doPose(m_poseTargets, false);
 }
 
 void Mesh::bodyDetailsMode() {
@@ -624,7 +624,7 @@ void Mesh::resetMorph()
 
 void Mesh::resetPose()
 {
-	poses.clear();
+	m_poseTargets.clear();
 	vertexvector_morph      = vertexvector_morph_copy;
 	vertexvector_morph_only = vertexvector_morph_copy;
 }
@@ -639,14 +639,14 @@ bool Mesh::setPose(const std::string & target_name, float morph_value, bool remo
 	}
 
 	if(removeOnZero && morph_value == 0.0) {
-		poses.erase(target_name);
+		m_poseTargets.erase(target_name);
 	} else {
-		poses[target_name] = morph_value;
+		m_poseTargets[target_name] = morph_value;
 	}
 
 	vertexvector_morph = vertexvector_morph_copy;
 
-	for(const auto &[target_name, morph_value] : poses) {
+	for(const auto &[target_name, morph_value] : m_poseTargets) {
 		PoseTarget * poseTarget = getPoseTargetForName(target_name);
 		assert(poseTarget);
 		doPose(target_name, morph_value, poseTarget->getModVertex());
@@ -879,7 +879,7 @@ void Mesh::doPose(const BodySettings & bs, bool clear)
        //  bool pose = false;
 
 	if(clear) {
-		poses.clear();
+		m_poseTargets.clear();
 		vertexvector_morph      = vertexvector_morph_copy;
 		vertexvector_morph_only = vertexvector_morph_copy;
 	}
@@ -887,7 +887,7 @@ void Mesh::doPose(const BodySettings & bs, bool clear)
 	for(const auto & [target_name, morph_value] : bs) {
 
 		if(morph_value != 0.0) {
-			poses[target_name] = morph_value;
+			m_poseTargets[target_name] = morph_value;
 		}
 
 		PoseTarget * poseTarget = getPoseTargetForName(target_name);
@@ -909,7 +909,7 @@ void Mesh::doPose(const BodySettings & bs, bool clear)
 void Mesh::doPose(const BodySettings & bs, const float value, bool clear)
 {
 	if(clear) {
-		poses.clear();
+		m_poseTargets.clear();
 		vertexvector_morph      = vertexvector_morph_copy;
 		vertexvector_morph_only = vertexvector_morph_copy;
 	}

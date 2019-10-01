@@ -172,7 +172,7 @@ void DisplayPoseTargets() {
 	{
 		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
 		
-		BodySettings bodyset = g_global.mesh->getPoses();
+		BodySettings bodyset = g_global.mesh->poseTargets();
 		
 		for(const auto & [target_name, tarVal] : g_global.mesh->posemap()) {
 			PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
@@ -211,7 +211,7 @@ void DisplayPoseTargetsApplied()
 		return;
 	}
 	
-	for(const auto & [target_name, target_value] : g_global.mesh->getPoses()) {
+	for(const auto & [target_name, target_value] : g_global.mesh->poseTargets()) {
 		
 		PoseTarget * poseTarget = g_global.mesh->getPoseTargetForName(target_name);
 		assert(poseTarget);

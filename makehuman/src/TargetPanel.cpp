@@ -85,7 +85,7 @@ void TargetPanel::createWidgets()
 	const Color c(1.0, 0.0, 0.0);
 	const Point kTooltipPos(70, 12);
 
-	BodySettings bodyset = mesh->getBodySettings();
+	BodySettings bodyset = mesh->morphTargets();
 
 	TargetSlider * image_slider;
 

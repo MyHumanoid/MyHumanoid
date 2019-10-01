@@ -219,7 +219,7 @@ void DisplayMorphTargets()
 	{
 		ImGui::BeginChild("Morph Targets", vec2(140, 460), false);
 		
-		BodySettings bodyset = g_global.mesh->getBodySettings();
+		BodySettings bodyset = g_global.mesh->morphTargets();
 		
 		for(const auto & targetEntry : g_global.mesh->targets()) {
 			const string & target_name(targetEntry.first);
@@ -256,7 +256,7 @@ void DisplayMorphTargetsApplied()
 		return;
 	}
 	
-	for(const auto & bodyset_it : g_global.mesh->getBodySettings()) {
+	for(const auto & bodyset_it : g_global.mesh->morphTargets()) {
 		
 		string target_name(bodyset_it.first);
 		
