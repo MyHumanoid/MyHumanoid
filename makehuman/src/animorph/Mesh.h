@@ -285,8 +285,8 @@ public:
 	 */
 	//@{
 
-	vector<glm::vec3> * getJointVector() { return &jointvector; }
-	glm::vec3           GetJoint0_Pos() { return getJointVector()->at(0); }
+	const vector<glm::vec3> & getJointVector() { return jointvector; }
+	glm::vec3           GetJoint0_Pos() { return getJointVector().at(0); }
 	//@}
 
 	//@{
@@ -319,7 +319,7 @@ public:
 	 * \return true if files are found
 	 * \return false if files aren't found
 	 */
-	bool loadMeshFactory(const string & mesh_filename, const string & faces_filename);
+	bool loadMesh(const string & mesh_filename, const string & faces_filename);
 
 	/// Load the Material files.
 	/*!
@@ -328,7 +328,7 @@ public:
 	 * \return true if files are found
 	 * \return false if files aren't found
 	 */
-	bool loadMaterialFactory(const string & material_filename,
+	bool loadMaterial(const string & material_filename,
 	                         const string & face_colors_filename);
 
 	/// Load all (pose) Targets recursively from a directory.
@@ -338,7 +338,7 @@ public:
 	 * DirectoryList for more help. \return true if files are found \return false
 	 * if files aren't found
 	 */
-	void loadTargetsFactory(const string & target_root_path, int recursive_level = 1,
+	void loadTargets(const string & target_root_path, int recursive_level = 1,
 	                        bool clearmap = true);
 
 	/// Load all PoseTargets recursively from a directory.
@@ -348,7 +348,7 @@ public:
 	 * DirectoryList for more help. \return true if files are found \return false
 	 * if files aren't found
 	 */
-	void loadPoseTargetsFactory(const string & target_root_path, int recursive_level = 1);
+	void loadPoseTargets(const string & target_root_path, int recursive_level = 1);
 
 	/// Load all characters (BodySettings) recursively from a directory.
 	/*!
@@ -357,24 +357,17 @@ public:
 	 * DirectoryList for more help. \return true if files are found \return false
 	 * if files aren't found
 	 */
-	void loadCharactersFactory(const string & characters_root_path, int recursive_level = 1);
+	void loadCharacters(const string & characters_root_path, int recursive_level = 1);
 
-	/// Load faces groups from file
-	bool loadGroupsFactory(const string & groups_filename);
-
-	/// Load skin info from file
-	bool loadSkinFactory(const string & filename);
-
-	/// Load smooth info from file
-	bool loadSmoothVertexFactory(const string & filename);
+	bool loadGroups(const string & groups_filename);
+	bool loadSkin(const string & filename);
+	bool loadSmoothVertex(const string & filename);
 
 	//@}
 
 	void loadSkeleton() { prepareSkeleton(); }
 
 	SKELETON_JOINT getSymmetricJoint(SKELETON_JOINT joint);
-	/**** calculate API ****/
-	/***********************/
 
 	/// Calculate normals for faces and vertices
 	void calcNormals();
@@ -467,7 +460,6 @@ public:
 	bool setPose(const string & target_name, float morph_value, bool removeOnZero = true);
 
 	/// Reset the Mesh to loaded state without poses
-	// void resetPose (const PoseRotation &target);
 	void resetPose();
 	//@}
 
@@ -476,7 +468,6 @@ public:
 
 	/// Switch to body details mode
 	void bodyDetailsMode();
-
-}; // class Mesh
+};
 
 } // namespace Animorph

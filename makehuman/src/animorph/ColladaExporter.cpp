@@ -764,8 +764,8 @@ void ColladaExporter::setChildNode(XMLNode * child, SKELETON_JOINT numb, unsigne
 	xNode_translate = child->addChild("translate");
 	xNode_translate.addAttribute("sid", "translate");
 
-	glm::vec3 parentnode = mesh.getJointVector()->at(row);
-	glm::vec3 childnode  = mesh.getJointVector()->at(numb);
+	glm::vec3 parentnode = mesh.getJointVector().at(row);
+	glm::vec3 childnode  = mesh.getJointVector().at(numb);
 
 	glm::vec3 diff;
 	if(childnode == glm::vec3(0, 0, 0))

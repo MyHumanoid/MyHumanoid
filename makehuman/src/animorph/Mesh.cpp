@@ -346,20 +346,20 @@ void Mesh::calcNormals()
 	calcVertexNormals();
 }
 
-bool Mesh::loadGroupsFactory(const string & groups_filename)
+bool Mesh::loadGroups(const string & groups_filename)
 {
 	return facegroup.load(groups_filename);
 }
 
-bool Mesh::loadSkinFactory(const string & filename) {
+bool Mesh::loadSkin(const string & filename) {
 	return skin.load(filename);
 }
 
-bool Mesh::loadSmoothVertexFactory(const string & filename) {
+bool Mesh::loadSmoothVertex(const string & filename) {
 	return smoothvertex.load(filename);
 }
 
-bool Mesh::loadMeshFactory(const string & mesh_filename, const string & faces_filename)
+bool Mesh::loadMesh(const string & mesh_filename, const string & faces_filename)
 {
 	bool vload = vertexvector_morph.load(mesh_filename);
 	bool fload = m_faces.loadGeometry(faces_filename);
@@ -394,7 +394,7 @@ PoseTarget * Mesh::getPoseTargetForName(const string & inTargetname) const
 	return poseTarget;
 }
 
-bool Mesh::loadMaterialFactory(const string & material_filename,
+bool Mesh::loadMaterial(const string & material_filename,
                                const string & face_colors_filename)
 {
 	bool mload  = m_materials.loadMaterials(material_filename);
@@ -405,7 +405,7 @@ bool Mesh::loadMaterialFactory(const string & material_filename,
 	return true;
 }
 
-void Mesh::loadPoseTargetsFactory(const string & target_root_path, int recursive_level)
+void Mesh::loadPoseTargets(const string & target_root_path, int recursive_level)
 {
 	clearPosemap(); // wipe out all old posemap entries first
 
@@ -437,7 +437,7 @@ void Mesh::loadPoseTargetsFactory(const string & target_root_path, int recursive
 	}
 }
 
-void Mesh::loadCharactersFactory(const string & characters_root_path, int recursive_level)
+void Mesh::loadCharacters(const string & characters_root_path, int recursive_level)
 {
 	// reading all the targets recursively
 	DirectoryList dir_list;
@@ -457,7 +457,7 @@ void Mesh::loadCharactersFactory(const string & characters_root_path, int recurs
 	}
 }
 
-void Mesh::loadTargetsFactory(const string & target_root_path, int recursive_level, bool clearmap)
+void Mesh::loadTargets(const string & target_root_path, int recursive_level, bool clearmap)
 {
 
 	if(clearmap) {

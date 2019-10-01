@@ -986,14 +986,14 @@ int main(int argc, char ** argv)
 	g_bodyShader       = LoadShader("shader/body.vert", "shader/body.frag");
 	g_backgroundShader = LoadShader("shader/background.vert", "shader/background.frag");
 
-	bool mesh_loaded = g_global.mesh->loadMeshFactory(searchDataFile("base.vertices"),
+	bool mesh_loaded = g_global.mesh->loadMesh(searchDataFile("base.vertices"),
 	                                         searchDataFile("base.faces"));
 	if(!mesh_loaded) {
 		cerr << "couldn't load mesh geometry" << endl;
 		return 1;
 	}
 
-	bool material_loaded = g_global.mesh->loadMaterialFactory(searchDataFile("base.materials"),
+	bool material_loaded = g_global.mesh->loadMaterial(searchDataFile("base.materials"),
 	                                                 searchDataFile("base.colors"));
 	if(!material_loaded) {
 		cerr << "couldn't load mesh material informations" << endl;
@@ -1003,19 +1003,19 @@ int main(int argc, char ** argv)
 	g_global.mesh->texture_vector.load(searchDataFile("base.uv"));
 
 	// load face groups with factory function
-	bool groups_loaded = g_global.mesh->loadGroupsFactory(searchDataFile("base.parts"));
+	bool groups_loaded = g_global.mesh->loadGroups(searchDataFile("base.parts"));
 	if(!groups_loaded) {
 		cerr << "couldn't load face groups" << endl;
 		return 1;
 	}
 
-	bool skin_loaded = g_global.mesh->loadSkinFactory(searchDataFile("base.skin"));
+	bool skin_loaded = g_global.mesh->loadSkin(searchDataFile("base.skin"));
 	if(!skin_loaded) {
 		cerr << "couldn't load skin info" << endl;
 		return 1;
 	}
 
-	bool smooth_loaded = g_global.mesh->loadSmoothVertexFactory(searchDataFile("base.smooth"));
+	bool smooth_loaded = g_global.mesh->loadSmoothVertex(searchDataFile("base.smooth"));
 	if(!smooth_loaded) {
 		cerr << "couldn't load smooth info" << endl;
 		return 1;
@@ -1028,10 +1028,10 @@ int main(int argc, char ** argv)
 	loadTextures();
 	g_global.m_enableTexture = true;
 
-	g_global.mesh->loadTargetsFactory(searchDataDir("targets"));
-	g_global.mesh->loadTargetsFactory(searchDataDir("selectors"), 1, false);
-	g_global.mesh->loadPoseTargetsFactory(searchDataDir("rotations"));
-	g_global.mesh->loadCharactersFactory(searchDataDir("bs_data"));
+	g_global.mesh->loadTargets(searchDataDir("targets"));
+	g_global.mesh->loadTargets(searchDataDir("selectors"), 1, false);
+	g_global.mesh->loadPoseTargets(searchDataDir("rotations"));
+	g_global.mesh->loadCharacters(searchDataDir("bs_data"));
 
 	init = false;
 	g_mainWindow->setCamera(g_global.camera);
