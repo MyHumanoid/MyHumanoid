@@ -40,8 +40,6 @@
 
 #include <experimental/filesystem>
 
-#include <json.hpp>
-
 #include "MhGui.h"
 #include "MhGuiData.h"
 #include "MhMorph.h"
@@ -83,10 +81,11 @@
 #include "TooltipPanel.h"
 #include "util.h"
 
+#include "MhConfig.h"
+
 #define kTimerRendering 1000
 
 namespace fs = std::experimental::filesystem;
-using json   = nlohmann::json;
 
 using namespace std;
 using namespace Animorph;
@@ -98,8 +97,6 @@ static constexpr char mh_version[]  = "0.1.0";
 static void loadTextures();
 static void drawBackground();
 static void renderMesh();
-
-json g_jsonConfig;
 
 static TooltipPanel * tooltipPanel;
 static ToolbarPanel * toolbarPanel;
@@ -546,9 +543,9 @@ void DisplayMainMenu()
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Morph", g_morphMode)) {
-			ImGui::Checkbox("Composite Morph", &g_displayWin.characterSettings);
-			ImGui::Checkbox("Morph Targets", &g_displayWin.morphTargets);
-			ImGui::Checkbox("Applied Morph Targets", &g_displayWin.morphTargetsApplied);
+			ImGui::Checkbox("Composite Morph", &g_config.characterSettings.visible);
+			ImGui::Checkbox("Morph Targets", &g_config.morphTargets.visible);
+			ImGui::Checkbox("Applied Morph Targets", &g_config.morphTargetsApplied.visible);
 			ImGui::Separator();
 			if(ImGui::MenuItem("Load")) {
 				loadBodySettings("foo-BodySettings");
@@ -582,8 +579,8 @@ void DisplayMainMenu()
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Pose", !g_morphMode)) {
-			ImGui::Checkbox("Pose Targets", &g_displayWin.poseTargets);
-			ImGui::Checkbox("Applied Pose Targets", &g_displayWin.poseTargetsApplied);
+			ImGui::Checkbox("Pose Targets", &g_config.poseTargets.visible);
+			ImGui::Checkbox("Applied Pose Targets", &g_config.poseTargetsApplied.visible);
 			ImGui::Separator();
 			if(ImGui::MenuItem("Load")) {
 				loadPoses("foo-Poses");
@@ -650,20 +647,20 @@ void DisplayMainMenu()
 	}
 
 	if(g_morphMode) {
-		if(g_displayWin.characterSettings) {
+		if(g_config.characterSettings.visible) {
 			DisplayCharacterSettings();
 		}
-		if(g_displayWin.morphTargets) {
+		if(g_config.morphTargets.visible) {
 			DisplayMorphTargets();
 		}
-		if(g_displayWin.morphTargetsApplied) {
+		if(g_config.morphTargetsApplied.visible) {
 			DisplayMorphTargetsApplied();
 		}
 	} else {
-		if(g_displayWin.poseTargets) {
+		if(g_config.poseTargets.visible) {
 			DisplayPoseTargets();
 		}
-		if(g_displayWin.poseTargetsApplied) {
+		if(g_config.poseTargetsApplied.visible) {
 			DisplayPoseTargetsApplied();
 		}
 	}
@@ -947,42 +944,14 @@ static void activeMotion(int x, int y)
 int main(int argc, char ** argv)
 {
 	glutInit(&argc, argv);
-
-	fs::path configFilePath = "my-humanoid.config.json";
-
-	if(fs::exists(configFilePath)) {
-		std::ifstream i(configFilePath);
-		i >> g_jsonConfig;
-	} else {
-		g_jsonConfig["mainWindow"]["pos"]  = {0, 0};
-		g_jsonConfig["mainWindow"]["size"] = {800, 600};
-	}
-
-	int mainWinPosX = g_jsonConfig["mainWindow"]["pos"][0];
-	int mainWinPosY = g_jsonConfig["mainWindow"]["pos"][1];
-
-	int mainWinSizeX = g_jsonConfig["mainWindow"]["size"][0]; // glutGet(GLUT_SCREEN_WIDTH);
-	int mainWinSizeY = g_jsonConfig["mainWindow"]["size"][1]; // glutGet(GLUT_SCREEN_HEIGHT);
-
-	{
-#define FOO(XX)                                                                                    \
-	do {                                                                                       \
-		g_displayWin.XX = g_jsonConfig["windowsOpen"][#XX];                                \
-	} while(false)
-		FOO(characterSettings);
-		FOO(morphTargets);
-		FOO(morphTargetsApplied);
-		FOO(poseTargets);
-		FOO(poseTargetsApplied);
-#undef FOO
-	}
-
+	
+	LoadConfig();
+	
 	// FIXME WTF why does it move ? window decoration ?
-	mainWinPosX -= 2;
-	mainWinPosY -= 21;
+	g_config.windowMain.pos -= glm::ivec2(2, 21);
 
-	Rect mainWinRect = Rect(mainWinPosX, mainWinPosY, mainWinSizeX, mainWinSizeY);
-
+	Rect mainWinRect = Rect(g_config.windowMain.pos.x, g_config.windowMain.pos.y,
+	                        g_config.windowMain.siz.x, g_config.windowMain.siz.y);
 
 	std::string winTitle = mh_app_name + " "s + mh_version;
 	g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
@@ -1180,24 +1149,11 @@ int main(int argc, char ** argv)
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui::DestroyContext();
-
-	g_jsonConfig["mainWindow"]["pos"]  = {g_mainWinRect.pos.x, g_mainWinRect.pos.y};
-	g_jsonConfig["mainWindow"]["size"] = {g_mainWinRect.size.x, g_mainWinRect.size.y};
-
-	{
-		auto & windows                 = g_jsonConfig["windowsOpen"];
-		windows["characterSettings"]   = g_displayWin.characterSettings;
-		windows["morphTargets"]        = g_displayWin.morphTargets;
-		windows["morphTargetsApplied"] = g_displayWin.morphTargetsApplied;
-		windows["poseTargets"]         = g_displayWin.poseTargets;
-		windows["poseTargetsApplied"]  = g_displayWin.poseTargetsApplied;
-	}
-
-	{
-		std::ofstream o(configFilePath);
-		o << std::setw(4) << g_jsonConfig << std::endl;
-	}
-
+	
+	g_config.windowMain.pos = g_mainWinRect.pos;
+	g_config.windowMain.siz = g_mainWinRect.size;
+	SaveConfig();
+	
 	return 0;
 }
 

@@ -13,6 +13,7 @@
 #include "Global.h"
 #include "ComponentID.h"
 
+#include "MhConfig.h"
 #include "MhUiCommon.h"
 
 using glm::vec2;
@@ -152,7 +153,7 @@ void DisplayPoseTargets()
 
 	ImGui::SetNextWindowSize(vec2(380, 510));
 	WinStack winStack;
-	if(!ImGui::Begin("Pose Targets", &g_displayWin.poseTargets, winFlags)) {
+	if(!ImGui::Begin("Pose Targets", &g_config.poseTargets.visible, winFlags)) {
 		ImGui::End();
 		return;
 	}
@@ -195,7 +196,7 @@ void DisplayPoseTargets()
 
 void DisplayPoseTargetsApplied()
 {
-	if(!ImGui::Begin("Applied Pose Targets", &g_displayWin.poseTargetsApplied)) {
+	if(!ImGui::Begin("Applied Pose Targets", &g_config.poseTargetsApplied.visible)) {
 		ImGui::End();
 		return;
 	}

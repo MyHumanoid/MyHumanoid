@@ -67,17 +67,7 @@ target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/imgui/)
 target_include_directories(imgui PRIVATE ${SDL2_INCLUDE_DIR})
 set_property(TARGET imgui PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-# done! i think...
-
-
-add_library(nlohmann-json INTERFACE)
-target_sources(nlohmann-json INTERFACE
-	${CMAKE_CURRENT_SOURCE_DIR}/nlohmann-json/json.hpp
-)
-
-target_include_directories(nlohmann-json INTERFACE
-	"${PROJECT_SOURCE_DIR}/nlohmann-json"
-)
+# ============================================================
 
 add_library(stb_image INTERFACE)
 target_sources(stb_image INTERFACE
@@ -88,7 +78,13 @@ target_include_directories(stb_image INTERFACE
 	"${PROJECT_SOURCE_DIR}/stb"
 )
 
+# ============================================================
 
-
-
-
+add_library(simpleini STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/ConvertUTF.c
+	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/ConvertUTF.h
+	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/SimpleIni.h
+)
+target_include_directories(simpleini PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/
+)

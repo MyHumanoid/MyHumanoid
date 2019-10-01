@@ -11,6 +11,7 @@
 #include "Global.h"
 #include "ComponentID.h"
 
+#include "MhConfig.h"
 #include "MhUiCommon.h"
 
 #include "render/RenderUtils.h"
@@ -203,7 +204,7 @@ void DisplayMorphTargets()
 	        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize;
 
 	ImGui::SetNextWindowSize(vec2(380, 510));
-	if(!ImGui::Begin("Morph Targets", &g_displayWin.morphTargets, winFlags)) {
+	if(!ImGui::Begin("Morph Targets", &g_config.morphTargets.visible, winFlags)) {
 		ImGui::End();
 		return;
 	}
@@ -245,7 +246,7 @@ void DisplayMorphTargets()
 
 void DisplayMorphTargetsApplied()
 {
-	if(!ImGui::Begin("Applied Morph Targets", &g_displayWin.morphTargetsApplied)) {
+	if(!ImGui::Begin("Applied Morph Targets", &g_config.morphTargetsApplied.visible)) {
 		ImGui::End();
 		return;
 	}

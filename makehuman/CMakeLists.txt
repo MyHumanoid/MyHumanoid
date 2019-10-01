@@ -136,6 +136,8 @@ set(makehuman_sources
 	src/ImageListener.cpp
 	src/ImageListener.h
 	src/makehuman.cpp
+	src/MhConfig.h
+	src/MhConfig.cpp
 	src/MhGui.h
 	src/MhGuiData.h
 	src/MhGuiData.cpp
@@ -212,8 +214,8 @@ target_link_libraries(makehuman PRIVATE
 	stdc++fs
 	fmt
 	imgui
-	nlohmann-json
 	stb_image
+	simpleini
 	OpenGL::OpenGL
 	GLEW::GLEW
 	GLUT::GLUT
