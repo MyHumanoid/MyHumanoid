@@ -669,6 +669,42 @@ struct FooRect {
 
 FooRect g_mainWinRect;
 
+// function to find the xyz values of the bounding box
+void calcMinMax(const glm::vec3 & coords)
+{
+	if(coords.x < twopoints[0]) {
+		twopoints[0] = coords.x;
+	} else if(coords.x > twopoints[3]) {
+		twopoints[3] = coords.x;
+	}
+	
+	if(coords.y < twopoints[1]) {
+		twopoints[1] = coords.y;
+	} else if(coords.y > twopoints[4]) {
+		twopoints[4] = coords.y;
+	}
+	
+	if(coords.z < twopoints[2]) {
+		twopoints[2] = coords.z;
+	} else if(coords.z > twopoints[5]) {
+		twopoints[5] = coords.z;
+	}
+}
+
+void calcBoundingBox()
+{
+	if(g_global.quotedBox) {
+		for(int i = 0; i < 6; i++) {
+			twopoints[i] = 0;
+		}
+		
+		for(const auto & vertex : g_mesh.getVertexVectorRef()) {
+			calcMinMax(vertex.pos);
+		}
+	}
+}
+
+
 // Display function
 static void display()
 {
@@ -676,7 +712,8 @@ static void display()
 	ImGui_ImplGLUT_NewFrame();
 
 	g_global.camera->applyMatrix();
-
+	
+	calcBoundingBox();
 	renderMesh();
 
 	if(g_displayAxis) {

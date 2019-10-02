@@ -15,29 +15,6 @@
 std::optional<mh::Shader> g_bodyShader;
 std::optional<mh::Shader> g_backgroundShader;
 
-extern float twopoints[6];
-
-// function to find the xyz values of the bounding box
-void calcMinMax(const glm::vec3 & coords)
-{
-	if(coords.x < twopoints[0]) {
-		twopoints[0] = coords.x;
-	} else if(coords.x > twopoints[3]) {
-		twopoints[3] = coords.x;
-	}
-	
-	if(coords.y < twopoints[1]) {
-		twopoints[1] = coords.y;
-	} else if(coords.y > twopoints[4]) {
-		twopoints[4] = coords.y;
-	}
-	
-	if(coords.z < twopoints[2]) {
-		twopoints[2] = coords.z;
-	} else if(coords.z > twopoints[5]) {
-		twopoints[5] = coords.z;
-	}
-}
 
 void loadTextures()
 {
@@ -196,12 +173,6 @@ void renderMesh()
 	int istri = -1; // to remember which type was the latest drawn geometry and
 	    // avoid too many glBegin
 	
-	if(g_global.quotedBox) {
-		for(int i = 0; i < 6; i++) {
-			twopoints[i] = 0;
-		}
-	}
-	
 	cgutils::enableBlend();
 	
 	glUseProgram(g_bodyShader->handle);
@@ -269,10 +240,6 @@ void renderMesh()
 					::glNormal3fv(glm::value_ptr(vertex.no));
 					::glTexCoord2f(uv.x, uv.y);
 					::glVertex3fv(glm::value_ptr(vertex.pos));
-					
-					if(g_global.quotedBox) {
-						calcMinMax(vertex.pos);
-					}
 				}
 			}
 		}
