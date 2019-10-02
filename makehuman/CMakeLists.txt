@@ -138,6 +138,8 @@ set(makehuman_sources
 	src/MhConfig.h
 	src/MhConfig.cpp
 	src/MhMain.cpp
+	src/MhRender.h
+	src/MhRender.cpp
 	src/MhUi.h
 	src/MhUiCommon.h
 	src/MhUiMorph.h
