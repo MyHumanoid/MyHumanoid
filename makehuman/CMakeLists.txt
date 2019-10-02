@@ -167,6 +167,7 @@ set(makehuman_sources
 	src/util.h
 	src/Vfs.h
 	src/Vfs.cpp
+	src/util/StringUtils.h
 )
 
 set(shader_sources
@@ -219,6 +220,7 @@ target_link_libraries(makehuman PRIVATE
 	imgui
 	stb_image
 	simpleini
+	nativefiledialog
 	OpenGL::OpenGL
 	GLEW::GLEW
 	GLUT::GLUT

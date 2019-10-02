@@ -283,16 +283,13 @@ void ObjExporter::createOBJStream (ostringstream &out_stream,
   }
 }
 */
-bool ObjExporter::exportFile(const string & exportpath, bool full)
+bool ObjExporter::exportFile(const string & fileName, bool full)
 {
 	mesh.facegroupCalcVertexes();
-	const FaceGroup & facegroup(mesh.facegroup());
-
-	// FaceVector &facevector (mesh.getFaceVectorRef());
 
 	FileWriter file_writer;
 
-	file_writer.open(exportpath + (full ? "full" : "") + "mesh.obj");
+	file_writer.open(fileName);
 	if(file_writer) {
 		std::ostringstream out_stream;
 
@@ -309,7 +306,7 @@ bool ObjExporter::exportFile(const string & exportpath, bool full)
 	if(!file_writer)
 		return false;
 
-	file_writer.open(exportpath + "materials.mtl");
+	file_writer.open(fileName + "materials.mtl");
 
 	if(file_writer) {
 		std::ostringstream out_stream;

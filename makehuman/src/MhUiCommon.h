@@ -6,15 +6,15 @@
 #include <optional>
 #include <unordered_map>
 
-#include "MhUi.h"
-
-#include "render/RenderUtils.h"
-
-#include "animorph/PoseTarget.h"
-
 #include <glm/glm.hpp>
 
+#include "animorph/PoseTarget.h"
+#include "render/RenderUtils.h"
+#include "util/StringUtils.h"
+
+#include "MhUi.h"
 #include "Vfs.h"
+
 
 using vec2 = glm::vec2;
 
@@ -127,7 +127,7 @@ void DrawTargetRow(const IconMap & icons, const std::pair<float, float> minMax,
 
 	ImGuiIO & io = ImGui::GetIO();
 	
-	std::string targetImageName = vfs::removeExtension(target_name);
+	std::string targetImageName = removeExtension(target_name);
 
 	const auto iconSize = vec2(64, 64);
 
@@ -185,7 +185,7 @@ void DrawAppliedRow(const IconMap & icons, const std::pair<float, float> minMax,
 {
 	bool showTooltip = false;
 	
-	std::string targetImageName = vfs::removeExtension(target_name);
+	std::string targetImageName = removeExtension(target_name);
 
 	const auto & texIdIt     = icons.find(targetImageName);
 	bool         haveTexture = texIdIt != icons.end();

@@ -10,6 +10,7 @@
 #include <physfs.h>
 
 #include "log/log.h"
+#include "util/StringUtils.h"
 #include "Vfs.h"
 
 
@@ -87,7 +88,7 @@ void loadTexturesFromDir(IconMap & target, const std::string & baseDir)
 			if(ret) {
 				auto foo = file;
 				foo.erase(0, baseDir.length() + 1);
-				std::string foobar = vfs::removeExtension(foo);
+				std::string foobar = removeExtension(foo);
 	
 				log_debug("Loaded {} as {}", std::string(file), std::string(foobar));
 				target.insert(IconMap::value_type(foobar, ret.value()));

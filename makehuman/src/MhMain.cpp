@@ -62,6 +62,8 @@
 #include "render/RenderUtils.h"
 #include "render/Shader.h"
 
+#include "util/StringUtils.h"
+
 #include <time.h>
 
 #include "CharacterSettingPanel.h"
@@ -102,6 +104,52 @@ bool  oldCameraTimerTrigger = false;
 const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
+
+#include <nfd.h>
+
+void openFileDialog()
+{
+	nfdchar_t *outPath = NULL;
+	nfdresult_t result = NFD_OpenDialog( NULL, NULL, &outPath );
+	
+	if ( result == NFD_OKAY ) {
+		puts("Success!");
+		puts(outPath);
+		free(outPath);
+	}
+	else if ( result == NFD_CANCEL ) {
+		puts("User pressed cancel.");
+	}
+	else {
+		printf("Error: %s\n", NFD_GetError() );
+	}
+	
+	//return 0;
+}
+
+std::optional<std::string> saveFileDialog(const std::string & ending) {
+	const nfdchar_t * filterList = ending.c_str();
+	const nfdchar_t * defaultPath = "./";
+	nfdchar_t * outPath = NULL;
+	
+	auto res = NFD_SaveDialog(filterList, defaultPath, &outPath);
+	switch(res) {
+	case NFD_OKAY: {
+		std::string path(outPath);
+		free(outPath);
+		if(!endsWithCaseInsensitive(path, "." + ending)) {
+			return path + "." + ending;
+		} else {
+			return path;
+		}
+	}
+	case NFD_CANCEL:
+		return std::nullopt;
+	default:
+		log_error("Save Dialog failed: {}", NFD_GetError());
+		return std::nullopt;
+	}
+}
 
 
 
@@ -192,17 +240,13 @@ static void loadPoses(const string & filename)
 }
 
 
-static void exportBodySettings(string & directory, bool full)
+static void exportBodySettings(string & fileName, bool full)
 {
-	ObjExporter obj_export(g_mesh);
+	log_info("Saving obj to: {}", fileName);
+	
+	ObjExporter exporter(g_mesh);
 
-	if(directory.substr(directory.size() - 1, 1) != "/") {
-		directory.append("/");
-	}
-
-//	fs::create_directories(directory);
-
-	bool state = obj_export.exportFile(directory, full);
+	bool state = exporter.exportFile(fileName, full);
 
 	if(state) {
 		log_info("OBJ exported");
@@ -294,7 +338,7 @@ void DisplayLibraryCharacters()
 			continue;
 		
 		
-		std::string foobar = vfs::removeExtension(character_name);
+		std::string foobar = removeExtension(character_name);
 
 		// remove ".bs"
 		string character_image(character_name);
@@ -351,7 +395,7 @@ void DisplayLibraryPoses()
 			continue;
 		
 		
-		std::string foobar = vfs::removeExtension(character_name);
+		std::string foobar = removeExtension(character_name);
 
 		// remove ".bs"
 		string character_image(character_name);
@@ -462,8 +506,10 @@ void DisplayMainMenu()
 		if(ImGui::BeginMenu("File")) {
 			ImGui::Separator();
 			if(ImGui::MenuItem("Export wavefront (.obj)")) {
-				std::string filename = "foo-ObjExport";
-				exportBodySettings(filename, false);
+				auto path = saveFileDialog("obj");
+				if(path) {
+					exportBodySettings(path.value(), false);
+				}
 			}
 			if(ImGui::MenuItem("Export Collada (.dae)")) {
 				std::string filename = "foo-ColladaExport";

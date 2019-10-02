@@ -88,3 +88,34 @@ add_library(simpleini STATIC
 target_include_directories(simpleini PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/
 )
+
+# ============================================================
+
+set(nfd_dir ${CMAKE_CURRENT_SOURCE_DIR}/nativefiledialog)
+
+if(UNIX)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+	
+	add_library(nativefiledialog STATIC
+		${nfd_dir}/src/common.h
+		${nfd_dir}/src/nfd_common.c
+		${nfd_dir}/src/nfd_common.h
+		${nfd_dir}/src/nfd_gtk.c
+		${nfd_dir}/src/nfd_zenity.c
+		${nfd_dir}/src/simple_exec.h
+	)
+	target_include_directories(nativefiledialog
+		PUBLIC
+		${GTK3_INCLUDE_DIRS}
+	)
+	target_link_libraries(nativefiledialog
+		PUBLIC
+		${GTK3_LIBRARIES}
+	)
+	target_include_directories(nativefiledialog PUBLIC
+		${nfd_dir}/include
+	)
+else()
+	message("Platform not supported")
+endif()
