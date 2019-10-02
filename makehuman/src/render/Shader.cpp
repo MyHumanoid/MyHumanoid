@@ -9,39 +9,22 @@
 #include <GL/glew.h>
 
 #include "log/log.h"
-
-std::string readFile(const char * filePath)
-{
-	std::string   content;
-	std::ifstream fileStream(filePath, std::ios::in);
-
-	if(!fileStream.is_open()) {
-		log_error("Could not read file {}. File does not exist.", filePath);
-		return "";
-	}
-
-	std::string line = "";
-	while(!fileStream.eof()) {
-		std::getline(fileStream, line);
-		content.append(line + "\n");
-	}
-
-	fileStream.close();
-	return content;
-}
-
+#include "Vfs.h"
 
 std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * fragment_path)
 {
-	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	// Read shaders
-	std::string  vertShaderStr = readFile(vertex_path);
-	std::string  fragShaderStr = readFile(fragment_path);
+	std::string vertShaderStr;
+	vfs::loadString(vertex_path, vertShaderStr);
+	
+	std::string  fragShaderStr;
+	vfs::loadString(fragment_path, fragShaderStr);
+	
 	const char * vertShaderSrc = vertShaderStr.c_str();
 	const char * fragShaderSrc = fragShaderStr.c_str();
-
+	
+	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+		
 	GLint result = GL_FALSE;
 	int   logLength;
 

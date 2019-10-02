@@ -45,7 +45,7 @@ std::vector<std::string> list(const std::string &path, bool listDirs)
 	return paths;
 }
 
-bool loadString(const std::string &fileName, std::string &string) {
+bool loadString(const std::string &fileName, std::string & value) {
 	auto file = PHYSFS_openRead(fileName.c_str());
 	if(file == nullptr) {
 		auto errVal = PHYSFS_getLastErrorCode();
@@ -55,9 +55,8 @@ bool loadString(const std::string &fileName, std::string &string) {
 	}
 	int64_t fileSize = PHYSFS_fileLength(file);
 	if(fileSize >= 0) {
-		std::string data(fileSize, 0);
-		string.resize(fileSize, 0);
-		int readData = PHYSFS_readBytes(file, data.data(), fileSize);
+		value.resize(fileSize, 0);
+		int readData = PHYSFS_readBytes(file, value.data(), fileSize);
 		if(fileSize == readData) {
 			return true;
 		}
