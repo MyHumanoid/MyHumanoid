@@ -240,13 +240,13 @@ static void loadPoses(const string & filename)
 }
 
 
-static void exportBodySettings(string & fileName, bool full)
+static void exportMeshObj(string & fileName)
 {
 	log_info("Saving obj to: {}", fileName);
 	
 	ObjExporter exporter(g_mesh);
 
-	bool state = exporter.exportFile(fileName, full);
+	bool state = exporter.exportFile(fileName);
 
 	if(state) {
 		log_info("OBJ exported");
@@ -508,7 +508,7 @@ void DisplayMainMenu()
 			if(ImGui::MenuItem("Export wavefront (.obj)")) {
 				auto path = saveFileDialog("obj");
 				if(path) {
-					exportBodySettings(path.value(), false);
+					exportMeshObj(path.value());
 				}
 			}
 			if(ImGui::MenuItem("Export Collada (.dae)")) {

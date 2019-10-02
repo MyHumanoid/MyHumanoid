@@ -1,11 +1,16 @@
 #include "animorph/ObjExporter.h"
 
 #include "log/log.h"
+#include "util/StringUtils.h"
 
 using namespace std;
 using namespace Animorph;
 
-void ObjExporter::createOBJStream(ostringstream & out_stream, const string & basename)
+static void createOBJStream(Mesh & mesh,
+                            const Matrix & tm,
+                     ostringstream & out_stream,
+                     const string & objRelPath,
+                     const string & mtlRelPath)
 {
 	mesh.facegroupCalcVertexes();
 	const FaceGroup & facegroup(mesh.facegroup());
@@ -19,10 +24,9 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 	out_stream << "# OBJ File" << endl;
 	// out_stream << "# www..." << endl;
 
-	out_stream << "mtllib "
-	           << "materials.mtl" << endl;
+	out_stream << "mtllib " << mtlRelPath << endl;
 
-	out_stream << "o " << basename << endl; // name of mesh
+	out_stream << "o " << objRelPath << endl; // name of mesh
 
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
 
@@ -121,6 +125,7 @@ void ObjExporter::createOBJStream(ostringstream & out_stream, const string & bas
 	}
 }
 
+// TODO always do "full" export
 void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string & basename)
 {
 	const VertexVector &   vertexvector   = mesh.getVertexVectorRef();
@@ -200,124 +205,57 @@ void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string &
 	}
 }
 
-/*
-void ObjExporter::createOBJStream (ostringstream &out_stream,
-                                   const string& basename,
-                                   const FGroupData &facegroupdata,
-                                   VertexData &vertexgroupdata)
-{
-  VertexVector   &vertexvector   (mesh.getVertexVectorRef ());
-  FaceVector     &facevector     (mesh.getFaceVectorRef ());
-  TextureVector  &texturevector  (mesh.getTextureVectorRef ());
-
-  // TODO: decide how much accracy we need
-  //out_stream << setprecision (12);
-
-  // write header
-  out_stream << "# OBJ File" << endl;
-  //out_stream << "# www..." << endl;
-
-  out_stream << "o " << basename << endl; // name of mesh
-
-  for (VertexData::iterator vertexgroup_it = vertexgroupdata.begin ();
-       vertexgroup_it != vertexgroupdata.end ();
-       vertexgroup_it++)
-  {
-    Vertex &vertex = vertexvector[(*vertexgroup_it).first];
-    Vector3f vector = vertex.co * tm;
-
-    out_stream <<
-    "v " << vector.x <<
-    " "  << vector.y <<
-    " "  << vector.z << endl;
-  }
-
-  // write texture UV coordinates
-  if (facevector.size () == texturevector.size ())
-  {
-    for (unsigned int i = 0; i < facegroupdata.size (); i++)
-    {
-      TextureFace &texture_face = texturevector[facegroupdata[i]];
-
-      for (unsigned int n = 0; n < texture_face.size (); n++)
-      {
-        Vector2f &uv = texture_face[n];
-
-        // the -uv.y+1.0 stuff is a hack for renderman input UV data
-        // TODO: change renderman import UV data
-        out_stream << "vt " << uv.x << " " << -uv.y << " 0.0" << endl;
-      }
-    }
-  }
-  else
-  {
-    cerr << "Couldn't export texture coordinates! "
-    << facevector.size () << " != " << texturevector.size ()
-    << endl;
-  }
-
-  // write faces
-  int texture_number = 1;
-  for (unsigned int i = 0; i < facegroupdata.size (); i++)
-  {
-    const Face &face(facevector[facegroupdata[i]]);
-
-    if (face.getSize () > 0)
-      out_stream << "f ";
-
-    for (unsigned int j = 0; j < face.getSize(); j++)
-    {
-      int vertex_number = vertexgroupdata[face.getVertexAtIndex(j)];
-      //cout << texture_number << endl;
-
-      // face vertex geometry
-      out_stream << vertex_number + 1;
-
-      out_stream << "/";
-
-      out_stream << texture_number << " ";
-
-      texture_number++;
-    }
-    out_stream << endl;
-  }
-}
-*/
-bool ObjExporter::exportFile(const string & fileName, bool full)
+bool ObjExporter::exportFile(const string & objPath)
 {
 	mesh.facegroupCalcVertexes();
 
 	FileWriter file_writer;
 
-	file_writer.open(fileName);
+	file_writer.open(objPath);
 	if(file_writer) {
+		auto baseNameAbs = removeExtension(objPath);
+		auto mtlPath = baseNameAbs + ".mtl";
+		
+		auto nameRel = pathBasename(objPath);
+		auto mtlRel = pathBasename(mtlPath);
+		
 		std::ostringstream out_stream;
-
-		if(full) {
-			createFullOBJStream(out_stream, "fullmesh.obj");
-		} else {
-			createOBJStream(out_stream, "mesh.obj");
+		createOBJStream(mesh, tm, out_stream, nameRel, mtlRel);
+		file_writer << out_stream.str();
+		file_writer.close();
+		
+		{
+			auto mtlPath = baseNameAbs + ".mtl";
+			FileWriter mtlWriter;
+			mtlWriter.open(mtlPath);
+			if(mtlWriter) {
+				std::ostringstream out_stream;
+				createMTLStream(out_stream, nameRel);
+				file_writer << out_stream.str();
+				file_writer.close();
+			} else {
+				log_error("Failed to write mtl file: {}", mtlPath);
+			}
 		}
-
-		file_writer << out_stream.str();
-		file_writer.close();
+	} else {
+		log_error("Failed to open file for writing: {}", objPath);
 	}
 
-	if(!file_writer)
-		return false;
+//	if(!file_writer)
+//		return false;
 
-	file_writer.open(fileName + "materials.mtl");
+//	file_writer.open(objPath + "materials.mtl");
 
-	if(file_writer) {
-		std::ostringstream out_stream;
-		createMTLStream(out_stream, full ? "fullmesh.obj" : "mesh.obj");
+//	if(file_writer) {
+//		std::ostringstream out_stream;
+//		createMTLStream(out_stream, full ? "fullmesh.obj" : "mesh.obj");
 
-		file_writer << out_stream.str();
-		file_writer.close();
-	}
+//		file_writer << out_stream.str();
+//		file_writer.close();
+//	}
 
-	if(!file_writer)
-		return false;
+//	if(!file_writer)
+//		return false;
 
 	return true;
 }
