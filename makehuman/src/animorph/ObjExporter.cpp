@@ -21,7 +21,7 @@ struct ObjStream {
 	{
 		m_out.write("mtllib {}\n", libFilePath);
 	}
-	void writeObject(const std::string & objectName)
+	void writeObjectStart(const std::string & objectName)
 	{
 		m_out.write("o {}\n", objectName);
 	}
@@ -33,7 +33,7 @@ struct ObjStream {
 	{
 		m_out.write("vt {} {} 0.0\n", uv.x, uv.y);
 	}
-	void writeGroup(const std::string & groupName)
+	void writeGroupStart(const std::string & groupName)
 	{
 		m_out.write("g {}\n", groupName);
 	}
@@ -45,14 +45,6 @@ struct ObjStream {
 	{
 		m_out.write("usemtl {}\n", materialName);
 	}
-//	void writeFaceTri(int vertIdx1, int vertIdx2, int vertIdx3)
-//	{
-//		m_out.write("f {} {} {}\n", vertIdx1, vertIdx2, vertIdx3);
-//	}
-//	void writeFaceQuat(int vertIdx1, int vertIdx2, int vertIdx3, int vertIdx4)
-//	{
-//		m_out.write("f {} {} {} {}\n", vertIdx1, vertIdx2, vertIdx3, vertIdx4);
-//	}
 	template <typename... T>
 	void writeRaw(T &&... p)
 	{
@@ -84,7 +76,7 @@ static void createOBJStream(Mesh & mesh,
 	obj.writeMaterialLib(mtlRelPath);
 	out_stream << "mtllib " << mtlRelPath << endl;
 	
-	obj.writeObject(objRelPath);
+	obj.writeObjectStart(objRelPath);
 	out_stream << "o " << objRelPath << endl; // name of mesh
 	
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
@@ -138,7 +130,7 @@ static void createOBJStream(Mesh & mesh,
 	for(const auto & [partname, groupValue] : facegroup.m_groups) {
 		
 		// Group name
-		obj.writeGroup(partname);
+		obj.writeGroupStart(partname);
 		out_stream << "g " << partname << endl;
 		// Smoothing group
 		obj.writeSmoothingGroup(smoothGroup);
@@ -182,15 +174,13 @@ static void createOBJStream(Mesh & mesh,
 					// cout << texture_number << endl;
 					
 					// face vertex geometry
-					obj.writeRaw("{}", vertex_number + 1 + v_offset);
+					obj.writeRaw("{}/{} ",
+					             vertex_number + 1 + v_offset,
+					             texture_number + vt_offset);
+					
 					out_stream << vertex_number + 1 + v_offset;
-					
-					obj.writeRaw("/");
 					out_stream << "/";
-					
-					obj.writeRaw("{} ", (texture_number + vt_offset));
 					out_stream << (texture_number + vt_offset) << " ";
-
 					texture_number++;
 				}
 			}
