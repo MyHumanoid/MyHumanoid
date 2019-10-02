@@ -4,19 +4,14 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-
 #include <vector>
-
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <physfs.h>
 
 #include "log/log.h"
-
-#include <glm/glm.hpp>
-
 #include "Vfs.h"
 
-
-using IconMap = std::unordered_map<std::string, mh::Texture>;
 
 static const stbi_io_callbacks adapter = {
     .read = [](void * user, char * data, int size)->int{
@@ -82,11 +77,9 @@ std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
 
 void loadTexturesFromDir(IconMap & target, const std::string & baseDir)
 {
-	
 	auto dirs = vfs::list(baseDir, true);
 	for(const auto & dir : dirs) {
 		auto files = vfs::list(dir.c_str());
-		
 		
 		for(const auto & file: files) {
 			auto ret = LoadTextureFromFile(file.c_str());

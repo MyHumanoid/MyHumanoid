@@ -164,6 +164,7 @@ set(makehuman_sources
 	src/util.cpp
 	src/util.h
 	src/Vfs.h
+	src/Vfs.cpp
 )
 
 set(shader_sources

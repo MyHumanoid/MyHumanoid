@@ -1148,7 +1148,7 @@ int main(int argc, char ** argv)
 	g_config.windowMain.siz = g_mainWinRect.size;
 	SaveConfig();
 	
-	PHYSFS_deinit();
+	vfs::deinit();
 	
 	return 0;
 }

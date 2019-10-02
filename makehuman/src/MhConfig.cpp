@@ -21,9 +21,14 @@ void LoadConfig()
 	ini.SetMultiKey(true);
 	ini.SetMultiLine(true);
 	
-	vfs::loadString(fileName, [&ini](auto & data)->SI_Error{
-		return ini.LoadData(data);
-	});
+	std::string data;
+	
+	if(!vfs::loadString(fileName, data)) {
+		log_error("Config data load failed");
+		return;
+	}
+	
+	ini.LoadData(data);
 	
 	auto ok = ini.LoadFile(fileName);
 	if(ok < 0) {
