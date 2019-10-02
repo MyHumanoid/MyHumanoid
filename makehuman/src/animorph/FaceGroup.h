@@ -71,27 +71,14 @@ private:
 	void createStreamVisibilities(std::ostringstream & out_stream);
 	void fromStreamVisibilities(std::ifstream & in_stream);
 
-	bool loaded;
-	/// Maps FaceGroup identifiers via vertex group numbers to vertex indices
-	mutable std::map<std::string, VertexData> vertexes;
-
 public:
 	std::map<std::string, FGroup> m_groups;
 
-	FaceGroup()
-	        : loaded(false)
-	        , vertexes(){};
 	bool load(const std::string & filename);
 	bool saveVisibilities(const std::string &     filename,
 	                      std::ios_base::openmode mode = std::ios::app);
 	bool loadVisibilities(const std::string & filename);
 	void toggleVisible(const std::string & name);
-	/// Extracts our vertex indices from a given FaceVector
-	void               calcVertexes(const FaceVector & facevector);
-	const VertexData & getPartVertexesRef(const std::string & part) const
-	{
-		return vertexes[part];
-	}
 };
 
 } // namespace Animorph

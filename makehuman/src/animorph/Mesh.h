@@ -298,11 +298,9 @@ public:
 	const BodySettings & poseTargets() const { return m_poseTargets; }
 
 	const TextureVector & textureVector() const { return m_texture_vector; }
-
+	
 	// TODO make const
 	FaceGroup & facegroup() { return m_facegroup; }
-
-	void facegroupCalcVertexes() { m_facegroup.calcVertexes(faces()); }
 
 	/** @name Loading
 	 */

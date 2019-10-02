@@ -53,13 +53,51 @@ struct ObjStream {
 };
 
 
+static void calcVertexes(Mesh & mesh, const FaceVector & facevector,
+                         std::map<std::string, VertexData> & vertexes)
+{
+	
+	
+	int vertexCounter;
+	
+	for(const auto & [partname, groupValue] : mesh.facegroup().m_groups) {
+		
+		const FGroupData & groupdata = groupValue.facesIndexes;
+		vertexCounter          = 0;
+		
+		for(unsigned int i = 0; i < groupdata.size(); i++) {
+			const Face & face(facevector[groupdata[i]]);
+			
+			for(unsigned int j = 0; j < face.getSize(); j++) {
+				const int tmp = face.getVertexAtIndex(j);
+				
+				if(vertexes[partname].find(tmp) == vertexes[partname].end()) {
+					vertexes[partname][tmp] = 0;
+				}
+			}
+		}
+		
+		for(VertexData::iterator vertexgroup_it = vertexes[partname].begin();
+		     vertexgroup_it != vertexes[partname].end(); vertexgroup_it++) {
+			vertexes[partname][(*vertexgroup_it).first] = vertexCounter++;
+		}
+	}
+	
+	// cout << vertexes.size() << endl;
+}
+
+
 static void createOBJStream(Mesh & mesh,
                             const Matrix & tm,
                      ObjStream & obj,
                      const string & objRelPath,
                      const string & mtlRelPath)
 {
-	mesh.facegroupCalcVertexes();
+	
+	/// Maps FaceGroup identifiers via vertex group numbers to vertex indices
+	std::map<std::string, VertexData> vertexes;
+	calcVertexes(mesh, mesh.faces(), vertexes);
+		
 	const FaceGroup & facegroup(mesh.facegroup());
 
 	const VertexVector &   vertexvector(mesh.getVertexVectorRef());
@@ -74,7 +112,7 @@ static void createOBJStream(Mesh & mesh,
 	
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
 
-		const VertexData & vertexgroupdata(facegroup.getPartVertexesRef(partname));
+		const VertexData & vertexgroupdata(vertexes[partname]);
 
 		for(VertexData::const_iterator vertexgroup_it = vertexgroupdata.begin();
 		    vertexgroup_it != vertexgroupdata.end(); vertexgroup_it++) {
@@ -92,7 +130,7 @@ static void createOBJStream(Mesh & mesh,
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
 
 		const FGroupData & facegroupdata(groupValue.facesIndexes);
-		// VertexData vertexgroupdata = facegroup.getPartVertexesRef(partname);
+		// VertexData vertexgroupdata = vertexes[partname];
 
 		// write texture UV coordinates
 		if(facevector.size() == texturevector.size()) {
@@ -126,7 +164,7 @@ static void createOBJStream(Mesh & mesh,
 		smoothGroup++;
 		
 		const FGroupData & facegroupdata(groupValue.facesIndexes);
-		const VertexData & vertexgroupdata(facegroup.getPartVertexesRef(partname));
+		const VertexData & vertexgroupdata(vertexes[partname]);
 
 		// write faces
 		int old_material_index = -1;
@@ -216,11 +254,8 @@ static void writeMtl(const Mesh & mesh, const string & mtlPath, const string & o
 	mtlWriter.close();
 }
 
-
 bool ObjExporter::exportFile(const string & objPath)
 {
-	mesh.facegroupCalcVertexes();
-	
 	auto baseNameAbs = removeExtension(objPath);
 	auto mtlPath = baseNameAbs + ".mtl";
 	

@@ -23,41 +23,6 @@ bool FaceGroup::load(const std::string & filename)
 	return true;
 }
 
-void FaceGroup::calcVertexes(const FaceVector & facevector)
-{
-	if(loaded)
-		return;
-
-	loaded = true;
-
-	int vertexCounter;
-
-	for(auto & [partname, groupValue] : m_groups) {
-
-		FGroupData & groupdata = groupValue.facesIndexes;
-		vertexCounter          = 0;
-
-		for(unsigned int i = 0; i < groupdata.size(); i++) {
-			const Face & face(facevector[groupdata[i]]);
-
-			for(unsigned int j = 0; j < face.getSize(); j++) {
-				const int tmp = face.getVertexAtIndex(j);
-
-				if(vertexes[partname].find(tmp) == vertexes[partname].end()) {
-					vertexes[partname][tmp] = 0;
-				}
-			}
-		}
-
-		for(VertexData::iterator vertexgroup_it = vertexes[partname].begin();
-		    vertexgroup_it != vertexes[partname].end(); vertexgroup_it++) {
-			vertexes[partname][(*vertexgroup_it).first] = vertexCounter++;
-		}
-	}
-
-	// cout << vertexes.size() << endl;
-}
-
 void FaceGroup::fromStream(std::ifstream & in_stream)
 {
 	FGroup data;
