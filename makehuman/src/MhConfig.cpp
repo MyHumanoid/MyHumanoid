@@ -1,13 +1,18 @@
 #include "MhConfig.h"
 
+#include <physfs.h>
+
 #include "log/log.h"
 #include "Global.h"
 
 #include "SimpleIni.h"
 
+#include "Vfs.h"
+
 MhConfig g_config;
 
 static const char fileName[] = "MyHumanoid.ini";
+
 
 void LoadConfig()
 {
@@ -15,6 +20,10 @@ void LoadConfig()
 	ini.SetUnicode(true);
 	ini.SetMultiKey(true);
 	ini.SetMultiLine(true);
+	
+	vfs::loadString(fileName, [&ini](auto & data)->SI_Error{
+		return ini.LoadData(data);
+	});
 	
 	auto ok = ini.LoadFile(fileName);
 	if(ok < 0) {
@@ -76,10 +85,15 @@ void SaveConfig()
 	setVal(g_config.poseTargets.visible,         "poseTargets.visible");
 	setVal(g_config.poseTargetsApplied.visible,  "poseTargetsApplied.visible");
 	
-	auto ok = ini.SaveFile(fileName);
-	if(ok < 0) {
-		log_error("Config save failed");
-	} else {
+	std::string buffer;
+	ini.Save(buffer);
+	
+	vfs::writeString(fileName, buffer);
+	
+//	auto ok = ini.SaveFile(fileName);
+//	if(ok < 0) {
+//		log_error("Config save failed");
+//	} else {
 		log_info("Config saved");
-	}
+//	}
 }

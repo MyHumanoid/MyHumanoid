@@ -33,8 +33,6 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include <experimental/filesystem>
-
 #include "MhUi.h"
 #include "MhUiMorph.h"
 #include "MhUiPose.h"
@@ -76,10 +74,10 @@
 #include "util.h"
 
 #include "MhConfig.h"
+#include "Vfs.h"
 
 #define kTimerRendering 1000
 
-namespace fs = std::experimental::filesystem;
 
 using namespace std;
 using namespace Animorph;
@@ -118,8 +116,7 @@ static IconMap g_charactersIconTextures;
 
 static void CreateCaractersIconTextures()
 {
-	fs::path baseDir = "pixmaps/bsimg/";
-	loadTexturesFromDir(g_charactersIconTextures, baseDir);
+	loadTexturesFromDir(g_charactersIconTextures, "pixmaps/bsimg/");
 }
 
 // ================================================================================================
@@ -208,7 +205,7 @@ static void exportBodySettings(string & directory, bool full)
 		directory.append("/");
 	}
 
-	fs::create_directories(directory);
+//	fs::create_directories(directory);
 
 	bool state = obj_export.exportFile(directory, full);
 
@@ -227,7 +224,7 @@ static void exportCollada(string & filename)
 		filename.append("/");
 	}
 
-	fs::create_directories(filename);
+	//fs::create_directories(filename);
 
 	bool state = collada_export.exportFile(filename);
 
@@ -300,10 +297,9 @@ void DisplayLibraryCharacters()
 
 		if(sub != "characters1")
 			continue;
-
-
-		fs::path foobar = character_name;
-		foobar.replace_extension();
+		
+		
+		std::string foobar = vfs::removeExtension(character_name);
 
 		// remove ".bs"
 		string character_image(character_name);
@@ -358,10 +354,9 @@ void DisplayLibraryPoses()
 
 		if(sub != "poses1")
 			continue;
-
-
-		fs::path foobar = character_name;
-		foobar.replace_extension();
+		
+		
+		std::string foobar = vfs::removeExtension(character_name);
 
 		// remove ".bs"
 		string character_image(character_name);
@@ -935,8 +930,13 @@ static void activeMotion(int x, int y)
 	}
 }
 
+#include "physfs.h"
+
 int main(int argc, char ** argv)
 {
+	PHYSFS_init(argv[0]);
+	vfs::init();
+	
 	glutInit(&argc, argv);
 	
 	LoadConfig();
@@ -1147,6 +1147,8 @@ int main(int argc, char ** argv)
 	g_config.windowMain.pos = g_mainWinRect.pos;
 	g_config.windowMain.siz = g_mainWinRect.size;
 	SaveConfig();
+	
+	PHYSFS_deinit();
 	
 	return 0;
 }

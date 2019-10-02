@@ -5,7 +5,6 @@
 #include <string>
 #include <optional>
 #include <unordered_map>
-#include <experimental/filesystem>
 
 #include "MhUi.h"
 
@@ -14,6 +13,8 @@
 #include "animorph/PoseTarget.h"
 
 #include <glm/glm.hpp>
+
+#include "Vfs.h"
 
 using vec2 = glm::vec2;
 
@@ -125,9 +126,8 @@ void DrawTargetRow(const IconMap & icons, const std::pair<float, float> minMax,
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, vec2(0));
 
 	ImGuiIO & io = ImGui::GetIO();
-
-	fs::path targetImageName = target_name;
-	targetImageName.replace_extension();
+	
+	std::string targetImageName = vfs::removeExtension(target_name);
 
 	const auto iconSize = vec2(64, 64);
 
@@ -179,16 +179,13 @@ void DrawTargetRow(const IconMap & icons, const std::pair<float, float> minMax,
 	ImGui::PopStyleVar();
 }
 
-
-
 template <typename Applier>
 void DrawAppliedRow(const IconMap & icons, const std::pair<float, float> minMax,
                     const std::string & target_name, const float & target_value, Applier && applier)
 {
 	bool showTooltip = false;
-
-	fs::path targetImageName = target_name;
-	targetImageName.replace_extension();
+	
+	std::string targetImageName = vfs::removeExtension(target_name);
 
 	const auto & texIdIt     = icons.find(targetImageName);
 	bool         haveTexture = texIdIt != icons.end();

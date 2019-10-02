@@ -163,6 +163,7 @@ set(makehuman_sources
 	src/TooltipPanel.h
 	src/util.cpp
 	src/util.h
+	src/Vfs.h
 )
 
 set(shader_sources
@@ -181,6 +182,7 @@ find_package(GLUT REQUIRED)
 find_package(glm REQUIRED)
 find_package(PNG REQUIRED)
 find_package(fmt REQUIRED)
+find_package(PhysFS 2.1 REQUIRED)
 
 add_executable(makehuman
 	${animorph_sources}
@@ -205,11 +207,11 @@ target_include_directories(makehuman PRIVATE
 	${GLUT_INCLUDE_DIRS}
 	${GLM_INCLUDE_DIRS}
 	${PNG_INCLUDE_DIRS}
+	${PHYSFS_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 target_link_libraries(makehuman PRIVATE
-	stdc++fs
 	fmt
 	imgui
 	stb_image
@@ -217,6 +219,7 @@ target_link_libraries(makehuman PRIVATE
 	OpenGL::OpenGL
 	GLEW::GLEW
 	GLUT::GLUT
+	${PHYSFS_LIBRARY}
 	${PNG_LIBRARY}
 )
 

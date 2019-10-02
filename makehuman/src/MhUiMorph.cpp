@@ -22,9 +22,7 @@ static IconMap g_targetImageTextures;
 
 void CreateTargetImageTextures()
 {
-
-	fs::path baseDir = "pixmaps/tgimg/";
-	loadTexturesFromDir(g_targetImageTextures, baseDir);
+	loadTexturesFromDir(g_targetImageTextures, "pixmaps/tgimg");
 }
 
 

@@ -5,89 +5,102 @@
 #include <stb_image.h>
 
 
-#include <experimental/filesystem>
 #include <vector>
 
 #include <GL/glew.h>
 
 #include "log/log.h"
 
+#include <glm/glm.hpp>
+
+#include "Vfs.h"
+
 
 using IconMap = std::unordered_map<std::string, mh::Texture>;
 
-std::optional<mh::Texture> LoadTextureFromFile(const std::string & file)
-{
-	const char * filename = file.c_str();
+static const stbi_io_callbacks adapter = {
+    .read = [](void * user, char * data, int size)->int{
+	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
+	    return PHYSFS_readBytes(f, data, size);
+    },
+    .skip = [](void * user, int n)->void{
+	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
+	    auto pos = PHYSFS_tell(f);
+	    PHYSFS_seek(f, pos + n);
+    },
+    .eof  = [](void * user)->int{
+	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
+	    return PHYSFS_eof(f);
+    }
+};
 
-	// Load from file
-	int             image_width  = 0;
-	int             image_height = 0;
-	unsigned char * image_data   = stbi_load(filename, &image_width, &image_height, NULL, 4);
-	if(image_data == NULL)
+std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
+	auto file = PHYSFS_openRead(fileName.c_str());
+	if(file == nullptr) {
+		auto errVal = PHYSFS_getLastErrorCode();
+		auto errStr = PHYSFS_getErrorByCode(errVal);
+		log_error("Failed to open file: {}, {}", fileName, errStr);
 		return std::nullopt;
-
+	}
+	int64_t fileSize = PHYSFS_fileLength(file);
+	if(fileSize < 0) {
+		return std::nullopt;
+	}
+	
+	glm::ivec2 size;
+	auto img = stbi_load_from_callbacks(&adapter, file, &size.x, &size.y, NULL, 4);
+	
+	if(img == NULL) {
+		log_error("Failed to load file: {}", fileName);
+		return std::nullopt;
+	}
+	
 	// Create a OpenGL texture identifier
 	GLuint image_texture;
 	glGenTextures(1, &image_texture);
 	glBindTexture(GL_TEXTURE_2D, image_texture);
-
+	
 	// Setup filtering parameters for display
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+	
 	// Upload pixels into texture
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA,
-	             GL_UNSIGNED_BYTE, image_data);
-	stbi_image_free(image_data);
-
-	//*out_texture = image_texture;
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA,
+				 GL_UNSIGNED_BYTE, img);
+	stbi_image_free(img);
+	
 	//	*out_width = image_width;
 	//	*out_height = image_height;
-
+	
+	if(!PHYSFS_close(file)) {
+		log_error("Failed to close file: {}", fileName);
+	}
+	
 	return mh::Texture(image_texture);
 }
 
-std::vector<std::string> filesInDirRecursive(const fs::path & directoryPath)
+void loadTexturesFromDir(IconMap & target, const std::string & baseDir)
 {
-	using Iter = fs::recursive_directory_iterator;
-
-	std::vector<std::string> files;
-	auto                     it  = Iter(directoryPath);
-	auto                     end = Iter();
-	while(it != end) {
-		auto & path = it->path();
-		if(fs::is_regular_file(path)) {
-			files.push_back(path);
-		}
-		std::error_code ec;
-		it.increment(ec);
-		if(ec) {
-			log_error("Error While Accessing : {} -> {}", path.string(), ec.message());
-		}
-	}
-	return files;
-}
-
-
-
-void loadTexturesFromDir(IconMap & target, const fs::path & baseDir)
-{
-	auto files = filesInDirRecursive(baseDir);
-
-	for(auto & file : files) {
-		auto ret = LoadTextureFromFile(file.c_str());
-
-		if(ret) {
-			auto foo = file;
-			foo.erase(0, baseDir.string().length());
-			fs::path foobar = foo;
-			foobar.replace_extension();
-
-			log_debug("Loaded {} as {}", std::string(file), std::string(foobar));
-			target.insert(IconMap::value_type(foobar, ret.value()));
-		} else {
-			log_error("Failed to load file {}", file);
+	
+	auto dirs = vfs::list(baseDir, true);
+	for(const auto & dir : dirs) {
+		auto files = vfs::list(dir.c_str());
+		
+		
+		for(const auto & file: files) {
+			auto ret = LoadTextureFromFile(file.c_str());
+			
+			if(ret) {
+				auto foo = file;
+				foo.erase(0, baseDir.length() + 1);
+				std::string foobar = vfs::removeExtension(foo);
+	
+				log_debug("Loaded {} as {}", std::string(file), std::string(foobar));
+				target.insert(IconMap::value_type(foobar, ret.value()));
+			} else {
+				log_error("Failed to load file {}", file);
+			}
 		}
 	}
 }
