@@ -56,7 +56,6 @@ struct ObjStream {
 static void createOBJStream(Mesh & mesh,
                             const Matrix & tm,
                      ObjStream & obj,
-                     ostringstream & out_stream,
                      const string & objRelPath,
                      const string & mtlRelPath)
 {
@@ -70,14 +69,8 @@ static void createOBJStream(Mesh & mesh,
 
 	// write header
 	obj.writeComment("OBJ File");
-	out_stream << "# OBJ File" << endl;
-	// out_stream << "# www..." << endl;
-	
 	obj.writeMaterialLib(mtlRelPath);
-	out_stream << "mtllib " << mtlRelPath << endl;
-	
 	obj.writeObjectStart(objRelPath);
-	out_stream << "o " << objRelPath << endl; // name of mesh
 	
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
 
@@ -89,7 +82,6 @@ static void createOBJStream(Mesh & mesh,
 			glm::vec3      v(vertex.pos * tm);
 			
 			obj.writeVertex(v);
-			out_stream << "v " << v.x << " " << v.y << " " << v.z << endl;
 			
 			// TODO broken ?
 			//glm::vec3 n = vertex.no * tm;
@@ -113,8 +105,6 @@ static void createOBJStream(Mesh & mesh,
 					//uv = glm::vec2(0, 1) - uv;
 					
 					obj.writeUv(uv);
-					out_stream << "vt " << uv.x << " " << uv.y << " 0.0"
-					           << endl;
 				}
 			}
 		} else {
@@ -131,10 +121,8 @@ static void createOBJStream(Mesh & mesh,
 		
 		// Group name
 		obj.writeGroupStart(partname);
-		out_stream << "g " << partname << endl;
 		// Smoothing group
 		obj.writeSmoothingGroup(smoothGroup);
-		out_stream << "s " << smoothGroup << endl;
 		smoothGroup++;
 		
 		const FGroupData & facegroupdata(groupValue.facesIndexes);
@@ -151,16 +139,12 @@ static void createOBJStream(Mesh & mesh,
 			if((matIdx != -1) && (matIdx != old_material_index)) {
 				// material reference
 				obj.writeUseMaterial(materialvector[matIdx].name);
-				out_stream << "usemtl " << materialvector[matIdx].name
-				           << endl;
 			}
 			
 			if(face.size == 3) {
 				obj.writeRaw("f ");
-				out_stream << "f ";
 			} else if(face.size == 4) {
 				obj.writeRaw("f ");
-				out_stream << "f ";
 			}
 			
 			for(unsigned int j = 0; j < face.getSize(); j++) {
@@ -178,14 +162,10 @@ static void createOBJStream(Mesh & mesh,
 					             vertex_number + 1 + v_offset,
 					             texture_number + vt_offset);
 					
-					out_stream << vertex_number + 1 + v_offset;
-					out_stream << "/";
-					out_stream << (texture_number + vt_offset) << " ";
 					texture_number++;
 				}
 			}
 			obj.writeRaw("\n");
-			out_stream << endl;
 
 			old_material_index = matIdx;
 		}
@@ -255,18 +235,9 @@ bool ObjExporter::exportFile(const string & objPath)
 	}
 	
 	ObjStream objStream;
-	std::ostringstream out_stream;
-	createOBJStream(mesh, tm, objStream, out_stream, nameRel, mtlRel);
-	file_writer << out_stream.str();
+	createOBJStream(mesh, tm, objStream, nameRel, mtlRel);
+	file_writer.write(objStream.m_out.data(), objStream.m_out.size());
 	file_writer.close();
-	
-	{
-		FileWriter fooWriter;
-		fooWriter.open(objPath + "foo.obj");
-		fooWriter.write(objStream.m_out.data(), objStream.m_out.size());
-		fooWriter.close();
-	}
-	
 	
 	writeMtl(mesh, mtlPath, nameRel);
 
