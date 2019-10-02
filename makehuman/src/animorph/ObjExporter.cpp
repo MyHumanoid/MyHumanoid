@@ -1,6 +1,6 @@
 #include "animorph/ObjExporter.h"
 
-#include "fmt/format.h"
+#include <fmt/format.h>
 
 #include "log/log.h"
 #include "util/StringUtils.h"
@@ -9,8 +9,61 @@
 using namespace std;
 using namespace Animorph;
 
+
+struct ObjStream {
+	fmt::MemoryWriter m_out;
+	
+	void writeComment(const std::string & comment)
+	{
+		m_out.write("# {}\n", comment);
+	}
+	void writeMaterialLib(const std::string & libFilePath)
+	{
+		m_out.write("mtllib {}\n", libFilePath);
+	}
+	void writeObject(const std::string & objectName)
+	{
+		m_out.write("o {}\n", objectName);
+	}
+	void writeVertex(const glm::vec3 & v)
+	{
+		m_out.write("v {} {} {}\n", v.x, v.y, v.z);
+	}
+	void writeUv(const glm::vec2 & uv)
+	{
+		m_out.write("vt {} {} 0.0\n", uv.x, uv.y);
+	}
+	void writeGroup(const std::string & groupName)
+	{
+		m_out.write("g {}\n", groupName);
+	}
+	void writeSmoothingGroup(const int groupId)
+	{
+		m_out.write("s {}\n", groupId);
+	}
+	void writeUseMaterial(const std::string & materialName)
+	{
+		m_out.write("usemtl {}\n", materialName);
+	}
+//	void writeFaceTri(int vertIdx1, int vertIdx2, int vertIdx3)
+//	{
+//		m_out.write("f {} {} {}\n", vertIdx1, vertIdx2, vertIdx3);
+//	}
+//	void writeFaceQuat(int vertIdx1, int vertIdx2, int vertIdx3, int vertIdx4)
+//	{
+//		m_out.write("f {} {} {} {}\n", vertIdx1, vertIdx2, vertIdx3, vertIdx4);
+//	}
+	template <typename... T>
+	void writeRaw(T &&... p)
+	{
+		m_out.write(std::forward<T>(p)...);
+	}
+};
+
+
 static void createOBJStream(Mesh & mesh,
                             const Matrix & tm,
+                     ObjStream & obj,
                      ostringstream & out_stream,
                      const string & objRelPath,
                      const string & mtlRelPath)
@@ -24,13 +77,16 @@ static void createOBJStream(Mesh & mesh,
 	const MaterialVector & materialvector = mesh.materials();
 
 	// write header
+	obj.writeComment("OBJ File");
 	out_stream << "# OBJ File" << endl;
 	// out_stream << "# www..." << endl;
-
+	
+	obj.writeMaterialLib(mtlRelPath);
 	out_stream << "mtllib " << mtlRelPath << endl;
-
+	
+	obj.writeObject(objRelPath);
 	out_stream << "o " << objRelPath << endl; // name of mesh
-
+	
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
 
 		const VertexData & vertexgroupdata(facegroup.getPartVertexesRef(partname));
@@ -40,6 +96,7 @@ static void createOBJStream(Mesh & mesh,
 			const Vertex & vertex(vertexvector[(*vertexgroup_it).first]);
 			glm::vec3      v(vertex.pos * tm);
 			
+			obj.writeVertex(v);
 			out_stream << "v " << v.x << " " << v.y << " " << v.z << endl;
 			
 			// TODO broken ?
@@ -62,7 +119,8 @@ static void createOBJStream(Mesh & mesh,
 					glm::vec2 uv = texture_face[n];
 					uv.y = (1.f - uv.y);// + 1.f;
 					//uv = glm::vec2(0, 1) - uv;
-
+					
+					obj.writeUv(uv);
 					out_stream << "vt " << uv.x << " " << uv.y << " 0.0"
 					           << endl;
 				}
@@ -80,8 +138,10 @@ static void createOBJStream(Mesh & mesh,
 	for(const auto & [partname, groupValue] : facegroup.m_groups) {
 		
 		// Group name
+		obj.writeGroup(partname);
 		out_stream << "g " << partname << endl;
 		// Smoothing group
+		obj.writeSmoothingGroup(smoothGroup);
 		out_stream << "s " << smoothGroup << endl;
 		smoothGroup++;
 		
@@ -98,13 +158,16 @@ static void createOBJStream(Mesh & mesh,
 
 			if((matIdx != -1) && (matIdx != old_material_index)) {
 				// material reference
+				obj.writeUseMaterial(materialvector[matIdx].name);
 				out_stream << "usemtl " << materialvector[matIdx].name
 				           << endl;
 			}
 			
 			if(face.size == 3) {
+				obj.writeRaw("f ");
 				out_stream << "f ";
 			} else if(face.size == 4) {
+				obj.writeRaw("f ");
 				out_stream << "f ";
 			}
 			
@@ -117,17 +180,21 @@ static void createOBJStream(Mesh & mesh,
 				            face.getVertexAtIndex(j))) != vertexgroupdata.end()) {
 					int vertex_number = vertex_iterator->second;
 					// cout << texture_number << endl;
-
+					
 					// face vertex geometry
+					obj.writeRaw("{}", vertex_number + 1 + v_offset);
 					out_stream << vertex_number + 1 + v_offset;
-
+					
+					obj.writeRaw("/");
 					out_stream << "/";
-
+					
+					obj.writeRaw("{} ", (texture_number + vt_offset));
 					out_stream << (texture_number + vt_offset) << " ";
 
 					texture_number++;
 				}
 			}
+			obj.writeRaw("\n");
 			out_stream << endl;
 
 			old_material_index = matIdx;
@@ -196,11 +263,20 @@ bool ObjExporter::exportFile(const string & objPath)
 		log_error("Failed to write obj: {}", objPath);
 		return false;
 	}
-
+	
+	ObjStream objStream;
 	std::ostringstream out_stream;
-	createOBJStream(mesh, tm, out_stream, nameRel, mtlRel);
+	createOBJStream(mesh, tm, objStream, out_stream, nameRel, mtlRel);
 	file_writer << out_stream.str();
 	file_writer.close();
+	
+	{
+		FileWriter fooWriter;
+		fooWriter.open(objPath + "foo.obj");
+		fooWriter.write(objStream.m_out.data(), objStream.m_out.size());
+		fooWriter.close();
+	}
+	
 	
 	writeMtl(mesh, mtlPath, nameRel);
 

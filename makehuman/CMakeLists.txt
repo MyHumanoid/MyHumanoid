@@ -180,12 +180,12 @@ set(shader_sources
 )
 
 
-find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLUT REQUIRED)
-find_package(glm REQUIRED)
-find_package(PNG REQUIRED)
-find_package(fmt REQUIRED)
+find_package(OpenGL     REQUIRED)
+find_package(GLEW       REQUIRED)
+find_package(GLUT       REQUIRED)
+find_package(glm        REQUIRED)
+find_package(PNG        REQUIRED)
+find_package(fmt    4.0 REQUIRED)
 find_package(PhysFS 2.1 REQUIRED)
 
 add_executable(makehuman
@@ -216,7 +216,7 @@ target_include_directories(makehuman PRIVATE
 )
 
 target_link_libraries(makehuman PRIVATE
-	fmt
+	fmt::fmt
 	imgui
 	stb_image
 	simpleini
