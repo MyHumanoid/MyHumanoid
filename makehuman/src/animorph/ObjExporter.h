@@ -55,9 +55,6 @@ protected:
 	Mesh & mesh;
 	Matrix tm;
 
-	void createFullOBJStream(ostringstream & out_stream, const string & basename);
-	void createMTLStream(ostringstream & out_stream, const string & basename);
-
 public:
 	/*!
 	 * \param _mesh construct ObjExporter from a Mesh object

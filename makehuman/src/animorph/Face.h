@@ -46,9 +46,8 @@ namespace Animorph
 
 /*! \brief Represents a quad or triangle and its properties
  */
-class Face
+struct Face
 {
-private:
 	int vertices[4];
 	int size;
 	int material_index;

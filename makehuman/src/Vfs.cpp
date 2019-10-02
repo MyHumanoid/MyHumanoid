@@ -1,8 +1,11 @@
 #include "Vfs.h"
 
+#include <cstddef>
 #include <vector>
 #include <stack>
 #include <optional>
+#include <iostream>
+#include <fstream>
 
 #include <physfs.h>
 
@@ -24,6 +27,10 @@ bool init() {
 
 void deinit() {
 	PHYSFS_deinit();
+}
+
+bool exists(const std::string & path) {
+	return PHYSFS_exists(path.c_str());
 }
 
 std::vector<std::string> list(const std::string &path, bool listDirs)
@@ -83,5 +90,34 @@ bool writeString(const char *fileName, const std::string &value) {
 	}
 	return true;
 }
+
+void copyToFilesystem(const std::string & inPath, const std::string outPath) {
+	
+	auto file = PHYSFS_openRead(inPath.c_str());
+	if(!file) {
+		log_error("File does not exist");
+		return;
+	}
+	
+	std::ofstream out(outPath, std::ios::out | std::ios::binary);
+	if(!out) {
+		log_error("Failed to open file: {}", outPath);
+		return;
+	}
+	
+	std::array<std::byte, 1024 * 4> buffer;
+	
+	int readBytes = 0;
+	while((readBytes = PHYSFS_readBytes(file, buffer.data(), buffer.size())) > 0) {
+		// TODO what is the std::byte even for ?
+		out.write((char*)buffer.data(), readBytes);
+	}
+	if(!PHYSFS_eof(file)) {
+		log_error("Got a short read ");
+	}
+	out.close();
+	PHYSFS_close(file);
+}
+
 
 } // namespace vfs

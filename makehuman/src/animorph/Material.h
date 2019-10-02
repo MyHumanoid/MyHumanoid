@@ -43,44 +43,10 @@ using std::string;
 namespace Animorph
 {
 
-/*! \brief Represents a material by its name, surface colour and edge colour
- */
-class Material
+struct Material
 {
-	Color  rgbCol;
-	Color  edgeCol;
+	Color  color;
 	string name;
-
-public:
-	/*!
-	 * \return rgbCol the RGB Color values from this Material
-	 */
-	const Color & getRGBCol() const { return rgbCol; }
-
-	/*!
-	 * \return edgeCol the RGB edge color values from this Material
-	 */
-	const Color & getEdgeCol() const { return edgeCol; }
-
-	/*!
-	 * \param rgbCol set the RGB Color values for this Material
-	 */
-	void setRGBCol(const Color & rgbCol) { this->rgbCol = rgbCol; }
-
-	/*!
-	 * \param edgeCol set the RGB edge color values for this Material
-	 */
-	void setEdgeCol(const Color & edgeCol) { this->edgeCol = edgeCol; }
-
-	/*!
-	 * \return name the name of this Material
-	 */
-	const string & getName() const { return name; }
-
-	/*!
-	 * \param name set the name the name for this Material
-	 */
-	void setName(const std::string & name) { this->name = name; }
 };
 
 /*! \brief A loadable vector of materials

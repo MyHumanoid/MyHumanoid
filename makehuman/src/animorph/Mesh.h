@@ -284,7 +284,7 @@ public:
 
 	const FaceVector & faces() { return m_faces; }
 
-	const MaterialVector & materials() { return m_materials; }
+	const MaterialVector & materials() const { return m_materials; }
 
 	const TargetMap & targets() { return m_targets; }
 

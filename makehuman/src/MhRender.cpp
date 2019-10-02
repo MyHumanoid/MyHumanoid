@@ -226,7 +226,7 @@ void renderMesh()
 				int material_index = face.getMaterialIndex();
 				if(material_index != -1) {
 					const Material & material(materialvector[material_index]);
-					const Color &    color(material.getRGBCol());
+					const Color &    color(material.color);
 					
 					// Set the color for these vertices
 					::glColor4fv(color.getAsOpenGLVector());

@@ -122,9 +122,9 @@ bool ColladaExporter::exportFile(const string & filename)
 
 	for(unsigned int i = 0; i < materialvector.size(); i++) {
 		xNode_instance_material = xNode_technique_common.addChild("instance_material");
-		xNode_instance_material.addAttribute("symbol", materialvector[i].getName().c_str());
+		xNode_instance_material.addAttribute("symbol", materialvector[i].name.c_str());
 		xNode_instance_material.addAttribute("target",
-		                                     ("#" + materialvector[i].getName()).c_str());
+		                                     ("#" + materialvector[i].name).c_str());
 	}
 
 	xNode_scene                 = xNode_collada.addChild("scene");
@@ -317,7 +317,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 		for(unsigned int m1 = 0; m1 < m; m1++) {
 
 			// already rendered this material???
-			if(materialvector[m1].getName() == materialvector[m].getName()) {
+			if(materialvector[m1].name == materialvector[m].name) {
 				found = true;
 				break;
 			}
@@ -386,8 +386,8 @@ void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int mate
 		const Face & face(facevector[i]);
 
 		int    material_index = face.getMaterialIndex();
-		string name           = materialvector[material_index].getName();
-		string name2          = materialvector[material].getName();
+		string name           = materialvector[material_index].name;
+		string name2          = materialvector[material].name;
 
 		if(name == name2) {
 
@@ -425,7 +425,7 @@ void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int mate
 		std::ostringstream count_stream;
 		count_stream << number_p;
 		xNode_polygons.addAttribute("count", count_stream.str().c_str());
-		xNode_polygons.addAttribute("material", materialvector[material].getName().c_str());
+		xNode_polygons.addAttribute("material", materialvector[material].name.c_str());
 
 	} else {
 		xNode_polygons.deleteNodeContent(0);
@@ -436,7 +436,7 @@ void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int mate
 		count_stream << number_t;
 		xNode_triangles.addAttribute("count", count_stream.str().c_str());
 		xNode_triangles.addAttribute("material",
-		                             materialvector[material].getName().c_str());
+		                             materialvector[material].name.c_str());
 
 	} else {
 		xNode_triangles.deleteNodeContent(0);
@@ -475,26 +475,26 @@ void ColladaExporter::CreateLibraryMaterialsNode(XMLNode * xNode_library_materia
 		std::ostringstream out_stream;
 		const Material &   material = materialvector[i];
 		Material           material_2;
-		const Color &      colRGB          = material.getRGBCol();
+		const Color &      colRGB          = material.color;
 		bool               found_duplicate = false;
 		for(unsigned int j = 0; j < i; j++) {
 			const Material & material_2 = materialvector[j];
-			if(material_2.getName() == material.getName())
+			if(material_2.name == material.name)
 				found_duplicate = true;
 		}
 		if(found_duplicate == true)
 			continue;
 		xNode_material = xNode_library_materials->addChild("material");
 
-		xNode_material.addAttribute("id", material.getName().c_str());
-		xNode_material.addAttribute("name", material.getName().c_str());
+		xNode_material.addAttribute("id", material.name.c_str());
+		xNode_material.addAttribute("name", material.name.c_str());
 		xNode_istance_effects = xNode_material.addChild("instance_effect");
 		xNode_istance_effects.addAttribute("url",
-		                                   ("#" + material.getName() + "-fx").c_str());
+		                                   ("#" + material.name + "-fx").c_str());
 
 		xNode_effect = xNode_library_effects->addChild("effect");
-		xNode_effect.addAttribute("id", (material.getName() + "-fx").c_str());
-		xNode_effect.addAttribute("name", (material.getName() + "-fx").c_str());
+		xNode_effect.addAttribute("id", (material.name + "-fx").c_str());
+		xNode_effect.addAttribute("name", (material.name + "-fx").c_str());
 
 		xNode_profile_common = xNode_effect.addChild("profile_COMMON");
 		xNode_technique      = xNode_profile_common.addChild("technique");

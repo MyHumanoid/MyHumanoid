@@ -33,9 +33,9 @@ void MaterialVector::fromStream(std::ifstream & in_stream)
 		Color    color;
 
 		if(sscanf(buffer, "%[^,],%f,%f,%f,%f\n", name, &c0, &c1, &c2, &alpha) == 5) {
-			mat.setName(name);
+			mat.name = name;
 			color.rgba(c0, c1, c2, alpha);
-			mat.setRGBCol(color);
+			mat.color = color;
 
 			(*this).push_back(mat);
 		} else {

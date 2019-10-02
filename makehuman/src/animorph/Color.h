@@ -41,12 +41,10 @@ namespace Animorph
   This class just represents a colour and has some convenient access functions.
 
   */
-class Color
+struct Color
 {
-private:
 	float r, g, b, a;
 
-public:
 	/// constructor initalizes Color with 1.0,1.0,1.0
 	Color()
 	        : r(1.0)

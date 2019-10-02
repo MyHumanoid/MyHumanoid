@@ -1,7 +1,10 @@
 #include "animorph/ObjExporter.h"
 
+#include "fmt/format.h"
+
 #include "log/log.h"
 #include "util/StringUtils.h"
+#include "Vfs.h"
 
 using namespace std;
 using namespace Animorph;
@@ -35,10 +38,13 @@ static void createOBJStream(Mesh & mesh,
 		for(VertexData::const_iterator vertexgroup_it = vertexgroupdata.begin();
 		    vertexgroup_it != vertexgroupdata.end(); vertexgroup_it++) {
 			const Vertex & vertex(vertexvector[(*vertexgroup_it).first]);
-			glm::vec3      vector(vertex.pos * tm);
-
-			out_stream << "v " << vector.x << " " << vector.y << " " << vector.z
-			           << endl;
+			glm::vec3      v(vertex.pos * tm);
+			
+			out_stream << "v " << v.x << " " << v.y << " " << v.z << endl;
+			
+			// TODO broken ?
+			//glm::vec3 n = vertex.no * tm;
+			//out_stream << "vn " << n.x << " " << n.y << " " << n.z << endl;
 		}
 	}
 
@@ -53,11 +59,11 @@ static void createOBJStream(Mesh & mesh,
 				const TextureFace & texture_face(texturevector[facegroupdata[i]]);
 
 				for(unsigned int n = 0; n < texture_face.size(); n++) {
-					const glm::vec2 & uv(texture_face[n]);
+					glm::vec2 uv = texture_face[n];
+					uv.y = (1.f - uv.y);// + 1.f;
+					//uv = glm::vec2(0, 1) - uv;
 
-					// the -uv.y+1.0 stuff is a hack for renderman input UV data
-					// TODO: change renderman import UV data
-					out_stream << "vt " << uv.x << " " << -uv.y << " 0.0"
+					out_stream << "vt " << uv.x << " " << uv.y << " 0.0"
 					           << endl;
 				}
 			}
@@ -69,9 +75,16 @@ static void createOBJStream(Mesh & mesh,
 
 	int v_offset  = 0;
 	int vt_offset = 0;
-
+	
+	int smoothGroup = 1;
 	for(const auto & [partname, groupValue] : facegroup.m_groups) {
-
+		
+		// Group name
+		out_stream << "g " << partname << endl;
+		// Smoothing group
+		out_stream << "s " << smoothGroup << endl;
+		smoothGroup++;
+		
 		const FGroupData & facegroupdata(groupValue.facesIndexes);
 		const VertexData & vertexgroupdata(facegroup.getPartVertexesRef(partname));
 
@@ -81,17 +94,20 @@ static void createOBJStream(Mesh & mesh,
 		for(unsigned int i = 0; i < facegroupdata.size(); i++) {
 			const Face & face(facevector[facegroupdata[i]]);
 
-			int material_index = face.getMaterialIndex();
+			int matIdx = face.getMaterialIndex();
 
-			if((material_index != -1) && (material_index != old_material_index)) {
+			if((matIdx != -1) && (matIdx != old_material_index)) {
 				// material reference
-				out_stream << "usemtl " << materialvector[material_index].getName()
+				out_stream << "usemtl " << materialvector[matIdx].name
 				           << endl;
 			}
-
-			if(face.getSize() > 0)
+			
+			if(face.size == 3) {
 				out_stream << "f ";
-
+			} else if(face.size == 4) {
+				out_stream << "f ";
+			}
+			
 			for(unsigned int j = 0; j < face.getSize(); j++) {
 				// fix: Prevent to access non existent hash entries (the operator[])
 				// does implicitly insert an entry for a particular has if it does
@@ -114,7 +130,7 @@ static void createOBJStream(Mesh & mesh,
 			}
 			out_stream << endl;
 
-			old_material_index = material_index;
+			old_material_index = matIdx;
 		}
 		v_offset += vertexgroupdata.size();
 
@@ -125,154 +141,70 @@ static void createOBJStream(Mesh & mesh,
 	}
 }
 
-// TODO always do "full" export
-void ObjExporter::createFullOBJStream(ostringstream & out_stream, const string & basename)
+static void writeMtl(const Mesh & mesh, const string & mtlPath, const string & objName)
 {
-	const VertexVector &   vertexvector   = mesh.getVertexVectorRef();
-	const FaceVector &     facevector     = mesh.faces();
-	const MaterialVector & materialvector = mesh.materials();
-	const TextureVector &  texturevector  = mesh.textureVector();
-
-	// TODO: decide how much accracy we need
-	// out_stream << setprecision (12);
-
-	// write header
-	out_stream << "# OBJ File" << endl;
-
-	out_stream << "mtllib "
-	           << "materials.mtl" << endl;
-
-	out_stream << "o " << basename << endl; // name of mesh
-
-	// write vertices
-	for(unsigned int i = 0; i < vertexvector.size(); i++) {
-		const Vertex & vertex = vertexvector[i];
-		glm::vec3      vector(vertex.pos * tm);
-
-		out_stream << "v " << vector.x << " " << vector.y << " " << vector.z << endl;
+	FileWriter mtlWriter;
+	mtlWriter.open(mtlPath);
+	if(!mtlWriter) {
+		log_error("Failed to write mtl file {}", mtlPath);
+		return;
 	}
-
-	// write texture UV coordinates
-	if(facevector.size() == texturevector.size()) {
-		for(unsigned int i = 0; i < facevector.size(); i++) {
-			const TextureFace & texture_face = texturevector[i];
-
-			for(unsigned int n = 0; n < texture_face.size(); n++) {
-				const glm::vec2 & uv = texture_face[n];
-
-				// the -uv.y+1.0 stuff is a hack for renderman input UV data
-				// TODO: change renderman import UV data
-				out_stream << "vt " << uv.x << " " << -uv.y << " 0.0" << endl;
+	
+	std::ostringstream stream;
+	stream << "# Material file for " << objName << endl << endl;
+	
+	for(const auto & mat : mesh.materials()) {
+		const Color &    col   = mat.color;
+		
+		stream << "newmtl " << mat.name << endl;
+		//stream << "illum " << 2 << endl;
+		// Diffuse color
+		stream << "kd " << col.r << " " << col.g << " " << col.b << endl;
+		
+		{
+			// Diffuse Texture
+			std::string inTexPath = "pixmaps/ui/" + mat.name + "_color.png";
+			if(vfs::exists(inTexPath)) {
+				std::string foo = removeExtension(objName) + "_"+ mat.name + "_color.png";
+				stream << "map_kd " << foo << endl;
+				
+				std::string outTexPath = removeExtension(mtlPath) + "_"+ mat.name + "_color.png";
+				vfs::copyToFilesystem(inTexPath, outTexPath);
 			}
 		}
-	} else {
-		log_error("Couldn't export texture coordinates! {} != {}",
-		          facevector.size(), texturevector.size());
+		stream << endl;
 	}
-
-	// write faces
-	int old_material_index = -1;
-	int texture_number     = 1;
-	for(unsigned int i = 0; i < facevector.size(); i++) {
-		const Face & face(facevector[i]);
-
-		int material_index = face.getMaterialIndex();
-
-		if((material_index != -1) && (material_index != old_material_index)) {
-			// material reference
-			out_stream << "usemtl " << materialvector[material_index].getName() << endl;
-		}
-
-		if(face.getSize() > 0)
-			out_stream << "f ";
-
-		for(unsigned int j = 0; j < face.getSize(); j++) {
-			int vertex_number = face.getVertexAtIndex(j);
-			// cout << texture_number << endl;
-
-			// face vertex geometry
-			out_stream << vertex_number + 1;
-
-			out_stream << "/";
-
-			out_stream << texture_number << " ";
-
-			texture_number++;
-		}
-		out_stream << endl;
-
-		old_material_index = material_index;
-	}
+	
+	mtlWriter << stream.str();
+	mtlWriter.close();
 }
+
 
 bool ObjExporter::exportFile(const string & objPath)
 {
 	mesh.facegroupCalcVertexes();
-
+	
+	auto baseNameAbs = removeExtension(objPath);
+	auto mtlPath = baseNameAbs + ".mtl";
+	
+	auto nameRel = pathBasename(objPath);
+	auto mtlRel = pathBasename(mtlPath);
+	
 	FileWriter file_writer;
-
 	file_writer.open(objPath);
-	if(file_writer) {
-		auto baseNameAbs = removeExtension(objPath);
-		auto mtlPath = baseNameAbs + ".mtl";
-		
-		auto nameRel = pathBasename(objPath);
-		auto mtlRel = pathBasename(mtlPath);
-		
-		std::ostringstream out_stream;
-		createOBJStream(mesh, tm, out_stream, nameRel, mtlRel);
-		file_writer << out_stream.str();
-		file_writer.close();
-		
-		{
-			auto mtlPath = baseNameAbs + ".mtl";
-			FileWriter mtlWriter;
-			mtlWriter.open(mtlPath);
-			if(mtlWriter) {
-				std::ostringstream out_stream;
-				createMTLStream(out_stream, nameRel);
-				file_writer << out_stream.str();
-				file_writer.close();
-			} else {
-				log_error("Failed to write mtl file: {}", mtlPath);
-			}
-		}
-	} else {
-		log_error("Failed to open file for writing: {}", objPath);
+	if(!file_writer) {
+		log_error("Failed to write obj: {}", objPath);
+		return false;
 	}
 
-//	if(!file_writer)
-//		return false;
-
-//	file_writer.open(objPath + "materials.mtl");
-
-//	if(file_writer) {
-//		std::ostringstream out_stream;
-//		createMTLStream(out_stream, full ? "fullmesh.obj" : "mesh.obj");
-
-//		file_writer << out_stream.str();
-//		file_writer.close();
-//	}
-
-//	if(!file_writer)
-//		return false;
+	std::ostringstream out_stream;
+	createOBJStream(mesh, tm, out_stream, nameRel, mtlRel);
+	file_writer << out_stream.str();
+	file_writer.close();
+	
+	writeMtl(mesh, mtlPath, nameRel);
 
 	return true;
 }
 
-void ObjExporter::createMTLStream(std::ostringstream & out_stream, const std::string & basename)
-{
-	const MaterialVector & materialvector = mesh.materials();
 
-	out_stream << "# Material file for " << basename << endl << endl;
-
-	for(unsigned int i = 0; i < materialvector.size(); i++) {
-		const Material & material = materialvector[i];
-		const Color &    colRGB   = material.getRGBCol();
-
-		out_stream << "newmtl " << material.getName() << endl;
-		out_stream << "Kd " << colRGB.red() << " " << colRGB.green() << " " << colRGB.blue()
-		           << endl
-		           << endl;
-	}
-}
