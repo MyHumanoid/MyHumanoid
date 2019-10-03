@@ -1,12 +1,24 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
-project(MyHumanoid LANGUAGES CXX)
+if(WIN32)
+	# MSVC runtime library flags are selected by an abstraction.
+	cmake_policy(SET CMP0091 NEW)
+endif()
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(MyHumanoid
+	VERSION 0.1.0
+	DESCRIPTION MyHumanoid
+	LANGUAGES CXX
+)
+
+#set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(WIN32)
+	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
 
 add_subdirectory(extern)
-
 
 set(animorph_sources
 	src/animorph/BodySettings.h
@@ -209,6 +221,13 @@ target_compile_features(MyHumanoid PRIVATE
 	cxx_std_17
 )
 
+if(UNIX)
+	#target_link_libraries(MyHumanoid -static)
+else()
+	#target_compile_options(MyHumanoid PUBLIC/PRIVATE /MT)
+	#target_link_options(MyHumanoid PUBLIC/PRIVATE /INCREMENTAL:NO /NODEFAULTLIB:MSVCRT)
+endif()
+
 target_include_directories(MyHumanoid PRIVATE
 	${OPENGL_INCLUDE_DIRS}
 	${GLEW_INCLUDE_DIRS}
@@ -221,7 +240,7 @@ target_include_directories(MyHumanoid PRIVATE
 
 target_link_libraries(MyHumanoid PRIVATE
 	${OPENGL_LIBRARIES}
-	GLEW::GLEW
+	${GLEW_LIBRARIES}
 	GLUT::GLUT
 	${PNG_LIBRARY}
 	${PHYSFS_LIBRARY}
@@ -241,7 +260,9 @@ macro(create_symlink filepath sympath)
 	execute_process(COMMAND "${CMAKE_COMMAND}" -E create_symlink ${filepath} ${sympath})
 endmacro(create_symlink)
 
-create_symlink(
-	${CMAKE_CURRENT_SOURCE_DIR}/data
-	${CMAKE_CURRENT_BINARY_DIR}/data
-)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	create_symlink(
+		${CMAKE_CURRENT_SOURCE_DIR}/data
+		${CMAKE_CURRENT_BINARY_DIR}/data
+	)
+endif()
