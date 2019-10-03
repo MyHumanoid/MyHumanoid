@@ -99,7 +99,7 @@ const string searchFile(const StringVector & name_vector)
 		const string & try_name = name_vector[i];
 		
 		auto res = vfs::getType(try_name);
-		if(res == vfs::FileType::regular) {
+		if(res == vfs::FileType::Regular) {
 			return try_name;
 		}
 	}
@@ -113,7 +113,7 @@ const string searchDir(const StringVector & name_vector)
 		const string & try_name = name_vector[i];
 		
 		auto res = vfs::getType(try_name);
-		if(res == vfs::FileType::directory) {
+		if(res == vfs::FileType::Directory) {
 			return try_name;
 		}
 	}

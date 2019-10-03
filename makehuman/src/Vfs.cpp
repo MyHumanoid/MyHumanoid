@@ -39,16 +39,16 @@ FileType getType(const std::string & path)
 	if(PHYSFS_stat(path.c_str(), &stat)) {
 		switch (stat.filetype) {
 		case PHYSFS_FILETYPE_REGULAR:
-			return FileType::regular;
+			return FileType::Regular;
 		case PHYSFS_FILETYPE_DIRECTORY:
-			return FileType::directory;
+			return FileType::Directory;
 		case PHYSFS_FILETYPE_SYMLINK:
-			return FileType::symlink;
+			return FileType::Symlink;
 		case PHYSFS_FILETYPE_OTHER:
-			return FileType::other;
+			return FileType::Other;
 		}
 	} else {
-		return FileType::ERROR;
+		return FileType::Error;
 	}
 }
 

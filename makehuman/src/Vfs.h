@@ -14,11 +14,11 @@ bool exists(const std::string & path);
 
 enum class FileType
 {
-	ERROR,
-	regular,
-	directory,
-	symlink,
-	other
+	Error,
+	Regular,
+	Directory,
+	Symlink,
+	Other
 };
 
 FileType getType(const std::string & path);

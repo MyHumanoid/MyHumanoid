@@ -50,7 +50,7 @@ void DirectoryList::readDirRecursive(const std::string & dir_str)
 		}
 		
 		auto type = vfs::getType(dir_file);
-		if(type == vfs::FileType::directory) {
+		if(type == vfs::FileType::Directory) {
 			if(file_type == DIRECTORY) {
 				file_list.push_back(dir_file);
 			}
@@ -61,7 +61,7 @@ void DirectoryList::readDirRecursive(const std::string & dir_str)
 				readDirRecursive(dir_file);
 				recursive_counter--;
 			}
-		} else if(type == vfs::FileType::regular) {
+		} else if(type == vfs::FileType::Regular) {
 			if(file_type == REGULAR_FILE) {
 				if(hasFileFilterEnding(dir_file)) {
 					file_list.push_back(dir_file);
