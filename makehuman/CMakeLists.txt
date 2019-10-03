@@ -216,12 +216,12 @@ target_include_directories(makehuman PRIVATE
 )
 
 target_link_libraries(makehuman PRIVATE
+	${OPENGL_LIBRARIES}
 	fmt
 	imgui
 	stb_image
 	simpleini
 	nativefiledialog
-	OpenGL::OpenGL
 	GLEW::GLEW
 	GLUT::GLUT
 	${PHYSFS_LIBRARY}
