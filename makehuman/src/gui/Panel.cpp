@@ -30,6 +30,7 @@
 #include "gui/Rect.h"
 #include "gui/Widget.h"
 
+#include <glm/glm.hpp>
 #include <iostream>
 
 using namespace std;
@@ -179,7 +180,7 @@ void Panel::calcWidgetPosition()
 				xpos += widgetWidth;
 
 				// find biggest y position in a row
-				ybiggest = max<int>(ybiggest, ypos + widgetHeight);
+				ybiggest = glm::max<int>(ybiggest, ypos + widgetHeight);
 			}
 			// x row full, but space in new y row
 			else if((xpos + widgetWidth > panelWidth) &&
@@ -229,7 +230,7 @@ void Panel::calcWidgetPosition()
 				ypos += widgetHeight;
 
 				// find biggest x position in a row
-				xbiggest = max<int>(xbiggest, xpos + widgetWidth);
+				xbiggest = glm::max<int>(xbiggest, xpos + widgetWidth);
 			}
 			// y row full, but space in new x row
 			else if((ypos + widgetHeight > panelHeight) &&

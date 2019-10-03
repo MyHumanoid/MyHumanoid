@@ -28,6 +28,8 @@
 #ifndef FACEGROUP_H
 #define FACEGROUP_H 1
 
+#include <optional>
+
 #include "Face.h"
 #include "FaceVector.h"
 #include "FileWriter.h"
