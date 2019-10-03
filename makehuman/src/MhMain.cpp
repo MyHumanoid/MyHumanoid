@@ -878,10 +878,10 @@ static void keyboard(unsigned char key)
 			g_global.camera->move(0, 0, -1);
 			break;
 		case '8':
-			g_global.camera->rotate(-M_PI / 12, X_AXIS);
+			g_global.camera->rotate(-glm::pi<float>() / 12, X_AXIS);
 			break;
 		case '2':
-			g_global.camera->rotate(M_PI / 12, X_AXIS);
+			g_global.camera->rotate(glm::pi<float>() / 12, X_AXIS);
 			break;
 		case '1':
 			g_global.camera->resetRotation();
@@ -891,21 +891,21 @@ static void keyboard(unsigned char key)
 			break;
 		case '7':
 			g_global.camera->resetRotation();
-			g_global.camera->rotate(M_PI / 2, X_AXIS);
+			g_global.camera->rotate(glm::pi<float>() / 2, X_AXIS);
 			break;
 		case '6':
-			g_global.camera->rotate(-M_PI / 12, Y_AXIS);
+			g_global.camera->rotate(-glm::pi<float>() / 12, Y_AXIS);
 			break;
 		case '5':
 			g_global.camera->setPerspective(!g_global.camera->isPerspective());
 			reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
 			break;
 		case '4':
-			g_global.camera->rotate(M_PI / 12, Y_AXIS);
+			g_global.camera->rotate(glm::pi<float>() / 12, Y_AXIS);
 			break;
 		case '3':
 			g_global.camera->resetRotation();
-			g_global.camera->rotate(-M_PI / 2, Y_AXIS);
+			g_global.camera->rotate(-glm::pi<float>() / 2, Y_AXIS);
 			break;
 		case '.':
 			g_global.camera->resetPosition();
@@ -1069,7 +1069,7 @@ int main(int argc, char ** argv)
 	g_mainWindow->addPanel(toolbarPanel);
 	g_mainWindow->addPanel(characterSettingPanel);
 
-	// camera->rotate (-M_PI/2, X_AXIS);
+	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
 
 	tooltipPanel->createWidgets();

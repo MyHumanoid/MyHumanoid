@@ -26,6 +26,9 @@
  */
 
 #include "gui/Camera.h"
+
+#include <glm/ext.hpp>
+
 #include "gui/CGUtilities.h"
 #include <iostream>
 
@@ -59,12 +62,12 @@ Camera::Camera()
         , endVector(0.0f, -7.0f, -3.0f)
         ,
 
-        startAngleX((0.0 * M_PI) / 180.0f)
-        , endAngleX((-90.0 * M_PI) / 180.0f)
+        startAngleX((0.0 * glm::pi<float>()) / 180.0f)
+        , endAngleX((-90.0 * glm::pi<float>()) / 180.0f)
         ,
 
-        startAngleY((0.0 * M_PI) / 180.0f)
-        , endAngleY((00.0 * M_PI) / 180.0f)
+        startAngleY((0.0 * glm::pi<float>()) / 180.0f)
+        , endAngleY((00.0 * glm::pi<float>()) / 180.0f)
         ,
 
         timeForMorph(1.0)
@@ -161,8 +164,8 @@ void Camera::resetPosition()
  mouse is dragged with a button down other than the right button..*/
 void Camera::rotateMouse(int x, int y)
 {
-	rotate((M_PI / 180) * (y - last_mouse_pos.y), X_AXIS);
-	rotate((M_PI / 180) * (x - last_mouse_pos.x), Y_AXIS);
+	rotate((glm::pi<float>() / 180) * (y - last_mouse_pos.y), X_AXIS);
+	rotate((glm::pi<float>() / 180) * (x - last_mouse_pos.x), Y_AXIS);
 
 	last_mouse_pos.x = x;
 	last_mouse_pos.y = y;
@@ -239,7 +242,7 @@ int Camera::steps()
 
 float Camera::getYForX(float x)
 {
-	float v = 0.5 * (::cosf(x * M_PI) + 1.0f);
+	float v = 0.5 * (::cosf(x * glm::pi<float>()) + 1.0f);
 	return 1.0f - (v * v);
 }
 

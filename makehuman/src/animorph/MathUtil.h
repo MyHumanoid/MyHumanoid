@@ -29,10 +29,7 @@
 #ifndef MATHUTIL_H
 #define MATHUTIL_H 1
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
+#include <glm/ext.hpp>
 #include <cmath>
 
 namespace Animorph
@@ -44,13 +41,13 @@ float wrapPi(float theta);
 /// convert angle from radians to degree
 inline double rad2deg(double x)
 {
-	return x * 180.0 / M_PI;
+	return x * 180.0 / glm::pi<float>();
 }
 
 /// convert angle from degree to radians
 inline double deg2rad(double x)
 {
-	return x * M_PI / 180.0;
+	return x * glm::pi<float>() / 180.0;
 }
 
 /***********************

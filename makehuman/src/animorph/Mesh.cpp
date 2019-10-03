@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 #include "log/log.h"
 #include "log/Profiler.h"
@@ -256,7 +257,7 @@ const DummyJoint dummyJoints[DUMMY_JOINTS] = {
         {SK_NONE, glm::vec3(0, 0, 0)}, {SK_NONE, glm::vec3(0, 0, 0)},
 };
 
-const float M_PI_180 = (M_PI / 180.0);
+const float M_PI_180 = (glm::pi<float>() / 180.0);
 
 Mesh::Mesh()
 {
