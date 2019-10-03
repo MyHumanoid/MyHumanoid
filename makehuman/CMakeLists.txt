@@ -116,7 +116,7 @@ set(log_sources
 	src/log/Profiler.cpp
 )
 
-set(makehuman_sources
+set(myhumanoid_sources
 	src/BodyPanel.cpp
 	src/BodyPanel.h
 	src/CharacterSettingPanel.cpp
@@ -184,28 +184,24 @@ find_package(glm        REQUIRED)
 find_package(PNG        REQUIRED)
 find_package(PhysFS 2.1 REQUIRED)
 
-add_executable(makehuman
+add_executable(MyHumanoid
 	${animorph_sources}
 	${gui_sources}
 	${log_sources}
 	${render_sources}
-	${makehuman_sources}
+	${myhumanoid_sources}
 	${shader_sources}
 )
-set_target_properties(makehuman PROPERTIES
+set_target_properties(MyHumanoid PROPERTIES
 	CXX_STANDARD 17
 #	CXX_EXTENSIONS OFF
 #	INTERPROCEDURAL_OPTIMIZATION TRUE
 )
-target_compile_features(makehuman PRIVATE
+target_compile_features(MyHumanoid PRIVATE
 	cxx_std_17
 )
 
-
-
-#target_compile_options(makehuman PRIVATE -Wall -Wextra -pedantic)
-
-target_include_directories(makehuman PRIVATE
+target_include_directories(MyHumanoid PRIVATE
 	${OPENGL_INCLUDE_DIRS}
 	${GLEW_INCLUDE_DIRS}
 	${GLUT_INCLUDE_DIRS}
@@ -215,17 +211,17 @@ target_include_directories(makehuman PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(makehuman PRIVATE
+target_link_libraries(MyHumanoid PRIVATE
 	${OPENGL_LIBRARIES}
+	GLEW::GLEW
+	GLUT::GLUT
+	${PNG_LIBRARY}
+	${PHYSFS_LIBRARY}
 	fmt
 	imgui
 	stb_image
 	simpleini
 	nativefiledialog
-	GLEW::GLEW
-	GLUT::GLUT
-	${PHYSFS_LIBRARY}
-	${PNG_LIBRARY}
 )
 
 #file(CREATE_LINK

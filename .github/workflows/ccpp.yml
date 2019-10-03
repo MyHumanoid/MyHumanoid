@@ -26,11 +26,9 @@ jobs:
         libgtk-3-dev
     - name: configure
       run: |
-        ls
         mkdir build
         cd build
-        cmake -G Ninja ..
-        ls
+        cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
     - name: build
       run: |
         cd build
@@ -52,12 +50,9 @@ jobs:
         physfs
     - name: configure
       run: |
-        pwd
-        ls
         mkdir build
         cd build
-        cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
-        ls
+        cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
     - name: build
       run: |
         pwd
