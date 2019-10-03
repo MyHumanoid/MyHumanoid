@@ -1,3 +1,3 @@
 #include "log/log.h"
 
-LogLevel g_logLevel = LogLevel::debug;
+LogLevel g_logLevel = LogLevel::info;

@@ -14,6 +14,29 @@ MhConfig g_config;
 static const char fileName[] = "MyHumanoid.ini";
 
 
+struct Section {
+	CSimpleIniA & m_ini;
+	const std::string m_section;
+	Section(CSimpleIniA & ini, const std::string & name)
+	    : m_ini(ini)
+	    , m_section(name)
+	{}
+	
+	void getVal(bool & field, const char * name) {
+		field = m_ini.GetBoolValue(m_section.c_str(), name, field);
+	}
+	void getVal(int & field, const char * name) {
+		field = m_ini.GetLongValue(m_section.c_str(), name, field);
+	}
+	
+	void setVal(bool & field, const char * name) {
+		m_ini.SetBoolValue(m_section.c_str(), name, field);
+	};
+	void setVal(int & field, const char * name) {
+		m_ini.SetLongValue(m_section.c_str(), name, field);
+	};
+};
+
 void LoadConfig()
 {
 	CSimpleIniA ini;
@@ -38,27 +61,23 @@ void LoadConfig()
 		log_info("Config loaded");
 	}
 	
-	std::string section;
-	auto getVal = [&ini, &section](auto & field, const auto & name) {
-		if constexpr(std::is_same<typeof field, bool>::value) {
-			field = ini.GetBoolValue(section.c_str(), name, field);
-		} else {
-			field = ini.GetLongValue(section.c_str(), name, field);
-		}
-	};
 	
-	section = "window-main";
-	getVal(g_config.windowMain.pos.x, "pos-x");
-	getVal(g_config.windowMain.pos.y, "pos-y");
-	getVal(g_config.windowMain.siz.x, "siz-x");
-	getVal(g_config.windowMain.siz.y, "siz-y");
+	{
+		Section s(ini, "window-main");
+		s.getVal(g_config.windowMain.pos.x, "pos-x");
+		s.getVal(g_config.windowMain.pos.y, "pos-y");
+		s.getVal(g_config.windowMain.siz.x, "siz-x");
+		s.getVal(g_config.windowMain.siz.y, "siz-y");
+	}
 	
-	section = "window-open";
-	getVal(g_config.characterSettings.visible,   "characterSettings.visible");
-	getVal(g_config.morphTargets.visible,        "morphTargets.visible");
-	getVal(g_config.morphTargetsApplied.visible, "morphTargetsApplied.visible");
-	getVal(g_config.poseTargets.visible,         "poseTargets.visible");
-	getVal(g_config.poseTargetsApplied.visible,  "poseTargetsApplied.visible");
+	{
+		Section s(ini, "window-open");
+		s.getVal(g_config.characterSettings.visible,   "characterSettings.visible");
+		s.getVal(g_config.morphTargets.visible,        "morphTargets.visible");
+		s.getVal(g_config.morphTargetsApplied.visible, "morphTargetsApplied.visible");
+		s.getVal(g_config.poseTargets.visible,         "poseTargets.visible");
+		s.getVal(g_config.poseTargetsApplied.visible,  "poseTargetsApplied.visible");
+	}
 }
 
 void SaveConfig()
@@ -68,27 +87,22 @@ void SaveConfig()
 	ini.SetMultiKey(true);
 	ini.SetMultiLine(true);
 	
-	std::string section;
-	auto setVal = [&ini, &section](const auto & field, const auto & name) {
-		if constexpr(std::is_same<typeof field, bool>::value) {
-			ini.SetBoolValue(section.c_str(), name, field);
-		} else {
-			ini.SetLongValue(section.c_str(), name, field);
-		}
-	};
+	{
+		Section s(ini, "window-main");
+		s.setVal(g_config.windowMain.pos.x, "pos-x");
+		s.setVal(g_config.windowMain.pos.y, "pos-y");
+		s.setVal(g_config.windowMain.siz.x, "siz-x");
+		s.setVal(g_config.windowMain.siz.y, "siz-y");
+	}
 	
-	section = "window-main";
-	setVal(g_config.windowMain.pos.x, "pos-x");
-	setVal(g_config.windowMain.pos.y, "pos-y");
-	setVal(g_config.windowMain.siz.x, "siz-x");
-	setVal(g_config.windowMain.siz.y, "siz-y");
-	
-	section = "window-open";
-	setVal(g_config.characterSettings.visible,   "characterSettings.visible");
-	setVal(g_config.morphTargets.visible,        "morphTargets.visible");
-	setVal(g_config.morphTargetsApplied.visible, "morphTargetsApplied.visible");
-	setVal(g_config.poseTargets.visible,         "poseTargets.visible");
-	setVal(g_config.poseTargetsApplied.visible,  "poseTargetsApplied.visible");
+	{
+		Section s(ini, "window-open");
+		s.setVal(g_config.characterSettings.visible,   "characterSettings.visible");
+		s.setVal(g_config.morphTargets.visible,        "morphTargets.visible");
+		s.setVal(g_config.morphTargetsApplied.visible, "morphTargetsApplied.visible");
+		s.setVal(g_config.poseTargets.visible,         "poseTargets.visible");
+		s.setVal(g_config.poseTargetsApplied.visible,  "poseTargetsApplied.visible");
+	}
 	
 	std::string buffer;
 	ini.Save(buffer);
