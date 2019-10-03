@@ -137,7 +137,7 @@ else()
 		${nfd_dir}/src/common.h
 		${nfd_dir}/src/nfd_common.c
 		${nfd_dir}/src/nfd_common.h
-		${nfd_dir}/src/nfd_win.c
+		${nfd_dir}/src/nfd_win.cpp
 	)
 endif()
 
