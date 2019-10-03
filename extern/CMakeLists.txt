@@ -40,31 +40,50 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 
 # imgui 
 #find_package(SDL2 REQUIRED)
-# these sources are quite api specific, but i dont care much 
-set(imguiSources 
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_demo.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_draw.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_internal.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_widgets.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imstb_rectpack.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imstb_textedit.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imstb_truetype.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/misc/cpp/imgui_stdlib.h
-	
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_glut.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_glut.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_opengl3.h
-	${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples/imgui_impl_opengl3.cpp
+# these sources are quite api specific, but i dont care much
+
+set(imgui_dir ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
+set(imgui_src
+	${imgui_dir}/imgui.cpp
+	${imgui_dir}/imgui.h
+	${imgui_dir}/imgui_demo.cpp
+	${imgui_dir}/imgui_draw.cpp
+	${imgui_dir}/imgui_internal.h
+	${imgui_dir}/imgui_widgets.cpp
+	${imgui_dir}/imstb_rectpack.h
+	${imgui_dir}/imstb_textedit.h
+	${imgui_dir}/imstb_truetype.h
+	${imgui_dir}/misc/cpp/imgui_stdlib.cpp
+	${imgui_dir}/misc/cpp/imgui_stdlib.h
+	${imgui_dir}/examples/imgui_impl_glut.h
+	${imgui_dir}/examples/imgui_impl_glut.cpp
+	${imgui_dir}/examples/imgui_impl_opengl3.h
+	${imgui_dir}/examples/imgui_impl_opengl3.cpp
 )
 
-add_library(imgui STATIC ${imguiSources})
+find_package(GLEW REQUIRED)
+find_package(GLUT REQUIRED)
+
+add_library(imgui STATIC
+	${imgui_src}
+)
+target_link_libraries(imgui
+PRIVATE
+	GLEW::GLEW
+	GLUT::GLUT
+)
+target_include_directories(imgui
+PRIVATE
+	${GLEW_INCLUDE_DIRS}
+	${GLUT_INCLUDE_DIRS}
+PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/imgui/
+)
+
 #target_link_libraries(imgui gl3w)
 #target_compile_definitions(imgui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GL3W)
-target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/imgui/)
-target_include_directories(imgui PRIVATE ${SDL2_INCLUDE_DIR})
+#target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/imgui/)
+#target_include_directories(imgui PRIVATE ${SDL2_INCLUDE_DIR})
 set_property(TARGET imgui PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # ============================================================
