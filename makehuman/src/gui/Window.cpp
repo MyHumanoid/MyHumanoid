@@ -25,6 +25,7 @@
  *
  */
 
+#include "GlInclude.h"
 #include <GL/freeglut.h>
 
 #include "MhUi.h"

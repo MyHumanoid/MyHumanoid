@@ -1,6 +1,7 @@
 #include "MhRender.h"
 
-#include <GL/glew.h>
+#include "GlInclude.h"
+
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtc/type_ptr.hpp>

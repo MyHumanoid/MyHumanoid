@@ -25,7 +25,7 @@
  *
  */
 
-#include <GL/glew.h>
+#include "GlInclude.h"
 
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"

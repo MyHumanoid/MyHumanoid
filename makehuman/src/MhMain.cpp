@@ -30,7 +30,7 @@
 
 #include <fmt/format.h>
 
-#include <GL/glew.h>
+#include "GlInclude.h"
 #include <GL/freeglut.h>
 
 #include "MhUi.h"

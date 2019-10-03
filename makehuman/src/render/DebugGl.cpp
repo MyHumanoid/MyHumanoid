@@ -1,6 +1,6 @@
 #include "render/DebugGl.h"
 
-#include "GL/glew.h"
+#include "GlInclude.h"
 #include "log/log.h"
 
 using namespace std;

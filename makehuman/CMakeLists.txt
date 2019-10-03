@@ -124,6 +124,7 @@ set(makehuman_sources
 	src/ComponentID.h
 	src/FacePanel.cpp
 	src/FacePanel.h
+	src/GlInclude.h
 	src/Global.cpp
 	src/Global.h
 	src/HandsPanel.cpp

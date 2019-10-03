@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 
-#include <GL/glew.h>
+#include "GlInclude.h"
 
 #include "log/log.h"
 #include "Vfs.h"

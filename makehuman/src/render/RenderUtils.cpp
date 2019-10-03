@@ -4,8 +4,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#include "GlInclude.h"
+
 #include <vector>
-#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <physfs.h>
 

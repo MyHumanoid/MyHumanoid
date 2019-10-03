@@ -26,6 +26,7 @@
  */
 #pragma once
 
+#include "GlInclude.h"
 #include <GL/freeglut.h>
 
 #if !defined(GLUT_WHEEL_UP)
