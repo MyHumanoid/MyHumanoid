@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef POSETARGET_H
-#define POSETARGET_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "DirectoryList.h"
 #include "FileReader.h"
@@ -113,5 +107,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // POSETARGET_H

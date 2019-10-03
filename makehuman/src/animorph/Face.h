@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef FACE_H
-#define FACE_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Color.h"
 #include <glm/vec2.hpp>
@@ -85,5 +79,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // FACE_H

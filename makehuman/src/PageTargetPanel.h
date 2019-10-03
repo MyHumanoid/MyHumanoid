@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef PAGETARGETPANEL_H
-#define PAGETARGETPANEL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "ImageListener.h"
 #include "TargetSlider.h"
@@ -65,5 +59,3 @@ public:
 	vector<TargetSlider *> targetVector;
 	void                   resetTargetValues(const string currentTargetName = "");
 };
-
-#endif // PAGETARGETPANEL_H

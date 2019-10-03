@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef EULER_H
-#define EULER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <glm/vec3.hpp>
 
@@ -76,5 +70,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // EULER_H

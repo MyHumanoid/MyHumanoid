@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef WINDOW_H
-#define WINDOW_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Component.h"
 #include <animorph/Color.h>
@@ -114,5 +108,3 @@ public:
 extern Window * g_mainWindow;
 
 } // namespace mhgui
-
-#endif // WINDOW_H

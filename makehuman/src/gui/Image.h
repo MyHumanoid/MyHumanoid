@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef IMAGE_H
-#define IMAGE_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Panel.h"
 #include "Texture.h"
@@ -121,5 +115,3 @@ protected:
 };
 
 } // namespace mhgui
-
-#endif // IMAGE_H

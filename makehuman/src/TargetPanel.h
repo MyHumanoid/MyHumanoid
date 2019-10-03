@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef TARGETPANEL_H
-#define TARGETPANEL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "ImageListener.h"
 #include "PageTargetPanel.h"
@@ -71,5 +65,3 @@ public:
 	const string & getCategory() const { return category; }
 	void           resetTargetValues(const string currentTargetName = "");
 };
-
-#endif // TARGETPANEL_H

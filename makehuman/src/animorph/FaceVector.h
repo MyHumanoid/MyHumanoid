@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef FACEVECTOR_H
-#define FACEVECTOR_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Face.h"
 #include "FileReader.h"
@@ -81,5 +75,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // FACEVECTOR_H

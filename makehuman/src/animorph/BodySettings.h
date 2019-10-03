@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef BODYSETTINGS_H
-#define BODYSETTINGS_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "FileReader.h"
 #include "FileWriter.h"
@@ -80,5 +74,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // BODYSETTINGS_H

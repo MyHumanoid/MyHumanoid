@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef COLOR_H
-#define COLOR_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 namespace Animorph
 {
@@ -125,5 +119,3 @@ struct Color
 };
 
 } // namespace Animorph
-
-#endif // COLOR_H

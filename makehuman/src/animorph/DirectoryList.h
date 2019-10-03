@@ -25,9 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef DIRECTORYLIST_H
-#define DIRECTORYLIST_H 1
+#pragma once
 
 #include <list>
 #include <string>
@@ -114,5 +112,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // DIRECTORYLIST_H

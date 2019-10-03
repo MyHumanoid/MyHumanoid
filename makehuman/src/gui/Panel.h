@@ -23,13 +23,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef PANEL_H
-#define PANEL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Window.h"
 #include <animorph/Color.h>
@@ -125,5 +119,3 @@ public:
 };
 
 } // namespace mhgui
-
-#endif // PANEL_H

@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef ABSTRACTLISTENER
-#define ABSTRACTLISTENER 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 /*! \brief Classes to build the GUI of MakeHuman.
  */
@@ -57,5 +51,3 @@ public:
 };
 
 } // namespace mhgui
-
-#endif

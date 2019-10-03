@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef CAMERA_H
-#define CAMERA_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "GLUTWrapper.h"
 #include <animorph/FileWriter.h>
@@ -136,4 +130,3 @@ public:
 };
 
 } // namespace mhgui
-#endif // CAMERA_H

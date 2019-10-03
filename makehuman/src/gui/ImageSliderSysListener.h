@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef IMAGESLIDERSYSLISTENER_H
-#define IMAGESLIDERSYSLISTENER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "AbstractListener.h"
 
@@ -53,4 +47,3 @@ public:
 	virtual bool keyType(unsigned char inKey, Component * source);
 };
 } // namespace mhgui
-#endif // IMAGESLIDERSYSLISTENER_H

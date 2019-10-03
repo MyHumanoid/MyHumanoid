@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef VERTEXGROUP_H
-#define VERTEXGROUP_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "FileReader.h"
 #include <fstream>
@@ -66,5 +60,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // VERTEXGROUP_H

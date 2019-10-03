@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef COMPONENTID_H
-#define COMPONENTID_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <cstdint>
 
@@ -376,5 +370,3 @@ static const uint32_t kComponentID_CharacterSettingPanel_Shape =
 // The Utilities Panel
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_UtilitiesPanel = FOUR_CHAR_CONST('U', 't', 'l', 't');
-
-#endif // COMPONENTID_H 1

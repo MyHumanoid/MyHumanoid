@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef TARGETSLIDER_H
-#define TARGETSLIDER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <gui/ImageSlider.h>
 #include <iostream>
@@ -60,5 +54,3 @@ public:
 	void   setTargetName(const string & name) { targetName = name; }
 	string getTargetName() { return targetName; }
 };
-
-#endif // TARGETSLIDER_H

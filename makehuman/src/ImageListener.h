@@ -28,13 +28,7 @@
 /* Template Class for new Listeners. Should be removed if all
  * Widgets have their real Listener!
  */
-
-#ifndef IMAGELISTENER_H
-#define IMAGELISTENER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Global.h"
 #include <gui/AbstractListener.h>
@@ -66,5 +60,3 @@ public:
 	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source);
 	virtual bool keyType(unsigned char inKey, Component * source);
 };
-
-#endif

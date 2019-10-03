@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef SIZE_H
-#define SIZE_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <stdint.h>
 
@@ -96,5 +90,3 @@ inline void Size::resizeBy(const Size & inSize)
 }
 
 } // namespace mhgui
-
-#endif // SIZE_H

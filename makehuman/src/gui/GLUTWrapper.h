@@ -24,9 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef GLUTWRAPPER_H
-#define GLUTWRAPPER_H 1
+#pragma once
 
 #include <GL/freeglut.h>
 
@@ -39,5 +37,3 @@
 #define GLUT_WHEEL_RIGHT 5
 #define GLUT_WHEEL_LEFT 6
 #endif
-
-#endif // GLUTWRAPPER_H

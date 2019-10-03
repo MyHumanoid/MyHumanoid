@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef SELECTORSYSLISTENER_H
-#define SELECTORSYSLISTENER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "AbstractListener.h"
 
@@ -54,5 +48,3 @@ public:
 };
 
 } // namespace mhgui
-
-#endif // SELECTORSYSLISTENER_H

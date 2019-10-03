@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef TOOLTIP_H
-#define TOOLTIP_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Point.h"
 #include <animorph/Color.h>
@@ -73,5 +67,3 @@ private:
 }; // class Tooltip
 
 } // namespace mhgui
-
-#endif // TOOLTIP_H

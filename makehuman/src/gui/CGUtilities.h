@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef CGUTILITIES_H
-#define CGUTILITIES_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <cstdio>
 #include <iostream>
@@ -97,5 +91,3 @@ void mhWireCube(const float twoxyz[6]);
 void drawLine2D(const Point & start, const Point & end, const Color & c);
 
 } // namespace cgutils
-
-#endif // CGUTILITIES_H

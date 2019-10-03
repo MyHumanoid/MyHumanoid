@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef COMPONENT_H
-#define COMPONENT_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Rect.h"
 #include <iostream>
@@ -129,5 +123,3 @@ public:
 };
 
 } // namespace mhgui
-
-#endif // COMPONENT_H

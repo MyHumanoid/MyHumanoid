@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef TOOLTIPPANEL_H
-#define TOOLTIPPANEL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "util.h"
 #include <gui/Image.h>
@@ -53,5 +47,3 @@ private: // intentionally not implemented
 	Image * tooltip;
 	Image * tooltipLabel;
 };
-
-#endif // TOOLTIPPANEL_H

@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef IMAGESLIDER_H
-#define IMAGESLIDER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Image.h"
 #include <iostream>
@@ -80,5 +74,3 @@ public:
 };
 
 } // namespace mhgui
-
-#endif // IMAGESLIDER_H

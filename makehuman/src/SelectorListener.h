@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef SELECTORLISTENER_H
-#define SELECTORLISTENER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <gui/AbstractListener.h>
 #include <gui/Component.h>
@@ -70,5 +64,3 @@ public:
 	std::vector<float> breastDists;
 	std::vector<float> shapeDists;
 };
-
-#endif // SELECTORLISTENER_H

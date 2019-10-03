@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef POINT_H
-#define POINT_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <cstdio>
 #include <cstring>
@@ -100,5 +94,3 @@ inline void Point::moveBy(const Point & inPoint)
 }
 
 } // namespace mhgui
-
-#endif // POINT_H

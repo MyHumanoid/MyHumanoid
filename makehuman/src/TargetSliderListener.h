@@ -24,15 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-/** client listener header **/
-
-#ifndef TARGETSLIDERLISTENER_H
-#define TARGETSLIDERLISTENER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <gui/AbstractListener.h>
 
@@ -56,5 +48,3 @@ public:
 	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source);
 	virtual bool keyType(unsigned char inKey, Component * source);
 };
-
-#endif // TARGETSLIDERLISTENER_H

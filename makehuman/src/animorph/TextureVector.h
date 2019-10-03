@@ -25,13 +25,8 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
+#pragma once
 
-#ifndef TEXTUREVECTOR_H
-#define TEXTUREVECTOR_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -61,5 +56,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // TEXTUREVECTOR_H

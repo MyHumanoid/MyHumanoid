@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef SELECTOR_H
-#define SELECTOR_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Point.h"
 #include "Texture.h"
@@ -142,5 +136,3 @@ protected:
 };
 
 } // namespace mhgui
-
-#endif // SELECTOR_H

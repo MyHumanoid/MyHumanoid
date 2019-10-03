@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef TARGET_H
-#define TARGET_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "FileReader.h"
 #include "FileWriter.h"
@@ -89,5 +83,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // TARGET_H

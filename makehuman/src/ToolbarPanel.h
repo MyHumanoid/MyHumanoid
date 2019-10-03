@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef TOOLBARPANEL_H
-#define TOOLBARPANEL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "ImageListener.h"
 #include "util.h"
@@ -56,5 +50,3 @@ private:
 	ImageListener   imgListener1;
 	vector<Image *> imageVector;
 };
-
-#endif // TOOLBARPANEL_H

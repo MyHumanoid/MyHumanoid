@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef VERTEXVECTOR_H
-#define VERTEXVECTOR_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Face.h"
 #include "FaceVector.h"
@@ -72,5 +66,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // VERTEXVECTOR_H

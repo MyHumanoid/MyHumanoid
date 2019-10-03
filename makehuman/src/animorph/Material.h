@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef MATERIAL_H
-#define MATERIAL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Color.h"
 #include "FileReader.h"
@@ -73,5 +67,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // MATERIAL_H

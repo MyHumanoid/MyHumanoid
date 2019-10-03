@@ -24,9 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef CHARACTERSETTINGPANEL_H
-#define CHARACTERSETTINGPANEL_H 1
+#pragma once
 
 #include "ImageListener.h"
 #include "SelectorListener.h"
@@ -68,5 +66,3 @@ public:
 	Selector * m_breast;
 	Selector * m_shape;
 };
-
-#endif // CHARACTERSETTINGBODYPANEL_H

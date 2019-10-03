@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef POSETRANSLATION_H
-#define POSETRANSLATION_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include <set>
 #include <string>
@@ -125,5 +119,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // POSETRANSLATION_H

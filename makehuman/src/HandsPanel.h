@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef HANDSPANEL_H
-#define HANDSPANEL_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "TargetSelectionListener.h"
 #include "util.h"
@@ -56,5 +50,3 @@ private:
 	TargetSelectionListener imgListener;
 	vector<Image *>         imageVector;
 };
-
-#endif // HANDSPANEL_H

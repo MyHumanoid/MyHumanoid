@@ -24,17 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef TEXTURE_H
-#define TEXTURE_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#ifdef WIN32
-#include <Windows.h>
-#endif
+#pragma once
 
 #include <GL/gl.h>  // Header File For The OpenGL32 Library
 #include <GL/glu.h> // Header File For The GLu32 Library
@@ -84,5 +74,3 @@ private:
 }; // class Texture
 
 } // namespace mhgui
-
-#endif // TEXTURE_H

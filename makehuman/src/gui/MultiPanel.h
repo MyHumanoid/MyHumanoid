@@ -24,9 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef MULTIPANEL_H
-#define MULTIPANEL_H 1
+#pragma once
 
 #include "Image.h"
 #include "Panel.h"
@@ -86,5 +84,3 @@ private: // intentionally not implemeted
 };
 
 } // namespace mhgui
-
-#endif // MULTIPANEL_H

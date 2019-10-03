@@ -24,13 +24,8 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
+#pragma once
 
-#ifndef COLLADAEXPORTER_H
-#define COLLADAEXPORTER_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 #include "Matrix.h"
 #include "Mesh.h"
 #include "util.h"
@@ -93,4 +88,3 @@ public:
 	bool exportFile(const string & filename);
 };
 } // namespace Animorph
-#endif

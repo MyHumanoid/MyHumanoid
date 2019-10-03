@@ -24,9 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef FACEGROUP_H
-#define FACEGROUP_H 1
+#pragma once
 
 #include <optional>
 
@@ -84,5 +82,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // FACEGROUP_H

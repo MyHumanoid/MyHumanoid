@@ -24,13 +24,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef RAWMESH_H
-#define RAWMESH_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "FaceGroup.h"
 #include "VertexVector.h"
@@ -84,5 +78,3 @@ public:
 };
 
 } // namespace Animorph
-
-#endif // RAWMESH_H

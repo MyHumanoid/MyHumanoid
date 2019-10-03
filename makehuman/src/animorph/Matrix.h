@@ -25,13 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef MATRIX_H
-#define MATRIX_H 1
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#pragma once
 
 #include "Euler.h"
 #include <glm/vec3.hpp>
@@ -156,5 +150,3 @@ glm::vec3 operator*(const glm::vec3 & v, const Matrix & m);
 std::ostream & operator<<(std::ostream & s, const Matrix & m);
 
 } // namespace Animorph
-
-#endif // MATRIX_H

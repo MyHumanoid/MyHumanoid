@@ -25,9 +25,7 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
-#ifndef MATHUTIL_H
-#define MATHUTIL_H 1
+#pragma once
 
 #include <glm/ext.hpp>
 #include <cmath>
@@ -151,5 +149,3 @@ template <typename T> int hasMonotonie(T value0, T value1, T value2)
 }
 
 } // namespace Animorph
-
-#endif // MATHUTIL_H
