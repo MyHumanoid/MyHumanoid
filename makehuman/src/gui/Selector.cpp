@@ -25,13 +25,15 @@
  *
  */
 
+#include <iostream>
+
+#include <glm/glm.hpp>
+
 #include "gui/Selector.h"
 #include "gui/CGUtilities.h"
 #include "gui/GLUTWrapper.h"
 #include "gui/SelectorSysListener.h"
 #include "gui/Tooltip.h"
-
-#include <iostream>
 
 using std::cerr;
 using std::endl;
