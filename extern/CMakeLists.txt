@@ -144,3 +144,13 @@ endif()
 target_include_directories(nativefiledialog PUBLIC
 	${nfd_dir}/include
 )
+
+# ============================================================
+
+add_library(fmt STATIC
+       ${CMAKE_CURRENT_SOURCE_DIR}/fmt/src/format.cc
+       ${CMAKE_CURRENT_SOURCE_DIR}/fmt/src/posix.cc
+)
+target_include_directories(fmt PUBLIC
+       ${CMAKE_CURRENT_SOURCE_DIR}/fmt/include
+)

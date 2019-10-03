@@ -11,44 +11,44 @@ using namespace Animorph;
 
 
 struct ObjStream {
-	fmt::MemoryWriter m_out;
+	fmt::memory_buffer m_out;
 	
 	void comment(const std::string & comment)
 	{
-		m_out.write("# {}\n", comment);
+		fmt::format_to(m_out, "# {}\n", comment);
 	}
 	void materialLib(const std::string & libFilePath)
 	{
-		m_out.write("mtllib {}\n", libFilePath);
+		fmt::format_to(m_out, "mtllib {}\n", libFilePath);
 	}
 	void startObject(const std::string & name)
 	{
-		m_out.write("o {}\n", name);
+		fmt::format_to(m_out, "o {}\n", name);
 	}
 	void vertex(const glm::vec3 & v)
 	{
-		m_out.write("v {} {} {}\n", v.x, v.y, v.z);
+		fmt::format_to(m_out, "v {} {} {}\n", v.x, v.y, v.z);
 	}
 	void uv(const glm::vec2 & uv)
 	{
-		m_out.write("vt {} {} 0.0\n", uv.x, uv.y);
+		fmt::format_to(m_out, "vt {} {} 0.0\n", uv.x, uv.y);
 	}
 	void startFaceGroup(const std::string & name)
 	{
-		m_out.write("g {}\n", name);
+		fmt::format_to(m_out, "g {}\n", name);
 	}
 	void writeSmoothingGroup(const int groupId)
 	{
-		m_out.write("s {}\n", groupId);
+		fmt::format_to(m_out, "s {}\n", groupId);
 	}
 	void startUseMaterial(const std::string & materialName)
 	{
-		m_out.write("usemtl {}\n", materialName);
+		fmt::format_to(m_out, "usemtl {}\n", materialName);
 	}
 	template <typename... T>
 	void writeRaw(T &&... p)
 	{
-		m_out.write(std::forward<T>(p)...);
+		fmt::format_to(m_out, std::forward<T>(p)...);
 	}
 };
 
