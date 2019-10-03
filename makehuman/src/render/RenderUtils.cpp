@@ -16,16 +16,16 @@
 
 
 static const stbi_io_callbacks adapter = {
-    .read = [](void * user, char * data, int size)->int{
+    [](void * user, char * data, int size)->int{
 	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
 	    return PHYSFS_readBytes(f, data, size);
     },
-    .skip = [](void * user, int n)->void{
+    [](void * user, int n)->void{
 	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
 	    auto pos = PHYSFS_tell(f);
 	    PHYSFS_seek(f, pos + n);
     },
-    .eof  = [](void * user)->int{
+    [](void * user)->int{
 	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
 	    return PHYSFS_eof(f);
     }
