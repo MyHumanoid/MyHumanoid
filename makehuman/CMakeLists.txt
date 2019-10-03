@@ -194,12 +194,16 @@ add_executable(makehuman
 	${makehuman_sources}
 	${shader_sources}
 )
-
 set_target_properties(makehuman PROPERTIES
 	CXX_STANDARD 17
 #	CXX_EXTENSIONS OFF
 #	INTERPROCEDURAL_OPTIMIZATION TRUE
 )
+target_compile_features(makehuman PRIVATE
+	cxx_std_17
+)
+
+
 
 #target_compile_options(makehuman PRIVATE -Wall -Wextra -pedantic)
 
