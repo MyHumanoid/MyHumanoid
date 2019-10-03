@@ -9,8 +9,6 @@ set(animorph_sources
 	src/animorph/Face.cpp
 	src/animorph/FileReader.h
 	src/animorph/FileReader.cpp
-	src/animorph/MathUtil.h
-	src/animorph/MathUtil.cpp
 	src/animorph/ObjExporter.h
 	src/animorph/ObjExporter.cpp
 	src/animorph/PoseSemiTarget.h

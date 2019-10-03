@@ -34,7 +34,6 @@
 #include "FaceGroup.h"
 #include "FaceVector.h"
 #include "Material.h"
-#include "MathUtil.h"
 #include "Matrix.h"
 #include "PoseTarget.h"
 #include "SmoothVertex.h"

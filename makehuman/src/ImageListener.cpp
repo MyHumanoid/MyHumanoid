@@ -37,7 +37,6 @@
 #include "ToolbarPanel.h"
 #include "util.h"
 #include <animorph/DirectoryList.h>
-#include <animorph/MathUtil.h>
 #include <animorph/ObjExporter.h>
 #include <assert.h>
 #include <gui/CGUtilities.h>

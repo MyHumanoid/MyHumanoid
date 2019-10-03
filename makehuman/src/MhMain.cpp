@@ -38,9 +38,9 @@
 #include "MhUiPose.h"
 
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 #include <animorph/Mesh.h>
-#include <glm/vec3.hpp>
 #include <animorph/util.h>
 #include <animorph/ColladaExporter.h>
 #include <animorph/ObjExporter.h>
