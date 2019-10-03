@@ -125,16 +125,22 @@ if(UNIX)
 		${nfd_dir}/src/simple_exec.h
 	)
 	target_include_directories(nativefiledialog
-		PUBLIC
+	PRIVATE
 		${GTK3_INCLUDE_DIRS}
 	)
 	target_link_libraries(nativefiledialog
-		PUBLIC
+	PRIVATE
 		${GTK3_LIBRARIES}
 	)
-	target_include_directories(nativefiledialog PUBLIC
-		${nfd_dir}/include
-	)
 else()
-	message("Platform not supported")
+	add_library(nativefiledialog STATIC
+		${nfd_dir}/src/common.h
+		${nfd_dir}/src/nfd_common.c
+		${nfd_dir}/src/nfd_common.h
+		${nfd_dir}/src/nfd_win.c
+	)
 endif()
+
+target_include_directories(nativefiledialog PUBLIC
+	${nfd_dir}/include
+)
