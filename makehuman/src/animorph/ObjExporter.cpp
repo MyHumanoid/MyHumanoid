@@ -56,17 +56,13 @@ struct ObjStream {
 static void calcVertexes(Mesh & mesh, const FaceVector & facevector,
                          std::map<std::string, VertexData> & vertexes)
 {
-	
-	
 	int vertexCounter;
-	
 	for(const auto & [partname, groupValue] : mesh.facegroup().m_groups) {
 		
-		const FGroupData & groupdata = groupValue.facesIndexes;
 		vertexCounter          = 0;
 		
-		for(unsigned int i = 0; i < groupdata.size(); i++) {
-			const Face & face(facevector[groupdata[i]]);
+		for(const auto & faceIdx : groupValue.facesIndexes) {
+			const Face & face = facevector[faceIdx];
 			
 			for(unsigned int j = 0; j < face.getSize(); j++) {
 				const int tmp = face.getVertexAtIndex(j);
@@ -77,13 +73,10 @@ static void calcVertexes(Mesh & mesh, const FaceVector & facevector,
 			}
 		}
 		
-		for(VertexData::iterator vertexgroup_it = vertexes[partname].begin();
-		     vertexgroup_it != vertexes[partname].end(); vertexgroup_it++) {
-			vertexes[partname][(*vertexgroup_it).first] = vertexCounter++;
+		for(auto & [key, val] : vertexes[partname]) {
+			vertexes[partname][key] = vertexCounter++;
 		}
 	}
-	
-	// cout << vertexes.size() << endl;
 }
 
 
@@ -95,15 +88,13 @@ static void createOBJStream(Mesh & mesh,
 {
 	
 	/// Maps FaceGroup identifiers via vertex group numbers to vertex indices
-	std::map<std::string, VertexData> vertexes;
-	calcVertexes(mesh, mesh.faces(), vertexes);
+	std::map<std::string, VertexData> grpToVertIdxs;
+	calcVertexes(mesh, mesh.faces(), grpToVertIdxs);
 		
 	const FaceGroup & facegroup(mesh.facegroup());
 
 	const VertexVector &   vertexvector(mesh.getVertexVectorRef());
-	const FaceVector &     facevector(mesh.faces());
 	const TextureVector &  texturevector(mesh.textureVector());
-	const MaterialVector & materialvector = mesh.materials();
 
 	// write header
 	obj.writeComment("OBJ File");
@@ -112,7 +103,7 @@ static void createOBJStream(Mesh & mesh,
 	
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
 
-		const VertexData & vertexgroupdata(vertexes[partname]);
+		const VertexData & vertexgroupdata(grpToVertIdxs[partname]);
 
 		for(VertexData::const_iterator vertexgroup_it = vertexgroupdata.begin();
 		    vertexgroup_it != vertexgroupdata.end(); vertexgroup_it++) {
@@ -133,7 +124,7 @@ static void createOBJStream(Mesh & mesh,
 		// VertexData vertexgroupdata = vertexes[partname];
 
 		// write texture UV coordinates
-		if(facevector.size() == texturevector.size()) {
+		if(mesh.faces().size() == texturevector.size()) {
 			for(unsigned int i = 0; i < facegroupdata.size(); i++) {
 				const TextureFace & texture_face(texturevector[facegroupdata[i]]);
 
@@ -147,7 +138,7 @@ static void createOBJStream(Mesh & mesh,
 			}
 		} else {
 			log_error("Couldn't export texture coordinates! {} != {}",
-			          facevector.size(), texturevector.size());
+			          mesh.faces().size(), texturevector.size());
 		}
 	}
 
@@ -164,19 +155,19 @@ static void createOBJStream(Mesh & mesh,
 		smoothGroup++;
 		
 		const FGroupData & facegroupdata(groupValue.facesIndexes);
-		const VertexData & vertexgroupdata(vertexes[partname]);
+		const VertexData & vertexgroupdata(grpToVertIdxs[partname]);
 
 		// write faces
 		int old_material_index = -1;
 		int texture_number     = 1;
 		for(unsigned int i = 0; i < facegroupdata.size(); i++) {
-			const Face & face(facevector[facegroupdata[i]]);
+			const Face & face = mesh.faces()[facegroupdata[i]];
 
 			int matIdx = face.getMaterialIndex();
 
 			if((matIdx != -1) && (matIdx != old_material_index)) {
 				// material reference
-				obj.writeUseMaterial(materialvector[matIdx].name);
+				obj.writeUseMaterial(mesh.materials()[matIdx].name);
 			}
 			
 			if(face.size == 3) {
