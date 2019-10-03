@@ -92,7 +92,7 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
 	float cellWidth  = getSize().getWidth() / (cols - 1);
 	float cellHeight = getSize().getHeight() / (rows - 1);
 	cellRatio        = cellWidth / cellHeight;
-	maxValue         = std::min(cellWidth, cellHeight * cellRatio);
+	maxValue         = glm::min(cellWidth, cellHeight * cellRatio);
 }
 
 Selector::~Selector()
@@ -119,7 +119,7 @@ void Selector::setPoints(int inRows, int inCols)
 	float cellHeight = getSize().getHeight() / (rows - 1);
 
 	cellRatio = cellWidth / cellHeight;
-	maxValue  = std::min(cellWidth, cellHeight * cellRatio);
+	maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
 }
 
 void Selector::setCursorPosFromMousePoint(const Point & inMousePoint)

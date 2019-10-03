@@ -648,11 +648,11 @@ void Mesh::doPoseRotation(const PoseRotation & pr, float morph_value, const Used
 	if(pr.getNormalize()) {
 		if(morph_value < 0) {
 			if(morph_value < pr.getMaxAngle()) {
-				real_value = max(morph_value, pr.getMinAngle()) - pr.getMaxAngle();
+				real_value = glm::max(morph_value, pr.getMinAngle()) - pr.getMaxAngle();
 			}
 		} else {
 			if(morph_value > pr.getMinAngle()) {
-				real_value = min(morph_value, pr.getMaxAngle()) - pr.getMinAngle();
+				real_value = glm::min(morph_value, pr.getMaxAngle()) - pr.getMinAngle();
 			}
 		}
 	} else {
@@ -687,11 +687,11 @@ void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value,
 	if(pt.getNormalize()) {
 		if(morph_value < 0) {
 			if(morph_value < pt.getMaxAngle()) {
-				real_value = max(morph_value, pt.getMinAngle()) - pt.getMaxAngle();
+				real_value = glm::max(morph_value, pt.getMinAngle()) - pt.getMaxAngle();
 			}
 		} else {
 			if(morph_value > pt.getMinAngle()) {
-				real_value = min(morph_value, pt.getMaxAngle()) - pt.getMinAngle();
+				real_value = glm::min(morph_value, pt.getMaxAngle()) - pt.getMinAngle();
 			}
 		}
 	} else {

@@ -1,6 +1,7 @@
 #include "log/Profiler.h"
 
 #include <unordered_map>
+#include <glm/glm.hpp>
 
 #include "log/log.h"
 
@@ -14,8 +15,8 @@ static std::unordered_map<const char *, ProfilerFuncData> g_profilerData;
 void ProfilerLog(const char * name, long us) {
 	
 	auto & func = g_profilerData[name];
-	func.min = std::min(func.min, us);
-	func.max = std::max(func.max, us);
+	func.min = glm::min(func.min, us);
+	func.max = glm::max(func.max, us);
 }
 
 void ProfilerPrint() {
