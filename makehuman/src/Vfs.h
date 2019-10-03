@@ -18,7 +18,7 @@ enum class FileType
 	regular,
 	directory,
 	symlink,
-	other,
+	other
 };
 
 FileType getType(const std::string & path);
