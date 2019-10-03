@@ -13,35 +13,35 @@ using namespace Animorph;
 struct ObjStream {
 	fmt::MemoryWriter m_out;
 	
-	void writeComment(const std::string & comment)
+	void comment(const std::string & comment)
 	{
 		m_out.write("# {}\n", comment);
 	}
-	void writeMaterialLib(const std::string & libFilePath)
+	void materialLib(const std::string & libFilePath)
 	{
 		m_out.write("mtllib {}\n", libFilePath);
 	}
-	void writeObjectStart(const std::string & objectName)
+	void startObject(const std::string & name)
 	{
-		m_out.write("o {}\n", objectName);
+		m_out.write("o {}\n", name);
 	}
-	void writeVertex(const glm::vec3 & v)
+	void vertex(const glm::vec3 & v)
 	{
 		m_out.write("v {} {} {}\n", v.x, v.y, v.z);
 	}
-	void writeUv(const glm::vec2 & uv)
+	void uv(const glm::vec2 & uv)
 	{
 		m_out.write("vt {} {} 0.0\n", uv.x, uv.y);
 	}
-	void writeGroupStart(const std::string & groupName)
+	void startFaceGroup(const std::string & name)
 	{
-		m_out.write("g {}\n", groupName);
+		m_out.write("g {}\n", name);
 	}
 	void writeSmoothingGroup(const int groupId)
 	{
 		m_out.write("s {}\n", groupId);
 	}
-	void writeUseMaterial(const std::string & materialName)
+	void startUseMaterial(const std::string & materialName)
 	{
 		m_out.write("usemtl {}\n", materialName);
 	}
@@ -97,9 +97,9 @@ static void createOBJStream(Mesh & mesh,
 	const TextureVector &  texturevector(mesh.textureVector());
 
 	// write header
-	obj.writeComment("OBJ File");
-	obj.writeMaterialLib(mtlRelPath);
-	obj.writeObjectStart(objRelPath);
+	obj.comment("OBJ File");
+	obj.materialLib(mtlRelPath);
+	obj.startObject(objRelPath);
 	
 	for(auto & [partname, groupValue] : facegroup.m_groups) {
 
@@ -110,7 +110,7 @@ static void createOBJStream(Mesh & mesh,
 			const Vertex & vertex(vertexvector[(*vertexgroup_it).first]);
 			glm::vec3      v(vertex.pos * tm);
 			
-			obj.writeVertex(v);
+			obj.vertex(v);
 			
 			// TODO broken ?
 			//glm::vec3 n = vertex.no * tm;
@@ -133,7 +133,7 @@ static void createOBJStream(Mesh & mesh,
 					uv.y = (1.f - uv.y);// + 1.f;
 					//uv = glm::vec2(0, 1) - uv;
 					
-					obj.writeUv(uv);
+					obj.uv(uv);
 				}
 			}
 		} else {
@@ -149,7 +149,7 @@ static void createOBJStream(Mesh & mesh,
 	for(const auto & [partname, groupValue] : facegroup.m_groups) {
 		
 		// Group name
-		obj.writeGroupStart(partname);
+		obj.startFaceGroup(partname);
 		// Smoothing group
 		obj.writeSmoothingGroup(smoothGroup);
 		smoothGroup++;
@@ -167,7 +167,7 @@ static void createOBJStream(Mesh & mesh,
 
 			if((matIdx != -1) && (matIdx != old_material_index)) {
 				// material reference
-				obj.writeUseMaterial(mesh.materials()[matIdx].name);
+				obj.startUseMaterial(mesh.materials()[matIdx].name);
 			}
 			
 			if(face.size == 3) {
