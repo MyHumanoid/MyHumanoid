@@ -29,16 +29,8 @@
 #ifndef DIRECTORYLIST_H
 #define DIRECTORYLIST_H 1
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <dirent.h>
 #include <list>
 #include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 
 using std::list;
 using std::string;

@@ -33,6 +33,37 @@ bool exists(const std::string & path) {
 	return PHYSFS_exists(path.c_str());
 }
 
+FileType getType(const std::string & path)
+{
+	PHYSFS_Stat stat;
+	if(PHYSFS_stat(path.c_str(), &stat)) {
+		switch (stat.filetype) {
+		case PHYSFS_FILETYPE_REGULAR:
+			return FileType::regular;
+		case PHYSFS_FILETYPE_DIRECTORY:
+			return FileType::directory;
+		case PHYSFS_FILETYPE_SYMLINK:
+			return FileType::symlink;
+		case PHYSFS_FILETYPE_OTHER:
+			return FileType::other;
+		}
+	} else {
+		return FileType::ERROR;
+	}
+}
+
+std::vector<std::string> listFlat(const std::string & path)
+{
+	std::vector<std::string> paths;
+	auto files = PHYSFS_enumerateFiles(path.c_str());
+	for(char ** i = files; *i != NULL; i++) {
+		paths.push_back(std::string(*i));
+	}
+	PHYSFS_freeList(files);
+	return paths;
+}
+
+
 std::vector<std::string> list(const std::string &path, bool listDirs)
 {
 	std::vector<std::string> paths;
