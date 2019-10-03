@@ -36,7 +36,6 @@
 #include <gui/Window.h>
 #include <iostream>
 #include <string>
-#include <unistd.h>
 #include <vector>
 
 #include "Vfs.h"
