@@ -79,16 +79,14 @@ const string searchPixmapDir(const string & pixmap_dir)
 const StringVector getPixmapsAlternatives(const string & pixmap)
 {
 	StringVector name_vector;
-	name_vector.push_back("pixmaps/" + pixmap);
-	name_vector.push_back("../pixmaps/" + pixmap);
+	name_vector.push_back("data/pixmaps/" + pixmap);
 	return name_vector;
 }
 
 const StringVector getDataAlternatives(const string & data)
 {
 	StringVector name_vector;
-	name_vector.push_back("data/" + data);
-	name_vector.push_back("../data/" + data);
+	name_vector.push_back("data/data/" + data);
 	return name_vector;
 }
 
@@ -119,25 +117,10 @@ const string searchDir(const StringVector & name_vector)
 	return string();
 }
 
-const string getUserWorkDir()
-{
-	return "./userdata";
-}
-
-const string getMyPosesBasePath()
-{
-	return string(getUserWorkDir() + "makehuman/myposes/");
-}
-
-const string getMyBodysettingsBasePath()
-{
-	return string(getUserWorkDir() + "makehuman/mybs/");
-}
-
 bool GetSymmVertexConfig(int * symm_vertex)
 {
 	FileReader file_reader;
-	file_reader.open("../data/base.sym");
+	file_reader.open("data/base.sym");
 
 	if(!file_reader)
 		return false;
@@ -166,7 +149,7 @@ void CreateWeightsFile()
 	FileReader file_reader;
 	FileWriter file_write;
 
-	file_write.open("../data/vertex_complete.weights");
+	file_write.open("data/vertex_complete.weights");
 
 	char buffer[MAX_LINE_BUFFER * 4];
 	int  weight[SK_JOINT_END];
@@ -180,7 +163,7 @@ void CreateWeightsFile()
 
 	int index;
 
-	file_reader.open("../data/vertex_sx.weights");
+	file_reader.open("data/vertex_sx.weights");
 
 	if(!file_reader)
 		return;

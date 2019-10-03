@@ -49,9 +49,6 @@ const string searchDir(const StringVector & name_vector);
 
 const string getHomeDir();
 
-const string getMyPosesBasePath();
-const string getMyBodysettingsBasePath();
-
 void loadRenderingPaths();
 void saveRenderingPaths(string path, int RENDER_TYPE);
 

@@ -17,9 +17,7 @@ namespace vfs
 
 bool init() {
 	PHYSFS_permitSymbolicLinks(1);
-	PHYSFS_mount("./data", "/data", 1);
-	PHYSFS_mount("./pixmaps", "/pixmaps", 1);
-	PHYSFS_mount("./shader", "/shader", 1);
+	PHYSFS_mount("./data", "/", 1);
 	PHYSFS_mount("./", "/", 1);
 	
 	auto ok = PHYSFS_setWriteDir("./");

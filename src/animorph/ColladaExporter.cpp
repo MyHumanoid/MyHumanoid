@@ -632,7 +632,7 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	xNode_float_array = xNode_weightsource.addChild("float_array");
 	xNode_float_array.addAttribute("id", (name + "-skin-weights-array").c_str());
 	xNode_float_array.addAttribute("count", "10822");
-	loadWeightsVector("../data/weights.vector", &xNode_float_array);
+	loadWeightsVector("data/weights.vector", &xNode_float_array);
 
 	xNode_tecnique_common_2 = xNode_weightsource.addChild("technique_common");
 	xNode_accessor_2        = xNode_tecnique_common_2.addChild("accessor");
@@ -680,7 +680,7 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 
 	xNode_v = xNode_vertex_weights.addChild("v");
 
-	loadVertexWeights("../data/weights.matrix", &xNode_v, jointcounter);
+	loadVertexWeights("data/weights.matrix", &xNode_v, jointcounter);
 }
 bool ColladaExporter::CheckIfJointIsLinked(SKELETON_JOINT joint)
 {
