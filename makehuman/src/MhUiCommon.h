@@ -139,9 +139,6 @@ void DrawTargetRow(const IconMap & icons, const std::pair<float, float> minMax,
 	bool active  = ImGui::IsItemActive();
 	bool hovered = ImGui::IsItemHovered();
 	if(active) {
-
-		float posToValFactor = 0.2;
-
 		vec2 delta = vec2(io.MousePos) - vec2(io.MouseClickedPos[0]);
 
 		float scaled = glm::mix(minMax.first, minMax.second, delta.x / 200);

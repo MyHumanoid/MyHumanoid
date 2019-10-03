@@ -94,7 +94,7 @@ bool loadString(const std::string &fileName, std::string & value) {
 	int64_t fileSize = PHYSFS_fileLength(file);
 	if(fileSize >= 0) {
 		value.resize(fileSize, 0);
-		int readData = PHYSFS_readBytes(file, value.data(), fileSize);
+		PHYSFS_sint64 readData = PHYSFS_readBytes(file, value.data(), fileSize);
 		if(fileSize == readData) {
 			return true;
 		}
@@ -136,12 +136,11 @@ void copyToFilesystem(const std::string & inPath, const std::string outPath) {
 		return;
 	}
 	
-	std::array<std::byte, 1024 * 4> buffer;
+	std::array<char, 1024 * 4> buffer;
 	
-	int readBytes = 0;
+	PHYSFS_sint64 readBytes = 0;
 	while((readBytes = PHYSFS_readBytes(file, buffer.data(), buffer.size())) > 0) {
-		// TODO what is the std::byte even for ?
-		out.write((char*)buffer.data(), readBytes);
+		out.write(buffer.data(), readBytes);
 	}
 	if(!PHYSFS_eof(file)) {
 		log_error("Got a short read ");
