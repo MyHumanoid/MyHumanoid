@@ -70,13 +70,15 @@ void LoadBackgroundShader()
 
 void drawBackground()
 {
+	using glm::vec2;
+	
 	auto inSize = g_mainWindow->getSize();
+	vec2 size = vec2(inSize.getWidth(), inSize.getHeight());
 	
 	glUseProgram(g_backgroundShader->handle);
 	GLint myLoc = glGetUniformLocation(g_backgroundShader->handle, "u_viewportResolution");
 	if(myLoc != -1) {
-		glProgramUniform2f(g_backgroundShader->handle, myLoc, inSize.getWidth(),
-		                   inSize.getHeight());
+		glProgramUniform2f(g_backgroundShader->handle, myLoc, size.x, size.y);
 	}
 	
 	glMatrixMode(GL_PROJECTION);
@@ -117,7 +119,7 @@ void RenderBoundingBox(const float twoxyz[6])
 	ty = twoxyz[1] + sy / 2;
 	tz = twoxyz[2] + sz / 2;
 	
-	const Color box_color(0.8, 0.8, 0.8, 0.75);
+	const Color box_color(0.8f, 0.8f, 0.8f, 0.75f);
 	
 	char strz[100], strx[100], stry[100];
 	// conversions int to char[]. units?(these are not meters! we keep this value
@@ -170,7 +172,6 @@ void renderMesh()
 	
 	const VertexVector & vertexvector(g_mesh.getVertexVectorRef());
 	
-	int facesize;
 	int istri = -1; // to remember which type was the latest drawn geometry and
 	    // avoid too many glBegin
 	
@@ -208,7 +209,7 @@ void renderMesh()
 			const Face &        face         = facevector[faceIndex];
 			const TextureFace & texture_face = texturevector[faceIndex];
 			
-			facesize = face.getSize();
+			int facesize = (int)face.getSize();
 			
 			if(istri != facesize) {
 				if(istri != -1) {
@@ -219,29 +220,22 @@ void renderMesh()
 				istri = facesize;
 			}
 			
-			{
-				unsigned int facesize = face.getSize();
+			int material_index = face.getMaterialIndex();
+			if(material_index != -1) {
+				const Material & material(materialvector[material_index]);
+				const Color &    color(material.color);
 				
-				size_t j;
+				// Set the color for these vertices
+				::glColor4fv(color.getAsOpenGLVector());
+			}
+			
+			for(size_t j = 0; j != face.getSize(); ++j) {
+				const Vertex & vertex = vertexvector[face.vertices[j]];
+				const glm::vec2 & uv = texture_face[j];
 				
-				int material_index = face.getMaterialIndex();
-				if(material_index != -1) {
-					const Material & material(materialvector[material_index]);
-					const Color &    color(material.color);
-					
-					// Set the color for these vertices
-					::glColor4fv(color.getAsOpenGLVector());
-				}
-				
-				for(j = 0; j != facesize; ++j) {
-					const Vertex & vertex =
-					    vertexvector[face.getVertexAtIndex(j)];
-					const glm::vec2 & uv = texture_face[j];
-					
-					::glNormal3fv(glm::value_ptr(vertex.no));
-					::glTexCoord2f(uv.x, uv.y);
-					::glVertex3fv(glm::value_ptr(vertex.pos));
-				}
+				::glNormal3fv(glm::value_ptr(vertex.no));
+				::glTexCoord2f(uv.x, uv.y);
+				::glVertex3fv(glm::value_ptr(vertex.pos));
 			}
 		}
 		
