@@ -114,7 +114,7 @@ bool TextureCharacteristics::initData(const buffer_color_rgba_t * inDataBuffer,
 		return false;
 
 	size_t offset =
-	        (mOffset.getY() * inBytesPerRow) + (mOffset.getX() * sizeof(buffer_color_rgba_t));
+	        (mOffset.y * inBytesPerRow) + (mOffset.x * sizeof(buffer_color_rgba_t));
 	buffer_color_rgba_t * srcPtr = (buffer_color_rgba_t *)&((const char *)inDataBuffer)[offset];
 	buffer_color_rgba_t * dstPtr = destBuffer;
 
@@ -168,7 +168,7 @@ bool TextureCharacteristics::initData(const buffer_color_rgb_t * inDataBuffer, s
 		return false;
 
 	size_t offset =
-	        (mOffset.getY() * inBytesPerRow) + (mOffset.getX() * sizeof(buffer_color_rgb_t));
+	        (mOffset.y * inBytesPerRow) + (mOffset.x * sizeof(buffer_color_rgb_t));
 	const buffer_color_rgb_t * srcPtr =
 	        (const buffer_color_rgb_t *)&((const char *)inDataBuffer)[offset];
 	buffer_color_rgb_t * dstPtr = destBuffer;

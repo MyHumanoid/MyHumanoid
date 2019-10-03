@@ -26,12 +26,13 @@
  */
 #pragma once
 
+#include "gui/Point.h"
+
 /*! \brief Classes to build the GUI of MakeHuman.
  */
 namespace mhgui
 {
 
-class Point;
 class Component;
 
 /// Abstract callback interface for mouse and keyboard events

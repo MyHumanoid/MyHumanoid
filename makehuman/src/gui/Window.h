@@ -47,7 +47,6 @@ namespace mhgui
 
 class Panel;
 class Size;
-class Point;
 
 /// Object oriented interface to a GLUT window
 class Window : public Component

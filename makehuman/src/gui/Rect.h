@@ -52,8 +52,8 @@ public:
 	const Point & getPos() const { return pos; }
 	const Size &  getSize() const { return size; }
 
-	int32_t getX() const { return pos.getX(); }
-	int32_t getY() const { return pos.getY(); }
+	int32_t getX() const { return pos.x; }
+	int32_t getY() const { return pos.y; }
 
 	int32_t getWidth() const { return size.getWidth(); }
 	int32_t getHeight() const { return size.getHeight(); }
@@ -133,7 +133,7 @@ inline void Rect::moveTo(const Point & inPos)
 
 inline void Rect::moveBy(const Point & inDeltaPos)
 {
-	pos.moveBy(inDeltaPos);
+	pos += inDeltaPos;
 }
 
 inline void Rect::resizeTo(const Size & inSize)
@@ -154,9 +154,9 @@ inline void Rect::inset(int32_t inInsetX, int32_t inInsetY)
 
 inline bool Rect::isHitBy(const Point & inPoint) const
 {
-	return (((inPoint.getX() >= getX()) && (inPoint.getY() >= getY())) &&
-	        ((inPoint.getX() < getX() + getWidth()) &&
-	         (inPoint.getY() < getY() + getHeight())));
+	return (((inPoint.x >= getX()) && (inPoint.y >= getY())) &&
+	        ((inPoint.x < getX() + getWidth()) &&
+	         (inPoint.y < getY() + getHeight())));
 }
 
 } // namespace mhgui

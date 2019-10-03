@@ -101,10 +101,10 @@ void Tooltip::draw() const
 		cgutils::drawString(pos, GLUT_BITMAP_HELVETICA_12, label.c_str(), color);
 	} else {
 		Point tmpPos(anchorPanel->getPosition());
-		tmpPos.moveBy(pos);
+		tmpPos += pos;
 
 		cgutils::drawSquareFill(
-		        Rect(tmpPos.getX() - 3, tmpPos.getY() - 12,
+		        Rect(tmpPos.x - 3, tmpPos.y - 12,
 		             cgutils::getFontLength(GLUT_BITMAP_HELVETICA_12, label) + 3, 16),
 		        Color(0, 0, 0));
 		cgutils::drawString(tmpPos, GLUT_BITMAP_HELVETICA_12, label.c_str(), color);

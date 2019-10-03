@@ -334,15 +334,15 @@ void Window::reshape(const Size & inSize, const Camera & inCamera)
 		} else {
 			if(panel->getBottomAnchor()) {
 				int bottom_old =
-				        getSize().getHeight() - panel->getPosition().getY();
+				        getSize().getHeight() - panel->getPosition().y;
 				int bottom = inSize.getHeight() - bottom_old;
 
-				panel->setPosition(Point(panel->getPosition().getX(), bottom));
+				panel->setPosition(Point(panel->getPosition().x, bottom));
 			}
 			if(panel->getRightAnchor()) {
-				int right_old = getSize().getWidth() - panel->getPosition().getX();
+				int right_old = getSize().getWidth() - panel->getPosition().x;
 				int right     = inSize.getWidth() - right_old;
-				panel->setPosition(Point(right, panel->getPosition().getY()));
+				panel->setPosition(Point(right, panel->getPosition().y));
 			}
 		}
 

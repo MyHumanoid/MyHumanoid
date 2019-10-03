@@ -127,23 +127,23 @@ void Selector::setCursorPosFromMousePoint(const Point & inMousePoint)
 	int x;
 	int y;
 
-	if(inMousePoint.getX() < getAbsolutePosition().getX()) {
-		x = getAbsolutePosition().getX();
-	} else if(inMousePoint.getX() > getAbsolutePosition().getX() + getSize().getWidth()) {
-		x = getAbsolutePosition().getX() + getSize().getWidth();
+	if(inMousePoint.x < getAbsolutePosition().x) {
+		x = getAbsolutePosition().x;
+	} else if(inMousePoint.x > getAbsolutePosition().x + getSize().getWidth()) {
+		x = getAbsolutePosition().x + getSize().getWidth();
 	} else {
-		x = inMousePoint.getX();
+		x = inMousePoint.x;
 	}
 
-	if(inMousePoint.getY() < getAbsolutePosition().getY()) {
-		y = getAbsolutePosition().getY();
-	} else if(inMousePoint.getY() > getAbsolutePosition().getY() + getSize().getHeight()) {
-		y = getAbsolutePosition().getY() + getSize().getHeight();
+	if(inMousePoint.y < getAbsolutePosition().y) {
+		y = getAbsolutePosition().y;
+	} else if(inMousePoint.y > getAbsolutePosition().y + getSize().getHeight()) {
+		y = getAbsolutePosition().y + getSize().getHeight();
 	} else {
-		y = inMousePoint.getY();
+		y = inMousePoint.y;
 	}
 
-	Point tmp(x, getAbsolutePosition().getY() + getSize().getHeight() - y);
+	Point tmp(x, getAbsolutePosition().y + getSize().getHeight() - y);
 	setCursorPos(tmp);
 }
 
@@ -195,8 +195,8 @@ std::vector<float> Selector::getDists()
 	for(std::vector<Point>::iterator vp_it = points.begin(); vp_it != vp_end; vp_it++) {
 		Point & tmp(*vp_it);
 
-		float dist  = sqrt(pow(tmp.getX() - cursorPos.getX(), 2) +
-                                  pow((tmp.getY() - cursorPos.getY()) * cellRatio, 2));
+		float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
+                                  pow((tmp.y - cursorPos.y) * cellRatio, 2));
 		float value = 1 - (dist / maxValue);
 		if(value > 0) {
 			ret.push_back(value);
@@ -227,8 +227,8 @@ void Selector::draw()
 		// cursor
 		const Point & pos  = getAbsolutePosition();
 		const Size &  size = getSize();
-		const Rect    cur(cursorPos.getX() + pos.getX() - HALF_CURSOR_SIZE,
-                               (size.getHeight() + pos.getY()) - cursorPos.getY() -
+		const Rect    cur(cursorPos.x + pos.x - HALF_CURSOR_SIZE,
+                               (size.getHeight() + pos.y) - cursorPos.y -
                                        HALF_CURSOR_SIZE,
                                CURSOR_SIZE, CURSOR_SIZE);
 		if(lazyLoadCursorTexture()) {
@@ -242,16 +242,16 @@ void Selector::draw()
 			for(int i = 1; i < rows - 1; i++) {
 				int y = (i * size.getHeight() / (rows - 1));
 				cgutils::drawLine2D(
-				        Point(pos.getX(), pos.getY() + y),
-				        Point(pos.getX() + size.getWidth(), pos.getY() + y),
+				        Point(pos.x, pos.y + y),
+				        Point(pos.x + size.getWidth(), pos.y + y),
 				        linesColor);
 			}
 
 			for(int i = 1; i < cols - 1; i++) {
 				int x = (i * size.getWidth() / (cols - 1));
 				cgutils::drawLine2D(
-				        Point(pos.getX() + x, pos.getY()),
-				        Point(pos.getX() + x, pos.getY() + size.getHeight()),
+				        Point(pos.x + x, pos.y),
+				        Point(pos.x + x, pos.y + size.getHeight()),
 				        linesColor);
 			}
 		}

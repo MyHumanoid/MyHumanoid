@@ -87,8 +87,8 @@ bool SelectorListener::mouseOut(const Point & inMousePos, Component * source)
 
 bool SelectorListener::mouseDragged(const Point & inMousePos, Component * source)
 {
-	int xDist = abs(oldPos.getX() - inMousePos.getX());
-	int yDist = abs(oldPos.getY() - inMousePos.getY());
+	int xDist = abs(oldPos.x - inMousePos.x);
+	int yDist = abs(oldPos.y - inMousePos.y);
 
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?

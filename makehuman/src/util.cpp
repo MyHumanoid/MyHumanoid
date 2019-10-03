@@ -339,25 +339,25 @@ bool saveSelectorsPositions(const std::string & filename, std::ios_base::openmod
 	Point * tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
 	if(tmp != NULL) {
 		out_stream << "#t,A," << kComponentID_CharacterSettingPanel_Age << ","
-		           << tmp->getX() << "," << tmp->getY() << endl;
+		           << tmp->x << "," << tmp->y << endl;
 	}
 
 	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
 	if(tmp != NULL) {
 		out_stream << "#t,M," << kComponentID_CharacterSettingPanel_MuscleSize << ","
-		           << tmp->getX() << "," << tmp->getY() << endl;
+		           << tmp->x << "," << tmp->y << endl;
 	}
 
 	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
 	if(tmp != NULL) {
 		out_stream << "#t,B," << kComponentID_CharacterSettingPanel_Breast << ","
-		           << tmp->getX() << "," << tmp->getY() << endl;
+		           << tmp->x << "," << tmp->y << endl;
 	}
 
 	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
 	if(tmp != NULL) {
 		out_stream << "#t,S," << kComponentID_CharacterSettingPanel_Shape << ","
-		           << tmp->getX() << "," << tmp->getY();
+		           << tmp->x << "," << tmp->y;
 	}
 
 	file_writer << out_stream.str();

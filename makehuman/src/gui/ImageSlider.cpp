@@ -86,9 +86,9 @@ void ImageSlider::draw()
 			c.rgb(1, 0, 0);
 		}
 
-		Point textPos(getAbsolutePosition().getX() +
+		Point textPos(getAbsolutePosition().x +
 		                      (getSize().getWidth() - valueLength) / 2,
-		              getAbsolutePosition().getY() + getSize().getHeight());
+		              getAbsolutePosition().y + getSize().getHeight());
 
 		cgutils::drawString(textPos, GLUT_BITMAP_HELVETICA_10, sValue, c);
 	}
@@ -99,9 +99,9 @@ void ImageSlider::drawOverlay()
 	if(isVisible()) {
 		cgutils::enableBlend();
 		if(isLastMouseOver()) {
-			Rect rect(getAbsolutePosition().getX() -
+			Rect rect(getAbsolutePosition().x -
 			                  ((overlayMultiplier - 1) * getSize().getWidth()) / 2,
-			          getAbsolutePosition().getY() -
+			          getAbsolutePosition().y -
 			                  ((overlayMultiplier - 1) * (getSize().getHeight() - 10)),
 			          getSize().getWidth() * overlayMultiplier,
 			          (getSize().getHeight() - 10) * overlayMultiplier);

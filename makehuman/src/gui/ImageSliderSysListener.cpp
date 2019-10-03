@@ -88,17 +88,17 @@ bool ImageSliderSysListener::mouseDragged(const Point & inMousePos, Component * 
 	ImageSlider * imgSliderSource = dynamic_cast<ImageSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really an ImageSlider object?
 
-	if(inMousePos.getX() > imgSliderSource->getOldMouseX() &&
+	if(inMousePos.x > imgSliderSource->getOldMouseX() &&
 	   imgSliderSource->getSliderValue() < imgSliderSource->getMaxValue()) {
-		int value = inMousePos.getX() - imgSliderSource->getOldMouseX();
+		int value = inMousePos.x - imgSliderSource->getOldMouseX();
 		imgSliderSource->increaseValue(value);
-		imgSliderSource->setOldMouseX(inMousePos.getX());
+		imgSliderSource->setOldMouseX(inMousePos.x);
 		glutPostRedisplay();
-	} else if(inMousePos.getX() < imgSliderSource->getOldMouseX() &&
+	} else if(inMousePos.x < imgSliderSource->getOldMouseX() &&
 	          imgSliderSource->getSliderValue() > imgSliderSource->getMinValue()) {
-		int value = imgSliderSource->getOldMouseX() - inMousePos.getX();
+		int value = imgSliderSource->getOldMouseX() - inMousePos.x;
 		imgSliderSource->decreaseValue(value);
-		imgSliderSource->setOldMouseX(inMousePos.getX());
+		imgSliderSource->setOldMouseX(inMousePos.x);
 		glutPostRedisplay();
 	}
 
@@ -110,7 +110,7 @@ bool ImageSliderSysListener::mousePressed(const Point & inMousePos, int button, 
 	ImageSlider * imgSliderSource = dynamic_cast<ImageSlider *>(source); // req. RTTI!
 	assert(imgSliderSource); // Check if this is really an ImageSlider object?
 	imgSliderSource->setActive(true);
-	imgSliderSource->setOldMouseX(inMousePos.getX());
+	imgSliderSource->setOldMouseX(inMousePos.x);
 	return true;
 }
 

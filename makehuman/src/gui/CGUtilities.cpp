@@ -46,8 +46,8 @@ void cgutils::drawLine2D(const Point & start, const Point & end, const Color & c
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glBegin(GL_LINES);
 
-	glVertex3f(start.getX(), start.getY(), 0.0);
-	glVertex3f(end.getX(), end.getY(), 0.0);
+	glVertex3f(start.x, start.y, 0.0);
+	glVertex3f(end.x, end.y, 0.0);
 
 	glEnd();
 }
@@ -363,7 +363,7 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 void cgutils::drawString(const Point & inPoint, FontType font, const string & str, const Color & c)
 {
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glRasterPos2f(inPoint.getX(), inPoint.getY());
+	glRasterPos2f(inPoint.x, inPoint.y);
 
 	// TODO: anchor text in the upper left corner instead of lower left!
 
