@@ -24,8 +24,8 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
-
 #include "util.h"
+
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
@@ -35,14 +35,13 @@
 
 #include "FileTools.h"
 
-#include <dirent.h>
 #include <gui/Window.h>
 #include <iostream>
 #include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <vector>
+
+#include "Vfs.h"
 
 using namespace std;
 
@@ -98,19 +97,12 @@ const StringVector getDataAlternatives(const string & data)
 
 const string searchFile(const StringVector & name_vector)
 {
-	struct stat buf;
-
 	for(unsigned int i = 0; i < name_vector.size(); i++) {
 		const string & try_name = name_vector[i];
-		int            result;
-
-		result = stat(try_name.c_str(), &buf);
-
-		if(result != 0) {
-			continue;
-		} else {
-			if(buf.st_mode & S_IFREG)
-				return try_name;
+		
+		auto res = vfs::getType(try_name);
+		if(res == vfs::FileType::regular) {
+			return try_name;
 		}
 	}
 
@@ -119,19 +111,12 @@ const string searchFile(const StringVector & name_vector)
 
 const string searchDir(const StringVector & name_vector)
 {
-	struct stat buf;
-
 	for(unsigned int i = 0; i < name_vector.size(); i++) {
 		const string & try_name = name_vector[i];
-		int            result;
-
-		result = stat(try_name.c_str(), &buf);
-
-		if(result != 0) {
-			continue;
-		} else {
-			if(buf.st_mode & S_IFDIR)
-				return try_name;
+		
+		auto res = vfs::getType(try_name);
+		if(res == vfs::FileType::directory) {
+			return try_name;
 		}
 	}
 	return string();

@@ -78,10 +78,6 @@ const string getFileNameWithoutPrefix(const string & inFilename);
 
 bool touchFile(const string & inFilename, mode_t inMode = 0600);
 
-const list<string> getDirs(const string & inFromDir, size_t inMaxDepth = (size_t)-1);
-const list<string> getFiles(const string & inFromDir, size_t inMaxDepth = (size_t)-1);
-const list<string> getFilesAndDirs(const string & inFromDir, size_t inMaxDepth = (size_t)-1);
-
 int64_t getLastAccessTime(const string & inFilename);
 int64_t getLastModificationTime(const string & inFilename);
 int64_t getLastChangedTime(const string & inFilename);
