@@ -1,5 +1,6 @@
 #include "Vfs.h"
 
+#include <array>
 #include <cstddef>
 #include <vector>
 #include <stack>
