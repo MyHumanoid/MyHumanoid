@@ -137,18 +137,12 @@ set(log_sources
 )
 
 set(myhumanoid_sources
-	src/BodyPanel.cpp
-	src/BodyPanel.h
 	src/CharacterSettingPanel.cpp
 	src/CharacterSettingPanel.h
 	src/ComponentID.h
-	src/FacePanel.cpp
-	src/FacePanel.h
 	src/GlInclude.h
 	src/Global.cpp
 	src/Global.h
-	src/HandsPanel.cpp
-	src/HandsPanel.h
 	src/ImageButton.h
 	src/ImageListener.cpp
 	src/ImageListener.h
@@ -169,13 +163,9 @@ set(myhumanoid_sources
 	src/SelectorListener.h
 	src/TargetPanel.cpp
 	src/TargetPanel.h
-	src/TargetSelectionListener.cpp
-	src/TargetSelectionListener.h
 	src/TargetSlider.h
 	src/TargetSliderListener.cpp
 	src/TargetSliderListener.h
-	src/TeethPanel.cpp
-	src/TeethPanel.h
 	src/ToolbarPanel.cpp
 	src/ToolbarPanel.h
 	src/TooltipPanel.cpp

@@ -176,8 +176,6 @@ static const uint32_t kComponentID_ToolbarPanel = FOUR_CHAR_CONST('p', 'a', 'T',
 // The Image ID's of the  ToolbarPanel (kComponentID_ToolbarPanel)
 static const uint32_t kComponentID_ImageToolbarPanel_CharacterSettings =
         FOUR_CHAR_CONST('C', 'h', 'S', 'e');
-static const uint32_t kComponentID_ImageToolbarPanel_BodyDetailsRealistic =
-        FOUR_CHAR_CONST('B', 'D', 'R', 'e');
 // static const uint32_t kComponentID_ImageToolbarPanel_BodyDetailsFantasy   =
 // FOUR_CHAR_CONST ('B', 'D', 'F', 'a');
 static const uint32_t kComponentID_ImageToolbarPanel_MorphingList =

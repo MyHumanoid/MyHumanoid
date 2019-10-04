@@ -75,14 +75,6 @@ void ToolbarPanel::createWidgets()
 	addWidget(image);
 
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_BodyDetailsRealistic,
-	                  searchPixmapFile("ui/toolbar_body_det_real.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(Tooltip("Body details (realistic morphings)", kTooltipPos, color_red,
-	                          tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------

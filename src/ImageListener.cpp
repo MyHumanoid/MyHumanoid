@@ -26,14 +26,10 @@
  */
 
 #include "ImageListener.h"
-#include "BodyPanel.h"
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
-#include "FacePanel.h"
 #include "Global.h"
-#include "HandsPanel.h"
 #include "TargetPanel.h"
-#include "TeethPanel.h"
 #include "ToolbarPanel.h"
 #include "util.h"
 #include <animorph/DirectoryList.h>
@@ -145,23 +141,6 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 
 				g_global.setAppMode(CHARACTER_SETTING);
 				showCharacterSetting();
-			} break;
-			case kComponentID_ImageToolbarPanel_BodyDetailsRealistic: {
-				if(g_global.getAppMode() == BODY_DETAILS)
-					return true;
-
-				hidePanels(g_global.getAppMode());
-
-				if(g_global.getAppMode() != CHARACTER_SETTING &&
-				   g_global.getAppMode() != BODY_SETTINGS) {
-					if(!g_morphMode) {
-						g_morphMode = !g_morphMode;
-						g_mesh.bodyDetailsMode();
-					}
-				}
-
-				g_global.setAppMode(BODY_DETAILS);
-				showBodyDetails();
 			} break;
 			case kComponentID_ImageToolbarPanel_MorphingList: {
 				Panel * p = mainWindow.getPanel(kComponentID_TargetPanel);
@@ -285,29 +264,4 @@ void ImageListener::showCharacterSetting()
 	mainWindow.addPanel(characterSettingPanel);
 	characterSettingPanel->createWidgets();
 	characterSettingPanel->show_all();
-}
-
-void ImageListener::showBodyDetails()
-{
-	Window & mainWindow = *g_mainWindow;
-
-	BodyPanel * bodyPanel = new BodyPanel();
-	mainWindow.addPanel(bodyPanel);
-	bodyPanel->createWidgets();
-	bodyPanel->show_all();
-
-	FacePanel * facePanel = new FacePanel();
-	mainWindow.addPanel(facePanel);
-	facePanel->createWidgets();
-	facePanel->show_all();
-
-	TeethPanel * teethPanel = new TeethPanel();
-	mainWindow.addPanel(teethPanel);
-	teethPanel->createWidgets();
-	teethPanel->show_all();
-
-	HandsPanel * handsPanel = new HandsPanel();
-	mainWindow.addPanel(handsPanel);
-	handsPanel->createWidgets();
-	handsPanel->show_all();
 }
