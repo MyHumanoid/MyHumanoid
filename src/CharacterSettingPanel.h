@@ -30,7 +30,6 @@
 #include "SelectorListener.h"
 #include "util.h"
 #include <gui/Image.h>
-#include <gui/ImageSlider.h>
 #include <gui/Panel.h>
 #include <gui/Selector.h>
 #include <vector>

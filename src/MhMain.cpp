@@ -49,7 +49,6 @@
 #include <gui/Camera.h>
 #include <gui/GLUTWrapper.h>
 #include <gui/Image.h>
-#include <gui/ImageSlider.h>
 #include <gui/Panel.h>
 #include <gui/Point.h>
 #include <gui/Size.h>

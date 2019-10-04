@@ -89,10 +89,6 @@ set(gui_sources
 	src/gui/Image.cpp
 	src/gui/ImageData.h
 	src/gui/ImageData.cpp
-	src/gui/ImageSlider.h
-	src/gui/ImageSlider.cpp
-	src/gui/ImageSliderSysListener.h
-	src/gui/ImageSliderSysListener.cpp
 	src/gui/ImageSysListener.h
 	src/gui/ImageSysListener.cpp
 	src/gui/Panel.h
