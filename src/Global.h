@@ -29,7 +29,6 @@
 
 #include <animorph/Mesh.h>
 #include <gui/Camera.h>
-#include <gui/Point.h>
 #include <gui/Texture.h>
 
 using namespace Animorph;
@@ -50,15 +49,15 @@ struct Global {
 	bool       m_enableTexture = false;
 	bool       subdivision     = false;
 
-	std::map<const uint32_t, Point *> fuzzyValues;
+	std::map<const uint32_t, glm::ivec2 *> fuzzyValues;
 
 public:
-	void setFuzzyValue(uint32_t index, const Point & inPoint)
+	void setFuzzyValue(uint32_t index, const glm::ivec2 & inPoint)
 	{
-		this->fuzzyValues[index] = new Point(inPoint);
+		this->fuzzyValues[index] = new glm::ivec2(inPoint);
 	}
 	void    resetFuzzyValues() { fuzzyValues.clear(); }
-	Point * getFuzzyValue(const uint32_t index) { return this->fuzzyValues[index]; }
+	glm::ivec2 * getFuzzyValue(const uint32_t index) { return this->fuzzyValues[index]; }
 
 	glm::vec2 ageAndSex        = {0.f, 0.f};
 	glm::vec2 bodyWeightMuscle = {0.f, 0.f};

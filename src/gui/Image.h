@@ -103,8 +103,8 @@ public:
 	virtual void draw();
 	virtual void drawOverlay();
 
-	bool isMouseDragged(const Point & inMousePos);
-	bool isMouseClick(const Point & inMousePos, int button, int state);
+	bool isMouseDragged(const glm::ivec2 & inMousePos);
+	bool isMouseClick(const glm::ivec2 & inMousePos, int button, int state);
 
 protected:
 	bool lazyLoadTexture(bool over = false);

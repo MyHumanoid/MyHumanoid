@@ -91,8 +91,6 @@ set(gui_sources
 	src/gui/ImageData.cpp
 	src/gui/Panel.h
 	src/gui/Panel.cpp
-	src/gui/Point.h
-	src/gui/Point.cpp
 	src/gui/Rect.h
 	src/gui/Rect.cpp
 	src/gui/Selector.h

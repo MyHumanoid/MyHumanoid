@@ -26,7 +26,6 @@
  */
 #pragma once
 
-#include "Point.h"
 #include "Texture.h"
 #include "Widget.h"
 #include "animorph/Color.h"
@@ -70,7 +69,7 @@ public:
 	bool enabled;
 	bool showLines;
 
-	Point cursorPos;
+	glm::ivec2 cursorPos;
 
 	int rows;
 	int cols;
@@ -78,7 +77,7 @@ public:
 	float maxValue;
 	float cellRatio;
 
-	std::vector<Point>  points; // from left-bottom point to right-up point
+	std::vector<glm::ivec2>  points; // from left-bottom point to right-up point
 	std::vector<string> labels; // from left-bottom point to right-up point
 
 	Color linesColor;
@@ -104,10 +103,10 @@ public:
 
 	void setShowLines(bool inShowLines) { showLines = inShowLines; }
 
-	void          setCursorPos(const Point & inCursorPos) { cursorPos = inCursorPos; }
-	const Point & getCursorPos() const { return cursorPos; }
+	void          setCursorPos(const glm::ivec2 & inCursorPos) { cursorPos = inCursorPos; }
+	const glm::ivec2 & getCursorPos() const { return cursorPos; }
 
-	void setCursorPosFromMousePoint(const Point & inMousePoint);
+	void setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint);
 
 	std::vector<float> getDists();
 	void               setDisabledTexture(const string & inFilename);

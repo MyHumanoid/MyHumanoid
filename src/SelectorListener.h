@@ -30,7 +30,6 @@
 
 #include <gui/AbstractListener.h>
 #include <gui/Component.h>
-#include <gui/Point.h>
 #include <gui/Selector.h>
 #include <vector>
 
@@ -42,18 +41,18 @@ public:
 	void calcWidgetTargets(Selector & selectorSource);
 	void calcWidgetTargetsFOO();
 
-	Point oldPos;
+	glm::ivec2 oldPos;
 
 public:
 	SelectorListener();
 	virtual ~SelectorListener();
 
-	virtual bool mouseOver(const Point & inMousePos, Component * source);
-	virtual bool mouseOut(const Point & inMousePos, Component * source);
-	virtual bool mousePressed(const Point & inMousePos, int inButton, Component * source);
-	virtual bool mouseReleased(const Point & inMousePos, int inButton, Component * source);
-	virtual bool mouseDragged(const Point & inMousePos, Component * source);
-	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseOver(const glm::ivec2 & inMousePos, Component * source);
+	virtual bool mouseOut(const glm::ivec2 & inMousePos, Component * source);
+	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, Component * source);
+	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, Component * source);
+	virtual bool mouseDragged(const glm::ivec2 & inMousePos, Component * source);
+	virtual bool mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source);
 	virtual bool keyType(unsigned char inKey, Component * source);
 
 	std::vector<float> ageDists;

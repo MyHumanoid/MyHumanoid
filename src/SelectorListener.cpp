@@ -82,17 +82,17 @@ SelectorListener::~SelectorListener()
 {
 }
 
-bool SelectorListener::mouseOver(const Point & inMousePos, Component * source)
+bool SelectorListener::mouseOver(const glm::ivec2 & inMousePos, Component * source)
 {
 	return false;
 }
 
-bool SelectorListener::mouseOut(const Point & inMousePos, Component * source)
+bool SelectorListener::mouseOut(const glm::ivec2 & inMousePos, Component * source)
 {
 	return false;
 }
 
-bool SelectorListener::mouseDragged(const Point & inMousePos, Component * source)
+bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, Component * source)
 {
 	int xDist = abs(oldPos.x - inMousePos.x);
 	int yDist = abs(oldPos.y - inMousePos.y);
@@ -110,17 +110,17 @@ bool SelectorListener::mouseDragged(const Point & inMousePos, Component * source
 	return true;
 }
 
-bool SelectorListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
+bool SelectorListener::mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source)
 {
 	return false;
 }
 
-bool SelectorListener::mousePressed(const Point & inMousePos, int button, Component * source)
+bool SelectorListener::mousePressed(const glm::ivec2 & inMousePos, int button, Component * source)
 {
 	return true;
 }
 
-bool SelectorListener::mouseReleased(const Point & inMousePos, int button, Component * source)
+bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, Component * source)
 {
 	oldPos = inMousePos;
 

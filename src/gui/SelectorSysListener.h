@@ -38,12 +38,12 @@ public:
 	SelectorSysListener();
 	virtual ~SelectorSysListener();
 
-	virtual bool mouseOver(const Point & inMousePos, Component * source);
-	virtual bool mouseOut(const Point & inMousePos, Component * source);
-	virtual bool mousePressed(const Point & inMousePos, int inButton, Component * source);
-	virtual bool mouseReleased(const Point & inMousePos, int inButton, Component * source);
-	virtual bool mouseDragged(const Point & inMousePos, Component * source);
-	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source);
+	virtual bool mouseOver(const glm::ivec2 & inMousePos, Component * source);
+	virtual bool mouseOut(const glm::ivec2 & inMousePos, Component * source);
+	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, Component * source);
+	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, Component * source);
+	virtual bool mouseDragged(const glm::ivec2 & inMousePos, Component * source);
+	virtual bool mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source);
 	virtual bool keyType(unsigned char inKey, Component * source);
 };
 

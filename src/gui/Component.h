@@ -29,6 +29,7 @@
 #include "Rect.h"
 #include <iostream>
 #include <stdint.h>
+#include <string>
 
 using std::cerr;
 using std::endl;
@@ -52,7 +53,7 @@ private:
 	uint32_t           id;
 	Rect               geometry;
 	Rect               absoluteGeometry;
-	Point              zeroPoint;
+	glm::ivec2              zeroPoint;
 	AbstractListener * listener;
 	AbstractListener * sysListener;
 
@@ -71,9 +72,9 @@ public:
 	void setListener(AbstractListener * inListener) { listener = inListener; }
 	void setSysListener(AbstractListener * inListener) { sysListener = inListener; }
 
-	void setPosition(const Point & inPos);
+	void setPosition(const glm::ivec2 & inPos);
 
-	const Point & getPosition() const { return geometry.getPos(); }
+	const glm::ivec2 & getPosition() const { return geometry.getPos(); }
 
 	void setSize(const Size & inSize);
 
@@ -93,19 +94,19 @@ public:
 	void setVisible(bool inVisible) { visible = inVisible; }
 
 	const uint32_t getID() const { return id; }
-	const string   getIDAsString() const;
+	const std::string   getIDAsString() const;
 
 	bool isLastMouseOver() const { return mouseOver; }
 
-	virtual bool isMouseOver(const Point & inMousePos);
-	virtual bool isMouseClick(const Point & inMousePos, int button, int state);
-	virtual bool isMouseDragged(const Point & inMousePos);
+	virtual bool isMouseOver(const glm::ivec2 & inMousePos);
+	virtual bool isMouseClick(const glm::ivec2 & inMousePos, int button, int state);
+	virtual bool isMouseDragged(const glm::ivec2 & inMousePos);
 	virtual bool isKeyType(unsigned char);
 
 protected:
-	const Point & getAbsolutePosition() const { return absoluteGeometry.getPos(); }
-	void          setZeroPoint(const Point & inZero);
-	const Point & getZeroPoint() { return zeroPoint; }
+	const glm::ivec2 & getAbsolutePosition() const { return absoluteGeometry.getPos(); }
+	void          setZeroPoint(const glm::ivec2 & inZero);
+	const glm::ivec2 & getZeroPoint() { return zeroPoint; }
 
 private: // intentionally not implemented
 	Component(const Component &);

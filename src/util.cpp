@@ -279,7 +279,7 @@ bool loadSelectorsPositions(const std::string & filename)
 
 	while(file_reader.getline(buffer, MAX_LINE)) {
 		if(sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			g_global.setFuzzyValue(id, Point(x, y));
+			g_global.setFuzzyValue(id, glm::ivec2(x, y));
 		}
 	}
 
@@ -297,7 +297,7 @@ bool loadSelectorsPositions(const std::vector<string> & strings, const float val
 	for(vector<string>::const_iterator it = strings.begin(); it != strings.end(); it++) {
 		if(sscanf((*it).c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
 			g_global.setFuzzyValue(id,
-			                       Point((int32_t)(x * value), (int32_t)(y * value)));
+			                       glm::ivec2((int32_t)(x * value), (int32_t)(y * value)));
 		}
 	}
 
@@ -314,7 +314,7 @@ bool saveSelectorsPositions(const std::string & filename)
 
 	std::ostringstream out_stream;
 
-	Point * tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
+	glm::ivec2 * tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
 	if(tmp != NULL) {
 		out_stream << "#t,A," << kComponentID_CharacterSettingPanel_Age << ","
 		           << tmp->x << "," << tmp->y << endl;

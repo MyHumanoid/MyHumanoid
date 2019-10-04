@@ -89,9 +89,9 @@ public:
 	void    removePanel(Panel * p);
 	Panel * getPanel(uint32_t inPanelId);
 
-	bool isMouseOverPanel(const Point & inMousePos);
-	bool isMouseClickPanel(const Point & inMousePos, int button, int state);
-	bool isMouseDraggedPanel(const Point & inMousePos);
+	bool isMouseOverPanel(const glm::ivec2 & inMousePos);
+	bool isMouseClickPanel(const glm::ivec2 & inMousePos, int button, int state);
+	bool isMouseDraggedPanel(const glm::ivec2 & inMousePos);
 	bool isKeyTypePanel(unsigned char key);
 
 	void defaultDisplay();

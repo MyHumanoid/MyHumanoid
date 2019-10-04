@@ -71,7 +71,7 @@ Component::~Component()
 {
 }
 
-void Component::setPosition(const Point & inPos)
+void Component::setPosition(const glm::ivec2 & inPos)
 {
 	geometry.moveTo(inPos);
 
@@ -109,7 +109,7 @@ void Component::hide()
 {
 }
 
-void Component::setZeroPoint(const Point & inZero)
+void Component::setZeroPoint(const glm::ivec2 & inZero)
 {
 	zeroPoint = inZero;
 
@@ -121,7 +121,7 @@ void Component::setZeroPoint(const Point & inZero)
 /** Check if mouse over, and use the listener mouseover function.
  */
 /* ========================================================================== */
-bool Component::isMouseOver(const Point & inMousePos)
+bool Component::isMouseOver(const glm::ivec2 & inMousePos)
 {
 	bool isOver = false;
 
@@ -150,7 +150,7 @@ bool Component::isMouseOver(const Point & inMousePos)
  * function.
  */
 /* ========================================================================== */
-bool Component::isMouseClick(const Point & inMousePos, int button, int state)
+bool Component::isMouseClick(const glm::ivec2 & inMousePos, int button, int state)
 {
 	bool isClick = false;
 	bool isHit   = absoluteGeometry.isHitBy(inMousePos);
@@ -209,7 +209,7 @@ bool Component::isKeyType(unsigned char key)
 /**
  */
 /* ========================================================================== */
-bool Component::isMouseDragged(const Point & inMousePos)
+bool Component::isMouseDragged(const glm::ivec2 & inMousePos)
 {
 	bool dragged = false;
 	if(isActive()) {
@@ -226,7 +226,7 @@ bool Component::isMouseDragged(const Point & inMousePos)
 /**
  */
 /* ========================================================================== */
-const string Component::getIDAsString() const
+const std::string Component::getIDAsString() const
 {
 	char tmpBuffer[8];
 	tmpBuffer[4] = '\0';
@@ -244,7 +244,7 @@ const string Component::getIDAsString() const
 #else
 #error "Unknown endianess!"
 #endif
-	return string(tmpBuffer);
+	return std::string(tmpBuffer);
 }
 
 } // namespace mhgui

@@ -176,7 +176,7 @@ void Window::setTitle(const std::string & t)
 }
 
 // For each panel, check if mouse is over his widgets
-bool Window::isMouseOverPanel(const Point & inMousePos)
+bool Window::isMouseOverPanel(const glm::ivec2 & inMousePos)
 {
 	bool isOver = false;
 
@@ -210,7 +210,7 @@ bool Window::isMouseOverPanel(const Point & inMousePos)
 }
 
 // For each panel, check if click is over his widgets
-bool Window::isMouseClickPanel(const Point & inMousePos, int button, int state)
+bool Window::isMouseClickPanel(const glm::ivec2 & inMousePos, int button, int state)
 {
 	bool isClick = false;
 
@@ -278,7 +278,7 @@ bool Window::isKeyTypePanel(unsigned char key)
 	return keyType;
 }
 
-bool Window::isMouseDraggedPanel(const Point & inMousePos)
+bool Window::isMouseDraggedPanel(const glm::ivec2 & inMousePos)
 {
 	bool dragged = false;
 
@@ -337,12 +337,12 @@ void Window::reshape(const Size & inSize, const Camera & inCamera)
 				        getSize().getHeight() - panel->getPosition().y;
 				int bottom = inSize.getHeight() - bottom_old;
 
-				panel->setPosition(Point(panel->getPosition().x, bottom));
+				panel->setPosition(glm::ivec2(panel->getPosition().x, bottom));
 			}
 			if(panel->getRightAnchor()) {
 				int right_old = getSize().getWidth() - panel->getPosition().x;
 				int right     = inSize.getWidth() - right_old;
-				panel->setPosition(Point(right, panel->getPosition().y));
+				panel->setPosition(glm::ivec2(right, panel->getPosition().y));
 			}
 		}
 

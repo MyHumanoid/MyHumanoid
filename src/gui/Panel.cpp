@@ -112,7 +112,7 @@ void Panel::removeWidget(Widget * w)
 	    wl_it++) {
 		if(w->operator==(**wl_it)) {
 			// if removing a widget set zero point to 0,0
-			w->setZeroPoint(Point(0, 0));
+			w->setZeroPoint(glm::ivec2(0, 0));
 			widgetList.erase(wl_it);
 			++widgetListChangedCount; // mark a change of the Widget List
 			break;
@@ -174,7 +174,7 @@ void Panel::calcWidgetPosition()
 			// empty space in current x row
 			if((xpos + widgetWidth <= panelWidth) &&
 			   (ypos + widgetHeight <= panelHeight)) {
-				widget->setPosition(Point(xpos, ypos));
+				widget->setPosition(glm::ivec2(xpos, ypos));
 
 				// after position a widget increment current x position
 				xpos += widgetWidth;
@@ -188,7 +188,7 @@ void Panel::calcWidgetPosition()
 				// new row -> reset x position
 				xpos = 0;
 
-				widget->setPosition(Point(xpos, ybiggest));
+				widget->setPosition(glm::ivec2(xpos, ybiggest));
 
 				// after position a widget increment current x position
 				xpos += widgetWidth;
@@ -200,7 +200,7 @@ void Panel::calcWidgetPosition()
 			// no more space available in Panel
 			else {
 				// set position to 0,0 and hide the widget
-				widget->setPosition(Point(0, 0));
+				widget->setPosition(glm::ivec2(0, 0));
 				widget->hide();
 				break;
 			}
@@ -224,7 +224,7 @@ void Panel::calcWidgetPosition()
 			// empty space in current y row
 			if((ypos + widgetHeight <= panelHeight) &&
 			   (xpos + widgetWidth <= panelWidth)) {
-				widget->setPosition(Point(xpos, ypos));
+				widget->setPosition(glm::ivec2(xpos, ypos));
 
 				// after position a widget increment current y position
 				ypos += widgetHeight;
@@ -238,7 +238,7 @@ void Panel::calcWidgetPosition()
 				// new row -> reset y position
 				ypos = 0;
 
-				widget->setPosition(Point(xbiggest, ypos));
+				widget->setPosition(glm::ivec2(xbiggest, ypos));
 
 				// after position a widget increment current y position
 				ypos += widgetHeight;
@@ -250,7 +250,7 @@ void Panel::calcWidgetPosition()
 			// no more space available in Panel
 			else {
 				// set position to 0,0 and hide the widget
-				widget->setPosition(Point(0, 0));
+				widget->setPosition(glm::ivec2(0, 0));
 				widget->hide();
 				break;
 			}
@@ -288,7 +288,7 @@ void Panel::draw()
 	}
 }
 
-bool Panel::isMouseDraggedWidgets(const Point & inMousePos)
+bool Panel::isMouseDraggedWidgets(const glm::ivec2 & inMousePos)
 {
 	if(isVisible()) {
 		bool dragged = false;
@@ -321,7 +321,7 @@ bool Panel::isMouseDraggedWidgets(const Point & inMousePos)
 }
 
 // Check if mouse is over a widget
-bool Panel::isMouseOverWidgets(const Point & inMousePos)
+bool Panel::isMouseOverWidgets(const glm::ivec2 & inMousePos)
 {
 	if(isVisible()) {
 		bool isOver = false;
@@ -353,7 +353,7 @@ bool Panel::isMouseOverWidgets(const Point & inMousePos)
 }
 
 // Check if click is over a widget
-bool Panel::isMouseClickWidgets(const Point & inMousePos, int button, int state)
+bool Panel::isMouseClickWidgets(const glm::ivec2 & inMousePos, int button, int state)
 {
 	// cerr << "isMouseClickWidgets start" << endl;
 	if(isVisible()) {

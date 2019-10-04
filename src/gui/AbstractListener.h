@@ -26,7 +26,7 @@
  */
 #pragma once
 
-#include "gui/Point.h"
+#include <glm/glm.hpp>
 
 /*! \brief Classes to build the GUI of MakeHuman.
  */
@@ -42,12 +42,12 @@ public:
 	AbstractListener() {}
 	virtual ~AbstractListener() {}
 
-	virtual bool mouseOver(const Point & inMousePos, Component * source)                   = 0;
-	virtual bool mouseOut(const Point & inMousePos, Component * source)                    = 0;
-	virtual bool mousePressed(const Point & inMousePos, int inButton, Component * source)  = 0;
-	virtual bool mouseReleased(const Point & inMousePos, int inButton, Component * source) = 0;
-	virtual bool mouseDragged(const Point & inMousePos, Component * source)                = 0;
-	virtual bool mouseWheel(const Point & inMousePos, int inButton, Component * source)    = 0;
+	virtual bool mouseOver(const glm::ivec2 & inMousePos, Component * source)                   = 0;
+	virtual bool mouseOut(const glm::ivec2 & inMousePos, Component * source)                    = 0;
+	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, Component * source)  = 0;
+	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, Component * source) = 0;
+	virtual bool mouseDragged(const glm::ivec2 & inMousePos, Component * source)                = 0;
+	virtual bool mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source)    = 0;
 	virtual bool keyType(unsigned char inKey, Component * source)                          = 0;
 };
 

@@ -82,7 +82,7 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
 
 	for(int i = 0; i < rows; i++) {
 		for(int j = 0; j < cols; j++) {
-			Point tmp(j * getSize().getWidth() / (cols - 1),
+			glm::ivec2 tmp(j * getSize().getWidth() / (cols - 1),
 			          i * getSize().getHeight() / (rows - 1));
 			points.push_back(tmp);
 		}
@@ -108,7 +108,7 @@ void Selector::setPoints(int inRows, int inCols)
 
 	for(int i = 0; i < rows; i++) {
 		for(int j = 0; j < cols; j++) {
-			Point tmp(j * getSize().getWidth() / (cols - 1),
+			glm::ivec2 tmp(j * getSize().getWidth() / (cols - 1),
 			          i * getSize().getHeight() / (rows - 1));
 			points.push_back(tmp);
 		}
@@ -121,7 +121,7 @@ void Selector::setPoints(int inRows, int inCols)
 	maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
 }
 
-void Selector::setCursorPosFromMousePoint(const Point & inMousePoint)
+void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 {
 	int x;
 	int y;
@@ -142,7 +142,7 @@ void Selector::setCursorPosFromMousePoint(const Point & inMousePoint)
 		y = inMousePoint.y;
 	}
 
-	Point tmp(x, getAbsolutePosition().y + getSize().getHeight() - y);
+	glm::ivec2 tmp(x, getAbsolutePosition().y + getSize().getHeight() - y);
 	setCursorPos(tmp);
 }
 
@@ -190,9 +190,9 @@ std::vector<float> Selector::getDists()
 {
 	std::vector<float> ret;
 
-	std::vector<Point>::iterator vp_end = points.end();
-	for(std::vector<Point>::iterator vp_it = points.begin(); vp_it != vp_end; vp_it++) {
-		Point & tmp(*vp_it);
+	std::vector<glm::ivec2>::iterator vp_end = points.end();
+	for(std::vector<glm::ivec2>::iterator vp_it = points.begin(); vp_it != vp_end; vp_it++) {
+		glm::ivec2 & tmp(*vp_it);
 
 		float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
                                   pow((tmp.y - cursorPos.y) * cellRatio, 2));
@@ -224,7 +224,7 @@ void Selector::draw()
 		}
 
 		// cursor
-		const Point & pos  = getAbsolutePosition();
+		const glm::ivec2 & pos  = getAbsolutePosition();
 		const Size &  size = getSize();
 		const Rect    cur(cursorPos.x + pos.x - HALF_CURSOR_SIZE,
                                (size.getHeight() + pos.y) - cursorPos.y -
@@ -241,16 +241,16 @@ void Selector::draw()
 			for(int i = 1; i < rows - 1; i++) {
 				int y = (i * size.getHeight() / (rows - 1));
 				cgutils::drawLine2D(
-				        Point(pos.x, pos.y + y),
-				        Point(pos.x + size.getWidth(), pos.y + y),
+				        glm::ivec2(pos.x, pos.y + y),
+				        glm::ivec2(pos.x + size.getWidth(), pos.y + y),
 				        linesColor);
 			}
 
 			for(int i = 1; i < cols - 1; i++) {
 				int x = (i * size.getWidth() / (cols - 1));
 				cgutils::drawLine2D(
-				        Point(pos.x + x, pos.y),
-				        Point(pos.x + x, pos.y + size.getHeight()),
+				        glm::ivec2(pos.x + x, pos.y),
+				        glm::ivec2(pos.x + x, pos.y + size.getHeight()),
 				        linesColor);
 			}
 		}

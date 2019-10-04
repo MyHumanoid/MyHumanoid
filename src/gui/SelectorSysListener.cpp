@@ -49,21 +49,21 @@ SelectorSysListener::~SelectorSysListener()
 {
 }
 
-bool SelectorSysListener::mouseOver(const Point & inMousePos, Component * source)
+bool SelectorSysListener::mouseOver(const glm::ivec2 & inMousePos, Component * source)
 {
 	glutPostRedisplay();
 
 	return false;
 }
 
-bool SelectorSysListener::mouseOut(const Point & inMousePos, Component * source)
+bool SelectorSysListener::mouseOut(const glm::ivec2 & inMousePos, Component * source)
 {
 	glutPostRedisplay();
 
 	return false;
 }
 
-bool SelectorSysListener::mouseDragged(const Point & inMousePos, Component * source)
+bool SelectorSysListener::mouseDragged(const glm::ivec2 & inMousePos, Component * source)
 {
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
@@ -75,12 +75,12 @@ bool SelectorSysListener::mouseDragged(const Point & inMousePos, Component * sou
 	return true;
 }
 
-bool SelectorSysListener::mouseWheel(const Point & inMousePos, int inButton, Component * source)
+bool SelectorSysListener::mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source)
 {
 	return false;
 }
 
-bool SelectorSysListener::mousePressed(const Point & inMousePos, int button, Component * source)
+bool SelectorSysListener::mousePressed(const glm::ivec2 & inMousePos, int button, Component * source)
 {
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
@@ -95,7 +95,7 @@ bool SelectorSysListener::mousePressed(const Point & inMousePos, int button, Com
 	return true;
 }
 
-bool SelectorSysListener::mouseReleased(const Point & inMousePos, int button, Component * source)
+bool SelectorSysListener::mouseReleased(const glm::ivec2 & inMousePos, int button, Component * source)
 {
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?

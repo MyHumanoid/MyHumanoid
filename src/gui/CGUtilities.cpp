@@ -29,7 +29,6 @@
 
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"
-#include "gui/Point.h"
 #include "gui/Rect.h"
 #include "gui/Size.h"
 #include "gui/Texture.h"
@@ -41,7 +40,7 @@
 using namespace std;
 using namespace mhgui;
 
-void cgutils::drawLine2D(const Point & start, const Point & end, const Color & c)
+void cgutils::drawLine2D(const glm::ivec2 & start, const glm::ivec2 & end, const Color & c)
 {
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glBegin(GL_LINES);
@@ -360,7 +359,7 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	return winID;
 }
 
-void cgutils::drawString(const Point & inPoint, FontType font, const string & str, const Color & c)
+void cgutils::drawString(const glm::ivec2 & inPoint, FontType font, const string & str, const Color & c)
 {
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glRasterPos2f(inPoint.x, inPoint.y);

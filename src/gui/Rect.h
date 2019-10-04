@@ -26,10 +26,10 @@
  */
 #pragma once
 
-#include "Point.h"
-#include "Size.h"
 #include <iostream>
 #include <stdint.h>
+#include <glm/glm.hpp>
+#include "Size.h"
 
 namespace mhgui
 {
@@ -49,7 +49,7 @@ public:
 	/// Assigns another Rect to this one
 	Rect & operator=(const Rect & inPoint);
 
-	const Point & getPos() const { return pos; }
+	const glm::ivec2 & getPos() const { return pos; }
 	const Size &  getSize() const { return size; }
 
 	int32_t getX() const { return pos.x; }
@@ -64,12 +64,12 @@ public:
 	bool operator==(const Rect & inRect) const;
 
 	/// Sets the position
-	void moveTo(const Point & inPos);
+	void moveTo(const glm::ivec2 & inPos);
 	/** \brief Moves the rectangle
 	 *
 	 * Wrapper for Point::moveBy().
 	 */
-	void moveBy(const Point & inDeltaPos);
+	void moveBy(const glm::ivec2 & inDeltaPos);
 
 	/// Sets the size
 	void resizeTo(const Size & inSize);
@@ -87,10 +87,10 @@ public:
 	void inset(int32_t inInsetX, int32_t inInsetY);
 
 	/// Checks whether a particular Point is located in this rectangle
-	bool isHitBy(const Point & inPoint) const;
+	bool isHitBy(const glm::ivec2 & inPoint) const;
 
 private:
-	Point pos;
+	glm::ivec2 pos;
 	Size  size;
 
 }; // class Rect
@@ -126,12 +126,12 @@ inline bool Rect::operator==(const Rect & inRect) const
 	return (pos == inRect.pos && size == inRect.size);
 }
 
-inline void Rect::moveTo(const Point & inPos)
+inline void Rect::moveTo(const glm::ivec2 & inPos)
 {
 	pos = inPos;
 }
 
-inline void Rect::moveBy(const Point & inDeltaPos)
+inline void Rect::moveBy(const glm::ivec2 & inDeltaPos)
 {
 	pos += inDeltaPos;
 }
@@ -148,11 +148,11 @@ inline void Rect::resizeBy(const Size & inDeltaSize)
 
 inline void Rect::inset(int32_t inInsetX, int32_t inInsetY)
 {
-	moveBy(Point(inInsetX, inInsetY));
+	moveBy(glm::ivec2(inInsetX, inInsetY));
 	resizeBy(Size(-2 * inInsetX, -2 * inInsetY));
 }
 
-inline bool Rect::isHitBy(const Point & inPoint) const
+inline bool Rect::isHitBy(const glm::ivec2 & inPoint) const
 {
 	return (((inPoint.x >= getX()) && (inPoint.y >= getY())) &&
 	        ((inPoint.x < getX() + getWidth()) &&

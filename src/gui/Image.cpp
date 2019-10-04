@@ -157,7 +157,7 @@ void Image::draw()
 	}
 }
 
-bool Image::isMouseDragged(const Point & inMousePos)
+bool Image::isMouseDragged(const glm::ivec2 & inMousePos)
 {
 	bool drag = false;
 
@@ -168,7 +168,7 @@ bool Image::isMouseDragged(const Point & inMousePos)
 	return Component::isMouseDragged(inMousePos);
 }
 
-bool Image::isMouseClick(const Point & inMousePos, int button, int state)
+bool Image::isMouseClick(const glm::ivec2 & inMousePos, int button, int state)
 {
 
 	if(isEnabled() == false) {

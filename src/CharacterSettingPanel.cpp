@@ -71,9 +71,9 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_age = selector;
 
-	Point * cursorPosition = g_global.getFuzzyValue(selector->getID());
+	glm::ivec2 * cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if(cursorPosition == NULL) {
-		selector->setCursorPos(Point(96, 52));
+		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
 		selector->setCursorPosFromMousePoint(*cursorPosition);
 	}
@@ -97,7 +97,7 @@ void CharacterSettingPanel::createWidgets()
 
 	cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if(cursorPosition == NULL) {
-		selector->setCursorPos(Point(96, 52));
+		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
 		selector->setCursorPosFromMousePoint(*cursorPosition);
 	}
@@ -120,7 +120,7 @@ void CharacterSettingPanel::createWidgets()
 
 	cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if(cursorPosition == NULL) {
-		selector->setCursorPos(Point(96, 52));
+		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
 		selector->setCursorPosFromMousePoint(*cursorPosition);
 	}
@@ -143,7 +143,7 @@ void CharacterSettingPanel::createWidgets()
 
 	cursorPosition = g_global.getFuzzyValue(selector->getID());
 	if(cursorPosition == NULL) {
-		selector->setCursorPos(Point(96, 52));
+		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
 		selector->setCursorPosFromMousePoint(*cursorPosition);
 	}
@@ -154,7 +154,7 @@ void CharacterSettingPanel::resetSlidersValues()
 {
 	for(vector<Selector *>::const_iterator selectorVector_it = selectorVector.begin();
 	    selectorVector_it != selectorVector.end(); selectorVector_it++) {
-		(*selectorVector_it)->setCursorPos(Point(96, 52));
+		(*selectorVector_it)->setCursorPos(glm::ivec2(96, 52));
 	}
 
 	selectorListener.ageDists.clear();
@@ -165,14 +165,14 @@ void CharacterSettingPanel::resetSlidersValues()
 
 void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 {
-	Point * cursorPosition = g_global.getFuzzyValue(index);
+	glm::ivec2 * cursorPosition = g_global.getFuzzyValue(index);
 
 	for(vector<Selector *>::iterator sel_it = selectorVector.begin();
 	    sel_it != selectorVector.end(); sel_it++) {
 		Selector * tmp = (*sel_it);
 		if(tmp->getID() == index) {
 			if(cursorPosition == NULL) {
-				tmp->setCursorPos(Point(96, 52));
+				tmp->setCursorPos(glm::ivec2(96, 52));
 			} else {
 				tmp->setCursorPosFromMousePoint(*cursorPosition);
 			}

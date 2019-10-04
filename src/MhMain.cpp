@@ -50,7 +50,6 @@
 #include <gui/GLUTWrapper.h>
 #include <gui/Image.h>
 #include <gui/Panel.h>
-#include <gui/Point.h>
 #include <gui/Size.h>
 #include <gui/Widget.h>
 #include <gui/Window.h>
@@ -829,7 +828,7 @@ static void timerTrigger(int val)
 static void motion(int x, int y)
 {
 	Window & mainWindow(*g_mainWindow);
-	mainWindow.isMouseOverPanel(Point(x, y));
+	mainWindow.isMouseOverPanel(glm::ivec2(x, y));
 }
 
 static void special(int key)
@@ -913,7 +912,7 @@ static void mouse(int button, int state, int x, int y)
 	// cout << "mouse: " << button << endl;
 	g_global.camera->mouseRotateStart(x, y);
 
-	if(!mainWindow.isMouseClickPanel(Point(x, y), button, state)) {
+	if(!mainWindow.isMouseClickPanel(glm::ivec2(x, y), button, state)) {
 		switch(button) {
 		case GLUT_LEFT_BUTTON:
 			break;
@@ -966,7 +965,7 @@ static void mouse(int button, int state, int x, int y)
 static void activeMotion(int x, int y)
 {
 	Window & mainWindow(*g_mainWindow);
-	if(!mainWindow.isMouseDraggedPanel(Point(x, y))) {
+	if(!mainWindow.isMouseDraggedPanel(glm::ivec2(x, y))) {
 		if(right_button_down) {
 			g_global.camera->moveMouse(x, y);
 		} else {

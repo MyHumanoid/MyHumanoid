@@ -56,9 +56,9 @@ public:
 	void     removeWidget(Widget * w);
 	Widget * getWidget(uint32_t inWidgetId);
 
-	virtual bool isMouseOverWidgets(const Point & inMousePos);
-	virtual bool isMouseClickWidgets(const Point & inMousePos, int button, int state);
-	virtual bool isMouseDraggedWidgets(const Point & inMousePos);
+	virtual bool isMouseOverWidgets(const glm::ivec2 & inMousePos);
+	virtual bool isMouseClickWidgets(const glm::ivec2 & inMousePos, int button, int state);
+	virtual bool isMouseDraggedWidgets(const glm::ivec2 & inMousePos);
 	virtual bool isKeyTypeWidgets(unsigned char key);
 
 	void show_all();
