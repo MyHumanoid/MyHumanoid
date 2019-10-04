@@ -325,10 +325,8 @@ void DisplayLibraryCharacters()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	const CharactersMap & charactersmap = g_mesh.characters();
-	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
-	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
-		const string & character_name((*charactersmap_it).first);
+	for(const auto & charactersmap_it : g_mesh.characters()) {
+		const string & character_name(charactersmap_it.first);
 
 		string::size_type loc = character_name.find("/", 0);
 		if(loc == string::npos)
@@ -385,10 +383,8 @@ void DisplayLibraryPoses()
 	const static string kFilePrefixTarget(".bs");
 	const static string kFilePrefixPNG(".png");
 
-	const CharactersMap & charactersmap = g_mesh.characters();
-	for(CharactersMap::const_iterator charactersmap_it = charactersmap.begin();
-	    charactersmap_it != charactersmap.end(); charactersmap_it++) {
-		const string & character_name((*charactersmap_it).first);
+	for(const auto & charactersmap_it : g_mesh.characters()) {
+		const string & character_name(charactersmap_it.first);
 
 		string::size_type loc = character_name.find("/", 0);
 		if(loc == string::npos)
