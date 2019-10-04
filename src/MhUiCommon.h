@@ -12,6 +12,7 @@
 #include "render/RenderUtils.h"
 #include "util/StringUtils.h"
 
+#include "log/log.h"
 #include "MhUi.h"
 #include "Vfs.h"
 
@@ -19,6 +20,8 @@
 using vec2 = glm::vec2;
 
 struct Tile {
+	
+	using Interaction = std::pair<int, bool>;
 
 	glm::vec2                  m_size = glm::vec2(32, 32);
 	std::string                m_imageBase;
@@ -26,6 +29,7 @@ struct Tile {
 	std::string                m_category;
 	std::optional<mh::Texture> m_tex;
 	std::optional<mh::Texture> m_texOver;
+	
 	Tile(const std::string & img, const std::string & _tip, const std::string & _targ)
 	{
 		m_tooltip   = _tip;
@@ -35,37 +39,56 @@ struct Tile {
 		m_texOver   = LoadTextureFromFile(m_imageBase + "_over.png");
 	}
 
-	void gui(std::string & category, std::string & tooltip) const
+	Interaction gui() const
 	{
+		int click = -1;
+		bool hover = false;
 		auto p = ImGui::GetCursorPos();
 		if(ImGui::InvisibleButton(m_imageBase.c_str(), m_size)) {
-			category = m_category;
+			click = 0;
+		}
+		if(ImGui::IsItemClicked(1)) {
+			click = 1;
 		}
 		ImGui::SetCursorPos(p);
 		if(ImGui::IsItemHovered()) {
 			if(m_texOver) {
 				MhGui::Image(m_texOver.value(), m_size);
-				tooltip = m_tooltip;
+				hover = true;
 			}
 		} else {
 			if(m_tex)
 				MhGui::Image(m_tex.value(), m_size);
 		}
+		return std::make_pair(click, hover);
 	}
 };
 
 template <typename Derived> struct TileGroupChildWindow {
 
 	std::string m_category;
+	std::string m_categoryRight;
 	std::string m_tooltip;
 
 	void DisplayGroupTiles()
 	{
+		using glm::ivec2;
+		
+		auto tileSize = ivec2(32, 32);
+		
+		const Derived & d = static_cast<Derived &>(*this);
+		
+		int columns = 6;
+		int rows = d.tiles.size() / 6;
+		
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0));
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(0));
-		ImGui::BeginChild("Pose Groups", vec2(192 + 5, 460), false);
-		ImGui::Columns(6, "Pose Groups Grid", false);
+		
+		auto winSize = ivec2((tileSize.x * columns) + 5, (tileSize.y * rows) + 12);
+		
+		ImGui::BeginChild("Pose Groups", vec2(winSize), false);
+		ImGui::Columns(columns, "Pose Groups Grid", false);
 
 		// FIXME we still have black vertical lines ?!
 		// Maybe a ImGui ClipRect bug ?
@@ -73,10 +96,19 @@ template <typename Derived> struct TileGroupChildWindow {
 		for(int i = 0; i < 6; ++i) {
 			ImGui::SetColumnWidth(i, 33);
 		}
-
-		const Derived & d = static_cast<Derived &>(*this);
 		for(const auto & tile : d.tiles) {
-			tile.gui(m_category, m_tooltip);
+			auto interaction = tile.gui();
+
+			if(interaction.first == 0) {
+				m_category = tile.m_category;
+			}
+			if(interaction.first == 1) {
+				log_info("Down right");
+				m_categoryRight = tile.m_category;
+			}
+			if(interaction.second) {
+				m_tooltip = tile.m_tooltip;
+			}
 			ImGui::NextColumn();
 		}
 		ImGui::Columns(1);

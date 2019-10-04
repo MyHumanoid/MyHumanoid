@@ -14,6 +14,7 @@
 #include "MhUiCommon.h"
 
 #include "render/RenderUtils.h"
+#include "util.h"
 
 using glm::vec2;
 
@@ -209,10 +210,30 @@ void DisplayMorphTargets()
 	static MorphGroupWin tileWin;
 
 	tileWin.m_tooltip = "";
+	tileWin.m_categoryRight = "";
 	tileWin.DisplayGroupTiles();
+	
+	if(tileWin.m_categoryRight != "") {
+		auto & target = tileWin.m_categoryRight;
+		std::string pathAutozoom_data =
+		    searchDataDir("targets") + "/" + target + "/" + target + ".camera";
+		if(g_global.autozoom->lazyLoadData(pathAutozoom_data)) {
+			g_global.camera->moveCameraAnimated(
+			    pathAutozoom_data,
+			    g_global.autozoom->getAutozoomData(pathAutozoom_data),
+			    g_mesh.getVertexVectorRef());
+		}
+	}
+	
+	bool groupTooltip = false;
+	if(tileWin.m_tooltip != "") {
+		groupTooltip = true;
+	}
+	
+	
 	ImGui::SameLine();
 	{
-		ImGui::BeginChild("Morph Targets", vec2(140, 460), false);
+		ImGui::BeginChild("Morph Targets", vec2(140, 450), false);
 
 		BodySettings bodyset = g_mesh.morphTargets();
 
@@ -238,6 +259,10 @@ void DisplayMorphTargets()
 		ImGui::EndChild();
 	}
 	ImGui::Text("%s", tileWin.m_tooltip.c_str());
+	if(groupTooltip) {
+		ImGui::Text("Left Mouse: select / Right Mouse: zoom");
+	}
+	
 	ImGui::End();
 }
 
