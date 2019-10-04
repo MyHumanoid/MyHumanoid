@@ -310,6 +310,18 @@ static bool g_requestBackgroundShaderReload = false;
 // ================================================================================================
 // ================================================================================================
 
+void loadCharacter(const std::string & character_name)
+{
+	const CharactersMap & charactersmap = g_mesh.characters();
+	
+	auto f = charactersmap.find(character_name);
+	if(f != charactersmap.end()) {
+		g_mesh.doMorph(f->second, 1.0, true);
+		g_mesh.calcNormals();
+		loadSelectorsPositions(f->second.cursorPositions);
+	}
+}
+
 void DisplayLibraryCharacters()
 {
 
@@ -344,26 +356,29 @@ void DisplayLibraryCharacters()
 		if(icon != g_charactersIconTextures.end()) {
 			const auto & tex = icon->second;
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
-
-
-				{ // not copy-paste
-					//					if(g_global.getAppMode()
-					//== POSES) {
-					// g_global.setAppMode(BODY_SETTINGS);
-					//						g_mesh.bodyDetailsMode();
-					//					}
-
-					const CharactersMap & charactersmap = g_mesh.characters();
-
-					auto f = charactersmap.find(character_name);
-					if(f != charactersmap.end()) {
-						g_mesh.doMorph(f->second, 1.0, true);
-						g_mesh.calcNormals();
-						loadSelectorsPositions(f->second.cursorPositions);
-					}
-				}
+				loadCharacter(character_name);
+			}
+		} else {
+			if(ImGui::Button(foobar.c_str())) {
+				loadCharacter(character_name);
 			}
 		}
+	}
+}
+
+void loadPose(const std::string & character_name)
+{
+	const CharactersMap & charactersmap = g_mesh.characters();
+	
+	auto f = charactersmap.find(character_name);
+	if(f != charactersmap.end()) {
+		g_mesh.doPose(f->second, 1.0, true);
+		// mesh->doPose
+		// (charactersmap[imgSource->getTargetName ()],
+		// false);
+		g_mesh.calcNormals();
+	} else {
+		log_info("Character {} not found", character_name);
 	}
 }
 
@@ -401,21 +416,12 @@ void DisplayLibraryPoses()
 		if(icon != g_charactersIconTextures.end()) {
 			const auto & tex = icon->second;
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
-
-				{ // not copy-paste
-					const CharactersMap & charactersmap = g_mesh.characters();
-
-					auto f = charactersmap.find(character_name);
-					if(f != charactersmap.end()) {
-						g_mesh.doPose(f->second, 1.0, true);
-						// mesh->doPose
-						// (charactersmap[imgSource->getTargetName ()],
-						// false);
-						g_mesh.calcNormals();
-					} else {
-						log_info("Character {} not found", character_name);
-					}
-				}
+				
+				loadPose(character_name);
+			}
+		} else {
+			if(ImGui::Button(foobar.c_str())) {
+				loadPose(character_name);
 			}
 		}
 	}
