@@ -45,31 +45,39 @@ SelectorListener::SelectorListener()
         , shapeLabels()
         , oldPos(0, 0)
 {
-	ageLabels.push_back("female_10");
-	ageLabels.push_back("female_30");
-	ageLabels.push_back("female_50");
-	ageLabels.push_back("female_70");
-	ageLabels.push_back("female_90");
-	ageLabels.push_back("male_10");
-	ageLabels.push_back("male_30");
-	ageLabels.push_back("male_50");
-	ageLabels.push_back("male_70");
-	ageLabels.push_back("male_90");
+	ageLabels = {
+		"female_10",
+		"female_30",
+		"female_50",
+		"female_70",
+		"female_90",
+		"male_10",
+		"male_30",
+		"male_50",
+		"male_70",
+		"male_90"
+	};
 
-	muscleSizeLabels.push_back("skinny_nomuscle");
-	muscleSizeLabels.push_back("big_nomuscle");
-	muscleSizeLabels.push_back("skinny_muscle");
-	muscleSizeLabels.push_back("big_muscle");
+	muscleSizeLabels = {
+		"skinny_nomuscle",
+		"big_nomuscle",
+		"skinny_muscle",
+		"big_muscle"
+	};
 
-	breastLabels.push_back("cone_little");
-	breastLabels.push_back("cone_big");
-	breastLabels.push_back("sphere_little");
-	breastLabels.push_back("sphere_big");
+	breastLabels = {
+		"cone_little",
+		"cone_big",
+		"sphere_little",
+		"sphere_big"
+	};
 
-	shapeLabels.push_back("brevilinear_vshape");
-	shapeLabels.push_back("brevilinear_peershape");
-	shapeLabels.push_back("longilinear_vshape");
-	shapeLabels.push_back("longilinear_peershape");
+	shapeLabels = {
+		"brevilinear_vshape",
+		"brevilinear_peershape",
+		"longilinear_vshape",
+		"longilinear_peershape"
+	};
 }
 
 SelectorListener::~SelectorListener()
