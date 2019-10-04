@@ -32,7 +32,6 @@
 #include <algorithm>
 
 #include <gui/Rect.h>
-#include <gui/Tooltip.h>
 #include <gui/Window.h>
 
 using namespace std;

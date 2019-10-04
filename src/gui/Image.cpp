@@ -29,7 +29,6 @@
 #include "gui/CGUtilities.h"
 #include "gui/GLUTWrapper.h"
 #include "gui/ImageData.h"
-#include "gui/Tooltip.h"
 
 #include <iostream>
 

@@ -28,7 +28,6 @@
 #include "gui/Widget.h"
 #include "gui/AbstractListener.h"
 #include "gui/GLUTWrapper.h"
-#include "gui/Tooltip.h"
 
 #include <iostream>
 
@@ -48,14 +47,10 @@ Widget::~Widget()
 {
 	if(parentPanel)
 		parentPanel->removeWidget(this);
-
-	delete tooltip;
 }
 
 void Widget::setTooltip(const Tooltip & inTooltip)
 {
-	delete tooltip;
-	tooltip = new Tooltip(inTooltip);
 }
 
 void Widget::draw()
@@ -68,9 +63,6 @@ void Widget::drawOverlay()
 
 void Widget::draw_wrapper()
 {
-	if(isVisible() && tooltip && isLastMouseOver()) {
-		tooltip->draw();
-	}
 	draw();
 }
 

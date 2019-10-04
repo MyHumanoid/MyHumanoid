@@ -103,8 +103,6 @@ set(gui_sources
 	src/gui/Size.cpp
 	src/gui/Texture.h
 	src/gui/Texture.cpp
-	src/gui/Tooltip.h
-	src/gui/Tooltip.cpp
 	src/gui/Widget.h
 	src/gui/Widget.cpp
 	src/gui/Window.h
