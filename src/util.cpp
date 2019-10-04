@@ -304,10 +304,10 @@ bool loadSelectorsPositions(const std::vector<string> & strings, const float val
 	return true;
 }
 
-bool saveSelectorsPositions(const std::string & filename, std::ios_base::openmode mode)
+bool saveSelectorsPositions(const std::string & filename)
 {
 	FileWriter file_writer;
-	file_writer.open(filename, mode);
+	file_writer.open(filename, std::ios::app);
 
 	if(!file_writer)
 		return false;
