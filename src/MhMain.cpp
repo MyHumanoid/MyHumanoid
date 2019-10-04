@@ -283,7 +283,8 @@ static void ResetMeshPose()
 
 static void ResetMeshMorph()
 {
-	g_mesh.resetMorph();
+	BodySettings bodyset_empty;
+	g_mesh.doMorph(bodyset_empty);
 
 	loadDefaultBodySettings();
 

@@ -378,8 +378,6 @@ public:
 	 */
 	void doMorph(const BodySettings & bs);
 
-	/// Reset the Mesh to loaded state without deformation
-	void resetMorph();
 	//@}
 
 	/** @name Posing

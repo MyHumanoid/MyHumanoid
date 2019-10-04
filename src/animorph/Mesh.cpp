@@ -584,12 +584,6 @@ void Mesh::bodyDetailsMode()
 	m_vert_morph = m_vert_morph_copy;
 }
 
-void Mesh::resetMorph()
-{
-	BodySettings bodyset_empty;
-	doMorph(bodyset_empty);
-}
-
 void Mesh::resetPose()
 {
 	m_poseTargets.clear();
