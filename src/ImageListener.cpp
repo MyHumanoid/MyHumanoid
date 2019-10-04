@@ -123,23 +123,6 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 
 			switch(imgSource->getID()) {
 			// toolbar buttons
-			case kComponentID_ImageToolbarPanel_CharacterSettings: {
-				if(g_global.getAppMode() == CHARACTER_SETTING)
-					return true;
-
-				hidePanels(g_global.getAppMode());
-
-				if(g_global.getAppMode() != BODY_DETAILS &&
-				   g_global.getAppMode() != BODY_SETTINGS) {
-					if(!g_morphMode) {
-						g_morphMode = !g_morphMode;
-						g_mesh.bodyDetailsMode();
-					}
-				}
-
-				g_global.setAppMode(CHARACTER_SETTING);
-				showCharacterSetting();
-			} break;
 			// utilitybar buttons
 			default:
 				cerr << "Unknown widget handler!" << imgSource->getIDAsString()
@@ -160,59 +143,15 @@ bool ImageListener::keyType(unsigned char key, Component * source)
 
 void ImageListener::hidePanels(const Modes currentMode)
 {
-	if(currentMode == POSES) {
-		hidePoses();
-	} else if(currentMode == BODY_DETAILS) {
-		hideBodyDetails();
-	} else if(currentMode == CHARACTER_SETTING) {
+	if(currentMode == CHARACTER_SETTING) {
 		hideCharacterSetting();
 	}
-}
-
-void ImageListener::hideBodyDetails()
-{
-	Window & mainWindow = *g_mainWindow;
-	Panel *  p          = mainWindow.getPanel(kComponentID_BodyPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_FacePanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_TeethPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_HandsPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_TargetPanel);
-	mainWindow.removePanel(p);
-	delete p;
 }
 
 void ImageListener::hideCharacterSetting()
 {
 	Window & mainWindow = *g_mainWindow;
 	Panel *  p          = mainWindow.getPanel(kComponentID_CharacterSettingPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_TargetPanel);
-	mainWindow.removePanel(p);
-	delete p;
-}
-
-void ImageListener::hidePoses()
-{
-	Window & mainWindow = *g_mainWindow;
-	Panel *  p          = mainWindow.getPanel(kComponentID_BodyPanel);
-	mainWindow.removePanel(p);
-	delete p;
-
-	p = mainWindow.getPanel(kComponentID_TargetPanel);
 	mainWindow.removePanel(p);
 	delete p;
 }

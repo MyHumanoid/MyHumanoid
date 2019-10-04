@@ -42,7 +42,6 @@ class ImageListener : public AbstractListener
 private:
 	void showCharacterSetting();
 
-	void hideBodyDetails();
 	void hidePoses();
 	void hideCharacterSetting();
 	void hidePanels(const Modes newMode);
