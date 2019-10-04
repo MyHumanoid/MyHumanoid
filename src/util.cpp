@@ -258,7 +258,7 @@ void loadDefaultBodySettings()
 	}
 
 	if(state) {
-		g_mesh.doMorph(bodyset, true);
+		g_mesh.doMorph(bodyset);
 		g_mesh.calcNormals();
 	}
 }

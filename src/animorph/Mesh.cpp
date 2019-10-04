@@ -547,15 +547,13 @@ bool Mesh::setMorphTarget(const string & target_name, float morph_value)
 	return true;
 }
 
-void Mesh::doMorph(const BodySettings & bs, bool clear)
+void Mesh::doMorph(const BodySettings & bs)
 {
 	PROFILE
 
-	if(clear) {
-		m_morphTargets.clear();
-		m_vert_morph.setCoordinates(m_vert_orginal);
-		m_vert_morph_only.setCoordinates(m_vert_orginal);
-	}
+	m_morphTargets.clear();
+	m_vert_morph.setCoordinates(m_vert_orginal);
+	m_vert_morph_only.setCoordinates(m_vert_orginal);
 
 	for(const auto & [target_name, morph_value] : bs) {
 		setMorphTarget(target_name, morph_value);
@@ -589,7 +587,7 @@ void Mesh::bodyDetailsMode()
 void Mesh::resetMorph()
 {
 	BodySettings bodyset_empty;
-	doMorph(bodyset_empty, true);
+	doMorph(bodyset_empty);
 }
 
 void Mesh::resetPose()
