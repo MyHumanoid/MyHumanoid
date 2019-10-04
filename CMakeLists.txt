@@ -95,8 +95,6 @@ set(gui_sources
 	src/gui/ImageSliderSysListener.cpp
 	src/gui/ImageSysListener.h
 	src/gui/ImageSysListener.cpp
-	src/gui/MultiPanel.h
-	src/gui/MultiPanel.cpp
 	src/gui/Panel.h
 	src/gui/Panel.cpp
 	src/gui/Point.h
@@ -161,8 +159,6 @@ set(myhumanoid_sources
 	src/PageTargetPanel.h
 	src/SelectorListener.cpp
 	src/SelectorListener.h
-	src/TargetPanel.cpp
-	src/TargetPanel.h
 	src/TargetSlider.h
 	src/TargetSliderListener.cpp
 	src/TargetSliderListener.h

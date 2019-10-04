@@ -69,7 +69,6 @@
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
-#include "TargetPanel.h"
 #include "ToolbarPanel.h"
 #include "TooltipPanel.h"
 #include "util.h"
@@ -546,19 +545,15 @@ void DisplayMainMenu()
 				// searchDataDir("targets")
 				std::string fooAutozoom = "foo-Autozoom";
 
-				Window &      mainWindow(*g_mainWindow);
-				TargetPanel * targetPanel = dynamic_cast<TargetPanel *>(
-				        mainWindow.getPanel(kComponentID_TargetPanel));
+//				if(targetPanel) {
+//					string      target            = targetPanel->getCategory();
+//					std::string pathAutozoom_data = fooAutozoom + "/" + target +
+//					                                "/" + target + ".camera";
 
-				if(targetPanel) {
-					string      target            = targetPanel->getCategory();
-					std::string pathAutozoom_data = fooAutozoom + "/" + target +
-					                                "/" + target + ".camera";
-
-					saveAutozoom(pathAutozoom_data);
-				} else {
+//					saveAutozoom(pathAutozoom_data);
+//				} else {
 					saveAutozoom("foo-Default.camera");
-				}
+//				}
 			}
 
 			ImGui::EndMenu();
@@ -596,11 +591,6 @@ void DisplayMainMenu()
 					        kComponentID_CharacterSettingPanel));
 					if(cs_p != NULL) {
 						cs_p->resetSlidersValues();
-					}
-					TargetPanel * tg_p = dynamic_cast<TargetPanel *>(
-					        g_mainWindow->getPanel(kComponentID_TargetPanel));
-					if(tg_p != NULL) {
-						tg_p->resetTargetValues();
 					}
 					ResetMeshMorph();
 				}

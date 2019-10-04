@@ -79,14 +79,6 @@ void ToolbarPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	image = new Image(kComponentID_ImageToolbarPanel_MorphingList,
-	                  searchPixmapFile("ui/toolbar_morph_list.png"), Rect(0, 0, 32, 32));
-	image->setListener(&imgListener1);
-	image->setTooltip(Tooltip("Used morphing list", kTooltipPos, color_red, tooltipPanel));
-	image->setAlpha(alpha);
-	imageVector.push_back(image);
-	addWidget(image);
-
 
 	image->setAlpha(alpha);
 	imageVector.push_back(image);

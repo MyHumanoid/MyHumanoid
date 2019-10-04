@@ -29,7 +29,6 @@
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
-#include "TargetPanel.h"
 #include "ToolbarPanel.h"
 #include "util.h"
 #include <animorph/DirectoryList.h>
@@ -142,42 +141,7 @@ bool ImageListener::mouseReleased(const Point & inMousePos, int button, Componen
 				g_global.setAppMode(CHARACTER_SETTING);
 				showCharacterSetting();
 			} break;
-			case kComponentID_ImageToolbarPanel_MorphingList: {
-				Panel * p = mainWindow.getPanel(kComponentID_TargetPanel);
-				mainWindow.removePanel(p);
-				delete p;
-
-				if(g_global.getAppMode() == BODY_DETAILS ||
-				   g_global.getAppMode() == CHARACTER_SETTING) {
-					TargetPanel * targetPanel;
-
-					int x       = mainWindow.getSize().getWidth() - 210;
-					targetPanel = new TargetPanel(applied_target_list,
-					                              Rect(x, 104, 160, 460));
-					mainWindow.addPanel(targetPanel);
-					targetPanel->createWidgets();
-					targetPanel->show();
-				}
-			} break;
 			// utilitybar buttons
-			case kComponentID_CloseTargetPanel: {
-				Panel * p = mainWindow.getPanel(kComponentID_TargetPanel);
-				mainWindow.removePanel(p);
-			} break;
-			case kComponentID_NextTargetPanel: {
-				MultiPanel * p = dynamic_cast<MultiPanel *>(
-				        mainWindow.getPanel(kComponentID_TargetPanel));
-				assert(p);
-				p->pageNext();
-				break;
-			}
-			case kComponentID_PrevTargetPanel: {
-				MultiPanel * p = dynamic_cast<MultiPanel *>(
-				        mainWindow.getPanel(kComponentID_TargetPanel));
-				assert(p);
-				p->pageBack();
-				break;
-			}
 			default:
 				cerr << "Unknown widget handler!" << imgSource->getIDAsString()
 				     << endl;

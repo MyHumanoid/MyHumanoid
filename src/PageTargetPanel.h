@@ -31,7 +31,6 @@
 #include "TargetSliderListener.h"
 #include "util.h"
 #include <algorithm>
-#include <gui/MultiPanel.h>
 #include <gui/Panel.h>
 #include <vector>
 

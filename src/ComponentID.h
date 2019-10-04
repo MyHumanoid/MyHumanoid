@@ -176,18 +176,11 @@ static const uint32_t kComponentID_ToolbarPanel = FOUR_CHAR_CONST('p', 'a', 'T',
 // The Image ID's of the  ToolbarPanel (kComponentID_ToolbarPanel)
 static const uint32_t kComponentID_ImageToolbarPanel_CharacterSettings =
         FOUR_CHAR_CONST('C', 'h', 'S', 'e');
-// static const uint32_t kComponentID_ImageToolbarPanel_BodyDetailsFantasy   =
-// FOUR_CHAR_CONST ('B', 'D', 'F', 'a');
-static const uint32_t kComponentID_ImageToolbarPanel_MorphingList =
-        FOUR_CHAR_CONST('M', 'o', 'L', 'i');
 
 // ------------------------------------------------------------------
 // The Target Panel
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_TargetPanel        = FOUR_CHAR_CONST('p', 'a', 'T', 'P');
-static const uint32_t kComponentID_CloseTargetPanel   = FOUR_CHAR_CONST('p', 'a', 'C', 'T');
-static const uint32_t kComponentID_PrevTargetPanel    = FOUR_CHAR_CONST('p', 'a', 'P', 'T');
-static const uint32_t kComponentID_NextTargetPanel    = FOUR_CHAR_CONST('p', 'a', 'N', 'T');
 static const uint32_t kComponentID_TargetPanel_Target = kComponentID_Dummy;
 
 // ------------------------------------------------------------------
