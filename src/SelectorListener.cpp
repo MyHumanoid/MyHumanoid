@@ -171,44 +171,23 @@ void SelectorListener::calcWidgetTargetsFOO()
 	unsigned int k = 0;
 
 	// std::cout << "--------------------------" << std::endl;
-	vector<float>::const_iterator di_end = ageDists.end();
-	
 	for(const float & di_it : ageDists) {
-	//for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end; di_it++) {
 		if(i < ageLabels.size()) {
 			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
-
-			// if((*di_it) > 0)
-			//{
-			//  std::cout << tmpTargetName << " " << (*di_it) << std::endl;
-			//}
 
 			g_mesh.setMorphTarget(tmpTargetName, di_it);
 		}
 	}
-
-	vector<float>::const_iterator ms_end = muscleSizeDists.end();
-	vector<float>::const_iterator br_end = breastDists.end();
 	
 	for(const float & ms_it : muscleSizeDists) {
-	//for(vector<float>::const_iterator ms_it = muscleSizeDists.begin(); ms_it != ms_end;
-	//    ms_it++) {
 	
 		i = 0;
 		
 		for(const float & di_it : ageDists) {
-		//for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end;
-		//    di_it++) {
 			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
 				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
 				                     muscleSizeLabels[j] + ".target");
 				float  tmpTargetValue = di_it * ms_it;
-
-				// if(tmpTargetValue > 0)
-				//{
-				//  std::cout << tmpTargetName << " " << (*di_it) << " " << (*ms_it)
-				//  << " " << tmpTargetValue << std::endl;
-				//}
 
 				g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
 
@@ -218,10 +197,6 @@ void SelectorListener::calcWidgetTargetsFOO()
 				if(i <= 4) {
 					
 					for(const float & br_it : breastDists) {
-					//for(vector<float>::const_iterator br_it =
-					//            breastDists.begin();
-					//    br_it != br_end; br_it++) {
-						
 						
 						if(k < breastLabels.size()) {
 							string tmpTargetName(
@@ -246,21 +221,13 @@ void SelectorListener::calcWidgetTargetsFOO()
 		j++;
 	}
 
-	i                                    = 0;
+	i = 0;
 	
 	for(const float & sh_it : shapeDists) {
-	//vector<float>::const_iterator sh_end = shapeDists.end();
-	//for(vector<float>::const_iterator sh_it = shapeDists.begin(); sh_it != sh_end; sh_it++) {
 		if(i < shapeLabels.size()) {
 			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
-
-			// if((*di_it) > 0)
-			//{
-			//  std::cout << tmpTargetName << " " << (*sh_it) << std::endl;
-			//}
 
 			g_mesh.setMorphTarget(tmpTargetName, sh_it);
 		}
 	}
-	// std::cout << "--------------------------" << std::endl;
 }
