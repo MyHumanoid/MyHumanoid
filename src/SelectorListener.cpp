@@ -29,6 +29,7 @@
 #include "ComponentID.h"
 #include "Global.h"
 #include <gui/Selector.h>
+#include "log/log.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -165,7 +166,9 @@ void SelectorListener::calcWidgetTargetsFOO()
 
 	// std::cout << "--------------------------" << std::endl;
 	vector<float>::const_iterator di_end = ageDists.end();
-	for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end; di_it++) {
+	
+	for(const float & di_it : ageDists) {
+	//for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end; di_it++) {
 		if(i < ageLabels.size()) {
 			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
 
@@ -174,22 +177,26 @@ void SelectorListener::calcWidgetTargetsFOO()
 			//  std::cout << tmpTargetName << " " << (*di_it) << std::endl;
 			//}
 
-			g_mesh.doMorph(tmpTargetName, (*di_it));
+			g_mesh.doMorph(tmpTargetName, di_it);
 		}
 	}
 
 	vector<float>::const_iterator ms_end = muscleSizeDists.end();
 	vector<float>::const_iterator br_end = breastDists.end();
-
-	for(vector<float>::const_iterator ms_it = muscleSizeDists.begin(); ms_it != ms_end;
-	    ms_it++) {
+	
+	for(const float & ms_it : muscleSizeDists) {
+	//for(vector<float>::const_iterator ms_it = muscleSizeDists.begin(); ms_it != ms_end;
+	//    ms_it++) {
+	
 		i = 0;
-		for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end;
-		    di_it++) {
+		
+		for(const float & di_it : ageDists) {
+		//for(vector<float>::const_iterator di_it = ageDists.begin(); di_it != di_end;
+		//    di_it++) {
 			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
 				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
 				                     muscleSizeLabels[j] + ".target");
-				float  tmpTargetValue = (*di_it) * (*ms_it);
+				float  tmpTargetValue = di_it * ms_it;
 
 				// if(tmpTargetValue > 0)
 				//{
@@ -203,22 +210,24 @@ void SelectorListener::calcWidgetTargetsFOO()
 
 				k = 0;
 				if(i <= 4) {
-					for(vector<float>::const_iterator br_it =
-					            breastDists.begin();
-					    br_it != br_end; br_it++) {
+					
+					for(const float & br_it : breastDists) {
+					//for(vector<float>::const_iterator br_it =
+					//            breastDists.begin();
+					//    br_it != br_end; br_it++) {
+						
+						
 						if(k < breastLabels.size()) {
 							string tmpTargetName(
 							        "breast/" + ageLabels[i] + "_" +
 							        muscleSizeLabels[j] + "_" +
 							        breastLabels[k] + ".target");
 							float tmpTargetValue =
-							        (*di_it) * (*ms_it) * (*br_it);
+							        di_it * ms_it * br_it;
 
-							// if(tmpTargetValue > 0)
-							//{
-							//  std::cout << tmpTargetName << " " <<
-							//  tmpTargetValue << std::endl;
-							//}
+							if(tmpTargetValue > 0) {
+								//log_info("{} {}", tmpTargetName, tmpTargetValue);
+							}
 
 							g_mesh.doMorph(tmpTargetName,
 							               tmpTargetValue);
@@ -233,8 +242,10 @@ void SelectorListener::calcWidgetTargetsFOO()
 	}
 
 	i                                    = 0;
-	vector<float>::const_iterator sh_end = shapeDists.end();
-	for(vector<float>::const_iterator sh_it = shapeDists.begin(); sh_it != sh_end; sh_it++) {
+	
+	for(const float & sh_it : shapeDists) {
+	//vector<float>::const_iterator sh_end = shapeDists.end();
+	//for(vector<float>::const_iterator sh_it = shapeDists.begin(); sh_it != sh_end; sh_it++) {
 		if(i < shapeLabels.size()) {
 			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
 
@@ -243,7 +254,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 			//  std::cout << tmpTargetName << " " << (*sh_it) << std::endl;
 			//}
 
-			g_mesh.doMorph(tmpTargetName, (*sh_it));
+			g_mesh.doMorph(tmpTargetName, sh_it);
 		}
 	}
 	// std::cout << "--------------------------" << std::endl;
