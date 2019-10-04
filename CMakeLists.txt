@@ -155,13 +155,8 @@ set(myhumanoid_sources
 	src/MhUiMorph.cpp
 	src/MhUiPose.h
 	src/MhUiPose.cpp
-	src/PageTargetPanel.cpp
-	src/PageTargetPanel.h
 	src/SelectorListener.cpp
 	src/SelectorListener.h
-	src/TargetSlider.h
-	src/TargetSliderListener.cpp
-	src/TargetSliderListener.h
 	src/ToolbarPanel.cpp
 	src/ToolbarPanel.h
 	src/TooltipPanel.cpp

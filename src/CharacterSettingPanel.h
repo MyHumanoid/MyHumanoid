@@ -28,7 +28,6 @@
 
 #include "ImageListener.h"
 #include "SelectorListener.h"
-#include "TargetSlider.h"
 #include "util.h"
 #include <gui/Image.h>
 #include <gui/ImageSlider.h>
