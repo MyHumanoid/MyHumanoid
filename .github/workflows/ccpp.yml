@@ -64,7 +64,13 @@ jobs:
         cd build
         cmake --build . --target ALL_BUILD --config Release
         ls
+    - name: package
+      run: |
+        mkdir build-package
+        cp build/Release/* build-package/
+        cp data build-package/
+        ls build-package
     - uses: actions/upload-artifact@master
       with:
         name: MyHumanoid-windows
-        path: build
+        path: build-package
