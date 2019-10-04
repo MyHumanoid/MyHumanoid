@@ -57,14 +57,10 @@ struct Global {
 	bool       quotedBox       = false;
 	bool       m_enableTexture = false;
 	bool       subdivision     = false;
-	Modes      appMode         = CHARACTER_SETTING;
 
 	std::map<const uint32_t, Point *> fuzzyValues;
 
 public:
-	void  setAppMode(Modes mode) { appMode = mode; }
-	Modes getAppMode() { return appMode; }
-
 	void setFuzzyValue(uint32_t index, const Point & inPoint)
 	{
 		this->fuzzyValues[index] = new Point(inPoint);
