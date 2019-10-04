@@ -29,7 +29,6 @@
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
-#include "ToolbarPanel.h"
 #include "util.h"
 #include <animorph/DirectoryList.h>
 #include <animorph/ObjExporter.h>

@@ -69,7 +69,6 @@
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
-#include "ToolbarPanel.h"
 #include "TooltipPanel.h"
 #include "util.h"
 
@@ -87,7 +86,6 @@ static constexpr char mh_app_name[] = "MyHumanoid";
 static constexpr char mh_version[]  = "0.1.0";
 
 static TooltipPanel * tooltipPanel;
-static ToolbarPanel * toolbarPanel;
 
 static CharacterSettingPanel * characterSettingPanel;
 
@@ -999,7 +997,6 @@ int main(int argc, char ** argv)
 	g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
 
 	tooltipPanel = new TooltipPanel(g_mainWindow->getSize().getHeight());
-	toolbarPanel = new ToolbarPanel();
 	// g_global.mesh     = new Mesh();
 	g_global.camera   = new Camera();
 	g_global.autozoom = new Autozoom();
@@ -1056,16 +1053,13 @@ int main(int argc, char ** argv)
 
 	// Add panels to mainwindow
 	g_mainWindow->addPanel(tooltipPanel);
-	g_mainWindow->addPanel(toolbarPanel);
 	g_mainWindow->addPanel(characterSettingPanel);
 
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
 
 	tooltipPanel->createWidgets();
-	toolbarPanel->createWidgets();
 	characterSettingPanel->createWidgets();
-	toolbarPanel->show_all();
 	tooltipPanel->show_all();
 	characterSettingPanel->show_all();
 
