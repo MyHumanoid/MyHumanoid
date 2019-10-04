@@ -312,7 +312,7 @@ void loadCharacter(const std::string & character_name)
 	
 	auto f = charactersmap.find(character_name);
 	if(f != charactersmap.end()) {
-		g_mesh.doMorph(f->second, 1.0, true);
+		g_mesh.doMorph(f->second, true);
 		g_mesh.calcNormals();
 		loadSelectorsPositions(f->second.cursorPositions);
 	}

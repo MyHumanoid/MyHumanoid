@@ -378,16 +378,6 @@ public:
 	 */
 	void doMorph(const BodySettings & bs, const bool clear);
 
-	/*! \brief Apply morphs of a BodySettings object to a certain degree
-	 *
-	 * \param bs a BodySettings object to morph the Mesh
-	 * \param value of bodysettings application in the range 0..1
-	 * \param clear default is to delete to yet applied targets
-	 *        before using a BodySettings. Use 'false' to not clear
-	 *        the targets before morphing.
-	 */
-	void doMorph(const BodySettings & bs, float value, bool clear);
-
 	/// Reset the Mesh to loaded state without deformation
 	void resetMorph();
 	//@}
