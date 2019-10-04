@@ -37,14 +37,6 @@ using namespace mhgui;
 
 extern Animorph::Mesh g_mesh;
 
-enum Modes {
-	BODY_DETAILS,
-	POSES,
-	CHARACTER_SETTING,
-	BODY_SETTINGS,
-	POSES_BODY_SETTINGS,
-};
-
 struct GlobalPaths {
 };
 

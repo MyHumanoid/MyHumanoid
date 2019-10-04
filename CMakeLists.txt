@@ -134,8 +134,6 @@ set(myhumanoid_sources
 	src/Global.cpp
 	src/Global.h
 	src/ImageButton.h
-	src/ImageListener.cpp
-	src/ImageListener.h
 	src/MhConfig.h
 	src/MhConfig.cpp
 	src/MhMain.cpp

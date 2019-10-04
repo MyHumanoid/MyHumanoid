@@ -27,12 +27,13 @@
 
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
-#include "ImageListener.h"
 
 #include <algorithm>
 
 #include <gui/Rect.h>
 #include <gui/Window.h>
+
+#include "Global.h"
 
 using namespace std;
 using namespace Animorph;

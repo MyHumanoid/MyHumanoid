@@ -26,7 +26,6 @@
  */
 #pragma once
 
-#include "ImageListener.h"
 #include "SelectorListener.h"
 #include "util.h"
 #include <gui/Image.h>
