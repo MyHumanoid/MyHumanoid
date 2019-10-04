@@ -39,9 +39,6 @@ using std::string;
 namespace mhgui
 {
 
-class Tooltip;
-class ImageSysListener;
-
 /** \brief Image widget
  *
  * The images that will be displayed are kept in the member variables of
@@ -65,7 +62,6 @@ private:
 	bool textureOverIsInited;
 	bool textureDisabledIsInited;
 
-	ImageSysListener * imageSysListener;
 	float              alpha;
 	Color              overlay;
 	bool               overlayEffect;

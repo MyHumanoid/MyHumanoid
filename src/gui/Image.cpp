@@ -29,7 +29,6 @@
 #include "gui/CGUtilities.h"
 #include "gui/GLUTWrapper.h"
 #include "gui/ImageData.h"
-#include "gui/ImageSysListener.h"
 #include "gui/Tooltip.h"
 
 #include <iostream>
@@ -56,17 +55,12 @@ Image::Image(uint32_t inId, const std::string & inFilename, const Rect & inGeome
         textureIsInited(false)
         , textureOverIsInited(false)
         , textureDisabledIsInited(false)
-        ,
-
-        imageSysListener(new ImageSysListener())
         , alpha(1.0)
         , overlay(0, 0, 0, 0)
         , overlayEffect(false)
         , enabled(true)
         , kill_mouse_drag(false)
 {
-
-	setSysListener(imageSysListener);
 
 	if(inFilename.length() > 4) {
 		imageFilenameOver     = inFilename.substr(0, inFilename.length() - 4) + "_over.png";
@@ -76,7 +70,6 @@ Image::Image(uint32_t inId, const std::string & inFilename, const Rect & inGeome
 
 Image::~Image()
 {
-	delete imageSysListener; // remove the listener again
 }
 
 void Image::setOverlayTexture(const std::string & inFilename)
