@@ -39,11 +39,6 @@ using namespace mhgui;
 class SelectorListener : public AbstractListener
 {
 public:
-	std::array<string, 10> ageLabels;
-	std::array<string, 4> muscleSizeLabels;
-	std::array<string, 4> breastLabels;
-	std::array<string, 4> shapeLabels;
-
 	void calcWidgetTargets(Selector & selectorSource);
 	void calcWidgetTargetsFOO();
 

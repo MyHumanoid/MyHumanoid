@@ -37,47 +37,45 @@
 using namespace Animorph;
 using namespace std;
 
+static std::array<string, 10> ageLabels = {
+    "female_10",
+    "female_30",
+    "female_50",
+    "female_70",
+    "female_90",
+    "male_10",
+    "male_30",
+    "male_50",
+    "male_70",
+    "male_90"
+};
+
+static std::array<string, 4> muscleSizeLabels = {
+    "skinny_nomuscle",
+    "big_nomuscle",
+    "skinny_muscle",
+    "big_muscle"
+};
+
+static std::array<string, 4> breastLabels = {
+    "cone_little",
+    "cone_big",
+    "sphere_little",
+    "sphere_big"
+};
+
+static std::array<string, 4> shapeLabels = {
+    "brevilinear_vshape",
+    "brevilinear_peershape",
+    "longilinear_vshape",
+    "longilinear_peershape"
+};
+
+
 SelectorListener::SelectorListener()
         : AbstractListener()
-        , ageLabels()
-        , muscleSizeLabels()
-        , breastLabels()
-        , shapeLabels()
         , oldPos(0, 0)
 {
-	ageLabels = {
-		"female_10",
-		"female_30",
-		"female_50",
-		"female_70",
-		"female_90",
-		"male_10",
-		"male_30",
-		"male_50",
-		"male_70",
-		"male_90"
-	};
-
-	muscleSizeLabels = {
-		"skinny_nomuscle",
-		"big_nomuscle",
-		"skinny_muscle",
-		"big_muscle"
-	};
-
-	breastLabels = {
-		"cone_little",
-		"cone_big",
-		"sphere_little",
-		"sphere_big"
-	};
-
-	shapeLabels = {
-		"brevilinear_vshape",
-		"brevilinear_peershape",
-		"longilinear_vshape",
-		"longilinear_peershape"
-	};
 }
 
 SelectorListener::~SelectorListener()
