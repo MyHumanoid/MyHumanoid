@@ -183,7 +183,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 			//  std::cout << tmpTargetName << " " << (*di_it) << std::endl;
 			//}
 
-			g_mesh.doMorph(tmpTargetName, di_it);
+			g_mesh.setMorphTarget(tmpTargetName, di_it);
 		}
 	}
 
@@ -210,7 +210,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 				//  << " " << tmpTargetValue << std::endl;
 				//}
 
-				g_mesh.doMorph(tmpTargetName, tmpTargetValue);
+				g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
 
 				// breast widget
 
@@ -235,8 +235,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 								//log_info("{} {}", tmpTargetName, tmpTargetValue);
 							}
 
-							g_mesh.doMorph(tmpTargetName,
-							               tmpTargetValue);
+							g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
 						}
 						k++;
 					}
@@ -260,7 +259,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 			//  std::cout << tmpTargetName << " " << (*sh_it) << std::endl;
 			//}
 
-			g_mesh.doMorph(tmpTargetName, sh_it);
+			g_mesh.setMorphTarget(tmpTargetName, sh_it);
 		}
 	}
 	// std::cout << "--------------------------" << std::endl;

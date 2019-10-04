@@ -192,7 +192,7 @@ struct MorphGroupWin : public TileGroupChildWindow<MorphGroupWin> {
 };
 
 auto applier = [](const std::string & name, const float & value, const bool deleteOnZero) {
-	g_mesh.doMorph(name, value);
+	g_mesh.setMorphTarget(name, value);
 	g_mesh.calcNormals();
 };
 

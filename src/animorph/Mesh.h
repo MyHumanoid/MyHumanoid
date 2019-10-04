@@ -367,7 +367,7 @@ public:
 	 * \return true if target was found in TargetMap and was morphed
 	 * \return false if target wasn't found in TargetMap
 	 */
-	bool doMorph(const string & target_name, float morph_value);
+	bool setMorphTarget(const string & target_name, float morph_value);
 
 	/*! \brief Fully apply morphs of a BodySettings object
 	 *

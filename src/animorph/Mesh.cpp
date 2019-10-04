@@ -505,7 +505,7 @@ const Target * Mesh::getTargetForName(const string & inTargetname)
 	return i->second;
 }
 
-bool Mesh::doMorph(const string & target_name, float morph_value)
+bool Mesh::setMorphTarget(const string & target_name, float morph_value)
 {
 	PROFILE
 
@@ -558,7 +558,7 @@ void Mesh::doMorph(const BodySettings & bs, bool clear)
 	}
 
 	for(const auto & [target_name, morph_value] : bs) {
-		doMorph(target_name, morph_value);
+		setMorphTarget(target_name, morph_value);
 	}
 }
 
@@ -571,7 +571,7 @@ void Mesh::doMorph(const BodySettings & bs, float value, bool clear)
 	}
 
 	for(const auto & [target_name, morph_value] : bs) {
-		doMorph(target_name, morph_value * value);
+		setMorphTarget(target_name, morph_value * value);
 	}
 }
 
