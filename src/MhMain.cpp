@@ -316,6 +316,11 @@ void loadCharacter(const std::string & character_name)
 		g_mesh.doMorph(f->second);
 		g_mesh.calcNormals();
 		loadSelectorsPositions(f->second.cursorPositions);
+		
+		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)g_mainWindow->getPanel(
+		    kComponentID_CharacterSettingPanel);
+		
+		tmpPanel->updateUi();
 	}
 }
 
