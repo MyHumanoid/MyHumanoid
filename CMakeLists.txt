@@ -157,8 +157,6 @@ set(myhumanoid_sources
 	src/MhUiPose.cpp
 	src/SelectorListener.cpp
 	src/SelectorListener.h
-	src/TooltipPanel.cpp
-	src/TooltipPanel.h
 	src/util.cpp
 	src/util.h
 	src/Vfs.h

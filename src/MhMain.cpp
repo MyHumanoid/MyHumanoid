@@ -69,7 +69,6 @@
 #include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
-#include "TooltipPanel.h"
 #include "util.h"
 
 #include "MhConfig.h"
@@ -84,8 +83,6 @@ using namespace Animorph;
 
 static constexpr char mh_app_name[] = "MyHumanoid";
 static constexpr char mh_version[]  = "0.1.0";
-
-static TooltipPanel * tooltipPanel;
 
 static CharacterSettingPanel * characterSettingPanel;
 
@@ -996,7 +993,6 @@ int main(int argc, char ** argv)
 	std::string winTitle = mh_app_name + " "s + mh_version;
 	g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
 
-	tooltipPanel = new TooltipPanel(g_mainWindow->getSize().getHeight());
 	// g_global.mesh     = new Mesh();
 	g_global.camera   = new Camera();
 	g_global.autozoom = new Autozoom();
@@ -1052,15 +1048,12 @@ int main(int argc, char ** argv)
 	g_mainWindow->setCamera(g_global.camera);
 
 	// Add panels to mainwindow
-	g_mainWindow->addPanel(tooltipPanel);
 	g_mainWindow->addPanel(characterSettingPanel);
 
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
 
-	tooltipPanel->createWidgets();
 	characterSettingPanel->createWidgets();
-	tooltipPanel->show_all();
 	characterSettingPanel->show_all();
 
 	glutDisplayFunc(display);

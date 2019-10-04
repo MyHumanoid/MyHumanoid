@@ -52,13 +52,7 @@ CharacterSettingPanel::~CharacterSettingPanel()
 
 void CharacterSettingPanel::createWidgets()
 {
-	Window & mainWindow = *g_mainWindow;
-
-	Panel * tooltipPanel = mainWindow.getPanel(kComponentID_TooltipPanel);
-	assert(tooltipPanel);
-
 	const Color c(1.0, 0.0, 0.0);
-	const Point kTooltipPos(70, 12);
 	// --------------------------------------------------------------------------
 	Image * image = new Image(kComponentID_Dummy, searchPixmapFile("ui/dummy_image.png"),
 	                          Rect(0, 0, 192, 10));

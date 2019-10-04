@@ -97,13 +97,6 @@ static const uint32_t kComponentID_ImageBody_FootParams = FOUR_CHAR_CONST('F', '
 // FOUR_CHAR_CONST ('R', 'F', '2', 't');
 
 // ------------------------------------------------------------------
-// The Tooltip Panel
-// ------------------------------------------------------------------
-static const uint32_t kComponentID_TooltipPanel = FOUR_CHAR_CONST('p', 'a', 'T', 'T');
-
-// The Image ID's of the  TooltipPanel (kComponentID_TooltipPanel)
-
-// ------------------------------------------------------------------
 // The Face Panel
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_FacePanel = FOUR_CHAR_CONST('p', 'a', 'F', 'a');
