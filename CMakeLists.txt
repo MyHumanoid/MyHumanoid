@@ -133,7 +133,6 @@ set(myhumanoid_sources
 	src/GlInclude.h
 	src/Global.cpp
 	src/Global.h
-	src/ImageButton.h
 	src/MhConfig.h
 	src/MhConfig.cpp
 	src/MhMain.cpp
