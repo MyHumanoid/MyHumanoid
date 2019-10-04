@@ -376,7 +376,7 @@ public:
 	 *        before using a BodySettings. Use 'false' to not clear
 	 * the targets before morphing
 	 */
-	void doMorph(const BodySettings & bs, const bool clear = true);
+	void doMorph(const BodySettings & bs, const bool clear);
 
 	/*! \brief Apply morphs of a BodySettings object to a certain degree
 	 *
@@ -386,7 +386,7 @@ public:
 	 *        before using a BodySettings. Use 'false' to not clear
 	 *        the targets before morphing.
 	 */
-	void doMorph(const BodySettings & bs, float value, bool clear = true);
+	void doMorph(const BodySettings & bs, float value, bool clear);
 
 	/// Reset the Mesh to loaded state without deformation
 	void resetMorph();

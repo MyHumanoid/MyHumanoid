@@ -192,7 +192,7 @@ static void loadBodySettings(const string & filename)
 	}
 
 	if(state) {
-		g_mesh.doMorph(bodyset);
+		g_mesh.doMorph(bodyset, true);
 		g_mesh.calcNormals();
 		log_info("BodySettings loaded");
 	} else {
