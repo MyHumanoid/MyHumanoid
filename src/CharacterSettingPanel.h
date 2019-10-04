@@ -48,6 +48,7 @@ public:
 
 	void resetSlidersValues();
 	void calcSelectorValues(uint32_t index);
+	void updateUi();
 
 private: // intentionally not implemented
 	CharacterSettingPanel(const CharacterSettingPanel &);

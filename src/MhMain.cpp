@@ -187,12 +187,8 @@ static void loadBodySettings(const string & filename)
 
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
 		        kComponentID_CharacterSettingPanel);
-		if(tmpPanel != NULL) {
-			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Age);
-			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
-			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_MuscleSize);
-			tmpPanel->calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
-		}
+		
+		tmpPanel->updateUi();
 	}
 
 	if(state) {

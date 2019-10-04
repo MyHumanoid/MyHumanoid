@@ -198,3 +198,11 @@ void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 		}
 	}
 }
+
+void CharacterSettingPanel::updateUi()
+{
+	calcSelectorValues(kComponentID_CharacterSettingPanel_Age);
+	calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
+	calcSelectorValues(kComponentID_CharacterSettingPanel_MuscleSize);
+	calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
+}
