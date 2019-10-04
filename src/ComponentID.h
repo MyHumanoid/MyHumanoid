@@ -44,27 +44,6 @@ static const uint32_t kComponentID_Dummy = FOUR_CHAR_CONST('D', 'M', 'M', 'Y');
 // ------------------------------------------------------------------
 static const uint32_t kComponentID_CharacterSettingPanel = FOUR_CHAR_CONST('p', 'a', 'C', 'A');
 
-// The ImageSlider ID's of the  CharacterSettingPanel
-// (kComponentID_CharacterSettingPanel)
-static const uint32_t kComponentID_CharacterSettingPanel_EndoLeft =
-        FOUR_CHAR_CONST('S', 'E', 'n', 'L');
-static const uint32_t kComponentID_CharacterSettingPanel_EndoMiddle =
-        FOUR_CHAR_CONST('S', 'E', 'n', 'M');
-static const uint32_t kComponentID_CharacterSettingPanel_EndoRight =
-        FOUR_CHAR_CONST('S', 'E', 'n', 'R');
-static const uint32_t kComponentID_CharacterSettingPanel_MesoLeft =
-        FOUR_CHAR_CONST('S', 'M', 'e', 'L');
-static const uint32_t kComponentID_CharacterSettingPanel_MesoMiddle =
-        FOUR_CHAR_CONST('S', 'M', 'e', 'M');
-static const uint32_t kComponentID_CharacterSettingPanel_MesoRight =
-        FOUR_CHAR_CONST('S', 'M', 'e', 'R');
-static const uint32_t kComponentID_CharacterSettingPanel_EctoLeft =
-        FOUR_CHAR_CONST('S', 'E', 'c', 'L');
-static const uint32_t kComponentID_CharacterSettingPanel_EctoMiddle =
-        FOUR_CHAR_CONST('S', 'E', 'c', 'M');
-static const uint32_t kComponentID_CharacterSettingPanel_EctoRight =
-        FOUR_CHAR_CONST('S', 'E', 'c', 'R');
-
 static const uint32_t kComponentID_CharacterSettingPanel_Age = FOUR_CHAR_CONST('A', 'g', 'e', 'X');
 static const uint32_t kComponentID_CharacterSettingPanel_MuscleSize =
         FOUR_CHAR_CONST('M', 's', 'S', 'z');
