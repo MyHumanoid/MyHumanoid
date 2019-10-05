@@ -222,29 +222,4 @@ bool Component::isMouseDragged(const glm::ivec2 & inMousePos)
 	return dragged;
 }
 
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
-const std::string Component::getIDAsString() const
-{
-	char tmpBuffer[8];
-	tmpBuffer[4] = '\0';
-
-#if BYTE_ORDER == BIG_ENDIAN
-	tmpBuffer[0] = (uint8_t)(id >> 24);
-	tmpBuffer[1] = (uint8_t)(id >> 16);
-	tmpBuffer[2] = (uint8_t)(id >> 8);
-	tmpBuffer[3] = (uint8_t)(id >> 0);
-#elif BYTE_ORDER == LITTLE_ENDIAN
-	tmpBuffer[3] = (uint8_t)(id >> 24);
-	tmpBuffer[2] = (uint8_t)(id >> 16);
-	tmpBuffer[1] = (uint8_t)(id >> 8);
-	tmpBuffer[0] = (uint8_t)(id >> 0);
-#else
-#error "Unknown endianess!"
-#endif
-	return std::string(tmpBuffer);
-}
-
 } // namespace mhgui

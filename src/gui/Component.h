@@ -86,7 +86,6 @@ public:
 	void setVisible(bool inVisible) { visible = inVisible; }
 
 	const uint32_t getID() const { return id; }
-	const std::string   getIDAsString() const;
 
 	bool isLastMouseOver() const { return mouseOver; }
 

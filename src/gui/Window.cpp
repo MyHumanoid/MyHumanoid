@@ -99,17 +99,6 @@ bool Window::addPanel(Panel * p)
 	// Just Panels are allowed!
 	assert(panel);
 
-	for(list<Panel *>::iterator pl_it = panelList.begin(); pl_it != panelList.end(); pl_it++) {
-		Panel * p_cmp = (*pl_it);
-
-		if(*p_cmp == *p) {
-			cerr << "Error: Panel needs a unique name! "
-			     << "A Panel with name '" << p->getIDAsString() << "' does yet exist!"
-			     << endl;
-			return false;
-		}
-	}
-
 	panelList.push_back(panel);
 	++panelListChangedCount; // mark a change of the Panel List
 
