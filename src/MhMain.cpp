@@ -157,10 +157,7 @@ static void saveBodySettings(const string & filename)
 {
 	Animorph::BodySettings bodyset = g_mesh.morphTargets();
 	
-	bodyset.m_comp.m_kAge = g_global.m_kAge;
-	bodyset.m_comp.m_kMuscleSize = g_global.m_kMuscleSize;
-	bodyset.m_comp.m_kBreast = g_global.m_kBreast;
-	bodyset.m_comp.m_kShape = g_global.m_kShape;
+	bodyset.m_comp = g_global.m_comp;
 	
 	bool state = bodyset.save(filename);
 
@@ -181,10 +178,7 @@ static void loadBodySettings(const string & filename)
 	if(state) {
 		g_global.clearFuzzy();
 		
-		g_global.m_kAge = bodyset.m_comp.m_kAge;
-		g_global.m_kMuscleSize = bodyset.m_comp.m_kMuscleSize;
-		g_global.m_kBreast = bodyset.m_comp.m_kBreast;
-		g_global.m_kShape = bodyset.m_comp.m_kShape;
+		g_global.m_comp = bodyset.m_comp;
 
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
 		        kComponentID_CharacterSettingPanel);
@@ -319,10 +313,7 @@ void loadCharacter(const std::string & character_name)
 		
 		auto & bodyset = f->second;
 		
-		g_global.m_kAge = bodyset.m_comp.m_kAge;
-		g_global.m_kMuscleSize = bodyset.m_comp.m_kMuscleSize;
-		g_global.m_kBreast = bodyset.m_comp.m_kBreast;
-		g_global.m_kShape = bodyset.m_comp.m_kShape;
+		g_global.m_comp = bodyset.m_comp;
 		
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mhgui::g_mainWindow->getPanel(
 		    kComponentID_CharacterSettingPanel);

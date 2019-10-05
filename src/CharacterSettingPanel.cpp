@@ -73,10 +73,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_age = selector;
 
-	if(g_global.m_kAge == InvalidPoint) {
+	if(g_global.m_comp.m_kAge == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_kAge);
+		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kAge);
 	}
 	selectorListener.ageDists = selector->getDists();
 	
@@ -102,10 +102,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_muscleSize = selector;
 
-	if(g_global.m_kMuscleSize == InvalidPoint) {
+	if(g_global.m_comp.m_kMuscleSize == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_kMuscleSize);
+		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kMuscleSize);
 	}
 	selectorListener.muscleSizeDists = selector->getDists();
 	
@@ -130,10 +130,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_breast = selector;
 
-	if(g_global.m_kBreast == InvalidPoint) {
+	if(g_global.m_comp.m_kBreast == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_kBreast);
+		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kBreast);
 	}
 	selectorListener.breastDists = selector->getDists();
 	
@@ -158,10 +158,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_shape = selector;
 
-	if(g_global.m_kShape == InvalidPoint) {
+	if(g_global.m_comp.m_kShape == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_kShape);
+		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kShape);
 	}
 	selectorListener.shapeDists = selector->getDists();
 	
@@ -197,19 +197,19 @@ void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 
 			switch(index) {
 			case kAge:
-				foo = g_global.m_kAge;
+				foo = g_global.m_comp.m_kAge;
 				selectorListener.ageDists = tmp->getDists();
 				break;
 			case kBreast:
-				foo = g_global.m_kBreast;
+				foo = g_global.m_comp.m_kBreast;
 				selectorListener.breastDists = tmp->getDists();
 				break;
 			case kMuscleSize:
-				foo = g_global.m_kMuscleSize;
+				foo = g_global.m_comp.m_kMuscleSize;
 				selectorListener.muscleSizeDists = tmp->getDists();
 				break;
 			case kShape:
-				foo = g_global.m_kShape;
+				foo = g_global.m_comp.m_kShape;
 				selectorListener.shapeDists = tmp->getDists();
 				break;
 			}

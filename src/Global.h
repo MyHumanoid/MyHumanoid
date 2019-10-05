@@ -26,9 +26,12 @@
  */
 #pragma once
 
+#include "animorph/BodySettings.h"
 #include <animorph/Mesh.h>
 #include <gui/Camera.h>
 #include <gui/Texture.h>
+
+using Animorph::CompositeSetting;
 
 extern Animorph::Mesh g_mesh;
 
@@ -46,16 +49,10 @@ struct Global {
 	bool       subdivision     = false;
 	
 	
-	glm::ivec2 m_kAge = InvalidPoint;
-	glm::ivec2 m_kMuscleSize = InvalidPoint;
-	glm::ivec2 m_kBreast = InvalidPoint;
-	glm::ivec2 m_kShape = InvalidPoint;
+	CompositeSetting m_comp;
 	
 	void clearFuzzy() {
-		m_kAge = InvalidPoint;
-		m_kMuscleSize = InvalidPoint;
-		m_kBreast = InvalidPoint;
-		m_kShape = InvalidPoint;
+		m_comp = CompositeSetting();
 	}
 };
 

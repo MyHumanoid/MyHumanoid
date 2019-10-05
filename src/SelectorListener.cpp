@@ -143,19 +143,19 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & selectorSource, glm::
 
 	switch(selectorSource.getID()) {
 	case kAge:
-		g_global.m_kAge = inMousePos;
+		g_global.m_comp.m_kAge = inMousePos;
 		ageDists = selectorSource.getDists();
 		break;
 	case kMuscleSize:
-		g_global.m_kMuscleSize = inMousePos;
+		g_global.m_comp.m_kMuscleSize = inMousePos;
 		muscleSizeDists = selectorSource.getDists();
 		break;
 	case kBreast:
-		g_global.m_kBreast = inMousePos;
+		g_global.m_comp.m_kBreast = inMousePos;
 		breastDists = selectorSource.getDists();
 		break;
 	case kShape:
-		g_global.m_kShape = inMousePos;
+		g_global.m_comp.m_kShape = inMousePos;
 		shapeDists = selectorSource.getDists();
 		break;
 	}

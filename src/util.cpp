@@ -251,10 +251,7 @@ void loadDefaultBodySettings()
 	if(state) {
 		g_global.clearFuzzy();
 		
-		g_global.m_kAge = bodyset.m_comp.m_kAge;
-		g_global.m_kMuscleSize = bodyset.m_comp.m_kMuscleSize;
-		g_global.m_kBreast = bodyset.m_comp.m_kBreast;
-		g_global.m_kShape = bodyset.m_comp.m_kShape;
+		g_global.m_comp = bodyset.m_comp;
 		
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
 		        kComponentID_CharacterSettingPanel);
