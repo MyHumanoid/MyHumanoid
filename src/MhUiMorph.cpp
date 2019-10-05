@@ -250,7 +250,7 @@ void DisplayMorphTargets()
 				continue;
 			}
 
-			float target_value = bodyset[target_name];
+			float target_value = bodyset.m_targets[target_name];
 
 
 			const auto & minmax = std::make_pair(0, 1);
@@ -275,7 +275,7 @@ void DisplayMorphTargetsApplied()
 		return;
 	}
 
-	for(const auto & bodyset_it : g_mesh.morphTargets()) {
+	for(const auto & bodyset_it : g_mesh.morphTargets().m_targets) {
 
 		string target_name(bodyset_it.first);
 

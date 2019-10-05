@@ -47,13 +47,15 @@ The format of BodySettings file:
 ...
 \endverbatim
 */
-class BodySettings : public std::map<std::string, float>
+class BodySettings
 {
 private:
 	void createStream(std::ostringstream & out_stream);
 	void fromStream(std::ifstream & in_stream);
 
 public:
+	std::map<std::string, float> m_targets;
+	
 	/// load a BodySetting
 	/*!
 	 * \param filename the file with BodySettings data to load

@@ -169,11 +169,11 @@ void DisplayPoseTargets()
 			PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
 			assert(poseTarget);
 
-			BodySettings::const_iterator bodyset_it = bodyset.find(target_name);
+			auto bodyset_it = bodyset.m_targets.find(target_name);
 
 			// FIX: Make sure that a bodyset with the given name really exists!
 			float target_value =
-			        (bodyset_it != bodyset.end()) ? bodyset_it->second : 0.0f;
+			        (bodyset_it != bodyset.m_targets.end()) ? bodyset_it->second : 0.0f;
 
 			if(!pathStartsWith(target_name, tileWin.m_category)) {
 				continue;
@@ -198,7 +198,7 @@ void DisplayPoseTargetsApplied()
 		return;
 	}
 
-	for(const auto & [target_name, target_value] : g_mesh.poseTargets()) {
+	for(const auto & [target_name, target_value] : g_mesh.poseTargets().m_targets) {
 
 		PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
 		assert(poseTarget);

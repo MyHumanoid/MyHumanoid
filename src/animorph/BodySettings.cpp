@@ -40,7 +40,7 @@ void BodySettings::fromStream(std::ifstream & in_stream)
 	float bs_value;
 
 	// empty map before load new settings
-	clear();
+	m_targets.clear();
 
 	char buffer[MAX_LINE_BUFFER];
 	char bs_name[MAX_LINE_BUFFER];
@@ -54,7 +54,7 @@ void BodySettings::fromStream(std::ifstream & in_stream)
 					bs_name_str.erase(0, strlen("targets/"));
 				}
 
-				float & value_ref = (*this)[bs_name_str];
+				float & value_ref = m_targets[bs_name_str];
 				value_ref         = bs_value;
 			}
 		} else {
@@ -70,9 +70,9 @@ void BodySettings::fromStream(std::ifstream & in_stream)
 
 void BodySettings::createStream(std::ostringstream & out_stream)
 {
-	for(BodySettings::iterator bodyset_it = begin(); bodyset_it != end(); bodyset_it++) {
-		string name        = (*bodyset_it).first;
-		float  morph_value = (*bodyset_it).second;
+	for(const auto & bodyset_it : m_targets) {
+		string name        = bodyset_it.first;
+		float  morph_value = bodyset_it.second;
 		out_stream << name << "," << morph_value << endl;
 	}
 }
