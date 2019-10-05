@@ -182,20 +182,6 @@ void Selector::draw()
 	glDisable(GL_BLEND);
 }
 
-/* ==========================================================================
- * Private Methods
- * ========================================================================== */
-/* ========================================================================== */
-/** Load a image file lazy whose filename has been initialized in the
- *  constructor.
- *
- * Note: This call justtries to load a image once and remembers if it could be
- * gathered successfully or not. Succeed calls just return if the image is
- * available or not.
- *
- * @return true if the given Image file could be loaded, false otherwise.
- */
-/* ========================================================================== */
 bool Selector::lazyLoadTexture()
 {
 	bool &    isInited = textureIsInited;
