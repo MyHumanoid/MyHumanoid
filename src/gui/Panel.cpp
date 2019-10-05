@@ -284,31 +284,4 @@ bool Panel::isMouseClickWidgets(const glm::ivec2 & inMousePos, int button, int s
 	return isClick;
 }
 
-// Check keyboard events
-bool Panel::isKeyTypeWidgets(unsigned char key)
-{
-	bool keyType = false;
-
-	int rememberedWidgetListChangedCount = widgetListChangedCount;
-
-	list<Widget *>::const_iterator it = widgetList.begin();
-	while(it != widgetList.end()) {
-		keyType = (*it++)->isKeyType(key);
-		if(keyType == true) {
-			break;
-		}
-
-		/* Check if the widget List has been changed in between
-		 * (triggered by a Widget Listener for example)
-		 * If it has then "reinitialize" the iterator because it is
-		 * possible that it became invalide because of this change
-		 * of the list! */
-		if(widgetListChangedCount != rememberedWidgetListChangedCount) {
-			rememberedWidgetListChangedCount = widgetListChangedCount;
-			it = widgetList.begin(); // reinitailize the iterator
-		}
-	}
-	return keyType;
-}
-
 } // namespace mhgui

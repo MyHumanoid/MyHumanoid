@@ -55,7 +55,6 @@ public:
 	virtual bool isMouseOverWidgets(const glm::ivec2 & inMousePos);
 	virtual bool isMouseClickWidgets(const glm::ivec2 & inMousePos, int button, int state);
 	virtual bool isMouseDraggedWidgets(const glm::ivec2 & inMousePos);
-	virtual bool isKeyTypeWidgets(unsigned char key);
 
 	void      setAlignment(Alignment align) { this->align = align; }
 	Alignment getAlignment() { return align; }

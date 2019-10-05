@@ -86,7 +86,6 @@ public:
 	virtual bool isMouseOver(const glm::ivec2 & inMousePos);
 	virtual bool isMouseClick(const glm::ivec2 & inMousePos, int button, int state);
 	virtual bool isMouseDragged(const glm::ivec2 & inMousePos);
-	virtual bool isKeyType(unsigned char);
 
 protected:
 	const glm::ivec2 & getAbsolutePosition() const { return absoluteGeometry.getPos(); }
