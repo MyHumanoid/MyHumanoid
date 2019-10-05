@@ -133,22 +133,6 @@ bool Window::addPanel(Panel * p)
 	return true;
 }
 
-void Window::removePanel(Panel * p)
-{
-	if(p == NULL)
-		return;
-
-	for(list<Panel *>::iterator pl_it = panelList.begin(); pl_it != panelList.end(); pl_it++) {
-		Panel * p_cmp = (*pl_it);
-
-		if(*p_cmp == *p) {
-			panelList.erase(pl_it);
-			++panelListChangedCount; // mark a change of the Panel List
-			return;
-		}
-	}
-}
-
 // For each panel, draw all widgets
 void Window::drawPanels()
 {
