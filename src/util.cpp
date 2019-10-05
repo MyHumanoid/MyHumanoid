@@ -320,9 +320,9 @@ bool saveSelectorsPositions(const std::string & filename)
 		           << tmp->x << "," << tmp->y << endl;
 	}
 
-	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
+	tmp = g_global.getFuzzyValue(kMuscleSize);
 	if(tmp != NULL) {
-		out_stream << "#t,M," << kComponentID_CharacterSettingPanel_MuscleSize << ","
+		out_stream << "#t,M," << kMuscleSize << ","
 		           << tmp->x << "," << tmp->y << endl;
 	}
 

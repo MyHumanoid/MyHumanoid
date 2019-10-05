@@ -148,7 +148,7 @@ void SelectorListener::calcWidgetTargets(Selector & selectorSource)
 		ageDists = selectorSource.getDists();
 		break;
 
-	case kComponentID_CharacterSettingPanel_MuscleSize:
+	case kMuscleSize:
 		muscleSizeDists = selectorSource.getDists();
 		break;
 

@@ -77,7 +77,7 @@ void DisplayCharacterSettings()
 			g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
 
 		glm::ivec2 * mPos =
-		        g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_MuscleSize);
+		        g_global.getFuzzyValue(kMuscleSize);
 		if(mPos)
 			g_global.bodyWeightMuscle = vec2(mPos->x, mPos->y) / foo;
 
