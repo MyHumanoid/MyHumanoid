@@ -243,8 +243,6 @@ void CreateWeightsFile()
 
 void loadDefaultBodySettings()
 {
-	mhgui::Window & mainWindow = *mhgui::g_mainWindow;
-
 	Animorph::BodySettings bodyset;
 	bool         state = bodyset.load(searchDataFile("default.bs"));
 
@@ -253,8 +251,7 @@ void loadDefaultBodySettings()
 		
 		g_global.m_comp = bodyset.m_comp;
 		
-		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
-		        kComponentID_CharacterSettingPanel);
+		CharacterSettingPanel * tmpPanel = mhgui::g_mainWindow->characterSettingPanel;
 		
 		tmpPanel->updateUi();
 	}

@@ -70,20 +70,6 @@ Window::~Window()
 		glutDestroyWindow(mWindowId);
 }
 
-Panel * Window::getPanel(uint32_t inPanelId)
-{
-	for(list<Panel *>::const_iterator pl_it = panelList.begin(); pl_it != panelList.end();
-	    pl_it++) {
-		Panel * p_cmp = (*pl_it);
-
-		if(inPanelId == p_cmp->getID()) {
-			return p_cmp;
-		}
-	}
-
-	return NULL;
-}
-
 void Window::setCamera(Camera * p_camera)
 {
 	inCamera = p_camera;

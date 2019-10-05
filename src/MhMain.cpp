@@ -168,8 +168,6 @@ static void saveBodySettings(const string & filename)
 
 static void loadBodySettings(const string & filename)
 {
-	mhgui::Window & mainWindow = *mhgui::g_mainWindow;
-
 	Animorph::BodySettings bodyset;
 	bool         state = bodyset.load(filename);
 
@@ -177,11 +175,8 @@ static void loadBodySettings(const string & filename)
 		g_global.clearFuzzy();
 		
 		g_global.m_comp = bodyset.m_comp;
-
-		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
-		        kComponentID_CharacterSettingPanel);
 		
-		tmpPanel->updateUi();
+		mhgui::g_mainWindow->characterSettingPanel->updateUi();
 	}
 
 	if(state) {
@@ -270,12 +265,7 @@ static void saveAutozoom(const string & filename)
 
 static void ResetMeshMorph()
 {
-	CharacterSettingPanel * cs_p = dynamic_cast<
-	    CharacterSettingPanel *>(mhgui::g_mainWindow->getPanel(
-	    kComponentID_CharacterSettingPanel));
-	if(cs_p != NULL) {
-		cs_p->resetSlidersValues();
-	}
+	mhgui::g_mainWindow->characterSettingPanel->resetSlidersValues();
 	
 	Animorph::BodySettings bodyset_empty;
 	g_mesh.doMorph(bodyset_empty);
@@ -314,8 +304,7 @@ void loadCharacter(const std::string & character_name)
 		
 		g_global.m_comp = bodyset.m_comp;
 		
-		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mhgui::g_mainWindow->getPanel(
-		    kComponentID_CharacterSettingPanel);
+		CharacterSettingPanel * tmpPanel = mhgui::g_mainWindow->characterSettingPanel;
 		
 		tmpPanel->updateUi();
 	}
