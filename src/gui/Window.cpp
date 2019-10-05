@@ -127,8 +127,6 @@ bool Window::addPanel(Panel * p)
 	panelList.push_back(panel);
 	++panelListChangedCount; // mark a change of the Panel List
 
-	panel->setParentWindow(this);
-
 	// do a reshape event for update
 	reshape(getRect().getSize(), *inCamera);
 

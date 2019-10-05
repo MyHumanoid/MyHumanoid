@@ -49,7 +49,6 @@ Panel::Panel(uint32_t inPanelId, const Rect & inGeometry)
 
         rightAnchor(false)
         , bottomAnchor(false)
-        , parentWindow(NULL)
         , align(HORIZONTAL)
         , maximize(false)
         , rowSpacing(0)
@@ -60,19 +59,6 @@ Panel::Panel(uint32_t inPanelId, const Rect & inGeometry)
 
 Panel::~Panel()
 {
-	// Remove this Panel reference from the parent window.
-	if(parentWindow)
-		parentWindow->removePanel(this);
-}
-
-const Window * Panel::getParentWindow() const
-{
-	return parentWindow;
-}
-
-void Panel::setParentWindow(Window * w)
-{
-	parentWindow = w;
 }
 
 // Put widget into panel

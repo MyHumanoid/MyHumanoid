@@ -87,18 +87,12 @@ public:
 
 	virtual void calcWidgetPosition();
 
-	// this is not really needed, as there's only one top-level-window,
-	// but it's easier to access this way...
-	const Window * getParentWindow() const;
-	void           setParentWindow(Window * w);
-
 protected:
 	list<Widget *> widgetList;
 	int            widgetListChangedCount;
 
 	bool     rightAnchor;
 	bool     bottomAnchor;
-	Window * parentWindow;
 
 	Alignment align;
 	bool      maximize;
@@ -110,12 +104,6 @@ private: // intentionally not implemeted
 	Panel & operator=(const Panel &);
 
 	Color backColor;
-
-public:
-	typedef list<Widget *>::iterator WidgetIterator;
-
-	WidgetIterator begin() { return widgetList.begin(); }
-	WidgetIterator end() { return widgetList.end(); }
 };
 
 } // namespace mhgui
