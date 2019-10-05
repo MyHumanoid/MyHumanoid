@@ -273,7 +273,6 @@ void CharacterSettingPanel::createWidgets()
 	                        searchPixmapFile("ui/age_selector.png"), Rect(0, 0, 192, 104));
 	selector->setPoints(2, 5);
 	selector->setListener(&selectorListener);
-	selector->setShowLines(false);
 	m_age = selector;
 	addWidget(selector);
 	

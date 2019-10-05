@@ -52,8 +52,6 @@ public:
 	string imageFilename;
 	bool textureIsInited; // used by lazyLoadTexture
 
-	bool showLines;
-
 	glm::ivec2 cursorPos;
 
 	int rows;
@@ -74,8 +72,6 @@ public:
 public:
 	Selector(uint32_t inId, const string & inFilename, const Rect & inGeometry);
 	virtual ~Selector();
-
-	void setShowLines(bool inShowLines) { showLines = inShowLines; }
 
 	void setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint);
 

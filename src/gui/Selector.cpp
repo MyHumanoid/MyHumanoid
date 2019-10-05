@@ -45,7 +45,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         , texture()
         , imageFilename(inFilename)
         , textureIsInited(false)
-        , showLines(true)
         , cursorPos(0, 0)
         , rows(2)
         , cols(2)
@@ -137,27 +136,6 @@ void Selector::draw()
 						   CURSOR_SIZE, CURSOR_SIZE);
 	
 	cgutils::drawSquareFill(cur, cursorColor);
-
-	if(showLines) {
-		auto linesColor = Color(0.0, 0.0, 0.0, 1.0);
-		
-		// lines
-		for(int i = 1; i < rows - 1; i++) {
-			int y = (i * size.y / (rows - 1));
-			cgutils::drawLine2D(
-					glm::ivec2(pos.x, pos.y + y),
-					glm::ivec2(pos.x + size.x, pos.y + y),
-					linesColor);
-		}
-
-		for(int i = 1; i < cols - 1; i++) {
-			int x = (i * size.x / (cols - 1));
-			cgutils::drawLine2D(
-					glm::ivec2(pos.x + x, pos.y),
-					glm::ivec2(pos.x + x, pos.y + size.y),
-					linesColor);
-		}
-	}
 
 	glDisable(GL_BLEND);
 }
