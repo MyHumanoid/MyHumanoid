@@ -71,13 +71,6 @@ void CharacterSettingPanel::createWidgets()
 	selector->setShowLines(false);
 	selectorVector.push_back(selector);
 	addWidget(selector);
-
-	if(g_global.m_comp.m_kAge == InvalidPoint) {
-		selector->setCursorPos(glm::ivec2(96, 52));
-	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kAge);
-	}
-	selectorListener.ageDists = selector->getDists();
 	
 	{
 		auto & r = selector->getRect();
@@ -100,13 +93,6 @@ void CharacterSettingPanel::createWidgets()
 	selectorVector.push_back(selector);
 	addWidget(selector);
 
-	if(g_global.m_comp.m_kMuscleSize == InvalidPoint) {
-		selector->setCursorPos(glm::ivec2(96, 52));
-	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kMuscleSize);
-	}
-	selectorListener.muscleSizeDists = selector->getDists();
-	
 	{
 		auto & r = selector->getRect();
 		log_info("kMuscleSize: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
@@ -127,13 +113,6 @@ void CharacterSettingPanel::createWidgets()
 	selectorVector.push_back(selector);
 	addWidget(selector);
 
-	if(g_global.m_comp.m_kBreast == InvalidPoint) {
-		selector->setCursorPos(glm::ivec2(96, 52));
-	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kBreast);
-	}
-	selectorListener.breastDists = selector->getDists();
-	
 	{
 		auto & r = selector->getRect();
 		log_info("kBreast: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
@@ -154,18 +133,12 @@ void CharacterSettingPanel::createWidgets()
 	selectorVector.push_back(selector);
 	addWidget(selector);
 
-	if(g_global.m_comp.m_kShape == InvalidPoint) {
-		selector->setCursorPos(glm::ivec2(96, 52));
-	} else {
-		selector->setCursorPosFromMousePoint(g_global.m_comp.m_kShape);
-	}
-	selectorListener.shapeDists = selector->getDists();
-	
 	{
 		auto & r = selector->getRect();
 		log_info("kShape: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
 	}
 	
+	updateUi();
 }
 
 void CharacterSettingPanel::resetSlidersValues()
