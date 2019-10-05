@@ -90,16 +90,6 @@ SelectorListener::~SelectorListener()
 {
 }
 
-bool SelectorListener::mouseOver(const glm::ivec2 & inMousePos, mhgui::Component * source)
-{
-	return false;
-}
-
-bool SelectorListener::mouseOut(const glm::ivec2 & inMousePos, mhgui::Component * source)
-{
-	return false;
-}
-
 bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source)
 {
 	int xDist = abs(oldPos.x - inMousePos.x);

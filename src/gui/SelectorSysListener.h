@@ -38,8 +38,6 @@ public:
 	SelectorSysListener();
 	virtual ~SelectorSysListener();
 
-	virtual bool mouseOver(const glm::ivec2 & inMousePos, Component * source);
-	virtual bool mouseOut(const glm::ivec2 & inMousePos, Component * source);
 	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, Component * source);
 	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, Component * source);
 	virtual bool mouseDragged(const glm::ivec2 & inMousePos, Component * source);

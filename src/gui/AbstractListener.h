@@ -42,8 +42,6 @@ public:
 	AbstractListener() {}
 	virtual ~AbstractListener() {}
 
-	virtual bool mouseOver(const glm::ivec2 & inMousePos, Component * source)                   = 0;
-	virtual bool mouseOut(const glm::ivec2 & inMousePos, Component * source)                    = 0;
 	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, Component * source)  = 0;
 	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, Component * source) = 0;
 	virtual bool mouseDragged(const glm::ivec2 & inMousePos, Component * source)                = 0;

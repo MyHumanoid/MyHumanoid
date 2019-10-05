@@ -109,20 +109,9 @@ bool Component::isMouseOver(const glm::ivec2 & inMousePos)
 	bool isOver = false;
 
 	if(absoluteGeometry.isHitBy(inMousePos)) {
-		if(sysListener)
-			sysListener->mouseOver(inMousePos, this);
-
-		if(listener)
-			isOver = listener->mouseOver(inMousePos, this);
 
 		mouseOver = true;
 	} else if(mouseOver) {
-		if(sysListener)
-			sysListener->mouseOut(inMousePos, this);
-
-		if(listener)
-			listener->mouseOut(inMousePos, this);
-
 		mouseOver = false;
 	}
 	return isOver;

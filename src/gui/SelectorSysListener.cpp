@@ -48,20 +48,6 @@ SelectorSysListener::~SelectorSysListener()
 {
 }
 
-bool SelectorSysListener::mouseOver(const glm::ivec2 & inMousePos, Component * source)
-{
-	glutPostRedisplay();
-
-	return false;
-}
-
-bool SelectorSysListener::mouseOut(const glm::ivec2 & inMousePos, Component * source)
-{
-	glutPostRedisplay();
-
-	return false;
-}
-
 bool SelectorSysListener::mouseDragged(const glm::ivec2 & inMousePos, Component * source)
 {
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
