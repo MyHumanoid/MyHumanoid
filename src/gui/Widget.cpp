@@ -37,7 +37,6 @@ namespace mhgui
 Widget::Widget(uint32_t inId, const Rect & inGeometry)
         : Component(inId, inGeometry)
         , parentPanel(NULL)
-        , tooltip(NULL)
 {
 }
 
@@ -45,10 +44,6 @@ Widget::~Widget()
 {
 	if(parentPanel)
 		parentPanel->removeWidget(this);
-}
-
-void Widget::setTooltip(const Tooltip & inTooltip)
-{
 }
 
 void Widget::draw()

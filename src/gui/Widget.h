@@ -32,8 +32,6 @@
 namespace mhgui
 {
 
-class Tooltip;
-
 class Widget : public Component
 {
 public:
@@ -46,7 +44,6 @@ public:
 	virtual void hide()        = 0;
 
 	Panel * getParentPanel() const { return parentPanel; }
-	void    setTooltip(const Tooltip & inTooltip);
 
 private: // intentionally not implemented
 	Widget(const Widget &);
@@ -54,12 +51,9 @@ private: // intentionally not implemented
 
 private:
 	Panel *   parentPanel;
-	Tooltip * tooltip;
 
-	// TODO: do we really need this, I think friend isn't very good design
-	friend class Panel;      // grant panel access to the private members & methods
-	friend class MultiPanel; // grant multipanel access to the private members &
-	                         // methods
+
+	friend class Panel;
 };
 
 } // namespace mhgui
