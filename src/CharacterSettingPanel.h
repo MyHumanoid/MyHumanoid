@@ -56,9 +56,4 @@ public:
 	std::vector<mhgui::Selector *> selectorVector;
 	mhgui::Selector *         selector;
 	SelectorListener   selectorListener;
-
-	mhgui::Selector * m_age;
-	mhgui::Selector * m_muscleSize;
-	mhgui::Selector * m_breast;
-	mhgui::Selector * m_shape;
 };

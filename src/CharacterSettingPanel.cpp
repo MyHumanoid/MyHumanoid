@@ -71,7 +71,6 @@ void CharacterSettingPanel::createWidgets()
 	selector->setShowLines(false);
 	selectorVector.push_back(selector);
 	addWidget(selector);
-	m_age = selector;
 
 	if(g_global.m_comp.m_kAge == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
@@ -100,7 +99,6 @@ void CharacterSettingPanel::createWidgets()
 	selector->setListener(&selectorListener);
 	selectorVector.push_back(selector);
 	addWidget(selector);
-	m_muscleSize = selector;
 
 	if(g_global.m_comp.m_kMuscleSize == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
@@ -128,7 +126,6 @@ void CharacterSettingPanel::createWidgets()
 	selector->setListener(&selectorListener);
 	selectorVector.push_back(selector);
 	addWidget(selector);
-	m_breast = selector;
 
 	if(g_global.m_comp.m_kBreast == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
@@ -156,7 +153,6 @@ void CharacterSettingPanel::createWidgets()
 	selector->setListener(&selectorListener);
 	selectorVector.push_back(selector);
 	addWidget(selector);
-	m_shape = selector;
 
 	if(g_global.m_comp.m_kShape == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
