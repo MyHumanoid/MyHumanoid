@@ -46,15 +46,12 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         ,
 
         texture()
-        , textureDisabled()
         ,
 
         imageFilename(inFilename)
-        , imageFilenameDisabled()
         ,
 
         textureIsInited(false)
-        , textureDisabledIsInited(false)
         ,
 
         selectorSysListener(new SelectorSysListener())
@@ -70,10 +67,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
 {
 
 	setSysListener(selectorSysListener);
-
-	if(inFilename.length() > 4) {
-		imageFilenameDisabled = inFilename.substr(0, inFilename.length() - 4) + "_disa.png";
-	}
 
 	for(int i = 0; i < rows; i++) {
 		for(int j = 0; j < cols; j++) {

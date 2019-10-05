@@ -53,13 +53,9 @@ class Selector : public Widget
 	// Textures
 public:
 	Texture texture;
-	Texture textureDisabled;
 
 	string imageFilename;
-	string imageFilenameDisabled;
-
 	bool textureIsInited; // used by lazyLoadTexture
-	bool textureDisabledIsInited;
 
 	SelectorSysListener * selectorSysListener;
 	float                 alpha;
