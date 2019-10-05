@@ -56,11 +56,6 @@ private:
 	Panel *   parentPanel;
 	Tooltip * tooltip;
 
-	// Special Draw method which will be called from panel ONLY!
-	// This call takes care to paint the tooltip and call draw()
-	// afterwards
-	void draw_wrapper();
-
 	// TODO: do we really need this, I think friend isn't very good design
 	friend class Panel;      // grant panel access to the private members & methods
 	friend class MultiPanel; // grant multipanel access to the private members &

@@ -270,7 +270,7 @@ void Panel::draw()
 		    wl_it++) {
 			Widget * w = (*wl_it);
 
-			w->draw_wrapper();
+			w->draw();
 		}
 		glDisable(GL_BLEND);
 	}

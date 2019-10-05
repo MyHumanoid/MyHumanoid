@@ -55,11 +55,6 @@ void Widget::draw()
 {
 }
 
-void Widget::draw_wrapper()
-{
-	draw();
-}
-
 void Widget::show()
 {
 	setVisible(true);
