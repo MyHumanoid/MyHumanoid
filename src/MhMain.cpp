@@ -357,6 +357,7 @@ void DisplayLibraryCharacters()
 			if(ImGui::ImageButton((void *)(intptr_t)tex.handle, ImVec2(48, 48))) {
 				loadCharacter(character_name);
 			}
+			ImGui::Text("%s", foobar.c_str());
 		} else {
 			if(ImGui::Button(foobar.c_str())) {
 				loadCharacter(character_name);
