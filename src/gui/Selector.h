@@ -108,7 +108,7 @@ public:
 
 	void setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint);
 
-	std::vector<float> getDists();
+	std::vector<float> getDists() const;
 	void               setDisabledTexture(const string & inFilename);
 
 	const Texture & getTextures(); // return the textureID

@@ -186,13 +186,12 @@ const Texture & Selector::getCursorTextures()
 	return cursorTexture;
 }
 
-std::vector<float> Selector::getDists()
+std::vector<float> Selector::getDists() const
 {
 	std::vector<float> ret;
 
-	std::vector<glm::ivec2>::iterator vp_end = points.end();
-	for(std::vector<glm::ivec2>::iterator vp_it = points.begin(); vp_it != vp_end; vp_it++) {
-		glm::ivec2 & tmp(*vp_it);
+	for(const auto & vp_it : points) {
+		const glm::ivec2 & tmp(vp_it);
 
 		float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
                                   pow((tmp.y - cursorPos.y) * cellRatio, 2));
