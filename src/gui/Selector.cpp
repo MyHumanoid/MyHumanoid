@@ -83,26 +83,12 @@ void Selector::setPoints(int inRows, int inCols)
 
 void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 {
-	int x;
-	int y;
-
-	if(inMousePoint.x < getAbsolutePosition().x) {
-		x = getAbsolutePosition().x;
-	} else if(inMousePoint.x > getAbsolutePosition().x + getSize().x) {
-		x = getAbsolutePosition().x + getSize().x;
-	} else {
-		x = inMousePoint.x;
-	}
-
-	if(inMousePoint.y < getAbsolutePosition().y) {
-		y = getAbsolutePosition().y;
-	} else if(inMousePoint.y > getAbsolutePosition().y + getSize().y) {
-		y = getAbsolutePosition().y + getSize().y;
-	} else {
-		y = inMousePoint.y;
-	}
-
-	glm::ivec2 tmp(x, getAbsolutePosition().y + getSize().y - y);
+	glm::ivec2 foo;
+	
+	foo = glm::clamp(inMousePoint, getAbsolutePosition(), getAbsolutePosition() + getSize());
+	
+	// coordinate system change !!
+	glm::ivec2 tmp(foo.x, getAbsolutePosition().y + getSize().y - foo.y);
 	setCursorPos(tmp);
 }
 
