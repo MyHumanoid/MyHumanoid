@@ -50,7 +50,6 @@ Panel::Panel(uint32_t inPanelId, const Rect & inGeometry)
         rightAnchor(false)
         , bottomAnchor(false)
         , align(HORIZONTAL)
-        , backColor(0, 0, 0, 0)
 {
 }
 
@@ -199,7 +198,7 @@ void Panel::draw()
 {
 	if(isVisible()) {
 		cgutils::enableBlend();
-		cgutils::drawSquareFill(getRect(), backColor);
+		cgutils::drawSquareFill(getRect(), Color(0, 0, 0, 0));
 
 		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
 		    wl_it++) {

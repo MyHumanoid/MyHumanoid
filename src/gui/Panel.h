@@ -68,8 +68,6 @@ public:
 	void      setAlignment(Alignment align) { this->align = align; }
 	Alignment getAlignment() { return align; }
 
-	const Color & getBackgroundColor() { return backColor; }
-
 	virtual void calcWidgetPosition();
 
 protected:
@@ -84,8 +82,6 @@ protected:
 private: // intentionally not implemeted
 	Panel(const Panel &);
 	Panel & operator=(const Panel &);
-
-	Color backColor;
 };
 
 } // namespace mhgui
