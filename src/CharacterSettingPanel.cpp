@@ -148,19 +148,19 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & selectorSource, glm::
 	switch(selectorSource.getID()) {
 	case kAge:
 		g_global.m_comp.m_kAge = inMousePos;
-		ageDists = selectorSource.getDists();
+		ageDists = selectorSource.calculateDists();
 		break;
 	case kMuscleSize:
 		g_global.m_comp.m_kMuscleSize = inMousePos;
-		muscleSizeDists = selectorSource.getDists();
+		muscleSizeDists = selectorSource.calculateDists();
 		break;
 	case kBreast:
 		g_global.m_comp.m_kBreast = inMousePos;
-		breastDists = selectorSource.getDists();
+		breastDists = selectorSource.calculateDists();
 		break;
 	case kShape:
 		g_global.m_comp.m_kShape = inMousePos;
-		shapeDists = selectorSource.getDists();
+		shapeDists = selectorSource.calculateDists();
 		break;
 	}
 	
@@ -363,19 +363,19 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	switch(sel->getID()) {
 	case kAge:
 		foo = g_global.m_comp.m_kAge;
-		selectorListener.ageDists = sel->getDists();
+		selectorListener.ageDists = sel->calculateDists();
 		break;
 	case kBreast:
 		foo = g_global.m_comp.m_kBreast;
-		selectorListener.breastDists = sel->getDists();
+		selectorListener.breastDists = sel->calculateDists();
 		break;
 	case kMuscleSize:
 		foo = g_global.m_comp.m_kMuscleSize;
-		selectorListener.muscleSizeDists = sel->getDists();
+		selectorListener.muscleSizeDists = sel->calculateDists();
 		break;
 	case kShape:
 		foo = g_global.m_comp.m_kShape;
-		selectorListener.shapeDists = sel->getDists();
+		selectorListener.shapeDists = sel->calculateDists();
 		break;
 	}
 	

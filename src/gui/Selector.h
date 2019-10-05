@@ -79,7 +79,7 @@ public:
 
 	void setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint);
 
-	std::vector<float> getDists() const;
+	std::vector<float> calculateDists() const;
 
 	const Texture & getTextures(); // return the textureID
 

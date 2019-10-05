@@ -98,7 +98,7 @@ const Texture & Selector::getTextures()
 	return texture;
 }
 
-std::vector<float> Selector::getDists() const
+std::vector<float> Selector::calculateDists() const
 {
 	std::vector<float> ret;
 
