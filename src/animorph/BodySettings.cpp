@@ -99,4 +99,30 @@ void BodySettings::createStream(std::ostringstream & out_stream)
 		float  morph_value = bodyset_it.second;
 		out_stream << name << "," << morph_value << endl;
 	}
+	
+	glm::ivec2 tmp;
+	
+	tmp = m_kAge;
+	if(tmp != InvalidPoint) {
+		out_stream << "#t,A," << kAge << ","
+		           << tmp.x << "," << tmp.y << endl;
+	}
+	
+	tmp = m_kMuscleSize;
+	if(tmp != InvalidPoint) {
+		out_stream << "#t,M," << kMuscleSize << ","
+		           << tmp.x << "," << tmp.y << endl;
+	}
+	
+	tmp = m_kBreast;
+	if(tmp != InvalidPoint) {
+		out_stream << "#t,B," << kBreast << ","
+		           << tmp.x << "," << tmp.y << endl;
+	}
+	
+	tmp = m_kShape;
+	if(tmp != InvalidPoint) {
+		out_stream << "#t,S," << kShape << ","
+		           << tmp.x << "," << tmp.y;
+	}
 }

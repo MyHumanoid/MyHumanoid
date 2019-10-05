@@ -159,12 +159,13 @@ static void CreateCaractersIconTextures()
 static void saveBodySettings(const string & filename)
 {
 	BodySettings bodyset = g_mesh.morphTargets();
-
+	
+	bodyset.m_kAge = g_global.m_kAge;
+	bodyset.m_kMuscleSize = g_global.m_kMuscleSize;
+	bodyset.m_kBreast = g_global.m_kBreast;
+	bodyset.m_kShape = g_global.m_kShape;
+	
 	bool state = bodyset.save(filename);
-
-	if(state) {
-		state = saveSelectorsPositions(filename);
-	}
 
 	if(state) {
 		log_info("BodySettings saved");
