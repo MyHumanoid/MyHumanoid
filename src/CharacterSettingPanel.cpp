@@ -71,7 +71,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_age = selector;
 
-	glm::ivec2 * cursorPosition = g_global.getFuzzyValue(selector->getID());
+	glm::ivec2 * cursorPosition = g_global.fuzzyValues[selector->getID()];
 	if(cursorPosition == NULL) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
@@ -95,7 +95,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_muscleSize = selector;
 
-	cursorPosition = g_global.getFuzzyValue(selector->getID());
+	cursorPosition = g_global.fuzzyValues[selector->getID()];
 	if(cursorPosition == NULL) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
@@ -118,7 +118,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_breast = selector;
 
-	cursorPosition = g_global.getFuzzyValue(selector->getID());
+	cursorPosition = g_global.fuzzyValues[selector->getID()];
 	if(cursorPosition == NULL) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
@@ -141,7 +141,7 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_shape = selector;
 
-	cursorPosition = g_global.getFuzzyValue(selector->getID());
+	cursorPosition = g_global.fuzzyValues[selector->getID()];
 	if(cursorPosition == NULL) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
@@ -165,7 +165,7 @@ void CharacterSettingPanel::resetSlidersValues()
 
 void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 {
-	glm::ivec2 * cursorPosition = g_global.getFuzzyValue(index);
+	glm::ivec2 * cursorPosition = g_global.fuzzyValues[index];
 
 	for(vector<Selector *>::iterator sel_it = selectorVector.begin();
 	    sel_it != selectorVector.end(); sel_it++) {

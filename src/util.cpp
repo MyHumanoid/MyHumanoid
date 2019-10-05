@@ -313,25 +313,25 @@ bool saveSelectorsPositions(const std::string & filename)
 
 	std::ostringstream out_stream;
 
-	glm::ivec2 * tmp = g_global.getFuzzyValue(kAge);
+	glm::ivec2 * tmp = g_global.fuzzyValues[kAge];
 	if(tmp != NULL) {
 		out_stream << "#t,A," << kAge << ","
 		           << tmp->x << "," << tmp->y << endl;
 	}
 
-	tmp = g_global.getFuzzyValue(kMuscleSize);
+	tmp = g_global.fuzzyValues[kMuscleSize];
 	if(tmp != NULL) {
 		out_stream << "#t,M," << kMuscleSize << ","
 		           << tmp->x << "," << tmp->y << endl;
 	}
 
-	tmp = g_global.getFuzzyValue(kBreast);
+	tmp = g_global.fuzzyValues[kBreast];
 	if(tmp != NULL) {
 		out_stream << "#t,B," << kBreast << ","
 		           << tmp->x << "," << tmp->y << endl;
 	}
 
-	tmp = g_global.getFuzzyValue(kShape);
+	tmp = g_global.fuzzyValues[kShape];
 	if(tmp != NULL) {
 		out_stream << "#t,S," << kShape << ","
 		           << tmp->x << "," << tmp->y;
