@@ -1015,7 +1015,7 @@ int main(int argc, char ** argv)
 	bool material_loaded = g_mesh.loadMaterial(searchDataFile("base.materials"),
 	                                           searchDataFile("base.colors"));
 	if(!material_loaded) {
-		cerr << "couldn't load mesh material informations" << endl;
+		log_error("couldn't load mesh material informations");
 		return 1;
 	}
 
@@ -1024,13 +1024,13 @@ int main(int argc, char ** argv)
 	// load face groups with factory function
 	bool groups_loaded = g_mesh.loadGroups(searchDataFile("base.parts"));
 	if(!groups_loaded) {
-		cerr << "couldn't load face groups" << endl;
+		log_error("couldn't load face groups");
 		return 1;
 	}
 
 	bool smooth_loaded = g_mesh.loadSmoothVertex(searchDataFile("base.smooth"));
 	if(!smooth_loaded) {
-		cerr << "couldn't load smooth info" << endl;
+		log_error("couldn't load smooth info");
 		return 1;
 	}
 

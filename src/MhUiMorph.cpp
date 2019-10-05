@@ -27,12 +27,16 @@ void CreateTargetImageTextures()
 }
 
 
-void XYfoobar(mh::Texture texture, glm::vec2 & value)
+void XYfoobar(OptTex texture, glm::vec2 & value)
 {
+	if(!texture) {
+		return;
+	}
+	
 	auto *    dl = ImGui::GetForegroundDrawList();
 	ImGuiIO & io = ImGui::GetIO();
 
-	MhGui::ImageButton(texture, ImVec2(192, 104));
+	MhGui::ImageButton(texture.value(), ImVec2(192, 104));
 	vec2 pMin = ImGui::GetItemRectMin();
 	vec2 size = ImGui::GetItemRectSize();
 	if(ImGui::IsItemActive()) {
@@ -55,8 +59,6 @@ void XYfoobar(mh::Texture texture, glm::vec2 & value)
 void DisplayCharacterSettings()
 {
 	using glm::vec2;
-
-	using OptTex = std::optional<mh::Texture>;
 
 	struct Textures {
 		OptTex ageGenderBkg = LoadTextureFromFile("pixmaps/ui/age_selector.png");
@@ -92,13 +94,13 @@ void DisplayCharacterSettings()
 	ImGui::Begin("Character Setting");
 
 	ImGui::Text("Age/Sex");
-	XYfoobar(tex.ageGenderBkg.value(), g_global.ageAndSex);
+	XYfoobar(tex.ageGenderBkg, g_global.ageAndSex);
 	ImGui::Text("Bodymass Weight/Muscle");
-	XYfoobar(tex.massBkg.value(), g_global.bodyWeightMuscle);
+	XYfoobar(tex.massBkg, g_global.bodyWeightMuscle);
 	ImGui::Text("Breast Size/Shape");
-	XYfoobar(tex.breastBkg.value(), g_global.breastSizeShape);
+	XYfoobar(tex.breastBkg, g_global.breastSizeShape);
 	ImGui::Text("Bodyshape Shape/Height");
-	XYfoobar(tex.shapeBkg.value(), g_global.bodyShapeHeight);
+	XYfoobar(tex.shapeBkg, g_global.bodyShapeHeight);
 
 	ImGui::End();
 }

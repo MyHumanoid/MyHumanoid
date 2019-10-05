@@ -1,5 +1,7 @@
 #include "animorph/FaceVector.h"
 
+#include "log/log.h"
+
 using namespace std;
 using namespace Animorph;
 
@@ -39,16 +41,18 @@ void FaceVector::fromGeometryStream(std::ifstream & in_stream)
 
 	char buffer[MAX_LINE_BUFFER];
 	int  v0, v1, v2, v3;
-
+	
+	int line = 0;
 	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
 		nr_faces = sscanf(buffer, "%d,%d,%d,%d\n", &v0, &v1, &v2, &v3);
+		line += 1;
 
 		if(nr_faces == 3) {
 			push_back(Face(v0, v1, v2));
 		} else if(nr_faces == 4) {
 			push_back(Face(v0, v1, v2, v3));
 		} else {
-			cerr << "Impossible number of faces: " << nr_faces << endl;
+			log_error("Impossible number of faces: {} in line {}", nr_faces, line);
 			continue;
 		}
 	}
