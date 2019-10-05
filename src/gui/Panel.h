@@ -61,8 +61,6 @@ public:
 
 	void show_all();
 
-	bool getBottomAnchor() { return bottomAnchor; }
-
 	void      setAlignment(Alignment align) { this->align = align; }
 	Alignment getAlignment() { return align; }
 
@@ -71,9 +69,6 @@ public:
 protected:
 	list<Widget *> widgetList;
 	int            widgetListChangedCount;
-
-	bool     rightAnchor;
-	bool     bottomAnchor;
 
 	Alignment align;
 

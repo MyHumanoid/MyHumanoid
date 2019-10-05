@@ -325,14 +325,6 @@ void Window::reshape(const Size & inSize, const Camera & inCamera)
 	    pl_it++) {
 		Panel * panel = (*pl_it);
 
-		if(panel->getBottomAnchor()) {
-			int bottom_old =
-					getSize().getHeight() - panel->getPosition().y;
-			int bottom = inSize.getHeight() - bottom_old;
-
-			panel->setPosition(glm::ivec2(panel->getPosition().x, bottom));
-		}
-
 		panel->calcWidgetPosition();
 	}
 
