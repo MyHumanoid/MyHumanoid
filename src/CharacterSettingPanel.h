@@ -44,7 +44,7 @@ public:
 	// void resetTargetValues(const string currentTarget = "");
 
 	void resetSlidersValues();
-	void calcSelectorValues(uint32_t index);
+	void calcSelectorValues(mhgui::Selector *sel);
 	void updateUi();
 
 private: // intentionally not implemented
@@ -53,7 +53,13 @@ private: // intentionally not implemented
 
 public:
 	std::vector<mhgui::Image *>    imageVector;
-	std::vector<mhgui::Selector *> selectorVector;
 	mhgui::Selector *         selector;
 	SelectorListener   selectorListener;
+	
+	
+	mhgui::Selector * m_age;
+	mhgui::Selector * m_muscleSize;
+	mhgui::Selector * m_breast;
+	mhgui::Selector * m_shape;
+	
 };

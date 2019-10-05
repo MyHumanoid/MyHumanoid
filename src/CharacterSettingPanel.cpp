@@ -49,7 +49,11 @@ CharacterSettingPanel::CharacterSettingPanel()
 CharacterSettingPanel::~CharacterSettingPanel()
 {
 	for_each(imageVector.begin(), imageVector.end(), deleteFunctor<Image *>());
-	for_each(selectorVector.begin(), selectorVector.end(), deleteFunctor<Selector *>());
+	
+	delete m_age;
+	delete m_muscleSize;
+	delete m_breast;
+	delete m_shape;
 }
 
 void CharacterSettingPanel::createWidgets()
@@ -68,7 +72,7 @@ void CharacterSettingPanel::createWidgets()
 	selector->setPoints(2, 5);
 	selector->setListener(&selectorListener);
 	selector->setShowLines(false);
-	selectorVector.push_back(selector);
+	m_age = selector;
 	addWidget(selector);
 	
 	{
@@ -88,7 +92,7 @@ void CharacterSettingPanel::createWidgets()
 	                     searchPixmapFile("ui/muscle_size_selector.png"), Rect(0, 0, 192, 104));
 	selector->setPoints(2, 2);
 	selector->setListener(&selectorListener);
-	selectorVector.push_back(selector);
+	m_muscleSize = selector;
 	addWidget(selector);
 
 	{
@@ -107,7 +111,7 @@ void CharacterSettingPanel::createWidgets()
 	                        searchPixmapFile("ui/breast_selector.png"), Rect(0, 0, 192, 104));
 	selector->setPoints(2, 2);
 	selector->setListener(&selectorListener);
-	selectorVector.push_back(selector);
+	m_breast = selector;
 	addWidget(selector);
 
 	{
@@ -126,7 +130,7 @@ void CharacterSettingPanel::createWidgets()
 	                        searchPixmapFile("ui/shape_selector.png"), Rect(0, 0, 192, 104));
 	selector->setPoints(2, 2);
 	selector->setListener(&selectorListener);
-	selectorVector.push_back(selector);
+	m_shape = selector;
 	addWidget(selector);
 
 	{
@@ -139,62 +143,51 @@ void CharacterSettingPanel::createWidgets()
 
 void CharacterSettingPanel::resetSlidersValues()
 {
-	for(vector<Selector *>::const_iterator selectorVector_it = selectorVector.begin();
-	    selectorVector_it != selectorVector.end(); selectorVector_it++) {
-		(*selectorVector_it)->setCursorPos(glm::ivec2(96, 52));
-	}
-
+	m_age->setCursorPos(glm::ivec2(96, 52));
+	m_muscleSize->setCursorPos(glm::ivec2(96, 52));
+	m_breast->setCursorPos(glm::ivec2(96, 52));
+	m_shape->setCursorPos(glm::ivec2(96, 52));
+	
 	selectorListener.ageDists.clear();
 	selectorListener.muscleSizeDists.clear();
 	selectorListener.breastDists.clear();
 	selectorListener.shapeDists.clear();
 }
 
-void CharacterSettingPanel::calcSelectorValues(uint32_t index)
+void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 {
-	for(vector<Selector *>::iterator sel_it = selectorVector.begin();
-	    sel_it != selectorVector.end(); sel_it++) {
-		Selector * tmp = (*sel_it);
-		if(tmp->getID() == index) {
+	glm::ivec2 foo = InvalidPoint;
 
-			
-			glm::ivec2 foo = InvalidPoint;
-
-			switch(index) {
-			case kAge:
-				foo = g_global.m_comp.m_kAge;
-				selectorListener.ageDists = tmp->getDists();
-				break;
-			case kBreast:
-				foo = g_global.m_comp.m_kBreast;
-				selectorListener.breastDists = tmp->getDists();
-				break;
-			case kMuscleSize:
-				foo = g_global.m_comp.m_kMuscleSize;
-				selectorListener.muscleSizeDists = tmp->getDists();
-				break;
-			case kShape:
-				foo = g_global.m_comp.m_kShape;
-				selectorListener.shapeDists = tmp->getDists();
-				break;
-			}
-			
-			if(foo == InvalidPoint) {
-				tmp->setCursorPos(glm::ivec2(96, 52));
-			} else {
-				tmp->setCursorPosFromMousePoint(foo);
-			}
-			
-
-			break;
-		}
+	switch(sel->getID()) {
+	case kAge:
+		foo = g_global.m_comp.m_kAge;
+		selectorListener.ageDists = sel->getDists();
+		break;
+	case kBreast:
+		foo = g_global.m_comp.m_kBreast;
+		selectorListener.breastDists = sel->getDists();
+		break;
+	case kMuscleSize:
+		foo = g_global.m_comp.m_kMuscleSize;
+		selectorListener.muscleSizeDists = sel->getDists();
+		break;
+	case kShape:
+		foo = g_global.m_comp.m_kShape;
+		selectorListener.shapeDists = sel->getDists();
+		break;
+	}
+	
+	if(foo == InvalidPoint) {
+		sel->setCursorPos(glm::ivec2(96, 52));
+	} else {
+		sel->setCursorPosFromMousePoint(foo);
 	}
 }
 
 void CharacterSettingPanel::updateUi()
 {
-	calcSelectorValues(kAge);
-	calcSelectorValues(kBreast);
-	calcSelectorValues(kMuscleSize);
-	calcSelectorValues(kShape);
+	calcSelectorValues(m_age);
+	calcSelectorValues(m_breast);
+	calcSelectorValues(m_muscleSize);
+	calcSelectorValues(m_shape);
 }
