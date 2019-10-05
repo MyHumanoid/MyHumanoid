@@ -26,63 +26,11 @@
  */
 #pragma once
 
-#include <stdint.h>
+#include <glm/glm.hpp>
 
 namespace mhgui
 {
 
-/// Represents a size of width and height
-class Size
-{
-public:
-	Size(int32_t inWidth, int32_t inHeight);
-	Size(const Size & inSize);
-
-	~Size() {}
-
-	Size & operator=(const Size & inRHS);
-
-	bool operator==(const Size & inSize) const;
-
-	bool isEmpty() const { return ((x == 0) && (y == 0)); }
-
-	void resizeBy(const Size & inSize);
-
-	int32_t x, y;
-
-}; // class Size
-
-inline Size::Size(int32_t inWidth, int32_t inHeight)
-        : x(inWidth)
-        , y(inHeight)
-{
-}
-
-inline Size::Size(const Size & inSize)
-        : x(inSize.x)
-        , y(inSize.y)
-{
-}
-
-inline Size & Size::operator=(const Size & inRHS)
-{
-	x  = inRHS.x;
-	y = inRHS.y;
-	return *this;
-}
-
-inline bool Size::operator==(const Size & inSize) const
-{
-	if(this == &inSize) // The same object?
-		return true;
-
-	return (x == inSize.x && y == inSize.y);
-}
-
-inline void Size::resizeBy(const Size & inSize)
-{
-	x += inSize.x;
-	y += inSize.y;
-}
+using Size = glm::ivec2;
 
 } // namespace mhgui

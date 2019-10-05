@@ -57,8 +57,8 @@ public:
 
 	int32_t getWidth() const { return size.x; }
 	int32_t getHeight() const { return size.y; }
-
-	bool isEmpty() const { return size.isEmpty(); }
+	
+	bool isEmpty() const { return size == Size(0); }
 
 	/// Checks whether two rectangles are identical
 	bool operator==(const Rect & inRect) const;
@@ -143,7 +143,7 @@ inline void Rect::resizeTo(const Size & inSize)
 
 inline void Rect::resizeBy(const Size & inDeltaSize)
 {
-	size.resizeBy(inDeltaSize);
+	size += inDeltaSize;
 }
 
 inline void Rect::inset(int32_t inInsetX, int32_t inInsetY)
