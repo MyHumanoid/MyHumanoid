@@ -272,6 +272,13 @@ static void saveAutozoom(const string & filename)
 
 static void ResetMeshMorph()
 {
+	CharacterSettingPanel * cs_p = dynamic_cast<
+	    CharacterSettingPanel *>(mhgui::g_mainWindow->getPanel(
+	    kComponentID_CharacterSettingPanel));
+	if(cs_p != NULL) {
+		cs_p->resetSlidersValues();
+	}
+	
 	Animorph::BodySettings bodyset_empty;
 	g_mesh.doMorph(bodyset_empty);
 
@@ -577,12 +584,6 @@ void DisplayMainMenu()
 			ImGui::Separator();
 			if(ImGui::BeginMenu("Reset Morph? ...")) {
 				if(ImGui::MenuItem("YES")) {
-					CharacterSettingPanel * cs_p = dynamic_cast<
-					        CharacterSettingPanel *>(mhgui::g_mainWindow->getPanel(
-					        kComponentID_CharacterSettingPanel));
-					if(cs_p != NULL) {
-						cs_p->resetSlidersValues();
-					}
 					ResetMeshMorph();
 				}
 				ImGui::EndMenu();
