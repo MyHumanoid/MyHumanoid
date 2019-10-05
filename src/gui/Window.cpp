@@ -93,7 +93,7 @@ bool Window::addPanel(Panel * p)
 	++panelListChangedCount; // mark a change of the Panel List
 
 	// do a reshape event for update
-	reshape(getRect().getSize(), *inCamera);
+	reshape(getRect().size, *inCamera);
 
 	return true;
 }

@@ -48,8 +48,6 @@ public:
 	/// Assigns another Rect to this one
 	Rect & operator=(const Rect & inPoint);
 
-	const glm::ivec2 &  getSize() const { return size; }
-
 	bool isEmpty() const { return size == glm::ivec2(0); }
 
 	/// Checks whether two rectangles are identical

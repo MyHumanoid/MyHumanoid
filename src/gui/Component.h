@@ -67,7 +67,7 @@ public:
 
 	void setSize(const glm::ivec2 & inSize);
 
-	const glm::ivec2 & getSize() const { return geometry.getSize(); }
+	const glm::ivec2 & getSize() const { return geometry.size; }
 
 	void setRect(const Rect & inRect);
 
