@@ -69,8 +69,6 @@ public:
 
 	const glm::ivec2 & getSize() const { return geometry.size; }
 
-	void setRect(const Rect & inRect);
-
 	const Rect & getRect() const { return geometry; }
 
 	bool isClickConsumed() const { return clickConsumed; }

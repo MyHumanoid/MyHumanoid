@@ -39,14 +39,6 @@ bool Component::operator==(const Component & inRHS) const
 	return (id == inRHS.id);
 }
 
-/* ========================================================================== *
- * ctor & dtors
- * ========================================================================== */
-
-/* ========================================================================== */
-/** ctor.
- */
-/* ========================================================================== */
 Component::Component(uint32_t inId, const Rect & inGeometry)
         : id(inId)
         , geometry(inGeometry)
@@ -60,10 +52,6 @@ Component::Component(uint32_t inId, const Rect & inGeometry)
 {
 }
 
-/* ========================================================================== */
-/** dtor.
- */
-/* ========================================================================== */
 Component::~Component()
 {
 }
@@ -82,14 +70,6 @@ void Component::setSize(const glm::ivec2 & inSize)
 	geometry.resizeTo(inSize);
 }
 
-void Component::setRect(const Rect & inRect)
-{
-	absoluteGeometry = inRect;
-	absoluteGeometry.moveBy(zeroPoint);
-
-	geometry = inRect;
-}
-
 void Component::setZeroPoint(const glm::ivec2 & inZero)
 {
 	zeroPoint = inZero;
@@ -98,10 +78,6 @@ void Component::setZeroPoint(const glm::ivec2 & inZero)
 	absoluteGeometry.moveBy(inZero);
 }
 
-/* ========================================================================== */
-/** Check if mouse over, and use the listener mouseover function.
- */
-/* ========================================================================== */
 bool Component::isMouseOver(const glm::ivec2 & inMousePos)
 {
 	bool isOver = false;
@@ -115,11 +91,6 @@ bool Component::isMouseOver(const glm::ivec2 & inMousePos)
 	return isOver;
 };
 
-/* ========================================================================== */
-/** Check if mouse click, and use the listener mousepressed or mousereleased
- * function.
- */
-/* ========================================================================== */
 bool Component::isMouseClick(const glm::ivec2 & inMousePos, int button, int state)
 {
 	bool isClick = false;
@@ -144,10 +115,6 @@ bool Component::isMouseClick(const glm::ivec2 & inMousePos, int button, int stat
 	return isClick;
 };
 
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
 bool Component::isMouseDragged(const glm::ivec2 & inMousePos)
 {
 	bool dragged = false;
