@@ -270,12 +270,6 @@ static void saveAutozoom(const string & filename)
 }
 
 
-
-static void ResetMeshPose()
-{
-	g_mesh.resetPose();
-}
-
 static void ResetMeshMorph()
 {
 	Animorph::BodySettings bodyset_empty;
@@ -613,7 +607,7 @@ void DisplayMainMenu()
 			ImGui::Separator();
 			if(ImGui::BeginMenu("Reset Pose? ...")) {
 				if(ImGui::MenuItem("YES")) {
-					ResetMeshPose();
+					g_mesh.resetPose();
 				}
 				ImGui::EndMenu();
 			}
