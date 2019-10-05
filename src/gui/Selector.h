@@ -45,21 +45,6 @@ class Tooltip;
 class SelectorSysListener;
 
 
-struct Grid
-{
-	int rows = 2;
-	int cols = 2;
-	
-	float maxValue;
-	float cellRatio;
-	
-	// from left-bottom point to right-up point
-	std::vector<glm::ivec2> points;
-	
-	void calcPoints(glm::ivec2 size, int inRows, int inCols);
-	std::vector<float> calculateDists(glm::ivec2 cursorPos) const;
-};
-
 
 class Selector : public Widget
 {
@@ -71,8 +56,6 @@ public:
 
 	glm::ivec2 cursorPos;
 	
-	Grid grid;
-
 	Color backgroundColor;
 	Color cursorColor;
 

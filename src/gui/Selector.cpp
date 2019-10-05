@@ -39,48 +39,6 @@ using std::endl;
 namespace mhgui
 {
 
-void Grid::calcPoints(glm::ivec2 size, int inRows, int inCols)
-{
-	rows = inRows;
-	cols = inCols;
-	
-	points.clear();
-	
-	for(int i = 0; i < rows; i++) {
-		for(int j = 0; j < cols; j++) {
-			glm::ivec2 tmp(j * size.x / (cols - 1),
-			               i * size.y / (rows - 1));
-			points.push_back(tmp);
-		}
-	}
-	
-	float cellWidth  = size.x / (cols - 1);
-	float cellHeight = size.y / (rows - 1);
-	
-	cellRatio = cellWidth / cellHeight;
-	maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
-}
-
-std::vector<float> Grid::calculateDists(glm::ivec2 cursorPos) const
-{
-	std::vector<float> ret;
-	
-	for(const auto & vp_it : points) {
-		const glm::ivec2 & tmp(vp_it);
-		
-		float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
-                          pow((tmp.y - cursorPos.y) * cellRatio, 2));
-		float value = 1 - (dist / maxValue);
-		if(value > 0) {
-			ret.push_back(value);
-		} else {
-			ret.push_back(0.0f);
-		}
-	}
-	
-	return ret;
-}
-
 
 
 // constructor

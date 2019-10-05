@@ -34,6 +34,26 @@
 #include <vector>
 
 
+
+struct Grid
+{
+	int rows = 2;
+	int cols = 2;
+	
+	float maxValue;
+	float cellRatio;
+	
+	// from left-bottom point to right-up point
+	std::vector<glm::ivec2> points;
+	
+	void calcPoints(glm::ivec2 size, int inRows, int inCols);
+	std::vector<float> calculateDists(glm::ivec2 cursorPos) const;
+};
+
+
+
+
+
 class SelectorListener : public mhgui::AbstractListener
 {
 public:
@@ -49,6 +69,12 @@ public:
 	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
 	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
 	virtual bool mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source);
+	
+	
+	Grid ageGrid;
+	Grid muscleSizeGrid;
+	Grid breastGrid;
+	Grid shapeGrid;
 	
 	std::vector<float> ageDists;
 	std::vector<float> muscleSizeDists;
