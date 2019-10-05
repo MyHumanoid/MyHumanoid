@@ -79,9 +79,6 @@ public:
 
 	void setPoints(int inRows, int inCols);
 
-	void                setCursorColor(const Color & inColor) { cursorColor = inColor; }
-	void                setBackgroundColor(const Color & inColor) { backgroundColor = inColor; }
-
 	virtual void draw();
 
 protected:
