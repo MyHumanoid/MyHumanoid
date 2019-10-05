@@ -38,6 +38,7 @@
 #include <string>
 #include <vector>
 
+#include "log/log.h"
 #include "Vfs.h"
 
 using namespace std;
@@ -248,7 +249,7 @@ void loadDefaultBodySettings()
 	bool         state = bodyset.load(searchDataFile("default.bs"));
 
 	if(state) {
-		g_global.fuzzyValues.clear();
+		g_global.clearFuzzy();
 		state = loadSelectorsPositions(searchDataFile("default.bs"));
 
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
@@ -279,7 +280,24 @@ bool loadSelectorsPositions(const std::string & filename)
 
 	while(file_reader.getline(buffer, MAX_LINE)) {
 		if(sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			g_global.setFuzzyValue(id, glm::ivec2(x, y));
+			
+			switch(id) {
+			case kAge:
+				g_global.m_kAge = glm::ivec2(x, y);
+				break;
+			case kMuscleSize:
+				g_global.m_kMuscleSize = glm::ivec2(x, y);
+				break;
+			case kBreast:
+				g_global.m_kBreast = glm::ivec2(x, y);
+				break;
+			case kShape:
+				g_global.m_kShape = glm::ivec2(x, y);
+				break;
+			default:
+				log_error("Unexpected value");
+			}
+
 		}
 	}
 
@@ -296,7 +314,24 @@ bool loadSelectorsPositions(const std::vector<string> & strings)
 
 	for(vector<string>::const_iterator it = strings.begin(); it != strings.end(); it++) {
 		if(sscanf((*it).c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			g_global.setFuzzyValue(id, glm::ivec2((int32_t)(x), (int32_t)(y)));
+			
+			switch(id) {
+			case kAge:
+				g_global.m_kAge = glm::ivec2(x, y);
+				break;
+			case kMuscleSize:
+				g_global.m_kMuscleSize = glm::ivec2(x, y);
+				break;
+			case kBreast:
+				g_global.m_kBreast = glm::ivec2(x, y);
+				break;
+			case kShape:
+				g_global.m_kShape = glm::ivec2(x, y);
+				break;
+			default:
+				log_error("Unexpected value");
+			}
+			
 		}
 	}
 
@@ -312,29 +347,31 @@ bool saveSelectorsPositions(const std::string & filename)
 		return false;
 
 	std::ostringstream out_stream;
-
-	glm::ivec2 * tmp = g_global.fuzzyValues[kAge];
-	if(tmp != NULL) {
+	
+	glm::ivec2 tmp;
+	
+	tmp = g_global.m_kAge;
+	if(tmp != InvalidPoint) {
 		out_stream << "#t,A," << kAge << ","
-		           << tmp->x << "," << tmp->y << endl;
+		           << tmp.x << "," << tmp.y << endl;
 	}
-
-	tmp = g_global.fuzzyValues[kMuscleSize];
-	if(tmp != NULL) {
+	
+	tmp = g_global.m_kMuscleSize;
+	if(tmp != InvalidPoint) {
 		out_stream << "#t,M," << kMuscleSize << ","
-		           << tmp->x << "," << tmp->y << endl;
+		           << tmp.x << "," << tmp.y << endl;
 	}
-
-	tmp = g_global.fuzzyValues[kBreast];
-	if(tmp != NULL) {
+	
+	tmp = g_global.m_kBreast;
+	if(tmp != InvalidPoint) {
 		out_stream << "#t,B," << kBreast << ","
-		           << tmp->x << "," << tmp->y << endl;
+		           << tmp.x << "," << tmp.y << endl;
 	}
 
-	tmp = g_global.fuzzyValues[kShape];
-	if(tmp != NULL) {
+	tmp = g_global.m_kShape;
+	if(tmp != InvalidPoint) {
 		out_stream << "#t,S," << kShape << ","
-		           << tmp->x << "," << tmp->y;
+		           << tmp.x << "," << tmp.y;
 	}
 
 	file_writer << out_stream.str();

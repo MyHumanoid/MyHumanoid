@@ -39,6 +39,8 @@ extern Animorph::Mesh g_mesh;
 struct GlobalPaths {
 };
 
+const glm::ivec2 InvalidPoint = glm::ivec2(-666, -666);
+
 struct Global {
 	GlobalPaths paths;
 
@@ -48,13 +50,18 @@ struct Global {
 	bool       quotedBox       = false;
 	bool       m_enableTexture = false;
 	bool       subdivision     = false;
-
-	std::map<const uint32_t, glm::ivec2 *> fuzzyValues;
-
-public:
-	void setFuzzyValue(uint32_t index, const glm::ivec2 & inPoint)
-	{
-		this->fuzzyValues[index] = new glm::ivec2(inPoint);
+	
+	
+	glm::ivec2 m_kAge = InvalidPoint;
+	glm::ivec2 m_kMuscleSize = InvalidPoint;
+	glm::ivec2 m_kBreast = InvalidPoint;
+	glm::ivec2 m_kShape = InvalidPoint;
+	
+	void clearFuzzy() {
+		m_kAge = InvalidPoint;
+		m_kMuscleSize = InvalidPoint;
+		m_kBreast = InvalidPoint;
+		m_kShape = InvalidPoint;
 	}
 };
 

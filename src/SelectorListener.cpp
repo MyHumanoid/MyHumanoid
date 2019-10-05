@@ -100,11 +100,11 @@ bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, Component * s
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
-	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
+	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 
 	if(xDist > 3 || yDist > 3) {
 		oldPos = inMousePos;
-		calcWidgetTargets(*selectorSource);
+		calcWidgetTargets(*selectorSource, inMousePos);
 	}
 
 	return true;
@@ -127,8 +127,8 @@ bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, 
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
-	g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
-	calcWidgetTargets(*selectorSource);
+	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
+	calcWidgetTargets(*selectorSource, inMousePos);
 
 	g_mesh.calcNormals();
 
@@ -140,23 +140,24 @@ bool SelectorListener::keyType(unsigned char key, Component * source)
 	return false;
 }
 
-void SelectorListener::calcWidgetTargets(Selector & selectorSource)
+void SelectorListener::calcWidgetTargets(Selector & selectorSource, glm::ivec2 inMousePos)
 {
 
 	switch(selectorSource.getID()) {
 	case kAge:
+		g_global.m_kAge = inMousePos;
 		ageDists = selectorSource.getDists();
 		break;
-
 	case kMuscleSize:
+		g_global.m_kMuscleSize = inMousePos;
 		muscleSizeDists = selectorSource.getDists();
 		break;
-
 	case kBreast:
+		g_global.m_kBreast = inMousePos;
 		breastDists = selectorSource.getDists();
 		break;
-
 	case kShape:
+		g_global.m_kShape = inMousePos;
 		shapeDists = selectorSource.getDists();
 		break;
 	}

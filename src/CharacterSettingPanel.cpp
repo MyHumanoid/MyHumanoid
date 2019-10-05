@@ -71,11 +71,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_age = selector;
 
-	glm::ivec2 * cursorPosition = g_global.fuzzyValues[selector->getID()];
-	if(cursorPosition == NULL) {
+	if(g_global.m_kAge == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(*cursorPosition);
+		selector->setCursorPosFromMousePoint(g_global.m_kAge);
 	}
 	selectorListener.ageDists = selector->getDists();
 	// --------------------------------------------------------------------------
@@ -95,11 +94,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_muscleSize = selector;
 
-	cursorPosition = g_global.fuzzyValues[selector->getID()];
-	if(cursorPosition == NULL) {
+	if(g_global.m_kMuscleSize == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(*cursorPosition);
+		selector->setCursorPosFromMousePoint(g_global.m_kMuscleSize);
 	}
 	selectorListener.muscleSizeDists = selector->getDists();
 	// --------------------------------------------------------------------------
@@ -118,11 +116,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_breast = selector;
 
-	cursorPosition = g_global.fuzzyValues[selector->getID()];
-	if(cursorPosition == NULL) {
+	if(g_global.m_kBreast == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(*cursorPosition);
+		selector->setCursorPosFromMousePoint(g_global.m_kBreast);
 	}
 	selectorListener.breastDists = selector->getDists();
 	// --------------------------------------------------------------------------
@@ -141,11 +138,10 @@ void CharacterSettingPanel::createWidgets()
 	addWidget(selector);
 	m_shape = selector;
 
-	cursorPosition = g_global.fuzzyValues[selector->getID()];
-	if(cursorPosition == NULL) {
+	if(g_global.m_kShape == InvalidPoint) {
 		selector->setCursorPos(glm::ivec2(96, 52));
 	} else {
-		selector->setCursorPosFromMousePoint(*cursorPosition);
+		selector->setCursorPosFromMousePoint(g_global.m_kShape);
 	}
 	selectorListener.shapeDists = selector->getDists();
 }
@@ -165,35 +161,39 @@ void CharacterSettingPanel::resetSlidersValues()
 
 void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 {
-	glm::ivec2 * cursorPosition = g_global.fuzzyValues[index];
-
 	for(vector<Selector *>::iterator sel_it = selectorVector.begin();
 	    sel_it != selectorVector.end(); sel_it++) {
 		Selector * tmp = (*sel_it);
 		if(tmp->getID() == index) {
-			if(cursorPosition == NULL) {
-				tmp->setCursorPos(glm::ivec2(96, 52));
-			} else {
-				tmp->setCursorPosFromMousePoint(*cursorPosition);
-			}
+
+			
+			glm::ivec2 foo = InvalidPoint;
 
 			switch(index) {
 			case kAge:
+				foo = g_global.m_kAge;
 				selectorListener.ageDists = tmp->getDists();
 				break;
-
 			case kBreast:
+				foo = g_global.m_kBreast;
 				selectorListener.breastDists = tmp->getDists();
 				break;
-
 			case kMuscleSize:
+				foo = g_global.m_kMuscleSize;
 				selectorListener.muscleSizeDists = tmp->getDists();
 				break;
-
 			case kShape:
+				foo = g_global.m_kShape;
 				selectorListener.shapeDists = tmp->getDists();
 				break;
 			}
+			
+			if(foo == InvalidPoint) {
+				tmp->setCursorPos(glm::ivec2(96, 52));
+			} else {
+				tmp->setCursorPosFromMousePoint(foo);
+			}
+			
 
 			break;
 		}

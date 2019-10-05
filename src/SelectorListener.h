@@ -38,7 +38,7 @@ using namespace mhgui;
 class SelectorListener : public AbstractListener
 {
 public:
-	void calcWidgetTargets(Selector & selectorSource);
+	void calcWidgetTargets(Selector & selectorSource, glm::ivec2 inMousePos);
 	void calcWidgetTargetsFOO();
 
 	glm::ivec2 oldPos;

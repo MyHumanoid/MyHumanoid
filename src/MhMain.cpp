@@ -181,7 +181,7 @@ static void loadBodySettings(const string & filename)
 	bool         state = bodyset.load(filename);
 
 	if(state) {
-		g_global.fuzzyValues.clear();
+		g_global.clearFuzzy();
 		state = loadSelectorsPositions(filename);
 
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
@@ -287,7 +287,7 @@ static void ResetMeshMorph()
 
 	loadDefaultBodySettings();
 	
-	g_global.fuzzyValues.clear();
+	g_global.clearFuzzy();
 }
 
 // ================================================================================================
