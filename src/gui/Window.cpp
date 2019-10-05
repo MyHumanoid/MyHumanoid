@@ -34,7 +34,6 @@
 
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"
-#include "gui/Size.h"
 #include "gui/Window.h"
 
 #include "gui/Panel.h"
@@ -191,7 +190,7 @@ void Window::initWindow()
 }
 
 // Glut call back functions
-void Window::reshape(const Size & inSize, const Camera & inCamera)
+void Window::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 {
 	cgutils::reshape(inSize, inCamera);
 

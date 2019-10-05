@@ -30,7 +30,6 @@
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"
 #include "gui/Rect.h"
-#include "gui/Size.h"
 #include "gui/Texture.h"
 
 #include "log/log.h"
@@ -54,7 +53,7 @@ void cgutils::drawLine2D(const glm::ivec2 & start, const glm::ivec2 & end, const
 }
 
 /*! Draw a grid on XY plane.*/
-void cgutils::drawGrid(const Size & inSize, const int xMargin, const int yMargin, const Color & c,
+void cgutils::drawGrid(const glm::ivec2 & inSize, const int xMargin, const int yMargin, const Color & c,
                        const Color & b, int squareSize)
 {
 	int i;
@@ -265,7 +264,7 @@ void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar
 }
 
 // Glut call back functions
-void cgutils::reshape(const Size & inSize, const Camera & inCamera)
+void cgutils::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 {
 	glViewport(0, 0, inSize.x, inSize.y);
 	glMatrixMode(GL_PROJECTION);

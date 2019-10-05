@@ -29,7 +29,6 @@
 #include <iostream>
 #include <stdint.h>
 #include <glm/glm.hpp>
-#include "Size.h"
 
 namespace mhgui
 {
@@ -50,7 +49,7 @@ public:
 	Rect & operator=(const Rect & inPoint);
 
 	const glm::ivec2 & getPos() const { return pos; }
-	const Size &  getSize() const { return size; }
+	const glm::ivec2 &  getSize() const { return size; }
 
 	int32_t getX() const { return pos.x; }
 	int32_t getY() const { return pos.y; }
@@ -58,7 +57,7 @@ public:
 	int32_t getWidth() const { return size.x; }
 	int32_t getHeight() const { return size.y; }
 	
-	bool isEmpty() const { return size == Size(0); }
+	bool isEmpty() const { return size == glm::ivec2(0); }
 
 	/// Checks whether two rectangles are identical
 	bool operator==(const Rect & inRect) const;
@@ -72,12 +71,12 @@ public:
 	void moveBy(const glm::ivec2 & inDeltaPos);
 
 	/// Sets the size
-	void resizeTo(const Size & inSize);
+	void resizeTo(const glm::ivec2 & inSize);
 	/** \brief Changes the size
 	 *
 	 * Wrapper for Size::resizeBy().
 	 */
-	void resizeBy(const Size & inDeltaSize);
+	void resizeBy(const glm::ivec2 & inDeltaSize);
 
 	/** \brief Makes this rectangle smaller by removing an outer border
 	 *
@@ -91,7 +90,7 @@ public:
 
 private:
 	glm::ivec2 pos;
-	Size  size;
+	glm::ivec2  size;
 
 }; // class Rect
 
@@ -136,12 +135,12 @@ inline void Rect::moveBy(const glm::ivec2 & inDeltaPos)
 	pos += inDeltaPos;
 }
 
-inline void Rect::resizeTo(const Size & inSize)
+inline void Rect::resizeTo(const glm::ivec2 & inSize)
 {
 	size = inSize;
 }
 
-inline void Rect::resizeBy(const Size & inDeltaSize)
+inline void Rect::resizeBy(const glm::ivec2 & inDeltaSize)
 {
 	size += inDeltaSize;
 }
@@ -149,7 +148,7 @@ inline void Rect::resizeBy(const Size & inDeltaSize)
 inline void Rect::inset(int32_t inInsetX, int32_t inInsetY)
 {
 	moveBy(glm::ivec2(inInsetX, inInsetY));
-	resizeBy(Size(-2 * inInsetX, -2 * inInsetY));
+	resizeBy(glm::ivec2(-2 * inInsetX, -2 * inInsetY));
 }
 
 inline bool Rect::isHitBy(const glm::ivec2 & inPoint) const

@@ -76,7 +76,7 @@ void Component::setPosition(const glm::ivec2 & inPos)
 	absoluteGeometry.moveBy(zeroPoint);
 }
 
-void Component::setSize(const Size & inSize)
+void Component::setSize(const glm::ivec2 & inSize)
 {
 	absoluteGeometry.resizeTo(inSize);
 	geometry.resizeTo(inSize);

@@ -50,7 +50,6 @@
 #include <gui/GLUTWrapper.h>
 #include <gui/Image.h>
 #include <gui/Panel.h>
-#include <gui/Size.h>
 #include <gui/Widget.h>
 #include <gui/Window.h>
 
@@ -788,7 +787,7 @@ static void display()
 static void reshape(int w, int h)
 {
 	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-	mainWindow.reshape(Size(w, h), *g_global.camera);
+	mainWindow.reshape(glm::ivec2(w, h), *g_global.camera);
 	g_global.camera->reshape(w, h);
 }
 

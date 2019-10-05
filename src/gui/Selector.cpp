@@ -145,7 +145,7 @@ void Selector::draw()
 
 	// cursor
 	const glm::ivec2 & pos  = getAbsolutePosition();
-	const Size &  size = getSize();
+	const glm::ivec2 &  size = getSize();
 	const Rect    cur(cursorPos.x + pos.x - HALF_CURSOR_SIZE,
 						   (size.y + pos.y) - cursorPos.y -
 								   HALF_CURSOR_SIZE,

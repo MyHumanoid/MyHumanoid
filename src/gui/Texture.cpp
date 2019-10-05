@@ -28,7 +28,6 @@
 #include "gui/Texture.h"
 #include "gui/ImageData.h"
 #include "gui/Rect.h"
-#include "gui/Size.h"
 
 #include <assert.h>
 #include <stdint.h>
@@ -44,11 +43,11 @@ namespace mhgui
 class TextureCharacteristics
 {
 public:
-	TextureCharacteristics(const Size & inSize, const glm::ivec2 & inOffset,
+	TextureCharacteristics(const glm::ivec2 & inSize, const glm::ivec2 & inOffset,
 	                       const buffer_color_rgb_t * inDataBuffer, size_t inBytesPerRow,
 	                       GLuint inGLTextureId);
 
-	TextureCharacteristics(const Size & inSize, const glm::ivec2 & inOffset,
+	TextureCharacteristics(const glm::ivec2 & inSize, const glm::ivec2 & inOffset,
 	                       const buffer_color_rgba_t * inDataBuffer, size_t inBytesPerRow,
 	                       GLuint inGLTextureId);
 
@@ -61,7 +60,7 @@ private:
 
 public:
 	// the data members
-	Size   mSize;
+	glm::ivec2   mSize;
 	glm::ivec2  mOffset;
 	GLuint mTextureId;
 }; // class TextureCharacteristics
@@ -70,7 +69,7 @@ public:
 /**
  */
 /* ========================================================================== */
-TextureCharacteristics::TextureCharacteristics(const Size & inSize, const glm::ivec2 & inOffset,
+TextureCharacteristics::TextureCharacteristics(const glm::ivec2 & inSize, const glm::ivec2 & inOffset,
                                                const buffer_color_rgba_t * inDataBuffer,
                                                size_t inBytesPerRow, GLuint inGLTextureId)
         : mSize(inSize)
@@ -84,7 +83,7 @@ TextureCharacteristics::TextureCharacteristics(const Size & inSize, const glm::i
 /**
  */
 /* ========================================================================== */
-TextureCharacteristics::TextureCharacteristics(const Size & inSize, const glm::ivec2 & inOffset,
+TextureCharacteristics::TextureCharacteristics(const glm::ivec2 & inSize, const glm::ivec2 & inOffset,
                                                const buffer_color_rgb_t * inDataBuffer,
                                                size_t inBytesPerRow, GLuint inGLTextureId)
         : mSize(inSize)
@@ -428,12 +427,12 @@ bool Texture::buildTiledImageBuffers(const std::string & inFilename)
 		for(size_t idxx = 0; idxx < mCountTilesX; ++idxx) {
 			if(textureData.hasAlpha()) {
 				mTextureCharacteristics[idx] = new TextureCharacteristics(
-				        Size(sizesX[idxx], sizesY[idxy]), glm::ivec2(offsetX, offsetY),
+				        glm::ivec2(sizesX[idxx], sizesY[idxy]), glm::ivec2(offsetX, offsetY),
 				        (buffer_color_rgba_t *)textureData.getData(),
 				        textureData.getBytesPerRow(), textureIds[idx]);
 			} else {
 				mTextureCharacteristics[idx] = new TextureCharacteristics(
-				        Size(sizesX[idxx], sizesY[idxy]), glm::ivec2(offsetX, offsetY),
+				        glm::ivec2(sizesX[idxx], sizesY[idxy]), glm::ivec2(offsetX, offsetY),
 				        (buffer_color_rgb_t *)textureData.getData(),
 				        textureData.getBytesPerRow(), textureIds[idx]);
 			}

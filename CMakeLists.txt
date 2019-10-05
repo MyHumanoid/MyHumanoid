@@ -95,8 +95,6 @@ set(gui_sources
 	src/gui/Rect.cpp
 	src/gui/Selector.h
 	src/gui/Selector.cpp
-	src/gui/Size.h
-	src/gui/Size.cpp
 	src/gui/Texture.h
 	src/gui/Texture.cpp
 	src/gui/Widget.h

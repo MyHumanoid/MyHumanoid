@@ -78,7 +78,7 @@ public:
 	// void toggleFullscreen (); --> this needs to be implemented!
 
 	/// For a GLUT callback
-	void reshape(const Size & inSize, const Camera & inCamera);
+	void reshape(const glm::ivec2 & inSize, const Camera & inCamera);
 
 	void setCamera(Camera * p_camera);
 
