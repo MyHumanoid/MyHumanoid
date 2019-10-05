@@ -55,7 +55,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
 
         textureIsInited(false)
         , textureDisabledIsInited(false)
-        , textureCursorIsInited(false)
         ,
 
         selectorSysListener(new SelectorSysListener())
@@ -70,8 +69,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         , linesColor(0.0, 0.0, 0.0, 1.0)
         , backgroundColor(1.0, 1.0, 1.0, 1.0)
         , cursorColor(1.0, 0.0, 0.0, 1.0)
-        , cursorTexture()
-        , cursorFilename()
 {
 
 	setSysListener(selectorSysListener);
@@ -146,11 +143,6 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 	setCursorPos(tmp);
 }
 
-void Selector::setCursorTexture(const std::string & inFilename)
-{
-	cursorFilename = inFilename;
-}
-
 void Selector::show()
 {
 	setVisible(true);
@@ -168,12 +160,6 @@ const Texture & Selector::getTextures()
 {
 	lazyLoadTexture();
 	return enabled ? texture : textureDisabled;
-}
-
-const Texture & Selector::getCursorTextures()
-{
-	lazyLoadCursorTexture();
-	return cursorTexture;
 }
 
 std::vector<float> Selector::getDists() const
@@ -219,11 +205,8 @@ void Selector::draw()
                                (size.getHeight() + pos.y) - cursorPos.y -
                                        HALF_CURSOR_SIZE,
                                CURSOR_SIZE, CURSOR_SIZE);
-		if(lazyLoadCursorTexture()) {
-			cgutils::drawSquareFillTexture(cur, alpha, getCursorTextures());
-		} else {
-			cgutils::drawSquareFill(cur, cursorColor);
-		}
+		
+		cgutils::drawSquareFill(cur, cursorColor);
 
 		if(showLines) {
 			// lines
@@ -267,31 +250,6 @@ bool Selector::lazyLoadTexture()
 	bool &    isInited = enabled ? textureIsInited : textureDisabledIsInited;
 	string &  filename = enabled ? imageFilename : imageFilenameDisabled;
 	Texture & text     = enabled ? texture : textureDisabled;
-
-	if(filename.empty())
-		return false;
-
-	if(isInited) // already loaded?
-		return true;
-
-	isInited = true;
-
-	// read the PNG file using pngLoad
-	// raw data from PNG file is in image buffer
-	if(text.load(filename) == false) {
-		cerr << "(pngLoad) " << filename << " FAILED" << endl;
-		;
-		return false;
-	}
-
-	return true;
-}
-
-bool Selector::lazyLoadCursorTexture()
-{
-	bool &    isInited = textureCursorIsInited;
-	string &  filename = cursorFilename;
-	Texture & text     = cursorTexture;
 
 	if(filename.empty())
 		return false;

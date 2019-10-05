@@ -61,8 +61,6 @@ public:
 	bool textureIsInited; // used by lazyLoadTexture
 	bool textureDisabledIsInited;
 
-	bool textureCursorIsInited;
-
 	SelectorSysListener * selectorSysListener;
 	float                 alpha;
 
@@ -83,9 +81,6 @@ public:
 	Color linesColor;
 	Color backgroundColor;
 	Color cursorColor;
-
-	Texture cursorTexture;
-	string  cursorFilename;
 
 	// intentionally not implemented
 	Selector(const Selector &);
@@ -114,11 +109,8 @@ public:
 	void                setCursorColor(const Color & inColor) { cursorColor = inColor; }
 	void                setBackgroundColor(const Color & inColor) { backgroundColor = inColor; }
 	void                setLinesColor(const Color & inColor) { linesColor = inColor; }
-	void                setCursorTexture(const string & inFilename);
 	void                setLabels(const std::vector<string> & inLabels) { labels = inLabels; }
 	std::vector<string> getLabels() { return labels; }
-
-	const Texture & getCursorTextures(); // return the cursor textureID
 
 	virtual void show();
 	virtual void hide();

@@ -65,7 +65,6 @@ void CharacterSettingPanel::createWidgets()
 
 	selector = new Selector(kAge,
 	                        searchPixmapFile("ui/age_selector.png"), Rect(0, 0, 192, 104));
-	selector->setCursorTexture(searchPixmapFile("ui/age_cursor.png"));
 	selector->setPoints(2, 5);
 	selector->setListener(&selectorListener);
 	selector->setShowLines(false);
@@ -87,7 +86,6 @@ void CharacterSettingPanel::createWidgets()
 	selector =
 	        new Selector(kMuscleSize,
 	                     searchPixmapFile("ui/muscle_size_selector.png"), Rect(0, 0, 192, 104));
-	selector->setCursorTexture(searchPixmapFile("ui/muscle_size_cursor.png"));
 	selector->setPoints(2, 2);
 	selector->setListener(&selectorListener);
 	selectorVector.push_back(selector);
@@ -107,7 +105,6 @@ void CharacterSettingPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	selector = new Selector(kBreast,
 	                        searchPixmapFile("ui/breast_selector.png"), Rect(0, 0, 192, 104));
-	selector->setCursorTexture(searchPixmapFile("ui/breast_cursor.png"));
 	selector->setPoints(2, 2);
 	selector->setListener(&selectorListener);
 	selectorVector.push_back(selector);
@@ -127,7 +124,6 @@ void CharacterSettingPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	selector = new Selector(kShape,
 	                        searchPixmapFile("ui/shape_selector.png"), Rect(0, 0, 192, 104));
-	selector->setCursorTexture(searchPixmapFile("ui/shape_cursor.png"));
 	selector->setPoints(2, 2);
 	selector->setListener(&selectorListener);
 	selectorVector.push_back(selector);
