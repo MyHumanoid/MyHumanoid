@@ -251,9 +251,7 @@ void loadDefaultBodySettings()
 		
 		g_global.m_comp = bodyset.m_comp;
 		
-		CharacterSettingPanel * tmpPanel = mhgui::g_mainWindow->characterSettingPanel;
-		
-		tmpPanel->updateUi();
+		mhgui::g_mainWindow->characterSettingPanel->updateUi();
 	}
 
 	if(state) {

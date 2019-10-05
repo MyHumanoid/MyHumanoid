@@ -1031,16 +1031,13 @@ int main(int argc, char ** argv)
 
 	init = false;
 	mhgui::g_mainWindow->setCamera(g_global.camera);
-
-	// Add panels to mainwindow
 	mhgui::g_mainWindow->addPanel(mhgui::g_mainWindow->characterSettingPanel);
-
-	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
-	g_global.camera->move(0, 0, -125.0f);
-
 	mhgui::g_mainWindow->characterSettingPanel->createWidgets();
 	mhgui::g_mainWindow->characterSettingPanel->show_all();
-
+	
+	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
+	g_global.camera->move(0, 0, -125.0f);
+	
 	glutDisplayFunc(display);
 	glutTimerFunc(1000, timerTrigger, 1); // Autozoom
 	glutCloseFunc([]() -> void {
