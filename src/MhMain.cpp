@@ -822,7 +822,6 @@ static void special(int key)
 			g_global.camera->move(1, 0, 0);
 			break;
 		}
-	glutPostRedisplay();
 }
 
 static void keyboard(unsigned char key)
@@ -873,8 +872,6 @@ static void keyboard(unsigned char key)
 		default:
 			break;
 		}
-	
-	glutPostRedisplay();
 }
 
 static void mouse(int button, int state, int x, int y)
@@ -930,8 +927,6 @@ static void mouse(int button, int state, int x, int y)
 		}
 	}
 	// mainWindow.isMouseClickPanel  (Point(x, y), button, state);
-
-	glutPostRedisplay();
 }
 
 static void activeMotion(int x, int y)
@@ -943,7 +938,6 @@ static void activeMotion(int x, int y)
 		} else {
 			g_global.camera->rotateMouse(x, y);
 		}
-		glutPostRedisplay();
 	}
 }
 

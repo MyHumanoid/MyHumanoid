@@ -97,9 +97,6 @@ bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, mhgui::Compon
 	
 	selectorSource->setCursorPosFromMousePoint(inMousePos);
 	
-	glutPostRedisplay();
-	
-	
 	int xDist = abs(oldPos.x - inMousePos.x);
 	int yDist = abs(oldPos.y - inMousePos.y);
 	
@@ -123,9 +120,6 @@ bool SelectorListener::mousePressed(const glm::ivec2 & inMousePos, int button, m
 	
 	selectorSource->setActive(true);
 	selectorSource->setClickConsumed(false);
-	
-	glutPostRedisplay();
-	
 	
 	return true;
 }

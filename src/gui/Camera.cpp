@@ -278,7 +278,6 @@ bool Camera::timerTrigger()
 	float currentTime = step * kTimePerRaster;
 
 	calcForStepAnimate(currentTime / timeForMorph);
-	glutPostRedisplay();
 
 	++step;
 
