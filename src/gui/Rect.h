@@ -51,7 +51,6 @@ public:
 	const glm::ivec2 & getPos() const { return pos; }
 	const glm::ivec2 &  getSize() const { return size; }
 
-	int32_t getWidth() const { return size.x; }
 	int32_t getHeight() const { return size.y; }
 	
 	bool isEmpty() const { return size == glm::ivec2(0); }
@@ -150,7 +149,7 @@ inline void Rect::inset(int32_t inInsetX, int32_t inInsetY)
 inline bool Rect::isHitBy(const glm::ivec2 & inPoint) const
 {
 	return (((inPoint.x >= pos.x) && (inPoint.y >= pos.y)) &&
-	        ((inPoint.x < pos.x + getWidth()) &&
+	        ((inPoint.x < pos.x + size.x) &&
 	         (inPoint.y < pos.y + getHeight())));
 }
 
