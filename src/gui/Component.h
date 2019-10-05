@@ -63,7 +63,7 @@ public:
 
 	void setPosition(const glm::ivec2 & inPos);
 
-	const glm::ivec2 & getPosition() const { return geometry.getPos(); }
+	const glm::ivec2 & getPosition() const { return geometry.pos; }
 
 	void setSize(const glm::ivec2 & inSize);
 
@@ -88,7 +88,7 @@ public:
 	virtual bool isMouseDragged(const glm::ivec2 & inMousePos);
 
 protected:
-	const glm::ivec2 & getAbsolutePosition() const { return absoluteGeometry.getPos(); }
+	const glm::ivec2 & getAbsolutePosition() const { return absoluteGeometry.pos; }
 	void          setZeroPoint(const glm::ivec2 & inZero);
 	const glm::ivec2 & getZeroPoint() { return zeroPoint; }
 
