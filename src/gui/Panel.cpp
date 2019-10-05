@@ -97,8 +97,6 @@ bool Panel::addWidget(Widget * w)
 	widgetList.push_back(w);
 	++widgetListChangedCount; // mark a change of the Widget List
 
-	w->parentPanel = this;
-
 	// set widgets zero point to the panels position
 	w->setZeroPoint(getPosition());
 

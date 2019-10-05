@@ -43,15 +43,9 @@ public:
 	virtual void show()        = 0;
 	virtual void hide()        = 0;
 
-	Panel * getParentPanel() const { return parentPanel; }
-
 private: // intentionally not implemented
 	Widget(const Widget &);
 	Widget & operator=(const Widget &);
-
-private:
-	Panel *   parentPanel;
-
 
 	friend class Panel;
 };

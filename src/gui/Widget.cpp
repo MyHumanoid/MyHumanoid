@@ -36,14 +36,11 @@ namespace mhgui
 
 Widget::Widget(uint32_t inId, const Rect & inGeometry)
         : Component(inId, inGeometry)
-        , parentPanel(NULL)
 {
 }
 
 Widget::~Widget()
 {
-	if(parentPanel)
-		parentPanel->removeWidget(this);
 }
 
 void Widget::draw()
