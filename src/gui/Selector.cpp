@@ -39,6 +39,29 @@ using std::endl;
 namespace mhgui
 {
 
+void Grid::calcPoints(glm::ivec2 size, int inRows, int inCols)
+{
+	rows = inRows;
+	cols = inCols;
+	
+	points.clear();
+	
+	for(int i = 0; i < rows; i++) {
+		for(int j = 0; j < cols; j++) {
+			glm::ivec2 tmp(j * size.x / (cols - 1),
+			               i * size.y / (rows - 1));
+			points.push_back(tmp);
+		}
+	}
+	
+	float cellWidth  = size.x / (cols - 1);
+	float cellHeight = size.y / (rows - 1);
+	
+	cellRatio = cellWidth / cellHeight;
+	maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
+}
+
+
 // constructor
 Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & inGeometry)
         : Widget(inId, inGeometry)
@@ -46,9 +69,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         , imageFilename(inFilename)
         , textureIsInited(false)
         , cursorPos(0, 0)
-        , rows(2)
-        , cols(2)
-        , points()
         , backgroundColor(1.0, 1.0, 1.0, 1.0)
         , cursorColor(1.0, 0.0, 0.0, 1.0)
 {
@@ -60,24 +80,7 @@ Selector::~Selector()
 
 void Selector::setPoints(int inRows, int inCols)
 {
-	rows = inRows;
-	cols = inCols;
-
-	points.clear();
-
-	for(int i = 0; i < rows; i++) {
-		for(int j = 0; j < cols; j++) {
-			glm::ivec2 tmp(j * getSize().x / (cols - 1),
-			          i * getSize().y / (rows - 1));
-			points.push_back(tmp);
-		}
-	}
-
-	float cellWidth  = getSize().x / (cols - 1);
-	float cellHeight = getSize().y / (rows - 1);
-
-	cellRatio = cellWidth / cellHeight;
-	maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
+	grid.calcPoints(getSize(), inRows, inCols);
 }
 
 void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
@@ -94,12 +97,12 @@ std::vector<float> Selector::calculateDists() const
 {
 	std::vector<float> ret;
 
-	for(const auto & vp_it : points) {
+	for(const auto & vp_it : grid.points) {
 		const glm::ivec2 & tmp(vp_it);
 
 		float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
-                                  pow((tmp.y - cursorPos.y) * cellRatio, 2));
-		float value = 1 - (dist / maxValue);
+                                  pow((tmp.y - cursorPos.y) * grid.cellRatio, 2));
+		float value = 1 - (dist / grid.maxValue);
 		if(value > 0) {
 			ret.push_back(value);
 		} else {

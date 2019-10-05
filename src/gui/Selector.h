@@ -44,6 +44,22 @@ namespace mhgui
 class Tooltip;
 class SelectorSysListener;
 
+
+struct Grid
+{
+	int rows = 2;
+	int cols = 2;
+	
+	float maxValue;
+	float cellRatio;
+	
+	// from left-bottom point to right-up point
+	std::vector<glm::ivec2> points;
+	
+	void calcPoints(glm::ivec2 size, int inRows, int inCols);
+};
+
+
 class Selector : public Widget
 {
 public:
@@ -53,14 +69,8 @@ public:
 	bool textureIsInited; // used by lazyLoadTexture
 
 	glm::ivec2 cursorPos;
-
-	int rows;
-	int cols;
-
-	float maxValue;
-	float cellRatio;
-
-	std::vector<glm::ivec2>  points; // from left-bottom point to right-up point
+	
+	Grid grid;
 
 	Color backgroundColor;
 	Color cursorColor;
