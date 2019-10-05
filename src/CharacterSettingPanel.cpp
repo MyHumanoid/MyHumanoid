@@ -34,6 +34,7 @@
 #include <gui/Window.h>
 
 #include "Global.h"
+#include "log/log.h"
 
 using namespace std;
 using namespace Animorph;
@@ -77,6 +78,12 @@ void CharacterSettingPanel::createWidgets()
 		selector->setCursorPosFromMousePoint(g_global.m_kAge);
 	}
 	selectorListener.ageDists = selector->getDists();
+	
+	{
+		auto & r = selector->getRect();
+		log_info("kAge: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+	}
+	
 	// --------------------------------------------------------------------------
 	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/dummy_image.png"),
 	                  Rect(0, 0, 192, 10));
@@ -100,6 +107,12 @@ void CharacterSettingPanel::createWidgets()
 		selector->setCursorPosFromMousePoint(g_global.m_kMuscleSize);
 	}
 	selectorListener.muscleSizeDists = selector->getDists();
+	
+	{
+		auto & r = selector->getRect();
+		log_info("kMuscleSize: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+	}
+	
 	// --------------------------------------------------------------------------
 	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/dummy_image.png"),
 	                  Rect(0, 0, 192, 10));
@@ -122,6 +135,12 @@ void CharacterSettingPanel::createWidgets()
 		selector->setCursorPosFromMousePoint(g_global.m_kBreast);
 	}
 	selectorListener.breastDists = selector->getDists();
+	
+	{
+		auto & r = selector->getRect();
+		log_info("kBreast: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+	}
+	
 	// --------------------------------------------------------------------------
 	image = new Image(kComponentID_Dummy, searchPixmapFile("ui/dummy_image.png"),
 	                  Rect(0, 0, 192, 10));
@@ -144,6 +163,12 @@ void CharacterSettingPanel::createWidgets()
 		selector->setCursorPosFromMousePoint(g_global.m_kShape);
 	}
 	selectorListener.shapeDists = selector->getDists();
+	
+	{
+		auto & r = selector->getRect();
+		log_info("kShape: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+	}
+	
 }
 
 void CharacterSettingPanel::resetSlidersValues()
