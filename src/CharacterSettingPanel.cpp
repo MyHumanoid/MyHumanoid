@@ -362,19 +362,15 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	switch(sel->getID()) {
 	case kAge:
 		foo = g_global.m_comp.m_kAge;
-		selectorListener.ageDists = sel->calculateDists();
 		break;
 	case kBreast:
 		foo = g_global.m_comp.m_kBreast;
-		selectorListener.breastDists = sel->calculateDists();
 		break;
 	case kMuscleSize:
 		foo = g_global.m_comp.m_kMuscleSize;
-		selectorListener.muscleSizeDists = sel->calculateDists();
 		break;
 	case kShape:
 		foo = g_global.m_comp.m_kShape;
-		selectorListener.shapeDists = sel->calculateDists();
 		break;
 	}
 	
@@ -383,6 +379,22 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	} else {
 		sel->setCursorPosFromMousePoint(foo);
 	}
+	
+	switch(sel->getID()) {
+	case kAge:
+		selectorListener.ageDists = sel->calculateDists();
+		break;
+	case kBreast:
+		selectorListener.breastDists = sel->calculateDists();
+		break;
+	case kMuscleSize:
+		selectorListener.muscleSizeDists = sel->calculateDists();
+		break;
+	case kShape:
+		selectorListener.shapeDists = sel->calculateDists();
+		break;
+	}
+	
 }
 
 void CharacterSettingPanel::updateUi()
