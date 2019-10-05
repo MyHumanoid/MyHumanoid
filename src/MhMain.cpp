@@ -802,7 +802,7 @@ static void timerTrigger(int val)
 	tmp = g_global.camera->timerTrigger();
 
 	if(!g_global.camera->isPerspective()) {
-		reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
+		reshape(mainWindow.getSize().x(), mainWindow.getSize().getHeight());
 	}
 	glutTimerFunc(50, timerTrigger, 1);
 }
@@ -867,7 +867,7 @@ static void keyboard(unsigned char key)
 			break;
 		case '5':
 			g_global.camera->setPerspective(!g_global.camera->isPerspective());
-			reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
+			reshape(mainWindow.getSize().x(), mainWindow.getSize().getHeight());
 			break;
 		case '4':
 			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
@@ -912,7 +912,7 @@ static void mouse(int button, int state, int x, int y)
 		case GLUT_WHEEL_UP: // 3
 			g_global.camera->move(0, 0, 1);
 			if(!g_global.camera->isPerspective()) {
-				reshape(mainWindow.getSize().getWidth(),
+				reshape(mainWindow.getSize().x(),
 				        mainWindow.getSize().getHeight());
 			}
 			break;
@@ -922,7 +922,7 @@ static void mouse(int button, int state, int x, int y)
 		case GLUT_WHEEL_DOWN: // 4
 			g_global.camera->move(0, 0, -1);
 			if(!g_global.camera->isPerspective()) {
-				reshape(mainWindow.getSize().getWidth(),
+				reshape(mainWindow.getSize().x(),
 				        mainWindow.getSize().getHeight());
 			}
 			break;

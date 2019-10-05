@@ -62,7 +62,7 @@ void cgutils::drawGrid(const Size & inSize, const int xMargin, const int yMargin
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	glOrtho(0, inSize.getWidth(), 0, inSize.getHeight(), -20.0, 20.0);
+	glOrtho(0, inSize.x(), 0, inSize.getHeight(), -20.0, 20.0);
 	glScalef(1, -1, 1);
 	glTranslatef(0, -inSize.getHeight(), 0.0);
 	glMatrixMode(GL_MODELVIEW);
@@ -74,28 +74,28 @@ void cgutils::drawGrid(const Size & inSize, const int xMargin, const int yMargin
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glBegin(GL_LINES);
 
-	for(i = squareSize + xMargin; i < inSize.getWidth() - xMargin; i += squareSize) {
+	for(i = squareSize + xMargin; i < inSize.x() - xMargin; i += squareSize) {
 		glVertex3f(i, yMargin, 0.0);
 		glVertex3f(i, inSize.getHeight() - yMargin, 0.0);
 	}
 
 	for(i = squareSize + yMargin; i < inSize.getHeight() - yMargin; i += squareSize) {
 		glVertex3f(xMargin, i, 0.0);
-		glVertex3f(inSize.getWidth() - xMargin, i, 0.0);
+		glVertex3f(inSize.x() - xMargin, i, 0.0);
 	}
 
 	glEnd();
 
 	drawSquareFill(Rect(xMargin, yMargin, 10, 10), b);
 	drawSquareFill(
-	        Rect(inSize.getWidth() - xMargin - 10, inSize.getHeight() - yMargin - 10, 10, 10),
+	        Rect(inSize.x() - xMargin - 10, inSize.getHeight() - yMargin - 10, 10, 10),
 	        b);
 
 	drawSquareFill(Rect(xMargin, inSize.getHeight() - yMargin - 40, 3, 40), b);
 	drawSquareFill(Rect(xMargin, inSize.getHeight() - yMargin, 40, 3), b);
 
-	drawSquareFill(Rect(inSize.getWidth() - xMargin, yMargin, 3, 40), b);
-	drawSquareFill(Rect(inSize.getWidth() - xMargin - 40, yMargin, 40, 3), b);
+	drawSquareFill(Rect(inSize.x() - xMargin, yMargin, 3, 40), b);
+	drawSquareFill(Rect(inSize.x() - xMargin - 40, yMargin, 40, 3), b);
 
 	glDisable(GL_BLEND);
 
@@ -267,7 +267,7 @@ void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar
 // Glut call back functions
 void cgutils::reshape(const Size & inSize, const Camera & inCamera)
 {
-	glViewport(0, 0, inSize.getWidth(), inSize.getHeight());
+	glViewport(0, 0, inSize.x(), inSize.getHeight());
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
@@ -279,14 +279,14 @@ void cgutils::reshape(const Size & inSize, const Camera & inCamera)
 	if(inCamera.isPerspective()) // if perspective
 	{
 		if(inSize.getHeight() == 0)
-			perspectiveGL(kFOVY, static_cast<float>(inSize.getWidth()), kZNear, kZFar);
+			perspectiveGL(kFOVY, static_cast<float>(inSize.x()), kZNear, kZFar);
 		else
 			perspectiveGL(kFOVY,
-			              static_cast<float>(inSize.getWidth()) /
+			              static_cast<float>(inSize.x()) /
 			                      static_cast<float>(inSize.getHeight()),
 			              kZNear, kZFar);
 	} else {
-		float ratioW = static_cast<float>(inSize.getWidth()) /
+		float ratioW = static_cast<float>(inSize.x()) /
 		               static_cast<float>(inSize.getHeight());
 		float scalex = (zToCenter * 0.08761 *
 		                ratioW); // provvisorio: ricavare un fattore dalla distanza

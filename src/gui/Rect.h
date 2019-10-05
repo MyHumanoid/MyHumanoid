@@ -55,7 +55,7 @@ public:
 	int32_t getX() const { return pos.x; }
 	int32_t getY() const { return pos.y; }
 
-	int32_t getWidth() const { return size.getWidth(); }
+	int32_t getWidth() const { return size.x(); }
 	int32_t getHeight() const { return size.getHeight(); }
 
 	bool isEmpty() const { return size.isEmpty(); }

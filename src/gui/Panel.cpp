@@ -87,9 +87,9 @@ void Panel::calcWidgetPosition()
 			widget->setZeroPoint(getPosition());
 
 			// some references to ease access
-			const int widgetWidth  = widget->getSize().getWidth();
+			const int widgetWidth  = widget->getSize().x();
 			const int widgetHeight = widget->getSize().getHeight();
-			const int panelWidth   = getSize().getWidth();
+			const int panelWidth   = getSize().x();
 			const int panelHeight  = getSize().getHeight();
 
 			// empty space in current x row
@@ -136,9 +136,9 @@ void Panel::calcWidgetPosition()
 			widget->setZeroPoint(getPosition());
 
 			// some references to ease access
-			const int widgetWidth  = widget->getSize().getWidth();
+			const int widgetWidth  = widget->getSize().x();
 			const int widgetHeight = widget->getSize().getHeight();
-			const int panelWidth   = getSize().getWidth();
+			const int panelWidth   = getSize().x();
 			const int panelHeight  = getSize().getHeight();
 
 			// empty space in current y row

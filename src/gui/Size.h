@@ -46,7 +46,7 @@ public:
 
 	bool isEmpty() const { return ((mWidth == 0) && (mHeight == 0)); }
 
-	int32_t getWidth() const { return mWidth; }
+	int32_t x() const { return mWidth; }
 	int32_t getHeight() const { return mHeight; }
 
 	void resizeBy(const Size & inSize);
