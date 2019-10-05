@@ -40,8 +40,6 @@ public:
 	virtual ~Widget();
 
 	virtual void draw()        = 0;
-	virtual void show()        = 0;
-	virtual void hide()        = 0;
 
 private: // intentionally not implemented
 	Widget(const Widget &);

@@ -1033,7 +1033,6 @@ int main(int argc, char ** argv)
 	mhgui::g_mainWindow->setCamera(g_global.camera);
 	mhgui::g_mainWindow->addPanel(mhgui::g_mainWindow->characterSettingPanel);
 	mhgui::g_mainWindow->characterSettingPanel->createWidgets();
-	mhgui::g_mainWindow->characterSettingPanel->show_all();
 	
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
@@ -1051,7 +1050,6 @@ int main(int argc, char ** argv)
 		// mainWindow.mainLoop();
 	});
 
-	mhgui::g_mainWindow->show();
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
 	::glPolygonOffset(1.0, 1.0);

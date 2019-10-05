@@ -132,18 +132,6 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 	setCursorPos(tmp);
 }
 
-void Selector::show()
-{
-	setVisible(true);
-
-	lazyLoadTexture();
-}
-
-void Selector::hide()
-{
-	setVisible(false);
-}
-
 // Return the ID assigned
 const Texture & Selector::getTextures()
 {
@@ -174,47 +162,45 @@ std::vector<float> Selector::getDists() const
 // draw function
 void Selector::draw()
 {
-	if(isVisible()) {
-		cgutils::enableBlend();
-		if(lazyLoadTexture()) {
-			cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, getTextures());
-		} else {
-			cgutils::drawSquareFill(getAbsoluteRect(), backgroundColor);
-		}
-
-		// cursor
-		const glm::ivec2 & pos  = getAbsolutePosition();
-		const Size &  size = getSize();
-		const Rect    cur(cursorPos.x + pos.x - HALF_CURSOR_SIZE,
-                               (size.getHeight() + pos.y) - cursorPos.y -
-                                       HALF_CURSOR_SIZE,
-                               CURSOR_SIZE, CURSOR_SIZE);
-		
-		cgutils::drawSquareFill(cur, cursorColor);
-
-		if(showLines) {
-			auto linesColor = Color(0.0, 0.0, 0.0, 1.0);
-			
-			// lines
-			for(int i = 1; i < rows - 1; i++) {
-				int y = (i * size.getHeight() / (rows - 1));
-				cgutils::drawLine2D(
-				        glm::ivec2(pos.x, pos.y + y),
-				        glm::ivec2(pos.x + size.getWidth(), pos.y + y),
-				        linesColor);
-			}
-
-			for(int i = 1; i < cols - 1; i++) {
-				int x = (i * size.getWidth() / (cols - 1));
-				cgutils::drawLine2D(
-				        glm::ivec2(pos.x + x, pos.y),
-				        glm::ivec2(pos.x + x, pos.y + size.getHeight()),
-				        linesColor);
-			}
-		}
-
-		glDisable(GL_BLEND);
+	cgutils::enableBlend();
+	if(lazyLoadTexture()) {
+		cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, getTextures());
+	} else {
+		cgutils::drawSquareFill(getAbsoluteRect(), backgroundColor);
 	}
+
+	// cursor
+	const glm::ivec2 & pos  = getAbsolutePosition();
+	const Size &  size = getSize();
+	const Rect    cur(cursorPos.x + pos.x - HALF_CURSOR_SIZE,
+						   (size.getHeight() + pos.y) - cursorPos.y -
+								   HALF_CURSOR_SIZE,
+						   CURSOR_SIZE, CURSOR_SIZE);
+	
+	cgutils::drawSquareFill(cur, cursorColor);
+
+	if(showLines) {
+		auto linesColor = Color(0.0, 0.0, 0.0, 1.0);
+		
+		// lines
+		for(int i = 1; i < rows - 1; i++) {
+			int y = (i * size.getHeight() / (rows - 1));
+			cgutils::drawLine2D(
+					glm::ivec2(pos.x, pos.y + y),
+					glm::ivec2(pos.x + size.getWidth(), pos.y + y),
+					linesColor);
+		}
+
+		for(int i = 1; i < cols - 1; i++) {
+			int x = (i * size.getWidth() / (cols - 1));
+			cgutils::drawLine2D(
+					glm::ivec2(pos.x + x, pos.y),
+					glm::ivec2(pos.x + x, pos.y + size.getHeight()),
+					linesColor);
+		}
+	}
+
+	glDisable(GL_BLEND);
 }
 
 /* ==========================================================================

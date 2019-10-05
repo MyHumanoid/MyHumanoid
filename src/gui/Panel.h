@@ -48,8 +48,6 @@ public:
 
 	enum Alignment { HORIZONTAL, VERTICAL, FREE };
 
-	virtual void show();
-	virtual void hide();
 	virtual void draw();
 
 	bool     addWidget(Widget * w);
@@ -58,8 +56,6 @@ public:
 	virtual bool isMouseClickWidgets(const glm::ivec2 & inMousePos, int button, int state);
 	virtual bool isMouseDraggedWidgets(const glm::ivec2 & inMousePos);
 	virtual bool isKeyTypeWidgets(unsigned char key);
-
-	void show_all();
 
 	void      setAlignment(Alignment align) { this->align = align; }
 	Alignment getAlignment() { return align; }

@@ -57,7 +57,6 @@ Component::Component(uint32_t inId, const Rect & inGeometry)
         sysListener(NULL)
         , // No sysListener per default (use setSysListener())
         active(false)
-        , visible(false)
         , clickConsumed(false)
         , mouseOver(false)
 {
@@ -91,22 +90,6 @@ void Component::setRect(const Rect & inRect)
 	absoluteGeometry.moveBy(zeroPoint);
 
 	geometry = inRect;
-}
-
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
-void Component::show()
-{
-}
-
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
-void Component::hide()
-{
 }
 
 void Component::setZeroPoint(const glm::ivec2 & inZero)

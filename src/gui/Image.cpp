@@ -84,18 +84,6 @@ void Image::setAlpha(float a)
 	alpha = a;
 }
 
-void Image::show()
-{
-	setVisible(true);
-
-	lazyLoadTexture();
-}
-
-void Image::hide()
-{
-	setVisible(false);
-}
-
 // Return the ID assigned
 const Texture & Image::getTextures()
 {
@@ -113,17 +101,15 @@ const Texture & Image::getTexturesOver()
 // draw function
 void Image::draw()
 {
-	if(isVisible()) {
-		if(lazyLoadTexture()) {
-			cgutils::enableBlend();
-			cgutils::drawSquareFillTexture(getAbsoluteRect(), alpha, getTextures());
-			glDisable(GL_BLEND);
-		} else {
-			cgutils::enableBlend();
-			cgutils::drawSquareFill(getAbsoluteRect(),
-			                        Color(1.0, 1.0, 1.0, enabled ? alpha : alpha / 2));
-			glDisable(GL_BLEND);
-		}
+	if(lazyLoadTexture()) {
+		cgutils::enableBlend();
+		cgutils::drawSquareFillTexture(getAbsoluteRect(), alpha, getTextures());
+		glDisable(GL_BLEND);
+	} else {
+		cgutils::enableBlend();
+		cgutils::drawSquareFill(getAbsoluteRect(),
+								Color(1.0, 1.0, 1.0, enabled ? alpha : alpha / 2));
+		glDisable(GL_BLEND);
 	}
 }
 

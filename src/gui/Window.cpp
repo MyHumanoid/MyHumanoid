@@ -80,15 +80,6 @@ void Window::draw()
 	drawPanels();
 }
 
-void Window::show()
-{
-	setVisible(true);
-}
-
-void Window::hide()
-{
-}
-
 // Add panel into window
 bool Window::addPanel(Panel * p)
 {
@@ -111,19 +102,17 @@ bool Window::addPanel(Panel * p)
 // For each panel, draw all widgets
 void Window::drawPanels()
 {
-	if(isVisible()) {
-		cgutils::enableOrthographicProjection();
+	cgutils::enableOrthographicProjection();
 
-		for(list<Panel *>::const_iterator pl_it = panelList.begin();
-		    pl_it != panelList.end(); pl_it++) {
-			Panel * panel = dynamic_cast<Panel *>(*pl_it);
-			assert(panel); // assert if this is not a Panel!
+	for(list<Panel *>::const_iterator pl_it = panelList.begin();
+		pl_it != panelList.end(); pl_it++) {
+		Panel * panel = dynamic_cast<Panel *>(*pl_it);
+		assert(panel); // assert if this is not a Panel!
 
-			// printf("Drawing Panel '%s'\n", panel->getIDAsString().c_str());
-			panel->draw();
-		}
-		cgutils::disableOrthographicProjection();
+		// printf("Drawing Panel '%s'\n", panel->getIDAsString().c_str());
+		panel->draw();
 	}
+	cgutils::disableOrthographicProjection();
 };
 
 // For each panel, check if mouse is over his widgets

@@ -93,8 +93,6 @@ public:
 	void                setCursorColor(const Color & inColor) { cursorColor = inColor; }
 	void                setBackgroundColor(const Color & inColor) { backgroundColor = inColor; }
 
-	virtual void show();
-	virtual void hide();
 	virtual void draw();
 
 protected:

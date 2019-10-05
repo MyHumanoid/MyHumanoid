@@ -97,8 +97,6 @@ public:
 	bool loadPNG(const string & filename);
 
 	virtual void draw();
-	virtual void show();
-	virtual void hide();
 	
 	
 	CharacterSettingPanel * characterSettingPanel;

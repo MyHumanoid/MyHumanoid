@@ -88,8 +88,6 @@ public:
 	const Texture & getTextures();     // return the textureID
 	const Texture & getTexturesOver(); // return the textureID
 
-	virtual void show();
-	virtual void hide();
 	virtual void draw();
 
 	bool isMouseDragged(const glm::ivec2 & inMousePos);

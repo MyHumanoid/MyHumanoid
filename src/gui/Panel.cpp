@@ -67,16 +67,6 @@ bool Panel::addWidget(Widget * w)
 	return true;
 }
 
-void Panel::show()
-{
-	setVisible(true);
-}
-
-void Panel::hide()
-{
-	setVisible(false);
-}
-
 void Panel::calcWidgetPosition()
 {
 	if(align == FREE) {
@@ -132,7 +122,6 @@ void Panel::calcWidgetPosition()
 			else {
 				// set position to 0,0 and hide the widget
 				widget->setPosition(glm::ivec2(0, 0));
-				widget->hide();
 				break;
 			}
 		}
@@ -182,7 +171,6 @@ void Panel::calcWidgetPosition()
 			else {
 				// set position to 0,0 and hide the widget
 				widget->setPosition(glm::ivec2(0, 0));
-				widget->hide();
 				break;
 			}
 		}
@@ -192,165 +180,135 @@ void Panel::calcWidgetPosition()
 // Draw all widgets
 void Panel::draw()
 {
-	if(isVisible()) {
-		cgutils::enableBlend();
-		cgutils::drawSquareFill(getRect(), Color(0, 0, 0, 0));
+	cgutils::enableBlend();
+	cgutils::drawSquareFill(getRect(), Color(0, 0, 0, 0));
 
-		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
-		    wl_it++) {
-			Widget * w = (*wl_it);
+	for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		wl_it++) {
+		Widget * w = (*wl_it);
 
-			w->draw();
-		}
-		glDisable(GL_BLEND);
+		w->draw();
 	}
+	glDisable(GL_BLEND);
 }
 
 bool Panel::isMouseDraggedWidgets(const glm::ivec2 & inMousePos)
 {
-	if(isVisible()) {
-		bool dragged = false;
+	bool dragged = false;
 
-		int rememberedWidgetListChangedCount = widgetListChangedCount;
+	int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
-		    wl_it++) {
-			Widget * w = (*wl_it);
+	for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		wl_it++) {
+		Widget * w = (*wl_it);
 
-			dragged = w->isMouseDragged(inMousePos);
-			if(dragged == true) {
-				break;
-			}
+		dragged = w->isMouseDragged(inMousePos);
+		if(dragged == true) {
+			break;
+		}
 
-			/* Check if the widget List has been changed in between
-			 * (triggered by a Widget Listener for example)
-			 * If it has then "reinitialize" the iterator because it is
-			 * possible that it became invalide because of this change
-			 * of the list! */
-			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
-				rememberedWidgetListChangedCount = widgetListChangedCount;
-				wl_it = widgetList.begin(); // reinitailize the iterator
-			}
+		/* Check if the widget List has been changed in between
+		 * (triggered by a Widget Listener for example)
+		 * If it has then "reinitialize" the iterator because it is
+		 * possible that it became invalide because of this change
+		 * of the list! */
+		if(widgetListChangedCount != rememberedWidgetListChangedCount) {
+			rememberedWidgetListChangedCount = widgetListChangedCount;
+			wl_it = widgetList.begin(); // reinitailize the iterator
+		}
 
-		} // for(;;)
-		return dragged;
-	} else
-		return false;
+	} // for(;;)
+	return dragged;
 }
 
 // Check if mouse is over a widget
 bool Panel::isMouseOverWidgets(const glm::ivec2 & inMousePos)
 {
-	if(isVisible()) {
-		bool isOver = false;
+	bool isOver = false;
 
-		int rememberedWidgetListChangedCount = widgetListChangedCount;
+	int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
-		    wl_it++) {
-			Widget * w = (*wl_it);
+	for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		wl_it++) {
+		Widget * w = (*wl_it);
 
-			isOver = w->isMouseOver(inMousePos);
-			if(isOver == true) {
-				break;
-			}
-
-			/* Check if the widget List has been changed in between
-			 * (triggered by a Widget Listener for example)
-			 * If it has then "reinitialize" the iterator because it is
-			 * possible that it became invalide because of this change
-			 * of the list! */
-			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
-				rememberedWidgetListChangedCount = widgetListChangedCount;
-				wl_it = widgetList.begin(); // reinitailize the iterator
-			}
+		isOver = w->isMouseOver(inMousePos);
+		if(isOver == true) {
+			break;
 		}
-		return isOver;
-	} else
-		return false;
+
+		/* Check if the widget List has been changed in between
+		 * (triggered by a Widget Listener for example)
+		 * If it has then "reinitialize" the iterator because it is
+		 * possible that it became invalide because of this change
+		 * of the list! */
+		if(widgetListChangedCount != rememberedWidgetListChangedCount) {
+			rememberedWidgetListChangedCount = widgetListChangedCount;
+			wl_it = widgetList.begin(); // reinitailize the iterator
+		}
+	}
+	return isOver;
 }
 
 // Check if click is over a widget
 bool Panel::isMouseClickWidgets(const glm::ivec2 & inMousePos, int button, int state)
 {
 	// cerr << "isMouseClickWidgets start" << endl;
-	if(isVisible()) {
-		bool isClick = false;
+	bool isClick = false;
 
-		int rememberedWidgetListChangedCount = widgetListChangedCount;
+	int rememberedWidgetListChangedCount = widgetListChangedCount;
 
-		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
-		    wl_it++)
-		/*for (unsigned int i = 0; i < widgetList.size (); i++)*/
-		{
-			Widget * w = (*wl_it);
+	for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
+		wl_it++)
+	/*for (unsigned int i = 0; i < widgetList.size (); i++)*/
+	{
+		Widget * w = (*wl_it);
 
-			isClick = w->isMouseClick(inMousePos, button, state);
+		isClick = w->isMouseClick(inMousePos, button, state);
 
-			if(isClick == true) {
-				break;
-			}
-
-			/* Check if the widget List has been changed in between
-			 * (triggered by a Widget Listener for example)
-			 * If it has then "reinitialize" the iterator because it is
-			 * possible that it became invalide because of this change
-			 * of the list! */
-			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
-				rememberedWidgetListChangedCount = widgetListChangedCount;
-				wl_it = widgetList.begin(); // reinitailize the iterator
-			}
+		if(isClick == true) {
+			break;
 		}
 
-		return isClick;
-	} else {
-		return false;
+		/* Check if the widget List has been changed in between
+		 * (triggered by a Widget Listener for example)
+		 * If it has then "reinitialize" the iterator because it is
+		 * possible that it became invalide because of this change
+		 * of the list! */
+		if(widgetListChangedCount != rememberedWidgetListChangedCount) {
+			rememberedWidgetListChangedCount = widgetListChangedCount;
+			wl_it = widgetList.begin(); // reinitailize the iterator
+		}
 	}
+
+	return isClick;
 }
 
 // Check keyboard events
 bool Panel::isKeyTypeWidgets(unsigned char key)
 {
-	if(isVisible()) {
-		bool keyType = false;
+	bool keyType = false;
 
-		int rememberedWidgetListChangedCount = widgetListChangedCount;
-
-		list<Widget *>::const_iterator it = widgetList.begin();
-		while(it != widgetList.end()) {
-			keyType = (*it++)->isKeyType(key);
-			if(keyType == true) {
-				break;
-			}
-
-			/* Check if the widget List has been changed in between
-			 * (triggered by a Widget Listener for example)
-			 * If it has then "reinitialize" the iterator because it is
-			 * possible that it became invalide because of this change
-			 * of the list! */
-			if(widgetListChangedCount != rememberedWidgetListChangedCount) {
-				rememberedWidgetListChangedCount = widgetListChangedCount;
-				it = widgetList.begin(); // reinitailize the iterator
-			}
-		}
-		return keyType;
-	} else
-		return false;
-}
-
-void Panel::show_all()
-{
-	// show the panel itself
-	show();
+	int rememberedWidgetListChangedCount = widgetListChangedCount;
 
 	list<Widget *>::const_iterator it = widgetList.begin();
 	while(it != widgetList.end()) {
-		Widget * w = *it++;
+		keyType = (*it++)->isKeyType(key);
+		if(keyType == true) {
+			break;
+		}
 
-		assert(w);
-		// show all widgets in the current page of the panel
-		w->show();
+		/* Check if the widget List has been changed in between
+		 * (triggered by a Widget Listener for example)
+		 * If it has then "reinitialize" the iterator because it is
+		 * possible that it became invalide because of this change
+		 * of the list! */
+		if(widgetListChangedCount != rememberedWidgetListChangedCount) {
+			rememberedWidgetListChangedCount = widgetListChangedCount;
+			it = widgetList.begin(); // reinitailize the iterator
+		}
 	}
+	return keyType;
 }
 
 } // namespace mhgui

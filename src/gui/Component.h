@@ -51,7 +51,6 @@ private:
 
 	// On mouse pressed -> true; on mouse released -> false
 	mutable bool active;
-	mutable bool visible;
 
 	bool         clickConsumed;
 	mutable bool mouseOver;
@@ -82,9 +81,6 @@ public:
 	bool isActive() const { return active; }
 	void setActive(bool inActive) { active = inActive; }
 
-	bool isVisible() const { return visible; }
-	void setVisible(bool inVisible) { visible = inVisible; }
-
 	const uint32_t getID() const { return id; }
 
 	bool isLastMouseOver() const { return mouseOver; }
@@ -105,8 +101,6 @@ private: // intentionally not implemented
 
 public:
 	virtual void draw() = 0;
-	virtual void show();
-	virtual void hide();
 
 	const Rect & getAbsoluteRect() const { return absoluteGeometry; }
 

@@ -47,14 +47,4 @@ void Widget::draw()
 {
 }
 
-void Widget::show()
-{
-	setVisible(true);
-}
-
-void Widget::hide()
-{
-	setVisible(false);
-}
-
 } // namespace mhgui
