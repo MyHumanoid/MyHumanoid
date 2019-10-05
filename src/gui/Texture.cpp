@@ -107,7 +107,7 @@ TextureCharacteristics::TextureCharacteristics(const Size & inSize, const glm::i
 bool TextureCharacteristics::initData(const buffer_color_rgba_t * inDataBuffer,
                                       size_t                      inBytesPerRow)
 {
-	size_t                bufferSize = (mSize.x() * mSize.getHeight());
+	size_t                bufferSize = (mSize.x * mSize.y);
 	buffer_color_rgba_t * destBuffer = new(std::nothrow) buffer_color_rgba_t[bufferSize];
 	if(destBuffer == NULL)
 		return false;
@@ -118,8 +118,8 @@ bool TextureCharacteristics::initData(const buffer_color_rgba_t * inDataBuffer,
 	buffer_color_rgba_t * dstPtr = destBuffer;
 
 	// now copy the data
-	for(int y = 0; y < mSize.getHeight(); ++y) {
-		for(int x = 0; x < mSize.x(); ++x) {
+	for(int y = 0; y < mSize.y; ++y) {
+		for(int x = 0; x < mSize.x; ++x) {
 			dstPtr->r = srcPtr[x].r;
 			dstPtr->g = srcPtr[x].g;
 			dstPtr->b = srcPtr[x].b;
@@ -142,7 +142,7 @@ bool TextureCharacteristics::initData(const buffer_color_rgba_t * inDataBuffer,
 
 	::glTexImage2D(GL_TEXTURE_2D, 0,
 	               4, // Because four components (R, G, B, A)
-	               mSize.x(), mSize.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	               mSize.x, mSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE,
 	               destBuffer);
 
 	delete[] destBuffer;
@@ -161,7 +161,7 @@ bool TextureCharacteristics::initData(const buffer_color_rgba_t * inDataBuffer,
 /* ========================================================================== */
 bool TextureCharacteristics::initData(const buffer_color_rgb_t * inDataBuffer, size_t inBytesPerRow)
 {
-	size_t               bufferSize = (mSize.x() * mSize.getHeight());
+	size_t               bufferSize = (mSize.x * mSize.y);
 	buffer_color_rgb_t * destBuffer = new(std::nothrow) buffer_color_rgb_t[bufferSize];
 	if(destBuffer == NULL)
 		return false;
@@ -173,8 +173,8 @@ bool TextureCharacteristics::initData(const buffer_color_rgb_t * inDataBuffer, s
 	buffer_color_rgb_t * dstPtr = destBuffer;
 
 	// now copy the data
-	for(int y = 0; y < mSize.getHeight(); ++y) {
-		for(int x = 0; x < mSize.x(); ++x) {
+	for(int y = 0; y < mSize.y; ++y) {
+		for(int x = 0; x < mSize.x; ++x) {
 			dstPtr->r = srcPtr[x].r;
 			dstPtr->g = srcPtr[x].g;
 			dstPtr->b = srcPtr[x].b;
@@ -198,7 +198,7 @@ bool TextureCharacteristics::initData(const buffer_color_rgb_t * inDataBuffer, s
 
 	::glTexImage2D(GL_TEXTURE_2D, 0,
 	               3, // Because three components (R, G, B)
-	               mSize.x(), mSize.getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+	               mSize.x, mSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE,
 	               destBuffer);
 
 	delete[] destBuffer;

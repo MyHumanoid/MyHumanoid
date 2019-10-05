@@ -71,7 +71,7 @@ void drawBackground()
 	using glm::vec2;
 	
 	auto inSize = mhgui::g_mainWindow->getSize();
-	vec2 size = vec2(inSize.x(), inSize.getHeight());
+	vec2 size = vec2(inSize.x, inSize.y);
 	
 	glUseProgram(g_backgroundShader->handle);
 	GLint myLoc = glGetUniformLocation(g_backgroundShader->handle, "u_viewportResolution");

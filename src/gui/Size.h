@@ -44,34 +44,30 @@ public:
 
 	bool operator==(const Size & inSize) const;
 
-	bool isEmpty() const { return ((mWidth == 0) && (mHeight == 0)); }
-
-	int32_t x() const { return mWidth; }
-	int32_t getHeight() const { return mHeight; }
+	bool isEmpty() const { return ((x == 0) && (y == 0)); }
 
 	void resizeBy(const Size & inSize);
 
-private:
-	int32_t mWidth, mHeight;
+	int32_t x, y;
 
 }; // class Size
 
 inline Size::Size(int32_t inWidth, int32_t inHeight)
-        : mWidth(inWidth)
-        , mHeight(inHeight)
+        : x(inWidth)
+        , y(inHeight)
 {
 }
 
 inline Size::Size(const Size & inSize)
-        : mWidth(inSize.mWidth)
-        , mHeight(inSize.mHeight)
+        : x(inSize.x)
+        , y(inSize.y)
 {
 }
 
 inline Size & Size::operator=(const Size & inRHS)
 {
-	mWidth  = inRHS.mWidth;
-	mHeight = inRHS.mHeight;
+	x  = inRHS.x;
+	y = inRHS.y;
 	return *this;
 }
 
@@ -80,13 +76,13 @@ inline bool Size::operator==(const Size & inSize) const
 	if(this == &inSize) // The same object?
 		return true;
 
-	return (mWidth == inSize.mWidth && mHeight == inSize.mHeight);
+	return (x == inSize.x && y == inSize.y);
 }
 
 inline void Size::resizeBy(const Size & inSize)
 {
-	mWidth += inSize.mWidth;
-	mHeight += inSize.mHeight;
+	x += inSize.x;
+	y += inSize.y;
 }
 
 } // namespace mhgui

@@ -73,14 +73,14 @@ void Selector::setPoints(int inRows, int inCols)
 
 	for(int i = 0; i < rows; i++) {
 		for(int j = 0; j < cols; j++) {
-			glm::ivec2 tmp(j * getSize().x() / (cols - 1),
-			          i * getSize().getHeight() / (rows - 1));
+			glm::ivec2 tmp(j * getSize().x / (cols - 1),
+			          i * getSize().y / (rows - 1));
 			points.push_back(tmp);
 		}
 	}
 
-	float cellWidth  = getSize().x() / (cols - 1);
-	float cellHeight = getSize().getHeight() / (rows - 1);
+	float cellWidth  = getSize().x / (cols - 1);
+	float cellHeight = getSize().y / (rows - 1);
 
 	cellRatio = cellWidth / cellHeight;
 	maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
@@ -93,21 +93,21 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 
 	if(inMousePoint.x < getAbsolutePosition().x) {
 		x = getAbsolutePosition().x;
-	} else if(inMousePoint.x > getAbsolutePosition().x + getSize().x()) {
-		x = getAbsolutePosition().x + getSize().x();
+	} else if(inMousePoint.x > getAbsolutePosition().x + getSize().x) {
+		x = getAbsolutePosition().x + getSize().x;
 	} else {
 		x = inMousePoint.x;
 	}
 
 	if(inMousePoint.y < getAbsolutePosition().y) {
 		y = getAbsolutePosition().y;
-	} else if(inMousePoint.y > getAbsolutePosition().y + getSize().getHeight()) {
-		y = getAbsolutePosition().y + getSize().getHeight();
+	} else if(inMousePoint.y > getAbsolutePosition().y + getSize().y) {
+		y = getAbsolutePosition().y + getSize().y;
 	} else {
 		y = inMousePoint.y;
 	}
 
-	glm::ivec2 tmp(x, getAbsolutePosition().y + getSize().getHeight() - y);
+	glm::ivec2 tmp(x, getAbsolutePosition().y + getSize().y - y);
 	setCursorPos(tmp);
 }
 
@@ -152,7 +152,7 @@ void Selector::draw()
 	const glm::ivec2 & pos  = getAbsolutePosition();
 	const Size &  size = getSize();
 	const Rect    cur(cursorPos.x + pos.x - HALF_CURSOR_SIZE,
-						   (size.getHeight() + pos.y) - cursorPos.y -
+						   (size.y + pos.y) - cursorPos.y -
 								   HALF_CURSOR_SIZE,
 						   CURSOR_SIZE, CURSOR_SIZE);
 	
@@ -163,18 +163,18 @@ void Selector::draw()
 		
 		// lines
 		for(int i = 1; i < rows - 1; i++) {
-			int y = (i * size.getHeight() / (rows - 1));
+			int y = (i * size.y / (rows - 1));
 			cgutils::drawLine2D(
 					glm::ivec2(pos.x, pos.y + y),
-					glm::ivec2(pos.x + size.x(), pos.y + y),
+					glm::ivec2(pos.x + size.x, pos.y + y),
 					linesColor);
 		}
 
 		for(int i = 1; i < cols - 1; i++) {
-			int x = (i * size.x() / (cols - 1));
+			int x = (i * size.x / (cols - 1));
 			cgutils::drawLine2D(
 					glm::ivec2(pos.x + x, pos.y),
-					glm::ivec2(pos.x + x, pos.y + size.getHeight()),
+					glm::ivec2(pos.x + x, pos.y + size.y),
 					linesColor);
 		}
 	}
