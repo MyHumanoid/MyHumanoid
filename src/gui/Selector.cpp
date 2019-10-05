@@ -109,11 +109,6 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 	cursorPos = glm::ivec2(foo.x, getAbsolutePosition().y + getSize().y - foo.y);
 }
 
-std::vector<float> Selector::calculateDists() const
-{
-	return grid.calculateDists(cursorPos);
-}
-
 // draw function
 void Selector::draw()
 {

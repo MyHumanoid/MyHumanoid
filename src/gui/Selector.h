@@ -86,8 +86,6 @@ public:
 
 	void setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint);
 
-	std::vector<float> calculateDists() const;
-
 	void setPoints(int inRows, int inCols);
 
 	virtual void draw();

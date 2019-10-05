@@ -148,19 +148,19 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & selectorSource, glm::
 	switch(selectorSource.getID()) {
 	case kAge:
 		g_global.m_comp.m_kAge = inMousePos;
-		ageDists = selectorSource.calculateDists();
+		ageDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
 		break;
 	case kMuscleSize:
 		g_global.m_comp.m_kMuscleSize = inMousePos;
-		muscleSizeDists = selectorSource.calculateDists();
+		muscleSizeDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
 		break;
 	case kBreast:
 		g_global.m_comp.m_kBreast = inMousePos;
-		breastDists = selectorSource.calculateDists();
+		breastDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
 		break;
 	case kShape:
 		g_global.m_comp.m_kShape = inMousePos;
-		shapeDists = selectorSource.calculateDists();
+		shapeDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
 		break;
 	}
 	
@@ -390,16 +390,16 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	
 	switch(sel->getID()) {
 	case kAge:
-		selectorListener.ageDists = sel->calculateDists();
+		selectorListener.ageDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	case kBreast:
-		selectorListener.breastDists = sel->calculateDists();
+		selectorListener.breastDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	case kMuscleSize:
-		selectorListener.muscleSizeDists = sel->calculateDists();
+		selectorListener.muscleSizeDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	case kShape:
-		selectorListener.shapeDists = sel->calculateDists();
+		selectorListener.shapeDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	}
 	
