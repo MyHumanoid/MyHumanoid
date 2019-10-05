@@ -57,6 +57,7 @@ struct Grid
 	std::vector<glm::ivec2> points;
 	
 	void calcPoints(glm::ivec2 size, int inRows, int inCols);
+	std::vector<float> calculateDists(glm::ivec2 cursorPos) const;
 };
 
 

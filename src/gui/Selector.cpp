@@ -61,6 +61,27 @@ void Grid::calcPoints(glm::ivec2 size, int inRows, int inCols)
 	maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
 }
 
+std::vector<float> Grid::calculateDists(glm::ivec2 cursorPos) const
+{
+	std::vector<float> ret;
+	
+	for(const auto & vp_it : points) {
+		const glm::ivec2 & tmp(vp_it);
+		
+		float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
+                          pow((tmp.y - cursorPos.y) * cellRatio, 2));
+		float value = 1 - (dist / maxValue);
+		if(value > 0) {
+			ret.push_back(value);
+		} else {
+			ret.push_back(0.0f);
+		}
+	}
+	
+	return ret;
+}
+
+
 
 // constructor
 Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & inGeometry)
@@ -95,22 +116,7 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 
 std::vector<float> Selector::calculateDists() const
 {
-	std::vector<float> ret;
-
-	for(const auto & vp_it : grid.points) {
-		const glm::ivec2 & tmp(vp_it);
-
-		float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
-                                  pow((tmp.y - cursorPos.y) * grid.cellRatio, 2));
-		float value = 1 - (dist / grid.maxValue);
-		if(value > 0) {
-			ret.push_back(value);
-		} else {
-			ret.push_back(0.0f);
-		}
-	}
-
-	return ret;
+	return grid.calculateDists(cursorPos);
 }
 
 // draw function
