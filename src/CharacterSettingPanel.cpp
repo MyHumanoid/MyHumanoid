@@ -271,7 +271,9 @@ void CharacterSettingPanel::createWidgets()
 	
 	selector = new Selector(kAge,
 	                        searchPixmapFile("ui/age_selector.png"), Rect(0, 0, 192, 104));
-	selector->setPoints(2, 5);
+	
+	selector->grid.calcPoints(selector->getSize(), 2, 5);
+	
 	selector->setListener(&selectorListener);
 	m_age = selector;
 	addWidget(selector);
@@ -291,7 +293,9 @@ void CharacterSettingPanel::createWidgets()
 	selector =
 	        new Selector(kMuscleSize,
 	                     searchPixmapFile("ui/muscle_size_selector.png"), Rect(0, 0, 192, 104));
-	selector->setPoints(2, 2);
+	
+	selector->grid.calcPoints(selector->getSize(), 2, 2);
+	
 	selector->setListener(&selectorListener);
 	m_muscleSize = selector;
 	addWidget(selector);
@@ -310,7 +314,9 @@ void CharacterSettingPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	selector = new Selector(kBreast,
 	                        searchPixmapFile("ui/breast_selector.png"), Rect(0, 0, 192, 104));
-	selector->setPoints(2, 2);
+	
+	selector->grid.calcPoints(selector->getSize(), 2, 2);
+	
 	selector->setListener(&selectorListener);
 	m_breast = selector;
 	addWidget(selector);
@@ -329,7 +335,9 @@ void CharacterSettingPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	selector = new Selector(kShape,
 	                        searchPixmapFile("ui/shape_selector.png"), Rect(0, 0, 192, 104));
-	selector->setPoints(2, 2);
+	
+	selector->grid.calcPoints(selector->getSize(), 2, 2);
+	
 	selector->setListener(&selectorListener);
 	m_shape = selector;
 	addWidget(selector);

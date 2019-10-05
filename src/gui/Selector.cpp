@@ -99,11 +99,6 @@ Selector::~Selector()
 {
 }
 
-void Selector::setPoints(int inRows, int inCols)
-{
-	grid.calcPoints(getSize(), inRows, inCols);
-}
-
 void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 {
 	glm::ivec2 foo;
