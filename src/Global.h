@@ -39,8 +39,6 @@ extern Animorph::Mesh g_mesh;
 struct GlobalPaths {
 };
 
-const glm::ivec2 InvalidPoint = glm::ivec2(-666, -666);
-
 struct Global {
 	GlobalPaths paths;
 

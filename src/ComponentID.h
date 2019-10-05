@@ -27,6 +27,7 @@
 #pragma once
 
 #include <cstdint>
+#include <glm/glm.hpp>
 
 
 // Construct a integer composed from a four char literal.
@@ -51,3 +52,6 @@ static const uint32_t kBreast =
         FOUR_CHAR_CONST('B', 'r', 's', 't');
 static const uint32_t kShape =
         FOUR_CHAR_CONST('S', 'h', 'p', 'a');
+
+
+static const glm::ivec2 InvalidPoint = glm::ivec2(-666, -666);

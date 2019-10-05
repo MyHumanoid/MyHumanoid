@@ -57,8 +57,6 @@ void CreateWeightsFile();
 int ParseParameter(string cmd);
 
 void loadDefaultBodySettings();
-bool loadSelectorsPositions(const std::string & filename);
-bool loadSelectorsPositions(const std::vector<string> & strings);
 bool saveSelectorsPositions(const std::string &     filename);
 
 template <class T> struct deleteFunctor {

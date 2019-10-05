@@ -250,8 +250,12 @@ void loadDefaultBodySettings()
 
 	if(state) {
 		g_global.clearFuzzy();
-		state = loadSelectorsPositions(searchDataFile("default.bs"));
-
+		
+		g_global.m_kAge = bodyset.m_kAge;
+		g_global.m_kMuscleSize = bodyset.m_kMuscleSize;
+		g_global.m_kBreast = bodyset.m_kBreast;
+		g_global.m_kShape = bodyset.m_kShape;
+		
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
 		        kComponentID_CharacterSettingPanel);
 		
@@ -262,80 +266,6 @@ void loadDefaultBodySettings()
 		g_mesh.doMorph(bodyset);
 		g_mesh.calcNormals();
 	}
-}
-
-bool loadSelectorsPositions(const std::string & filename)
-{
-	char       buffer[MAX_LINE];
-	char       tmp[MAX_LINE];
-	char       tmp1[MAX_LINE];
-	uint32_t   id;
-	int        x, y;
-	FileReader file_reader;
-
-	file_reader.open(filename);
-
-	if(!file_reader)
-		return false;
-
-	while(file_reader.getline(buffer, MAX_LINE)) {
-		if(sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			
-			switch(id) {
-			case kAge:
-				g_global.m_kAge = glm::ivec2(x, y);
-				break;
-			case kMuscleSize:
-				g_global.m_kMuscleSize = glm::ivec2(x, y);
-				break;
-			case kBreast:
-				g_global.m_kBreast = glm::ivec2(x, y);
-				break;
-			case kShape:
-				g_global.m_kShape = glm::ivec2(x, y);
-				break;
-			default:
-				log_error("Unexpected value");
-			}
-
-		}
-	}
-
-	return true;
-}
-
-bool loadSelectorsPositions(const std::vector<string> & strings)
-{
-	char     buffer[MAX_LINE];
-	char     tmp[MAX_LINE];
-	char     tmp1[MAX_LINE];
-	uint32_t id;
-	int      x, y;
-
-	for(vector<string>::const_iterator it = strings.begin(); it != strings.end(); it++) {
-		if(sscanf((*it).c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			
-			switch(id) {
-			case kAge:
-				g_global.m_kAge = glm::ivec2(x, y);
-				break;
-			case kMuscleSize:
-				g_global.m_kMuscleSize = glm::ivec2(x, y);
-				break;
-			case kBreast:
-				g_global.m_kBreast = glm::ivec2(x, y);
-				break;
-			case kShape:
-				g_global.m_kShape = glm::ivec2(x, y);
-				break;
-			default:
-				log_error("Unexpected value");
-			}
-			
-		}
-	}
-
-	return true;
 }
 
 bool saveSelectorsPositions(const std::string & filename)

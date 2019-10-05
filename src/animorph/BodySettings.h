@@ -34,6 +34,8 @@
 #include <map>
 #include <vector>
 
+#include "ComponentID.h"
+
 namespace Animorph
 {
 
@@ -71,8 +73,11 @@ public:
 	 * \return false if file couldn't be saved
 	 */
 	bool save(const std::string & filename);
-
-	std::vector<string> cursorPositions;
+	
+	glm::ivec2 m_kAge = InvalidPoint;
+	glm::ivec2 m_kMuscleSize = InvalidPoint;
+	glm::ivec2 m_kBreast = InvalidPoint;
+	glm::ivec2 m_kShape = InvalidPoint;
 };
 
 } // namespace Animorph

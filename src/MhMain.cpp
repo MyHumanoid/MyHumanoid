@@ -182,7 +182,11 @@ static void loadBodySettings(const string & filename)
 
 	if(state) {
 		g_global.clearFuzzy();
-		state = loadSelectorsPositions(filename);
+		
+		g_global.m_kAge = bodyset.m_kAge;
+		g_global.m_kMuscleSize = bodyset.m_kMuscleSize;
+		g_global.m_kBreast = bodyset.m_kBreast;
+		g_global.m_kShape = bodyset.m_kShape;
 
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
 		        kComponentID_CharacterSettingPanel);
@@ -314,7 +318,13 @@ void loadCharacter(const std::string & character_name)
 	if(f != charactersmap.end()) {
 		g_mesh.doMorph(f->second);
 		g_mesh.calcNormals();
-		loadSelectorsPositions(f->second.cursorPositions);
+		
+		auto & bodyset = f->second;
+		
+		g_global.m_kAge = bodyset.m_kAge;
+		g_global.m_kMuscleSize = bodyset.m_kMuscleSize;
+		g_global.m_kBreast = bodyset.m_kBreast;
+		g_global.m_kShape = bodyset.m_kShape;
 		
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)g_mainWindow->getPanel(
 		    kComponentID_CharacterSettingPanel);

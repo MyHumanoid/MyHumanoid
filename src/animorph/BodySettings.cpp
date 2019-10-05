@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+#include "log/log.h"
+
 using namespace std;
 using namespace Animorph;
 
@@ -62,7 +64,29 @@ void BodySettings::fromStream(std::ifstream & in_stream)
 				cerr << "Not allowed line in BodySetting:" << endl
 				     << buffer << endl;
 			} else {
-				cursorPositions.push_back(string(buffer));
+				
+				uint32_t id;
+				int      x, y;
+				if(sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
+					
+					switch(id) {
+					case kAge:
+						m_kAge = glm::ivec2(x, y);
+						break;
+					case kMuscleSize:
+						m_kMuscleSize = glm::ivec2(x, y);
+						break;
+					case kBreast:
+						m_kBreast = glm::ivec2(x, y);
+						break;
+					case kShape:
+						m_kShape = glm::ivec2(x, y);
+						break;
+					default:
+						log_error("Unexpected value");
+					}
+				}
+				
 			}
 		}
 	}
