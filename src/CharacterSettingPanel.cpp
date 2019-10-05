@@ -285,7 +285,7 @@ void CharacterSettingPanel::createWidgets()
 	
 	{
 		auto & r = selector->getRect();
-		log_info("kAge: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+		log_info("kAge: {} {} {} {}", r.pos.x, r.getY(), r.getWidth(), r.getHeight());
 	}
 	
 	// --------------------------------------------------------------------------
@@ -305,7 +305,7 @@ void CharacterSettingPanel::createWidgets()
 
 	{
 		auto & r = selector->getRect();
-		log_info("kMuscleSize: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+		log_info("kMuscleSize: {} {} {} {}", r.pos.x, r.getY(), r.getWidth(), r.getHeight());
 	}
 	
 	// --------------------------------------------------------------------------
@@ -324,7 +324,7 @@ void CharacterSettingPanel::createWidgets()
 
 	{
 		auto & r = selector->getRect();
-		log_info("kBreast: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+		log_info("kBreast: {} {} {} {}", r.pos.x, r.getY(), r.getWidth(), r.getHeight());
 	}
 	
 	// --------------------------------------------------------------------------
@@ -343,7 +343,7 @@ void CharacterSettingPanel::createWidgets()
 
 	{
 		auto & r = selector->getRect();
-		log_info("kShape: {} {} {} {}", r.getX(), r.getY(), r.getWidth(), r.getHeight());
+		log_info("kShape: {} {} {} {}", r.pos.x, r.getY(), r.getWidth(), r.getHeight());
 	}
 	
 	updateUi();

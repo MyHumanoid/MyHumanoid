@@ -51,7 +51,6 @@ public:
 	const glm::ivec2 & getPos() const { return pos; }
 	const glm::ivec2 &  getSize() const { return size; }
 
-	int32_t getX() const { return pos.x; }
 	int32_t getY() const { return pos.y; }
 
 	int32_t getWidth() const { return size.x; }
@@ -88,7 +87,6 @@ public:
 	/// Checks whether a particular Point is located in this rectangle
 	bool isHitBy(const glm::ivec2 & inPoint) const;
 
-private:
 	glm::ivec2 pos;
 	glm::ivec2  size;
 
@@ -153,8 +151,8 @@ inline void Rect::inset(int32_t inInsetX, int32_t inInsetY)
 
 inline bool Rect::isHitBy(const glm::ivec2 & inPoint) const
 {
-	return (((inPoint.x >= getX()) && (inPoint.y >= getY())) &&
-	        ((inPoint.x < getX() + getWidth()) &&
+	return (((inPoint.x >= pos.x) && (inPoint.y >= getY())) &&
+	        ((inPoint.x < pos.x + getWidth()) &&
 	         (inPoint.y < getY() + getHeight())));
 }
 

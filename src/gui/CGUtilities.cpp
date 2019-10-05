@@ -227,13 +227,13 @@ void cgutils::drawSquareFill(const mhgui::Rect & inRect, const Color & c)
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0);
-	glVertex3f(inRect.getX(), inRect.getY(), zlayer);
+	glVertex3f(inRect.pos.x, inRect.getY(), zlayer);
 	glTexCoord2f(1, 0);
-	glVertex3f(inRect.getX() + inRect.getWidth(), inRect.getY(), zlayer);
+	glVertex3f(inRect.pos.x + inRect.getWidth(), inRect.getY(), zlayer);
 	glTexCoord2f(1, 1);
-	glVertex3f(inRect.getX() + inRect.getWidth(), inRect.getY() + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.pos.x + inRect.getWidth(), inRect.getY() + inRect.getHeight(), zlayer);
 	glTexCoord2f(0, 1);
-	glVertex3f(inRect.getX(), inRect.getY() + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.pos.x, inRect.getY() + inRect.getHeight(), zlayer);
 	glEnd();
 }
 
@@ -243,11 +243,11 @@ void cgutils::drawSquare(const Rect & inRect, const Color & c)
 
 	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(inRect.getX(), inRect.getY() + 1, zlayer);
-	glVertex3f(inRect.getX() - 1 + inRect.getWidth(), inRect.getY(), zlayer);
-	glVertex3f(inRect.getX() - 1 + inRect.getWidth(), inRect.getY() + inRect.getHeight(),
+	glVertex3f(inRect.pos.x, inRect.getY() + 1, zlayer);
+	glVertex3f(inRect.pos.x - 1 + inRect.getWidth(), inRect.getY(), zlayer);
+	glVertex3f(inRect.pos.x - 1 + inRect.getWidth(), inRect.getY() + inRect.getHeight(),
 	           zlayer);
-	glVertex3f(inRect.getX(), inRect.getY() + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.pos.x, inRect.getY() + inRect.getHeight(), zlayer);
 	glEnd();
 }
 
@@ -307,7 +307,7 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	glutInitContextFlags(/*GLUT_FORWARD_COMPATIBLE | */ GLUT_DEBUG);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowSize(rect.getWidth(), rect.getHeight());
-	glutInitWindowPosition(rect.getX(), rect.getY());
+	glutInitWindowPosition(rect.pos.x, rect.getY());
 	int winID = glutCreateWindow(title);
 
 	glewInit();

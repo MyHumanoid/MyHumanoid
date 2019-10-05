@@ -310,7 +310,7 @@ void Texture::mapToGeometry(const Rect & inRect, float inZLayer) const
 	float y = (float)inRect.getY();
 	for(size_t idxy = 0; idxy < mCountTilesY; ++idxy) {
 		float height = getFragmentTextureHeightInPercent(idxy) * floatHeight;
-		float x      = (float)inRect.getX();
+		float x      = (float)inRect.pos.x;
 		for(size_t idxx = 0; idxx < mCountTilesX; ++idxx) {
 			float width = getFragmentTextureWidthInPercent(idxx) * floatWidth;
 
