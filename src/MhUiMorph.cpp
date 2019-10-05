@@ -220,7 +220,7 @@ void DisplayMorphTargets()
 	{
 		ImGui::BeginChild("Morph Targets", vec2(140, 450), false);
 
-		BodySettings bodyset = g_mesh.morphTargets();
+		Animorph::BodySettings bodyset = g_mesh.morphTargets();
 
 		for(const auto & targetEntry : g_mesh.targets()) {
 			const string & target_name(targetEntry.first);

@@ -34,8 +34,7 @@
 #include <cstdio>
 #include <iostream>
 
-using namespace Animorph;
-using namespace std;
+using mhgui::Component;
 
 namespace mhgui
 {

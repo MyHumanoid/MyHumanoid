@@ -3,7 +3,8 @@
 
 #include "Vfs.h"
 
-using namespace Animorph;
+namespace Animorph
+{
 
 DirectoryList::DirectoryList()
         : file_list()
@@ -82,4 +83,6 @@ const StringList & DirectoryList::getDirectoryList()
 void DirectoryList::setFileType(FileType file_type)
 {
 	this->file_type = file_type;
+}
+
 }

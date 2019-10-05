@@ -36,8 +36,6 @@
 
 #define MAX_LINE 3500
 
-using namespace Animorph;
-using namespace std;
 
 namespace mhgui
 {
@@ -131,18 +129,18 @@ void Camera::rotate(float theta, Animorph::RotateAxis axis)
 {
 	Matrix rotate;
 
-	if(axis == X_AXIS)
+	if(axis == Animorph::X_AXIS)
 		mAngleX += theta;
-	else if(axis == Y_AXIS)
+	else if(axis == Animorph::Y_AXIS)
 		mAngleY += theta;
-	else if(axis == Z_AXIS)
+	else if(axis == Animorph::Z_AXIS)
 		mAngleZ += theta;
 
-	rotate.setRotation(mAngleY, Y_AXIS);
+	rotate.setRotation(mAngleY, Animorph::Y_AXIS);
 	cam_pos = rotate;
-	rotate.setRotation(mAngleZ, Z_AXIS);
+	rotate.setRotation(mAngleZ, Animorph::Z_AXIS);
 	cam_pos = rotate * cam_pos;
-	rotate.setRotation(mAngleX, X_AXIS);
+	rotate.setRotation(mAngleX, Animorph::X_AXIS);
 	cam_pos = rotate * cam_pos;
 }
 
@@ -164,8 +162,8 @@ void Camera::resetPosition()
  mouse is dragged with a button down other than the right button..*/
 void Camera::rotateMouse(int x, int y)
 {
-	rotate((glm::pi<float>() / 180) * (y - last_mouse_pos.y), X_AXIS);
-	rotate((glm::pi<float>() / 180) * (x - last_mouse_pos.x), Y_AXIS);
+	rotate((glm::pi<float>() / 180) * (y - last_mouse_pos.y), Animorph::X_AXIS);
+	rotate((glm::pi<float>() / 180) * (x - last_mouse_pos.x), Animorph::Y_AXIS);
 
 	last_mouse_pos.x = x;
 	last_mouse_pos.y = y;
@@ -266,8 +264,8 @@ void Camera::calcForStepAnimate(float inX)
 	                          startVector.y + s * (endVector.y - startVector.y),
 	                          startVector.z + s * (endVector.z - startVector.z));
 
-	rotate(currentAngleX, X_AXIS);
-	rotate(currentAngleY, Y_AXIS);
+	rotate(currentAngleX, Animorph::X_AXIS);
+	rotate(currentAngleY, Animorph::Y_AXIS);
 
 	move(currentVector.x, currentVector.y, currentVector.z);
 }
@@ -328,7 +326,7 @@ void Autozoom::fromStream(std::ifstream & in_stream, const std::string & filenam
 		data.pos_camera     = pos;
 		data.xyRot_camera   = xyRot;
 		data.vertsCenteroid = cen;
-		stringTokeni(verts, ",", data.vertsIndexes);
+		Animorph::stringTokeni(verts, ",", data.vertsIndexes);
 
 		(*this)[filename] = data;
 	} else {
@@ -346,7 +344,7 @@ bool Autozoom::lazyLoadData(const std::string & filename)
 
 	// read the file
 
-	FileReader file_reader;
+	Animorph::FileReader file_reader;
 
 	file_reader.open(filename);
 
@@ -368,7 +366,7 @@ AutozoomData Autozoom::getAutozoomData(const std::string & filename)
  * panel. */
 bool Autozoom::save(const std::string & filename, const Camera & camera)
 {
-	FileWriter file_writer;
+	Animorph::FileWriter file_writer;
 	file_writer.open(filename);
 
 	if(!file_writer)

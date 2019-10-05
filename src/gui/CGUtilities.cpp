@@ -37,8 +37,10 @@
 
 #include "render/DebugGl.h"
 
-using namespace std;
-using namespace mhgui;
+using Animorph::Color;
+using mhgui::Rect;
+using mhgui::Camera;
+using mhgui::Texture;
 
 void cgutils::drawLine2D(const glm::ivec2 & start, const glm::ivec2 & end, const Color & c)
 {

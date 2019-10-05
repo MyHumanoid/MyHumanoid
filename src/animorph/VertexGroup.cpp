@@ -3,8 +3,10 @@
 
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+using std::string;
+
+namespace Animorph
+{
 
 bool VertexGroup::load(const std::string & filename)
 {
@@ -47,4 +49,6 @@ void VertexGroup::fromStream(std::ifstream & in_stream)
 			}
 		}
 	}
+}
+
 }

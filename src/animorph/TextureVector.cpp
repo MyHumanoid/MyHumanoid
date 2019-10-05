@@ -1,7 +1,7 @@
 #include "animorph/TextureVector.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 void TextureVector::fromUVStream(ifstream & in_stream)
 {
@@ -47,3 +47,6 @@ bool TextureVector::load(const string & filename)
 
 	return true;
 }
+
+}
+

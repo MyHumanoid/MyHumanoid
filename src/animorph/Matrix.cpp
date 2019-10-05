@@ -1,7 +1,7 @@
 #include "animorph/Matrix.h"
 
-using namespace Animorph;
-using namespace std;
+namespace Animorph
+{
 
 void Matrix::fromEuler(Euler & e)
 {
@@ -176,12 +176,11 @@ glm::vec3 Matrix::getTranslation()
 {
 	return glm::vec3(data[12], data[13], data[14]);
 }
-
 /**************************************/
 /* Non-Member operators and functions */
 /**************************************/
 
-glm::vec3 Animorph::operator*(const glm::vec3 & v, const Matrix & m) // REDO
+glm::vec3 operator*(const glm::vec3 & v, const Matrix & m) // REDO
 {
 	// data[3], data[7], data[11], and data[15] are everytime [0 0 0 1] in OpenGL.
 	// if speed is critical, here's some place for optimization...
@@ -191,7 +190,7 @@ glm::vec3 Animorph::operator*(const glm::vec3 & v, const Matrix & m) // REDO
 	                 v.x * m.data[2] + v.y * m.data[6] + v.z * m.data[10] + m.data[14]);
 }
 
-Matrix Animorph::operator*(const Matrix & a, const Matrix & b)
+Matrix operator*(const Matrix & a, const Matrix & b)
 {
 	Matrix r;
 
@@ -239,7 +238,7 @@ Matrix Animorph::operator*(const Matrix & a, const Matrix & b)
 }
 
 /// << operator for matrix output
-std::ostream & Animorph::operator<<(std::ostream & s, const Matrix & m)
+std::ostream & operator<<(std::ostream & s, const Matrix & m)
 {
 	for(int i = 0; i < 4; i++) {
 		s << "[";
@@ -250,4 +249,6 @@ std::ostream & Animorph::operator<<(std::ostream & s, const Matrix & m)
 	}
 
 	return s;
+}
+
 }

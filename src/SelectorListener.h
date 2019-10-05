@@ -33,12 +33,10 @@
 #include <gui/Selector.h>
 #include <vector>
 
-using namespace mhgui;
-
-class SelectorListener : public AbstractListener
+class SelectorListener : public mhgui::AbstractListener
 {
 public:
-	void calcWidgetTargets(Selector & selectorSource, glm::ivec2 inMousePos);
+	void calcWidgetTargets(mhgui::Selector & selectorSource, glm::ivec2 inMousePos);
 	void calcWidgetTargetsFOO();
 
 	glm::ivec2 oldPos;
@@ -47,13 +45,13 @@ public:
 	SelectorListener();
 	virtual ~SelectorListener();
 
-	virtual bool mouseOver(const glm::ivec2 & inMousePos, Component * source);
-	virtual bool mouseOut(const glm::ivec2 & inMousePos, Component * source);
-	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, Component * source);
-	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, Component * source);
-	virtual bool mouseDragged(const glm::ivec2 & inMousePos, Component * source);
-	virtual bool mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source);
-	virtual bool keyType(unsigned char inKey, Component * source);
+	virtual bool mouseOver(const glm::ivec2 & inMousePos, mhgui::Component * source);
+	virtual bool mouseOut(const glm::ivec2 & inMousePos, mhgui::Component * source);
+	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
+	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
+	virtual bool mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source);
+	virtual bool mouseWheel(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
+	virtual bool keyType(unsigned char inKey, mhgui::Component * source);
 
 	std::vector<float> ageDists;
 	std::vector<float> muscleSizeDists;

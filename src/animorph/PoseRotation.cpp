@@ -2,8 +2,8 @@
 
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 PoseRotation::PoseRotation()
         : modVertex()
@@ -107,3 +107,6 @@ bool PoseRotation::load(const std::string & filename)
 
 	return rc;
 }
+
+}
+

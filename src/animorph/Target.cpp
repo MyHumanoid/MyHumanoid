@@ -2,8 +2,8 @@
 
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 void Target::createStream(std::ostringstream & out_stream)
 {
@@ -11,7 +11,7 @@ void Target::createStream(std::ostringstream & out_stream)
 		TargetData td = (*target_it);
 
 		out_stream << td.vertex_number << "," << td.morph_vector.x << ","
-		           << td.morph_vector.y << "," << td.morph_vector.z << "," << endl;
+		           << td.morph_vector.y << "," << td.morph_vector.z << "," << std::endl;
 	}
 }
 
@@ -78,4 +78,6 @@ bool Target::save(const std::string & filename)
 	file_writer << out_stream.str();
 
 	return true;
+}
+
 }

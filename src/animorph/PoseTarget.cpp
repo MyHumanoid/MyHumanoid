@@ -3,7 +3,6 @@
 #include <cstdio>
 
 using std::string;
-using namespace Animorph;
 
 namespace Animorph
 {

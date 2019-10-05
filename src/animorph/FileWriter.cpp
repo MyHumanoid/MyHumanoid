@@ -2,8 +2,8 @@
 
 #include <locale.h>
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 int FileWriter::open(const std::string & filename, std::ios_base::openmode mode)
 {
@@ -16,7 +16,7 @@ int FileWriter::open(const std::string & filename, std::ios_base::openmode mode)
 
 	of_stream.open(filename.c_str(), mode);
 	if(!of_stream) {
-		cerr << "Couldn't open file:" << filename << endl;
+		std::cerr << "Couldn't open file:" << filename << std::endl;
 		return -1;
 	}
 
@@ -32,3 +32,6 @@ void FileWriter::close()
 
 	of_stream.close();
 }
+
+}
+

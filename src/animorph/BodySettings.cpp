@@ -4,8 +4,8 @@
 
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 bool BodySettings::load(const std::string & filename)
 {
@@ -61,8 +61,8 @@ void BodySettings::fromStream(std::ifstream & in_stream)
 			}
 		} else {
 			if(buffer[0] != '#') {
-				cerr << "Not allowed line in BodySetting:" << endl
-				     << buffer << endl;
+				std::cerr << "Not allowed line in BodySetting:" << std::endl
+				     << buffer << std::endl;
 			} else {
 				
 				uint32_t id;
@@ -97,7 +97,7 @@ void BodySettings::createStream(std::ostringstream & out_stream)
 	for(const auto & bodyset_it : m_targets) {
 		string name        = bodyset_it.first;
 		float  morph_value = bodyset_it.second;
-		out_stream << name << "," << morph_value << endl;
+		out_stream << name << "," << morph_value << std::endl;
 	}
 	
 	glm::ivec2 tmp;
@@ -105,19 +105,19 @@ void BodySettings::createStream(std::ostringstream & out_stream)
 	tmp = m_kAge;
 	if(tmp != InvalidPoint) {
 		out_stream << "#t,A," << kAge << ","
-		           << tmp.x << "," << tmp.y << endl;
+		           << tmp.x << "," << tmp.y << std::endl;
 	}
 	
 	tmp = m_kMuscleSize;
 	if(tmp != InvalidPoint) {
 		out_stream << "#t,M," << kMuscleSize << ","
-		           << tmp.x << "," << tmp.y << endl;
+		           << tmp.x << "," << tmp.y << std::endl;
 	}
 	
 	tmp = m_kBreast;
 	if(tmp != InvalidPoint) {
 		out_stream << "#t,B," << kBreast << ","
-		           << tmp.x << "," << tmp.y << endl;
+		           << tmp.x << "," << tmp.y << std::endl;
 	}
 	
 	tmp = m_kShape;
@@ -126,3 +126,6 @@ void BodySettings::createStream(std::ostringstream & out_stream)
 		           << tmp.x << "," << tmp.y;
 	}
 }
+
+}
+

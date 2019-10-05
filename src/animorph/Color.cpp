@@ -1,7 +1,5 @@
 #include "animorph/Color.h"
 
-using namespace Animorph;
-
 namespace Animorph
 {
 /* ========================================================================== */

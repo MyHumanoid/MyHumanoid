@@ -1,7 +1,8 @@
 #include "animorph/ColladaExporter.h"
 #include "animorph/xmlParser.h"
-using namespace std;
-using namespace Animorph;
+
+namespace Animorph
+{
 
 bool ColladaExporter::exportFile(const string & filename)
 {
@@ -878,3 +879,6 @@ void ColladaExporter::loadWeightsVector(const std::string & filename, XMLNode * 
 
 	xNode_weights->addText(out_stream.str().c_str());
 }
+
+}
+

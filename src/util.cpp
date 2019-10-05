@@ -41,7 +41,7 @@
 #include "log/log.h"
 #include "Vfs.h"
 
-using namespace std;
+using std::string;
 
 const string searchDataFile(const string & data_file)
 {
@@ -120,7 +120,7 @@ const string searchDir(const StringVector & name_vector)
 
 bool GetSymmVertexConfig(int * symm_vertex)
 {
-	FileReader file_reader;
+	Animorph::FileReader file_reader;
 	file_reader.open("data/base.sym");
 
 	if(!file_reader)
@@ -140,21 +140,21 @@ bool GetSymmVertexConfig(int * symm_vertex)
 }
 int getSymmJoint(int joint)
 {
-	return g_mesh.getSymmetricJoint((SKELETON_JOINT)joint);
+	return g_mesh.getSymmetricJoint((Animorph::SKELETON_JOINT)joint);
 }
 
 void CreateWeightsFile()
 {
 	return;
 
-	FileReader file_reader;
-	FileWriter file_write;
+	Animorph::FileReader file_reader;
+	Animorph::FileWriter file_write;
 
 	file_write.open("data/vertex_complete.weights");
 
 	char buffer[MAX_LINE_BUFFER * 4];
-	int  weight[SK_JOINT_END];
-	int  actual_weight[SK_JOINT_END];
+	int  weight[Animorph::SK_JOINT_END];
+	int  actual_weight[Animorph::SK_JOINT_END];
 
 	const VertexVector & vertexvector(g_mesh.getVertexVectorMorphOnlyRef());
 	unsigned int         size_vx = vertexvector.size();
@@ -193,8 +193,8 @@ void CreateWeightsFile()
 
 			int symm = symm_vertex[j];
 
-			memset(weight, 0, sizeof(int) * SK_JOINT_END);
-			memset(actual_weight, 0, sizeof(int) * SK_JOINT_END);
+			memset(weight, 0, sizeof(int) * Animorph::SK_JOINT_END);
+			memset(actual_weight, 0, sizeof(int) * Animorph::SK_JOINT_END);
 
 			sscanf((char *)out_stream[symm].str().c_str(),
 			       "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d "
@@ -228,7 +228,7 @@ void CreateWeightsFile()
 			       &weight[63], &index, &weight[64], &index, &weight[65], &index,
 			       &weight[66], &index, &weight[67]);
 
-			for(int joint = 0; joint < SK_JOINT_END; joint++) {
+			for(int joint = 0; joint < Animorph::SK_JOINT_END; joint++) {
 				int symm_joint       = getSymmJoint(joint);
 				actual_weight[joint] = weight[symm_joint];
 				file_write << joint << " ";
@@ -243,9 +243,9 @@ void CreateWeightsFile()
 
 void loadDefaultBodySettings()
 {
-	Window & mainWindow = *g_mainWindow;
+	mhgui::Window & mainWindow = *mhgui::g_mainWindow;
 
-	BodySettings bodyset;
+	Animorph::BodySettings bodyset;
 	bool         state = bodyset.load(searchDataFile("default.bs"));
 
 	if(state) {

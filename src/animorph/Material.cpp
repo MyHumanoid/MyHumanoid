@@ -2,8 +2,8 @@
 
 #include <fstream>
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 bool MaterialVector::loadMaterials(const std::string & filename)
 {
@@ -39,7 +39,9 @@ void MaterialVector::fromStream(std::ifstream & in_stream)
 
 			(*this).push_back(mat);
 		} else {
-			cerr << "illegal Material data format:" << endl << buffer << endl;
+			std::cerr << "illegal Material data format:" << std::endl << buffer << std::endl;
 		};
 	}
+}
+
 }

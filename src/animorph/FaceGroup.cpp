@@ -2,8 +2,8 @@
 
 #include <string.h>
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 const int MAX_LINE = 350000;
 
@@ -97,7 +97,7 @@ void FaceGroup::createStreamVisibilities(std::ostringstream & out_stream)
 		bool visible = groupValue.visible;
 
 		if(visible) {
-			out_stream << "#v," << partname << endl;
+			out_stream << "#v," << partname << std::endl;
 		}
 	}
 }
@@ -115,3 +115,6 @@ void FaceGroup::fromStreamVisibilities(std::ifstream & in_stream)
 		}
 	}
 }
+
+}
+

@@ -1,8 +1,8 @@
 #include "animorph/SmoothVertex.h"
 #include "animorph/util.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 bool SmoothVertex::load(const std::string & filename)
 {
@@ -29,4 +29,6 @@ void SmoothVertex::fromStream(std::ifstream & in_stream)
 		stringTokeni(buffer, ",", vertexes);
 		push_back(vertexes);
 	}
+}
+
 }

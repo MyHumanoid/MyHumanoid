@@ -1,7 +1,7 @@
 #include "animorph/util.h"
 
-using namespace std;
-using namespace Animorph;
+using std::string;
+using std::vector;
 
 void Animorph::UtilStringDelFollow(std::string & str, const std::string & characters)
 {

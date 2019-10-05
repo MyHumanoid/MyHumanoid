@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "gui/CGUtilities.h"
+#include "gui/Window.h"
 #include "render/RenderUtils.h"
 #include "log/log.h"
 #include "render/Shader.h"
@@ -65,14 +66,11 @@ void LoadBackgroundShader()
 	}
 }
 
-
-#include "gui/Window.h"
-
 void drawBackground()
 {
 	using glm::vec2;
 	
-	auto inSize = g_mainWindow->getSize();
+	auto inSize = mhgui::g_mainWindow->getSize();
 	vec2 size = vec2(inSize.getWidth(), inSize.getHeight());
 	
 	glUseProgram(g_backgroundShader->handle);
@@ -165,6 +163,15 @@ void RenderBoundingBox(const float twoxyz[6])
 
 void renderMesh()
 {
+	using Animorph::MaterialVector;
+	using Animorph::TextureVector;
+	using Animorph::FaceVector;
+	using Animorph::Face;
+	using Animorph::TextureFace;
+	using Animorph::Material;
+	using Animorph::Vertex;
+	
+	
 	const MaterialVector & materialvector(g_mesh.materials());
 	const TextureVector &  texturevector(g_mesh.textureVector());
 	

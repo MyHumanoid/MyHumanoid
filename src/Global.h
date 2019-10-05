@@ -26,13 +26,9 @@
  */
 #pragma once
 
-
 #include <animorph/Mesh.h>
 #include <gui/Camera.h>
 #include <gui/Texture.h>
-
-using namespace Animorph;
-using namespace mhgui;
 
 extern Animorph::Mesh g_mesh;
 
@@ -42,8 +38,8 @@ struct GlobalPaths {
 struct Global {
 	GlobalPaths paths;
 
-	Camera *   camera          = NULL;
-	Autozoom * autozoom        = NULL;
+	mhgui::Camera *   camera          = NULL;
+	mhgui::Autozoom * autozoom        = NULL;
 	bool       drawGrid        = false;
 	bool       quotedBox       = false;
 	bool       m_enableTexture = false;

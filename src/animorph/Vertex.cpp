@@ -1,6 +1,7 @@
 #include "animorph/Vertex.h"
 
-using namespace Animorph;
+namespace Animorph
+{
 
 void VertexMeta::addSharedFace(int shared_face)
 {
@@ -18,4 +19,6 @@ origVertex::origVertex(std::vector<int> & i_faceVerts, std::vector<int> & i_edge
 	fvalence  = i_faceVerts.size();
 	faceVerts = i_faceVerts;
 	edgeVerts = i_edgeVerts;
+}
+
 }

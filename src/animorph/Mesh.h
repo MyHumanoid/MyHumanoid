@@ -57,6 +57,9 @@ using std::string;
 using std::vector;
 
 
+namespace Animorph
+{
+
 #define MAX_NUMBER_SUBJOINT 6
 typedef enum SKELETON_JOINT {
 	SK_NONE = -1,
@@ -141,9 +144,6 @@ typedef enum SKELETON_JOINT {
 
 } SKELETON_JOINT;
 extern const SKELETON_JOINT subjoint[][MAX_NUMBER_SUBJOINT];
-
-namespace Animorph
-{
 
 typedef struct DummyJoint {
 

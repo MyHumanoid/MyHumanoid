@@ -2,8 +2,8 @@
 
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 bool FaceVector::loadGeometry(const std::string & filename)
 {
@@ -70,8 +70,8 @@ void FaceVector::fromColorsStream(std::ifstream & in_stream)
 				Face & face = (*this).at(n);
 
 				face.setMaterialIndex(mat_index);
-			} catch(const exception & e) {
-				cerr << "Face with number " << n << " doesn't exist!" << endl;
+			} catch(const std::exception & e) {
+				std::cerr << "Face with number " << n << " doesn't exist!" << std::endl;
 				continue;
 			}
 
@@ -79,3 +79,6 @@ void FaceVector::fromColorsStream(std::ifstream & in_stream)
 		}
 	}
 }
+
+}
+

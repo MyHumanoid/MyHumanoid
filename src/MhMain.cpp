@@ -76,9 +76,6 @@
 #define kTimerRendering 1000
 
 
-using namespace std;
-using namespace Animorph;
-
 static constexpr char mh_app_name[] = "MyHumanoid";
 static constexpr char mh_version[]  = "0.1.0";
 
@@ -158,7 +155,7 @@ static void CreateCaractersIconTextures()
 
 static void saveBodySettings(const string & filename)
 {
-	BodySettings bodyset = g_mesh.morphTargets();
+	Animorph::BodySettings bodyset = g_mesh.morphTargets();
 	
 	bodyset.m_kAge = g_global.m_kAge;
 	bodyset.m_kMuscleSize = g_global.m_kMuscleSize;
@@ -176,9 +173,9 @@ static void saveBodySettings(const string & filename)
 
 static void loadBodySettings(const string & filename)
 {
-	Window & mainWindow = *g_mainWindow;
+	mhgui::Window & mainWindow = *mhgui::g_mainWindow;
 
-	BodySettings bodyset;
+	Animorph::BodySettings bodyset;
 	bool         state = bodyset.load(filename);
 
 	if(state) {
@@ -208,7 +205,7 @@ static void loadBodySettings(const string & filename)
 
 static void savePoses(const string & filename)
 {
-	BodySettings poses = g_mesh.poseTargets();
+	Animorph::BodySettings poses = g_mesh.poseTargets();
 
 	bool state = poses.save(filename);
 
@@ -221,7 +218,7 @@ static void savePoses(const string & filename)
 
 static void loadPoses(const string & filename)
 {
-	BodySettings poses;
+	Animorph::BodySettings poses;
 	bool         state = poses.load(filename);
 
 	if(state) {
@@ -237,7 +234,7 @@ static void exportMeshObj(string & fileName)
 {
 	log_info("Saving obj to: {}", fileName);
 	
-	ObjExporter exporter(g_mesh);
+	Animorph::ObjExporter exporter(g_mesh);
 
 	bool state = exporter.exportFile(fileName);
 
@@ -250,7 +247,7 @@ static void exportMeshObj(string & fileName)
 
 static void exportCollada(string & filename)
 {
-	ColladaExporter collada_export(g_mesh);
+	Animorph::ColladaExporter collada_export(g_mesh);
 
 	if(filename.substr(filename.size() - 1, 1) != "/") {
 		filename.append("/");
@@ -287,7 +284,7 @@ static void ResetMeshPose()
 
 static void ResetMeshMorph()
 {
-	BodySettings bodyset_empty;
+	Animorph::BodySettings bodyset_empty;
 	g_mesh.doMorph(bodyset_empty);
 
 	loadDefaultBodySettings();
@@ -313,7 +310,7 @@ static bool g_requestBackgroundShaderReload = false;
 
 void loadCharacter(const std::string & character_name)
 {
-	const CharactersMap & charactersmap = g_mesh.characters();
+	const Animorph::CharactersMap & charactersmap = g_mesh.characters();
 	
 	auto f = charactersmap.find(character_name);
 	if(f != charactersmap.end()) {
@@ -327,7 +324,7 @@ void loadCharacter(const std::string & character_name)
 		g_global.m_kBreast = bodyset.m_kBreast;
 		g_global.m_kShape = bodyset.m_kShape;
 		
-		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)g_mainWindow->getPanel(
+		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mhgui::g_mainWindow->getPanel(
 		    kComponentID_CharacterSettingPanel);
 		
 		tmpPanel->updateUi();
@@ -379,7 +376,7 @@ void DisplayLibraryCharacters()
 
 void loadPose(const std::string & character_name)
 {
-	const CharactersMap & charactersmap = g_mesh.characters();
+	const Animorph::CharactersMap & charactersmap = g_mesh.characters();
 	
 	auto f = charactersmap.find(character_name);
 	if(f != charactersmap.end()) {
@@ -596,7 +593,7 @@ void DisplayMainMenu()
 			if(ImGui::BeginMenu("Reset Morph? ...")) {
 				if(ImGui::MenuItem("YES")) {
 					CharacterSettingPanel * cs_p = dynamic_cast<
-					        CharacterSettingPanel *>(g_mainWindow->getPanel(
+					        CharacterSettingPanel *>(mhgui::g_mainWindow->getPanel(
 					        kComponentID_CharacterSettingPanel));
 					if(cs_p != NULL) {
 						cs_p->resetSlidersValues();
@@ -770,10 +767,10 @@ static void display()
 	}
 
 	drawBackground();
-	g_mainWindow->draw();
+	mhgui::g_mainWindow->draw();
 
 	if(g_global.drawGrid) {
-		cgutils::drawGrid(g_mainWindow->getSize(), 220, 70, grid_color, border_color, 50);
+		cgutils::drawGrid(mhgui::g_mainWindow->getSize(), 220, 70, grid_color, border_color, 50);
 	} else {
 		cgutils::drawSquare(Rect(0, 0, 1, 1), border_color);
 	}
@@ -817,7 +814,7 @@ static void display()
 
 static void reshape(int w, int h)
 {
-	Window & mainWindow(*g_mainWindow);
+	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 	mainWindow.reshape(Size(w, h), *g_global.camera);
 	g_global.camera->reshape(w, h);
 }
@@ -827,7 +824,7 @@ static void timerTrigger(int val)
 	(void)val;
 
 	bool     tmp;
-	Window & mainWindow(*g_mainWindow);
+	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 
 	tmp = g_global.camera->timerTrigger();
 
@@ -839,13 +836,13 @@ static void timerTrigger(int val)
 
 static void motion(int x, int y)
 {
-	Window & mainWindow(*g_mainWindow);
+	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 	mainWindow.isMouseOverPanel(glm::ivec2(x, y));
 }
 
 static void special(int key)
 {
-	Window & mainWindow(*g_mainWindow);
+	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 	if(!mainWindow.isKeyTypePanel(key)) {
 		switch(key) {
 		case GLUT_KEY_UP:
@@ -867,7 +864,7 @@ static void special(int key)
 
 static void keyboard(unsigned char key)
 {
-	Window & mainWindow(*g_mainWindow);
+	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 	if(!mainWindow.isKeyTypePanel(key)) {
 		switch(toupper(key)) {
 		case '+':
@@ -877,10 +874,10 @@ static void keyboard(unsigned char key)
 			g_global.camera->move(0, 0, -1);
 			break;
 		case '8':
-			g_global.camera->rotate(-glm::pi<float>() / 12, X_AXIS);
+			g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::X_AXIS);
 			break;
 		case '2':
-			g_global.camera->rotate(glm::pi<float>() / 12, X_AXIS);
+			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::X_AXIS);
 			break;
 		case '1':
 			g_global.camera->resetRotation();
@@ -890,21 +887,21 @@ static void keyboard(unsigned char key)
 			break;
 		case '7':
 			g_global.camera->resetRotation();
-			g_global.camera->rotate(glm::pi<float>() / 2, X_AXIS);
+			g_global.camera->rotate(glm::pi<float>() / 2, Animorph::X_AXIS);
 			break;
 		case '6':
-			g_global.camera->rotate(-glm::pi<float>() / 12, Y_AXIS);
+			g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::Y_AXIS);
 			break;
 		case '5':
 			g_global.camera->setPerspective(!g_global.camera->isPerspective());
 			reshape(mainWindow.getSize().getWidth(), mainWindow.getSize().getHeight());
 			break;
 		case '4':
-			g_global.camera->rotate(glm::pi<float>() / 12, Y_AXIS);
+			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
 			break;
 		case '3':
 			g_global.camera->resetRotation();
-			g_global.camera->rotate(-glm::pi<float>() / 2, Y_AXIS);
+			g_global.camera->rotate(-glm::pi<float>() / 2, Animorph::Y_AXIS);
 			break;
 		case '.':
 			g_global.camera->resetPosition();
@@ -919,7 +916,7 @@ static void keyboard(unsigned char key)
 
 static void mouse(int button, int state, int x, int y)
 {
-	Window & mainWindow(*g_mainWindow);
+	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 
 	// cout << "mouse: " << button << endl;
 	g_global.camera->mouseRotateStart(x, y);
@@ -976,7 +973,7 @@ static void mouse(int button, int state, int x, int y)
 
 static void activeMotion(int x, int y)
 {
-	Window & mainWindow(*g_mainWindow);
+	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 	if(!mainWindow.isMouseDraggedPanel(glm::ivec2(x, y))) {
 		if(right_button_down) {
 			g_global.camera->moveMouse(x, y);
@@ -1003,16 +1000,16 @@ int main(int argc, char ** argv)
 
 	Rect mainWinRect = Rect(g_config.windowMain.pos.x, g_config.windowMain.pos.y,
 	                        g_config.windowMain.siz.x, g_config.windowMain.siz.y);
-
-	std::string winTitle = mh_app_name + " "s + mh_version;
-	g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
+	
+	std::string winTitle = mh_app_name + std::string(" ") + mh_version;
+	mhgui::g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
 
 	// g_global.mesh     = new Mesh();
-	g_global.camera   = new Camera();
-	g_global.autozoom = new Autozoom();
+	g_global.camera   = new mhgui::Camera();
+	g_global.autozoom = new mhgui::Autozoom();
 
 	characterSettingPanel = new CharacterSettingPanel();
-	g_mainWindow->initWindow();
+	mhgui::g_mainWindow->initWindow();
 	
 	LoadBodyShader(0);
 	LoadBackgroundShader();
@@ -1059,10 +1056,10 @@ int main(int argc, char ** argv)
 	g_mesh.loadCharacters(searchDataDir("bs_data"));
 
 	init = false;
-	g_mainWindow->setCamera(g_global.camera);
+	mhgui::g_mainWindow->setCamera(g_global.camera);
 
 	// Add panels to mainwindow
-	g_mainWindow->addPanel(characterSettingPanel);
+	mhgui::g_mainWindow->addPanel(characterSettingPanel);
 
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
@@ -1083,7 +1080,7 @@ int main(int argc, char ** argv)
 		// mainWindow.mainLoop();
 	});
 
-	g_mainWindow->show();
+	mhgui::g_mainWindow->show();
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
 	::glPolygonOffset(1.0, 1.0);

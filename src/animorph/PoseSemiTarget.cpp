@@ -2,8 +2,8 @@
 
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 PoseSemiTarget::PoseSemiTarget()
         : modVertex()
@@ -123,4 +123,6 @@ void PoseSemiTarget::stringTokenize(const string & str, vector<int> & tokens)
 		// Find next "non-delimiter"
 		pos = str.find_first_of(delimiters, lastPos);
 	}
+}
+
 }

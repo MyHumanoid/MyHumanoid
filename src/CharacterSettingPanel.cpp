@@ -36,8 +36,9 @@
 #include "Global.h"
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+using mhgui::Rect;
+using mhgui::Image;
+using mhgui::Selector;
 
 CharacterSettingPanel::CharacterSettingPanel()
         : Panel(kComponentID_CharacterSettingPanel, Rect(0, 16, 192, 580))

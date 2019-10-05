@@ -7,9 +7,6 @@
 #include <iostream>
 #include <sys/stat.h>
 
-using namespace std;
-
-using namespace std;
 
 namespace mhgui
 {

@@ -8,6 +8,9 @@
 #include "log/log.h"
 #include "log/Profiler.h"
 
+namespace Animorph
+{
+
 const SKELETON_JOINT subjoint[][MAX_NUMBER_SUBJOINT] = {
         /*SK_JOINT_0*/ {SK_JOINT_1, SK_JOINT_8, SK_JOINT_9, SK_NONE, SK_NONE, SK_NONE},
         /*SK_JOINT_1*/
@@ -247,8 +250,6 @@ const string jointName[SK_JOINT_END] = {
                                     */
 };
 
-using namespace std;
-using namespace Animorph;
 
 #define DUMMY_JOINTS (SK_JOINT_END - SK_JOINT_68)
 
@@ -341,7 +342,7 @@ void Mesh::calcFaceNormals()
 
 			face.no = glm::normalize(glm::cross(v1_tmp, v2_tmp));
 		} else {
-			cerr << "Error: a face needs at least 3 vertices!" << endl;
+			std::cerr << "Error: a face needs at least 3 vertices!" << std::endl;
 			return;
 		}
 	}
@@ -511,8 +512,8 @@ bool Mesh::setMorphTarget(const string & target_name, float morph_value)
 
 	// return if target doesn't exist
 	if(!m_targets.count(target_name)) {
-		cerr << "a target with name \"" << target_name << "\" wasn't found in targetmap"
-		     << endl;
+		std::cerr << "a target with name \"" << target_name << "\" wasn't found in targetmap"
+		     << std::endl;
 		return false;
 	}
 
@@ -864,4 +865,6 @@ SKELETON_JOINT Mesh::getSymmetricJoint(SKELETON_JOINT joint)
 
 	else
 		return jointSymmetric[joint];
+}
+
 }

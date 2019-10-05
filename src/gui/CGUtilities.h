@@ -41,8 +41,9 @@
 #include "Size.h"
 
 using std::string;
-using namespace Animorph;
-using namespace mhgui;
+using Animorph::Color;
+using mhgui::Rect;
+using mhgui::Size;
 
 typedef void * FontType;
 
@@ -58,13 +59,13 @@ void drawGrid(const Size & inSize, const int xMargin, const int yMargin, const C
 
 void drawAxis();
 
-void reshape(const Size & inSize, const Camera & inCamera);
+void reshape(const Size & inSize, const mhgui::Camera & inCamera);
 
 void enableOrthographicProjection();
 
 void disableOrthographicProjection();
 
-void drawSquareFillTexture(const Rect & inRect, float alpha, const Texture & inTexture);
+void drawSquareFillTexture(const Rect & inRect, float alpha, const mhgui::Texture & inTexture);
 
 void drawSquareFill(const Rect & inRect, const Color & c);
 

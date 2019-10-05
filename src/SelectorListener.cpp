@@ -34,8 +34,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-using namespace Animorph;
-using namespace std;
 
 static std::array<string, 10> ageLabels = {
     "female_10",
@@ -82,22 +80,22 @@ SelectorListener::~SelectorListener()
 {
 }
 
-bool SelectorListener::mouseOver(const glm::ivec2 & inMousePos, Component * source)
+bool SelectorListener::mouseOver(const glm::ivec2 & inMousePos, mhgui::Component * source)
 {
 	return false;
 }
 
-bool SelectorListener::mouseOut(const glm::ivec2 & inMousePos, Component * source)
+bool SelectorListener::mouseOut(const glm::ivec2 & inMousePos, mhgui::Component * source)
 {
 	return false;
 }
 
-bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, Component * source)
+bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source)
 {
 	int xDist = abs(oldPos.x - inMousePos.x);
 	int yDist = abs(oldPos.y - inMousePos.y);
 
-	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	mhgui::Selector * selectorSource = dynamic_cast<mhgui::Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
 	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
@@ -110,21 +108,21 @@ bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, Component * s
 	return true;
 }
 
-bool SelectorListener::mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source)
+bool SelectorListener::mouseWheel(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source)
 {
 	return false;
 }
 
-bool SelectorListener::mousePressed(const glm::ivec2 & inMousePos, int button, Component * source)
+bool SelectorListener::mousePressed(const glm::ivec2 & inMousePos, int button, mhgui::Component * source)
 {
 	return true;
 }
 
-bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, Component * source)
+bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, mhgui::Component * source)
 {
 	oldPos = inMousePos;
 
-	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	mhgui::Selector * selectorSource = dynamic_cast<mhgui::Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
 
 	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
@@ -135,12 +133,12 @@ bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, 
 	return true;
 }
 
-bool SelectorListener::keyType(unsigned char key, Component * source)
+bool SelectorListener::keyType(unsigned char key, mhgui::Component * source)
 {
 	return false;
 }
 
-void SelectorListener::calcWidgetTargets(Selector & selectorSource, glm::ivec2 inMousePos)
+void SelectorListener::calcWidgetTargets(mhgui::Selector & selectorSource, glm::ivec2 inMousePos)
 {
 
 	switch(selectorSource.getID()) {

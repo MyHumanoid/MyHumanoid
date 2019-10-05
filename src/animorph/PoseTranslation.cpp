@@ -3,8 +3,11 @@
 
 #define FF_VERTEX_N 10
 
-using namespace std;
-using namespace Animorph;
+
+using std::multiset;
+
+namespace Animorph
+{
 
 PoseTranslation::PoseTranslation()
         : target(new Target())
@@ -159,4 +162,6 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 	formFactor = glm::vec3((maxX / xsize - minX / xsize) / originalSize[0],
 	                       (maxY / ysize - minY / ysize) / originalSize[1],
 	                       (maxZ / zsize - minZ / zsize) / originalSize[2]);
+}
+
 }

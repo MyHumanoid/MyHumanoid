@@ -6,9 +6,8 @@
 #include "util/StringUtils.h"
 #include "Vfs.h"
 
-using namespace std;
-using namespace Animorph;
-
+namespace Animorph
+{
 
 struct ObjStream {
 	fmt::memory_buffer m_out;
@@ -217,28 +216,28 @@ static void writeMtl(const Mesh & mesh, const string & mtlPath, const string & o
 	}
 	
 	std::ostringstream stream;
-	stream << "# Material file for " << objName << endl << endl;
+	stream << "# Material file for " << objName << std::endl << std::endl;
 	
 	for(const auto & mat : mesh.materials()) {
 		const Color &    col   = mat.color;
 		
-		stream << "newmtl " << mat.name << endl;
+		stream << "newmtl " << mat.name << std::endl;
 		//stream << "illum " << 2 << endl;
 		// Diffuse color
-		stream << "kd " << col.r << " " << col.g << " " << col.b << endl;
+		stream << "kd " << col.r << " " << col.g << " " << col.b << std::endl;
 		
 		{
 			// Diffuse Texture
 			std::string inTexPath = "pixmaps/ui/" + mat.name + "_color.png";
 			if(vfs::exists(inTexPath)) {
 				std::string foo = removeExtension(objName) + "_"+ mat.name + "_color.png";
-				stream << "map_kd " << foo << endl;
+				stream << "map_kd " << foo << std::endl;
 				
 				std::string outTexPath = removeExtension(mtlPath) + "_"+ mat.name + "_color.png";
 				vfs::copyToFilesystem(inTexPath, outTexPath);
 			}
 		}
-		stream << endl;
+		stream << std::endl;
 	}
 	
 	mtlWriter << stream.str();
@@ -270,4 +269,4 @@ bool ObjExporter::exportFile(const string & objPath)
 	return true;
 }
 
-
+}

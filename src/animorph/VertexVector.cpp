@@ -5,8 +5,8 @@
 
 #include "log/log.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 bool VertexVector::load(const std::string & filename)
 {
@@ -91,4 +91,6 @@ void origVertexVector::fromStream(std::ifstream & in_stream)
 		stringTokeni(buffer1, ",", i_edgeVerts);
 		push_back(origVertex(i_faceVerts, i_edgeVerts));
 	}
+}
+
 }

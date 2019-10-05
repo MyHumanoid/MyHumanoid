@@ -33,9 +33,7 @@
 #include <gui/Selector.h>
 #include <vector>
 
-using std::vector;
-
-class CharacterSettingPanel : public Panel
+class CharacterSettingPanel : public mhgui::Panel
 {
 public:
 	CharacterSettingPanel();
@@ -54,13 +52,13 @@ private: // intentionally not implemented
 	CharacterSettingPanel & operator=(const CharacterSettingPanel &);
 
 public:
-	vector<Image *>    imageVector;
-	vector<Selector *> selectorVector;
-	Selector *         selector;
+	std::vector<mhgui::Image *>    imageVector;
+	std::vector<mhgui::Selector *> selectorVector;
+	mhgui::Selector *         selector;
 	SelectorListener   selectorListener;
 
-	Selector * m_age;
-	Selector * m_muscleSize;
-	Selector * m_breast;
-	Selector * m_shape;
+	mhgui::Selector * m_age;
+	mhgui::Selector * m_muscleSize;
+	mhgui::Selector * m_breast;
+	mhgui::Selector * m_shape;
 };

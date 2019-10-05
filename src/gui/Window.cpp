@@ -42,8 +42,6 @@
 
 #include "ComponentID.h"
 
-using namespace std;
-using namespace Animorph;
 
 namespace mhgui
 {

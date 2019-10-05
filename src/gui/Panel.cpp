@@ -35,7 +35,6 @@
 
 #include "ComponentID.h"
 
-using namespace std;
 
 namespace mhgui
 {

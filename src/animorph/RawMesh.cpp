@@ -1,6 +1,7 @@
 #include "animorph/RawMesh.h"
 
-using namespace Animorph;
+namespace Animorph
+{
 
 RawMesh::RawMesh()
         : facevector()
@@ -12,4 +13,6 @@ RawMesh::RawMesh()
 
 RawMesh::~RawMesh()
 {
+}
+
 }

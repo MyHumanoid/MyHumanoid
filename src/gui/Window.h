@@ -40,8 +40,6 @@
 using std::list;
 using std::string;
 
-using namespace Animorph;
-
 namespace mhgui
 {
 

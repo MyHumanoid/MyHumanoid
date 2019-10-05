@@ -1,7 +1,7 @@
 #include "animorph/Face.h"
 
-using namespace std;
-using namespace Animorph;
+namespace Animorph
+{
 
 Face::Face(int v0, int v1, int v2, int v3)
         : vertices()
@@ -25,3 +25,6 @@ Face::Face(int v0, int v1, int v2)
 	vertices[1] = v1;
 	vertices[2] = v2;
 }
+
+}
+

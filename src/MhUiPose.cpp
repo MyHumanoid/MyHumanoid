@@ -162,11 +162,11 @@ void DisplayPoseTargets()
 	ImGui::SameLine();
 	{
 		ImGui::BeginChild("Pose Targets", vec2(140, 440), false);
-
-		BodySettings bodyset = g_mesh.poseTargets();
+		
+		Animorph::BodySettings bodyset = g_mesh.poseTargets();
 
 		for(const auto & [target_name, tarVal] : g_mesh.posemap()) {
-			PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
+			Animorph::PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
 			assert(poseTarget);
 
 			auto bodyset_it = bodyset.m_targets.find(target_name);
@@ -200,7 +200,7 @@ void DisplayPoseTargetsApplied()
 
 	for(const auto & [target_name, target_value] : g_mesh.poseTargets().m_targets) {
 
-		PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
+		Animorph::PoseTarget * poseTarget = g_mesh.getPoseTargetForName(target_name);
 		assert(poseTarget);
 
 		const auto & minmax =
