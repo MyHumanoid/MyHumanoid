@@ -63,8 +63,6 @@ public:
 
 	bool getBottomAnchor() { return bottomAnchor; }
 
-	bool getRightAnchor() { return rightAnchor; }
-
 	void      setAlignment(Alignment align) { this->align = align; }
 	Alignment getAlignment() { return align; }
 

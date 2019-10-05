@@ -45,9 +45,6 @@ Panel::Panel(uint32_t inPanelId, const Rect & inGeometry)
 
         widgetList()
         , widgetListChangedCount(0)
-        ,
-
-        rightAnchor(false)
         , bottomAnchor(false)
         , align(HORIZONTAL)
 {

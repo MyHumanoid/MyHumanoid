@@ -332,11 +332,6 @@ void Window::reshape(const Size & inSize, const Camera & inCamera)
 
 			panel->setPosition(glm::ivec2(panel->getPosition().x, bottom));
 		}
-		if(panel->getRightAnchor()) {
-			int right_old = getSize().getWidth() - panel->getPosition().x;
-			int right     = inSize.getWidth() - right_old;
-			panel->setPosition(glm::ivec2(right, panel->getPosition().y));
-		}
 
 		panel->calcWidgetPosition();
 	}
