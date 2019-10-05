@@ -74,8 +74,6 @@ public:
 
 	void drawPanels();
 
-	void setTitle(const string & t);
-
 	// Some "shortcut functions" that wrap a series of OpenGL lines
 	void initWindow();
 	// void toggleFullscreen (); --> this needs to be implemented!

@@ -151,12 +151,6 @@ void Window::drawPanels()
 	}
 };
 
-void Window::setTitle(const std::string & t)
-{
-	// hm, this should change the GLUT window title, not?
-	title = t;
-}
-
 // For each panel, check if mouse is over his widgets
 bool Window::isMouseOverPanel(const glm::ivec2 & inMousePos)
 {
