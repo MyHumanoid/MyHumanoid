@@ -40,6 +40,9 @@
 using std::list;
 using std::string;
 
+
+class CharacterSettingPanel;
+
 namespace mhgui
 {
 
@@ -99,6 +102,9 @@ public:
 	virtual void draw();
 	virtual void show();
 	virtual void hide();
+	
+	
+	CharacterSettingPanel * characterSettingPanel;
 };
 
 extern Window * g_mainWindow;

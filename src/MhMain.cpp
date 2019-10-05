@@ -79,8 +79,6 @@
 static constexpr char mh_app_name[] = "MyHumanoid";
 static constexpr char mh_version[]  = "0.1.0";
 
-static CharacterSettingPanel * characterSettingPanel;
-
 bool  init; // shows the init status
 float twopoints[6];
 int   average           = 0;
@@ -993,8 +991,9 @@ int main(int argc, char ** argv)
 	// g_global.mesh     = new Mesh();
 	g_global.camera   = new mhgui::Camera();
 	g_global.autozoom = new mhgui::Autozoom();
-
-	characterSettingPanel = new CharacterSettingPanel();
+	
+	
+	mhgui::g_mainWindow->characterSettingPanel = new CharacterSettingPanel();
 	mhgui::g_mainWindow->initWindow();
 	
 	LoadBodyShader(0);
@@ -1045,13 +1044,13 @@ int main(int argc, char ** argv)
 	mhgui::g_mainWindow->setCamera(g_global.camera);
 
 	// Add panels to mainwindow
-	mhgui::g_mainWindow->addPanel(characterSettingPanel);
+	mhgui::g_mainWindow->addPanel(mhgui::g_mainWindow->characterSettingPanel);
 
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
 
-	characterSettingPanel->createWidgets();
-	characterSettingPanel->show_all();
+	mhgui::g_mainWindow->characterSettingPanel->createWidgets();
+	mhgui::g_mainWindow->characterSettingPanel->show_all();
 
 	glutDisplayFunc(display);
 	glutTimerFunc(1000, timerTrigger, 1); // Autozoom
