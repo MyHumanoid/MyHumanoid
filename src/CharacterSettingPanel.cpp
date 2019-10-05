@@ -128,11 +128,6 @@ bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, 
 	return true;
 }
 
-bool SelectorListener::keyType(unsigned char key, mhgui::Component * source)
-{
-	return false;
-}
-
 void SelectorListener::calcWidgetTargets(mhgui::Selector & selectorSource, glm::ivec2 inMousePos)
 {
 	

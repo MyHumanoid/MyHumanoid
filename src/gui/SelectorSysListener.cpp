@@ -86,8 +86,4 @@ bool SelectorSysListener::mouseReleased(const glm::ivec2 & inMousePos, int butto
 	return false;
 }
 
-bool SelectorSysListener::keyType(unsigned char key, Component * source)
-{
-	return false;
-}
 } // namespace mhgui

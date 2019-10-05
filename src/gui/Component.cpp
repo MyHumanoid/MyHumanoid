@@ -163,11 +163,6 @@ bool Component::isKeyType(unsigned char key)
 {
 	bool isType = false;
 	if(isActive()) {
-		if(sysListener)
-			sysListener->keyType(key, this);
-
-		if(listener)
-			isType = listener->keyType(key, this);
 	}
 	return isType;
 }
