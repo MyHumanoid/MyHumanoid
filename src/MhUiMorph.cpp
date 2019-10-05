@@ -70,36 +70,20 @@ void DisplayCharacterSettings()
 	static const Textures tex;
 
 	{
-		vec2 foo = vec2(192, 104);
-
-		glm::ivec2 * agePos = g_global.fuzzyValues[kAge];
-		if(agePos)
-			g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
-
-		glm::ivec2 * mPos = g_global.fuzzyValues[kMuscleSize];
-		if(mPos)
-			g_global.bodyWeightMuscle = vec2(mPos->x, mPos->y) / foo;
-
-		glm::ivec2 * bPos = g_global.fuzzyValues[kBreast];
-		if(bPos)
-			g_global.breastSizeShape = vec2(bPos->x, bPos->y) / foo;
-
-		glm::ivec2 * sPos = g_global.fuzzyValues[kShape];
-		if(sPos)
-			g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
+		//vec2 foo = vec2(192, 104);
 	}
 
 	ImGui::SetNextWindowSize(vec2(220, 800));
 	ImGui::Begin("Character Setting");
 
-	ImGui::Text("Age/Sex");
-	XYfoobar(tex.ageGenderBkg, g_global.ageAndSex);
-	ImGui::Text("Bodymass Weight/Muscle");
-	XYfoobar(tex.massBkg, g_global.bodyWeightMuscle);
-	ImGui::Text("Breast Size/Shape");
-	XYfoobar(tex.breastBkg, g_global.breastSizeShape);
-	ImGui::Text("Bodyshape Shape/Height");
-	XYfoobar(tex.shapeBkg, g_global.bodyShapeHeight);
+//	ImGui::Text("Age/Sex");
+//	XYfoobar(tex.ageGenderBkg, g_global.ageAndSex);
+//	ImGui::Text("Bodymass Weight/Muscle");
+//	XYfoobar(tex.massBkg, g_global.bodyWeightMuscle);
+//	ImGui::Text("Breast Size/Shape");
+//	XYfoobar(tex.breastBkg, g_global.breastSizeShape);
+//	ImGui::Text("Bodyshape Shape/Height");
+//	XYfoobar(tex.shapeBkg, g_global.bodyShapeHeight);
 
 	ImGui::End();
 }
