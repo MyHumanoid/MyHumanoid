@@ -144,7 +144,7 @@ void SelectorListener::calcWidgetTargets(Selector & selectorSource)
 {
 
 	switch(selectorSource.getID()) {
-	case kComponentID_CharacterSettingPanel_Age:
+	case kAge:
 		ageDists = selectorSource.getDists();
 		break;
 

@@ -314,9 +314,9 @@ bool saveSelectorsPositions(const std::string & filename)
 
 	std::ostringstream out_stream;
 
-	glm::ivec2 * tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
+	glm::ivec2 * tmp = g_global.getFuzzyValue(kAge);
 	if(tmp != NULL) {
-		out_stream << "#t,A," << kComponentID_CharacterSettingPanel_Age << ","
+		out_stream << "#t,A," << kAge << ","
 		           << tmp->x << "," << tmp->y << endl;
 	}
 

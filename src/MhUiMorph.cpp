@@ -72,7 +72,7 @@ void DisplayCharacterSettings()
 	{
 		vec2 foo = vec2(192, 104);
 
-		glm::ivec2 * agePos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Age);
+		glm::ivec2 * agePos = g_global.getFuzzyValue(kAge);
 		if(agePos)
 			g_global.ageAndSex = vec2(agePos->x, agePos->y) / foo;
 
