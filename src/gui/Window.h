@@ -85,10 +85,8 @@ public:
 	// main functions
 	bool    addPanel(Panel * p /*, bool now = true*/);
 
-	bool isMouseOverPanel(const glm::ivec2 & inMousePos);
 	bool isMouseClickPanel(const glm::ivec2 & inMousePos, int button, int state);
 	bool isMouseDraggedPanel(const glm::ivec2 & inMousePos);
-	bool isKeyTypePanel(unsigned char key);
 
 	void defaultDisplay();
 

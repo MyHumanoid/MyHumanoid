@@ -54,8 +54,6 @@ Component::Component(uint32_t inId, const Rect & inGeometry)
         , zeroPoint(0, 0)
         , listener(NULL)
         , // No listener per default (use setListener())
-        sysListener(NULL)
-        , // No sysListener per default (use setSysListener())
         active(false)
         , clickConsumed(false)
         , mouseOver(false)
@@ -131,21 +129,12 @@ bool Component::isMouseClick(const glm::ivec2 & inMousePos, int button, int stat
 	//  {
 	if((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) && state == GLUT_DOWN &&
 	   isHit) {
-		if(sysListener)
-			sysListener->mousePressed(inMousePos, button, this);
-
 		if(listener)
 			isClick = listener->mousePressed(inMousePos, button, this);
 	} else if((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) && state == GLUT_UP &&
 	          isActive()) {
-		if(sysListener)
-			sysListener->mouseReleased(inMousePos, button, this);
-
 		if(listener)
 			isClick = listener->mouseReleased(inMousePos, button, this);
-	} else if((button == GLUT_WHEEL_DOWN || button == GLUT_WHEEL_UP ||
-	           button == GLUT_WHEEL_RIGHT || button == GLUT_WHEEL_LEFT) &&
-	          isHit) {
 	}
 
 	//  }
@@ -175,9 +164,6 @@ bool Component::isMouseDragged(const glm::ivec2 & inMousePos)
 {
 	bool dragged = false;
 	if(isActive()) {
-		if(sysListener)
-			dragged = sysListener->mouseDragged(inMousePos, this);
-
 		if(listener)
 			dragged = listener->mouseDragged(inMousePos, this);
 	}

@@ -807,16 +807,8 @@ static void timerTrigger(int val)
 	glutTimerFunc(50, timerTrigger, 1);
 }
 
-static void motion(int x, int y)
-{
-	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-	mainWindow.isMouseOverPanel(glm::ivec2(x, y));
-}
-
 static void special(int key)
 {
-	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-	if(!mainWindow.isKeyTypePanel(key)) {
 		switch(key) {
 		case GLUT_KEY_UP:
 			g_global.camera->move(0, 1, 0);
@@ -831,14 +823,13 @@ static void special(int key)
 			g_global.camera->move(1, 0, 0);
 			break;
 		}
-	}
 	glutPostRedisplay();
 }
 
 static void keyboard(unsigned char key)
 {
 	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-	if(!mainWindow.isKeyTypePanel(key)) {
+	
 		switch(toupper(key)) {
 		case '+':
 			g_global.camera->move(0, 0, 1);
@@ -883,7 +874,7 @@ static void keyboard(unsigned char key)
 		default:
 			break;
 		}
-	}
+	
 	glutPostRedisplay();
 }
 
@@ -1089,7 +1080,6 @@ int main(int argc, char ** argv)
 			io.MousePos  = ImVec2((float)x, (float)y);
 
 			if(!io.WantCaptureMouse) {
-				motion(x, y);
 			}
 		});
 

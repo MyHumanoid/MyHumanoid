@@ -115,40 +115,6 @@ void Window::drawPanels()
 	cgutils::disableOrthographicProjection();
 };
 
-// For each panel, check if mouse is over his widgets
-bool Window::isMouseOverPanel(const glm::ivec2 & inMousePos)
-{
-	bool isOver = false;
-
-	int rememberedPanelListChangedCount = panelListChangedCount;
-
-	for(list<Panel *>::reverse_iterator pl_it = panelList.rbegin(); pl_it != panelList.rend();
-	    pl_it++) {
-		Panel * panel = (*pl_it);
-
-		isOver = panel->isMouseOverWidgets(inMousePos);
-		if(isOver == true) {
-			break;
-		}
-
-		isOver = panel->isMouseOver(inMousePos);
-		if(isOver == true) {
-			break;
-		}
-
-		/* Check if the panel List has been changed in between
-		 * (triggered by a Panel- or a Widget Listener for example)
-		 * If it has then "reinitialize" the iterator because it is
-		 * possible that it became invalide because of this change
-		 * of the list! */
-		if(panelListChangedCount != rememberedPanelListChangedCount) {
-			rememberedPanelListChangedCount = panelListChangedCount;
-			pl_it = panelList.rbegin(); // reinitailize the iterator
-		}
-	}
-	return isOver;
-}
-
 // For each panel, check if click is over his widgets
 bool Window::isMouseClickPanel(const glm::ivec2 & inMousePos, int button, int state)
 {
@@ -182,40 +148,6 @@ bool Window::isMouseClickPanel(const glm::ivec2 & inMousePos, int button, int st
 	}
 
 	return isClick;
-}
-
-// For each panel, check if a widget is active
-bool Window::isKeyTypePanel(unsigned char key)
-{
-	bool keyType = false;
-
-	int rememberedPanelListChangedCount = panelListChangedCount;
-
-	for(list<Panel *>::reverse_iterator pl_it = panelList.rbegin(); pl_it != panelList.rend();
-	    pl_it++) {
-		Panel * panel = (*pl_it);
-
-		keyType = panel->isKeyTypeWidgets(key);
-		if(keyType == true) {
-			break;
-		}
-
-		keyType = panel->isKeyType(key);
-		if(keyType == true) {
-			break;
-		}
-
-		/* Check if the panel List has been changed in between
-		 * (triggered by a Panel- or a Widget Listener for example)
-		 * If it has then "reinitialize" the iterator because it is
-		 * possible that it became invalide because of this change
-		 * of the list! */
-		if(panelListChangedCount != rememberedPanelListChangedCount) {
-			rememberedPanelListChangedCount = panelListChangedCount;
-			pl_it = panelList.rbegin(); // reinitailize the iterator
-		}
-	}
-	return keyType;
 }
 
 bool Window::isMouseDraggedPanel(const glm::ivec2 & inMousePos)

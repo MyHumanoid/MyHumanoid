@@ -47,7 +47,6 @@ private:
 	Rect               absoluteGeometry;
 	glm::ivec2              zeroPoint;
 	AbstractListener * listener;
-	AbstractListener * sysListener;
 
 	// On mouse pressed -> true; on mouse released -> false
 	mutable bool active;
@@ -61,7 +60,6 @@ public:
 	virtual ~Component();
 
 	void setListener(AbstractListener * inListener) { listener = inListener; }
-	void setSysListener(AbstractListener * inListener) { sysListener = inListener; }
 
 	void setPosition(const glm::ivec2 & inPos);
 
