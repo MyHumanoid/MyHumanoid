@@ -74,8 +74,6 @@ public:
 
 	int  getRowSpacing() { return rowSpacing; }
 
-	int  getColumnSpacing() { return columnSpacing; }
-
 	virtual void calcWidgetPosition();
 
 protected:
@@ -88,7 +86,6 @@ protected:
 	Alignment align;
 	bool      maximize;
 	int       rowSpacing;
-	int       columnSpacing;
 
 private: // intentionally not implemeted
 	Panel(const Panel &);
