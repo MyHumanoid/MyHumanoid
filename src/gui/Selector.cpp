@@ -55,7 +55,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         ,
 
         selectorSysListener(new SelectorSysListener())
-        , alpha(1.0)
         , showLines(true)
         , cursorPos(0, 0)
         , rows(2)
@@ -179,7 +178,7 @@ void Selector::draw()
 	if(isVisible()) {
 		cgutils::enableBlend();
 		if(lazyLoadTexture()) {
-			cgutils::drawSquareFillTexture(getAbsoluteRect(), alpha, getTextures());
+			cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, getTextures());
 		} else {
 			cgutils::drawSquareFill(getAbsoluteRect(), backgroundColor);
 		}

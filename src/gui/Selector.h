@@ -44,13 +44,8 @@ namespace mhgui
 class Tooltip;
 class SelectorSysListener;
 
-/* ========================================================================== */
-/**
- */
-/* ========================================================================== */
 class Selector : public Widget
 {
-	// Textures
 public:
 	Texture texture;
 
@@ -58,7 +53,6 @@ public:
 	bool textureIsInited; // used by lazyLoadTexture
 
 	SelectorSysListener * selectorSysListener;
-	float                 alpha;
 
 	bool showLines;
 
