@@ -53,7 +53,6 @@ public:
 	virtual void draw();
 
 	bool     addWidget(Widget * w);
-	Widget * getWidget(uint32_t inWidgetId);
 
 	virtual bool isMouseOverWidgets(const glm::ivec2 & inMousePos);
 	virtual bool isMouseClickWidgets(const glm::ivec2 & inMousePos, int button, int state);

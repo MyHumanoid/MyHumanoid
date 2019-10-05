@@ -66,7 +66,9 @@ void CharacterSettingPanel::createWidgets()
 	imageVector.push_back(image);
 	addWidget(image);
 	// --------------------------------------------------------------------------
-
+	
+	mhgui::Selector *         selector;
+	
 	selector = new Selector(kAge,
 	                        searchPixmapFile("ui/age_selector.png"), Rect(0, 0, 192, 104));
 	selector->setPoints(2, 5);

@@ -64,22 +64,6 @@ Panel::~Panel()
 // Put widget into panel
 bool Panel::addWidget(Widget * w)
 {
-	// th ID FOUR_CHAR_CONST ('D', 'M', 'M', 'Y') (means dummy) is the only ID
-	// which can occur several times which means "not specified".
-	if(w->getID() != FOUR_CHAR_CONST('D', 'M', 'M', 'Y')) {
-		// if the given ID is not a dummy then check if a Widget with this id
-		// already exists!
-		for(list<Widget *>::const_iterator wl_it = widgetList.begin();
-		    wl_it != widgetList.end(); wl_it++) {
-			if((*w == **wl_it)) {
-				cerr << "**** Error: Widget needs a unique name in the same Panel! "
-				     << "A Widget with name '" << w->getIDAsString()
-				     << "' does yet exist!" << endl;
-				return false;
-			}
-		}
-	}
-
 	widgetList.push_back(w);
 	++widgetListChangedCount; // mark a change of the Widget List
 
@@ -89,20 +73,6 @@ bool Panel::addWidget(Widget * w)
 	calcWidgetPosition();
 
 	return true;
-}
-
-Widget * Panel::getWidget(uint32_t inWidgetId)
-{
-	for(list<Widget *>::const_iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
-	    wl_it++) {
-		Widget * widget = (*wl_it);
-
-		if(inWidgetId == widget->getID()) {
-			return widget;
-		}
-	}
-
-	return NULL;
 }
 
 void Panel::show()

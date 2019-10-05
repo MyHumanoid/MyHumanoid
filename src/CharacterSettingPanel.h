@@ -53,7 +53,7 @@ private: // intentionally not implemented
 
 public:
 	std::vector<mhgui::Image *>    imageVector;
-	mhgui::Selector *         selector;
+	
 	SelectorListener   selectorListener;
 	
 	
