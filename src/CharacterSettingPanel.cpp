@@ -142,25 +142,25 @@ bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, 
 	return true;
 }
 
-void SelectorListener::calcWidgetTargets(mhgui::Selector & selectorSource, glm::ivec2 inMousePos)
+void SelectorListener::calcWidgetTargets(mhgui::Selector & sel, glm::ivec2 inMousePos)
 {
 	
-	switch(selectorSource.getID()) {
+	switch(sel.getID()) {
 	case kAge:
 		g_global.m_comp.m_kAge = inMousePos;
-		ageDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
+		ageDists = sel.grid.calculateDists(sel.cursorPos);
 		break;
 	case kMuscleSize:
 		g_global.m_comp.m_kMuscleSize = inMousePos;
-		muscleSizeDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
+		muscleSizeDists = sel.grid.calculateDists(sel.cursorPos);
 		break;
 	case kBreast:
 		g_global.m_comp.m_kBreast = inMousePos;
-		breastDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
+		breastDists = sel.grid.calculateDists(sel.cursorPos);
 		break;
 	case kShape:
 		g_global.m_comp.m_kShape = inMousePos;
-		shapeDists = selectorSource.grid.calculateDists(selectorSource.cursorPos);
+		shapeDists = sel.grid.calculateDists(sel.cursorPos);
 		break;
 	}
 	
