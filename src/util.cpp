@@ -286,7 +286,7 @@ bool loadSelectorsPositions(const std::string & filename)
 	return true;
 }
 
-bool loadSelectorsPositions(const std::vector<string> & strings, const float value)
+bool loadSelectorsPositions(const std::vector<string> & strings)
 {
 	char     buffer[MAX_LINE];
 	char     tmp[MAX_LINE];
@@ -296,8 +296,7 @@ bool loadSelectorsPositions(const std::vector<string> & strings, const float val
 
 	for(vector<string>::const_iterator it = strings.begin(); it != strings.end(); it++) {
 		if(sscanf((*it).c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
-			g_global.setFuzzyValue(id,
-			                       glm::ivec2((int32_t)(x * value), (int32_t)(y * value)));
+			g_global.setFuzzyValue(id, glm::ivec2((int32_t)(x), (int32_t)(y)));
 		}
 	}
 
