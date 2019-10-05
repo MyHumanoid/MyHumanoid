@@ -53,7 +53,6 @@ public:
 	virtual void draw();
 
 	bool     addWidget(Widget * w);
-	void     removeWidget(Widget * w);
 	Widget * getWidget(uint32_t inWidgetId);
 
 	virtual bool isMouseOverWidgets(const glm::ivec2 & inMousePos);
@@ -63,26 +62,19 @@ public:
 
 	void show_all();
 
-	void setBottomAnchor(bool anchor) { bottomAnchor = anchor; }
 	bool getBottomAnchor() { return bottomAnchor; }
 
-	void setRightAnchor(bool anchor) { rightAnchor = anchor; }
 	bool getRightAnchor() { return rightAnchor; }
 
 	void      setAlignment(Alignment align) { this->align = align; }
 	Alignment getAlignment() { return align; }
 
-	void          setBackgroundColor(const Color & c) { backColor = c; }
 	const Color & getBackgroundColor() { return backColor; }
 
-	// TODO: maximize couldn't been unset!
-	void setMaximize(bool maximize) { this->maximize = maximize; }
 	bool getMaximize() { return maximize; }
 
-	void setRowSpacing(int space) { rowSpacing = space; }
 	int  getRowSpacing() { return rowSpacing; }
 
-	void setColumnSpacing(int space) { columnSpacing = space; }
 	int  getColumnSpacing() { return columnSpacing; }
 
 	virtual void calcWidgetPosition();

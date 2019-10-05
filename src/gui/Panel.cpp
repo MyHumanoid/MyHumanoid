@@ -91,22 +91,6 @@ bool Panel::addWidget(Widget * w)
 	return true;
 }
 
-void Panel::removeWidget(Widget * w)
-{
-	for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
-	    wl_it++) {
-		if(w->operator==(**wl_it)) {
-			// if removing a widget set zero point to 0,0
-			w->setZeroPoint(glm::ivec2(0, 0));
-			widgetList.erase(wl_it);
-			++widgetListChangedCount; // mark a change of the Widget List
-			break;
-		}
-	}
-
-	calcWidgetPosition();
-}
-
 Widget * Panel::getWidget(uint32_t inWidgetId)
 {
 	for(list<Widget *>::const_iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
