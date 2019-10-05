@@ -32,7 +32,6 @@
 #include "gui/Selector.h"
 #include "gui/CGUtilities.h"
 #include "gui/GLUTWrapper.h"
-#include "gui/SelectorSysListener.h"
 
 using std::cerr;
 using std::endl;
@@ -46,7 +45,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         , texture()
         , imageFilename(inFilename)
         , textureIsInited(false)
-        , selectorSysListener(new SelectorSysListener())
         , showLines(true)
         , cursorPos(0, 0)
         , rows(2)
@@ -55,13 +53,10 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         , backgroundColor(1.0, 1.0, 1.0, 1.0)
         , cursorColor(1.0, 0.0, 0.0, 1.0)
 {
-
-	setSysListener(selectorSysListener);
 }
 
 Selector::~Selector()
 {
-	delete selectorSysListener; // remove the listener again
 }
 
 void Selector::setPoints(int inRows, int inCols)

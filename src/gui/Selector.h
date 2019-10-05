@@ -52,8 +52,6 @@ public:
 	string imageFilename;
 	bool textureIsInited; // used by lazyLoadTexture
 
-	SelectorSysListener * selectorSysListener;
-
 	bool showLines;
 
 	glm::ivec2 cursorPos;
