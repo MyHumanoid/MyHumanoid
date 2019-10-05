@@ -47,7 +47,7 @@ static const uint32_t kComponentID_CharacterSettingPanel = FOUR_CHAR_CONST('p', 
 static const uint32_t kAge = FOUR_CHAR_CONST('A', 'g', 'e', 'X');
 static const uint32_t kMuscleSize =
         FOUR_CHAR_CONST('M', 's', 'S', 'z');
-static const uint32_t kComponentID_CharacterSettingPanel_Breast =
+static const uint32_t kBreast =
         FOUR_CHAR_CONST('B', 'r', 's', 't');
 static const uint32_t kComponentID_CharacterSettingPanel_Shape =
         FOUR_CHAR_CONST('S', 'h', 'p', 'a');

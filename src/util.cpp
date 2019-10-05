@@ -326,9 +326,9 @@ bool saveSelectorsPositions(const std::string & filename)
 		           << tmp->x << "," << tmp->y << endl;
 	}
 
-	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Breast);
+	tmp = g_global.getFuzzyValue(kBreast);
 	if(tmp != NULL) {
-		out_stream << "#t,B," << kComponentID_CharacterSettingPanel_Breast << ","
+		out_stream << "#t,B," << kBreast << ","
 		           << tmp->x << "," << tmp->y << endl;
 	}
 

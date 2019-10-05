@@ -152,7 +152,7 @@ void SelectorListener::calcWidgetTargets(Selector & selectorSource)
 		muscleSizeDists = selectorSource.getDists();
 		break;
 
-	case kComponentID_CharacterSettingPanel_Breast:
+	case kBreast:
 		breastDists = selectorSource.getDists();
 		break;
 

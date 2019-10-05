@@ -109,7 +109,7 @@ void CharacterSettingPanel::createWidgets()
 	imageVector.push_back(image);
 	addWidget(image);
 	// -------------------------------------------------------------------------
-	selector = new Selector(kComponentID_CharacterSettingPanel_Breast,
+	selector = new Selector(kBreast,
 	                        searchPixmapFile("ui/breast_selector.png"), Rect(0, 0, 192, 104));
 	selector->setCursorTexture(searchPixmapFile("ui/breast_cursor.png"));
 	selector->setPoints(2, 2);
@@ -182,7 +182,7 @@ void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 				selectorListener.ageDists = tmp->getDists();
 				break;
 
-			case kComponentID_CharacterSettingPanel_Breast:
+			case kBreast:
 				selectorListener.breastDists = tmp->getDists();
 				break;
 
@@ -203,7 +203,7 @@ void CharacterSettingPanel::calcSelectorValues(uint32_t index)
 void CharacterSettingPanel::updateUi()
 {
 	calcSelectorValues(kAge);
-	calcSelectorValues(kComponentID_CharacterSettingPanel_Breast);
+	calcSelectorValues(kBreast);
 	calcSelectorValues(kMuscleSize);
 	calcSelectorValues(kComponentID_CharacterSettingPanel_Shape);
 }
