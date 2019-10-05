@@ -64,7 +64,6 @@ public:
 	SelectorSysListener * selectorSysListener;
 	float                 alpha;
 
-	bool enabled;
 	bool showLines;
 
 	glm::ivec2 cursorPos;
@@ -88,9 +87,6 @@ public:
 public:
 	Selector(uint32_t inId, const string & inFilename, const Rect & inGeometry);
 	virtual ~Selector();
-
-	void setEnabled(bool inEnabled) { enabled = inEnabled; }
-	bool isEnabled() { return enabled; }
 
 	void setShowLines(bool inShowLines) { showLines = inShowLines; }
 

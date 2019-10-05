@@ -59,7 +59,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
 
         selectorSysListener(new SelectorSysListener())
         , alpha(1.0)
-        , enabled(true)
         , showLines(true)
         , cursorPos(0, 0)
         , rows(2)
@@ -158,7 +157,7 @@ void Selector::hide()
 const Texture & Selector::getTextures()
 {
 	lazyLoadTexture();
-	return enabled ? texture : textureDisabled;
+	return texture;
 }
 
 std::vector<float> Selector::getDists() const
@@ -241,9 +240,9 @@ void Selector::draw()
 /* ========================================================================== */
 bool Selector::lazyLoadTexture()
 {
-	bool &    isInited = enabled ? textureIsInited : textureDisabledIsInited;
-	string &  filename = enabled ? imageFilename : imageFilenameDisabled;
-	Texture & text     = enabled ? texture : textureDisabled;
+	bool &    isInited = textureIsInited;
+	string &  filename = imageFilename;
+	Texture & text     = texture;
 
 	if(filename.empty())
 		return false;
