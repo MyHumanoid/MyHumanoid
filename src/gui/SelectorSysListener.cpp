@@ -50,38 +50,20 @@ SelectorSysListener::~SelectorSysListener()
 
 bool SelectorSysListener::mouseDragged(const glm::ivec2 & inMousePos, Component * source)
 {
-	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-	assert(selectorSource); // Check if this is really an Image object?
 
-	selectorSource->setCursorPosFromMousePoint(inMousePos);
-
-	glutPostRedisplay();
 
 	return true;
 }
 
 bool SelectorSysListener::mousePressed(const glm::ivec2 & inMousePos, int button, Component * source)
 {
-	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-	assert(selectorSource); // Check if this is really an Image object?
 
-	selectorSource->setCursorPosFromMousePoint(inMousePos);
-
-	selectorSource->setActive(true);
-	selectorSource->setClickConsumed(false);
-
-	glutPostRedisplay();
 
 	return true;
 }
 
 bool SelectorSysListener::mouseReleased(const glm::ivec2 & inMousePos, int button, Component * source)
 {
-	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
-	assert(selectorSource); // Check if this is really an Image object?
-
-	selectorSource->setActive(false);
-	selectorSource->setClickConsumed(false);
 
 	return false;
 }

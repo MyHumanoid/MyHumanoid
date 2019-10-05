@@ -92,11 +92,17 @@ SelectorListener::~SelectorListener()
 
 bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source)
 {
+	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
+	
+	selectorSource->setCursorPosFromMousePoint(inMousePos);
+	
+	glutPostRedisplay();
+	
+	
 	int xDist = abs(oldPos.x - inMousePos.x);
 	int yDist = abs(oldPos.y - inMousePos.y);
 	
-	mhgui::Selector * selectorSource = dynamic_cast<mhgui::Selector *>(source); // req. RTTI!
-	assert(selectorSource); // Check if this is really an Image object?
 	
 	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 	
@@ -110,15 +116,29 @@ bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, mhgui::Compon
 
 bool SelectorListener::mousePressed(const glm::ivec2 & inMousePos, int button, mhgui::Component * source)
 {
+	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
+	
+	selectorSource->setCursorPosFromMousePoint(inMousePos);
+	
+	selectorSource->setActive(true);
+	selectorSource->setClickConsumed(false);
+	
+	glutPostRedisplay();
+	
+	
 	return true;
 }
 
 bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, mhgui::Component * source)
 {
-	oldPos = inMousePos;
-	
 	mhgui::Selector * selectorSource = dynamic_cast<mhgui::Selector *>(source); // req. RTTI!
 	assert(selectorSource); // Check if this is really an Image object?
+	
+	selectorSource->setActive(false);
+	selectorSource->setClickConsumed(false);
+	
+	oldPos = inMousePos;
 	
 	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
 	calcWidgetTargets(*selectorSource, inMousePos);
