@@ -70,8 +70,6 @@ public:
 
 	const Color & getBackgroundColor() { return backColor; }
 
-	bool getMaximize() { return maximize; }
-
 	virtual void calcWidgetPosition();
 
 protected:
@@ -82,7 +80,6 @@ protected:
 	bool     bottomAnchor;
 
 	Alignment align;
-	bool      maximize;
 
 private: // intentionally not implemeted
 	Panel(const Panel &);

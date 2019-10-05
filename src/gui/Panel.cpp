@@ -50,7 +50,6 @@ Panel::Panel(uint32_t inPanelId, const Rect & inGeometry)
         rightAnchor(false)
         , bottomAnchor(false)
         , align(HORIZONTAL)
-        , maximize(false)
         , backColor(0, 0, 0, 0)
 {
 }
