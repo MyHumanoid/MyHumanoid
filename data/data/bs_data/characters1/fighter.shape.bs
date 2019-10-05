@@ -7,7 +7,7 @@ eyes/eyes004.target,0.75
 eyes/eyes_small.target,0.19
 forehead/forehead001.target,0.16
 forehead/forehead005.target,0.79
-hands/Hand003.target,1
+hands/hand003.target,1
 lower_arms/lowerarm_End-large.target,1
 lower_arms/lowerarm_lenght_max.target,1
 mouth/mouth001.target,1
