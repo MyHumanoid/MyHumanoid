@@ -305,7 +305,7 @@ void Texture::mapToGeometry(const Rect & inRect, float inZLayer) const
 	// calculate the parts of the textures...
 
 	float floatWidth  = (float)inRect.size.x;
-	float floatHeight = (float)inRect.getHeight();
+	float floatHeight = (float)inRect.size.y;
 
 	float y = (float)inRect.pos.y;
 	for(size_t idxy = 0; idxy < mCountTilesY; ++idxy) {

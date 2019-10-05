@@ -231,9 +231,9 @@ void cgutils::drawSquareFill(const mhgui::Rect & inRect, const Color & c)
 	glTexCoord2f(1, 0);
 	glVertex3f(inRect.pos.x + inRect.size.x, inRect.pos.y, zlayer);
 	glTexCoord2f(1, 1);
-	glVertex3f(inRect.pos.x + inRect.size.x, inRect.pos.y + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.pos.x + inRect.size.x, inRect.pos.y + inRect.size.y, zlayer);
 	glTexCoord2f(0, 1);
-	glVertex3f(inRect.pos.x, inRect.pos.y + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.pos.x, inRect.pos.y + inRect.size.y, zlayer);
 	glEnd();
 }
 
@@ -245,9 +245,9 @@ void cgutils::drawSquare(const Rect & inRect, const Color & c)
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(inRect.pos.x, inRect.pos.y + 1, zlayer);
 	glVertex3f(inRect.pos.x - 1 + inRect.size.x, inRect.pos.y, zlayer);
-	glVertex3f(inRect.pos.x - 1 + inRect.size.x, inRect.pos.y + inRect.getHeight(),
+	glVertex3f(inRect.pos.x - 1 + inRect.size.x, inRect.pos.y + inRect.size.y,
 	           zlayer);
-	glVertex3f(inRect.pos.x, inRect.pos.y + inRect.getHeight(), zlayer);
+	glVertex3f(inRect.pos.x, inRect.pos.y + inRect.size.y, zlayer);
 	glEnd();
 }
 
@@ -306,7 +306,7 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 	glutInitContextFlags(/*GLUT_FORWARD_COMPATIBLE | */ GLUT_DEBUG);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
-	glutInitWindowSize(rect.size.x, rect.getHeight());
+	glutInitWindowSize(rect.size.x, rect.size.y);
 	glutInitWindowPosition(rect.pos.x, rect.pos.y);
 	int winID = glutCreateWindow(title);
 

@@ -51,8 +51,6 @@ public:
 	const glm::ivec2 & getPos() const { return pos; }
 	const glm::ivec2 &  getSize() const { return size; }
 
-	int32_t getHeight() const { return size.y; }
-	
 	bool isEmpty() const { return size == glm::ivec2(0); }
 
 	/// Checks whether two rectangles are identical
@@ -150,7 +148,7 @@ inline bool Rect::isHitBy(const glm::ivec2 & inPoint) const
 {
 	return (((inPoint.x >= pos.x) && (inPoint.y >= pos.y)) &&
 	        ((inPoint.x < pos.x + size.x) &&
-	         (inPoint.y < pos.y + getHeight())));
+	         (inPoint.y < pos.y + size.y)));
 }
 
 } // namespace mhgui
