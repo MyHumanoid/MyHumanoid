@@ -51,7 +51,6 @@ Panel::Panel(uint32_t inPanelId, const Rect & inGeometry)
         , bottomAnchor(false)
         , align(HORIZONTAL)
         , maximize(false)
-        , rowSpacing(0)
         , backColor(0, 0, 0, 0)
 {
 }
@@ -105,7 +104,7 @@ void Panel::calcWidgetPosition()
 
 			// some references to ease access
 			const int widgetWidth  = widget->getSize().getWidth();
-			const int widgetHeight = widget->getSize().getHeight() + rowSpacing;
+			const int widgetHeight = widget->getSize().getHeight();
 			const int panelWidth   = getSize().getWidth();
 			const int panelHeight  = getSize().getHeight();
 
@@ -155,7 +154,7 @@ void Panel::calcWidgetPosition()
 
 			// some references to ease access
 			const int widgetWidth  = widget->getSize().getWidth();
-			const int widgetHeight = widget->getSize().getHeight() + rowSpacing;
+			const int widgetHeight = widget->getSize().getHeight();
 			const int panelWidth   = getSize().getWidth();
 			const int panelHeight  = getSize().getHeight();
 

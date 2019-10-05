@@ -72,8 +72,6 @@ public:
 
 	bool getMaximize() { return maximize; }
 
-	int  getRowSpacing() { return rowSpacing; }
-
 	virtual void calcWidgetPosition();
 
 protected:
@@ -85,7 +83,6 @@ protected:
 
 	Alignment align;
 	bool      maximize;
-	int       rowSpacing;
 
 private: // intentionally not implemeted
 	Panel(const Panel &);
