@@ -90,13 +90,6 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 	cursorPos = glm::ivec2(foo.x, getAbsolutePosition().y + getSize().y - foo.y);
 }
 
-// Return the ID assigned
-const Texture & Selector::getTextures()
-{
-	lazyLoadTexture();
-	return texture;
-}
-
 std::vector<float> Selector::calculateDists() const
 {
 	std::vector<float> ret;
@@ -122,7 +115,7 @@ void Selector::draw()
 {
 	cgutils::enableBlend();
 	if(lazyLoadTexture()) {
-		cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, getTextures());
+		cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, texture);
 	} else {
 		cgutils::drawSquareFill(getAbsoluteRect(), backgroundColor);
 	}

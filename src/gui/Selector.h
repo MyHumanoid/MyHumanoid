@@ -77,8 +77,6 @@ public:
 
 	std::vector<float> calculateDists() const;
 
-	const Texture & getTextures(); // return the textureID
-
 	void setPoints(int inRows, int inCols);
 
 	void                setCursorColor(const Color & inColor) { cursorColor = inColor; }
