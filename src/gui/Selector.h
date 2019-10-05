@@ -76,7 +76,6 @@ public:
 	float cellRatio;
 
 	std::vector<glm::ivec2>  points; // from left-bottom point to right-up point
-	std::vector<string> labels; // from left-bottom point to right-up point
 
 	Color linesColor;
 	Color backgroundColor;
@@ -109,8 +108,6 @@ public:
 	void                setCursorColor(const Color & inColor) { cursorColor = inColor; }
 	void                setBackgroundColor(const Color & inColor) { backgroundColor = inColor; }
 	void                setLinesColor(const Color & inColor) { linesColor = inColor; }
-	void                setLabels(const std::vector<string> & inLabels) { labels = inLabels; }
-	std::vector<string> getLabels() { return labels; }
 
 	virtual void show();
 	virtual void hide();

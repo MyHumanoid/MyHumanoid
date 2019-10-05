@@ -65,7 +65,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         , rows(2)
         , cols(2)
         , points()
-        , labels()
         , linesColor(0.0, 0.0, 0.0, 1.0)
         , backgroundColor(1.0, 1.0, 1.0, 1.0)
         , cursorColor(1.0, 0.0, 0.0, 1.0)
