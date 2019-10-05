@@ -95,9 +95,6 @@ public:
 	Selector(uint32_t inId, const string & inFilename, const Rect & inGeometry);
 	virtual ~Selector();
 
-	void  setAlpha(float);
-	float getAlpha() const { return alpha; }
-
 	void setEnabled(bool inEnabled) { enabled = inEnabled; }
 	bool isEnabled() { return enabled; }
 
@@ -109,7 +106,6 @@ public:
 	void setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint);
 
 	std::vector<float> getDists() const;
-	void               setDisabledTexture(const string & inFilename);
 
 	const Texture & getTextures(); // return the textureID
 

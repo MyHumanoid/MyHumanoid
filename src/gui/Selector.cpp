@@ -146,19 +146,9 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 	setCursorPos(tmp);
 }
 
-void Selector::setDisabledTexture(const std::string & inFilename)
-{
-	imageFilenameDisabled = inFilename;
-}
-
 void Selector::setCursorTexture(const std::string & inFilename)
 {
 	cursorFilename = inFilename;
-}
-
-void Selector::setAlpha(float a)
-{
-	alpha = a;
 }
 
 void Selector::show()
