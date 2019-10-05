@@ -193,19 +193,19 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & sel, glm::ivec2 inMou
 	switch(sel.getID()) {
 	case kAge:
 		g_global.m_comp.m_kAge = inMousePos;
-		ageDists = ageGrid.calculateDists(sel.cursorPos);
+		grids.ageDists = grids.ageGrid.calculateDists(sel.cursorPos);
 		break;
 	case kMuscleSize:
 		g_global.m_comp.m_kMuscleSize = inMousePos;
-		muscleSizeDists = muscleSizeGrid.calculateDists(sel.cursorPos);
+		grids.muscleSizeDists = grids.muscleSizeGrid.calculateDists(sel.cursorPos);
 		break;
 	case kBreast:
 		g_global.m_comp.m_kBreast = inMousePos;
-		breastDists = breastGrid.calculateDists(sel.cursorPos);
+		grids.breastDists = grids.breastGrid.calculateDists(sel.cursorPos);
 		break;
 	case kShape:
 		g_global.m_comp.m_kShape = inMousePos;
-		shapeDists = shapeGrid.calculateDists(sel.cursorPos);
+		grids.shapeDists = grids.shapeGrid.calculateDists(sel.cursorPos);
 		break;
 	}
 	
@@ -219,7 +219,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 	unsigned int k = 0;
 	
 	// std::cout << "--------------------------" << std::endl;
-	for(const float & di_it : ageDists) {
+	for(const float & di_it : grids.ageDists) {
 		if(i < ageLabels.size()) {
 			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
 			
@@ -227,11 +227,11 @@ void SelectorListener::calcWidgetTargetsFOO()
 		}
 	}
 	
-	for(const float & ms_it : muscleSizeDists) {
+	for(const float & ms_it : grids.muscleSizeDists) {
 		
 		i = 0;
 		
-		for(const float & di_it : ageDists) {
+		for(const float & di_it : grids.ageDists) {
 			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
 				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
 				                     muscleSizeLabels[j] + ".target");
@@ -244,7 +244,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 				k = 0;
 				if(i <= 4) {
 					
-					for(const float & br_it : breastDists) {
+					for(const float & br_it : grids.breastDists) {
 						
 						if(k < breastLabels.size()) {
 							string tmpTargetName(
@@ -271,7 +271,7 @@ void SelectorListener::calcWidgetTargetsFOO()
 	
 	i = 0;
 	
-	for(const float & sh_it : shapeDists) {
+	for(const float & sh_it : grids.shapeDists) {
 		if(i < shapeLabels.size()) {
 			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
 			
@@ -317,7 +317,7 @@ void CharacterSettingPanel::createWidgets()
 	selector = new Selector(kAge,
 	                        searchPixmapFile("ui/age_selector.png"), Rect(0, 0, 192, 104));
 	
-	lis.ageGrid.calcPoints(selector->getSize(), 2, 5);
+	lis.grids.ageGrid.calcPoints(selector->getSize(), 2, 5);
 	
 	selector->setListener(&lis);
 	m_age = selector;
@@ -339,7 +339,7 @@ void CharacterSettingPanel::createWidgets()
 	        new Selector(kMuscleSize,
 	                     searchPixmapFile("ui/muscle_size_selector.png"), Rect(0, 0, 192, 104));
 	
-	lis.muscleSizeGrid.calcPoints(selector->getSize(), 2, 2);
+	lis.grids.muscleSizeGrid.calcPoints(selector->getSize(), 2, 2);
 	
 	selector->setListener(&lis);
 	m_muscleSize = selector;
@@ -360,7 +360,7 @@ void CharacterSettingPanel::createWidgets()
 	selector = new Selector(kBreast,
 	                        searchPixmapFile("ui/breast_selector.png"), Rect(0, 0, 192, 104));
 	
-	lis.breastGrid.calcPoints(selector->getSize(), 2, 2);
+	lis.grids.breastGrid.calcPoints(selector->getSize(), 2, 2);
 	
 	selector->setListener(&lis);
 	m_breast = selector;
@@ -381,7 +381,7 @@ void CharacterSettingPanel::createWidgets()
 	selector = new Selector(kShape,
 	                        searchPixmapFile("ui/shape_selector.png"), Rect(0, 0, 192, 104));
 	
-	lis.shapeGrid.calcPoints(selector->getSize(), 2, 2);
+	lis.grids.shapeGrid.calcPoints(selector->getSize(), 2, 2);
 	
 	selector->setListener(&lis);
 	m_shape = selector;
@@ -402,10 +402,10 @@ void CharacterSettingPanel::resetSlidersValues()
 	m_breast->cursorPos = glm::ivec2(96, 52);
 	m_shape->cursorPos = glm::ivec2(96, 52);
 	
-	lis.ageDists.clear();
-	lis.muscleSizeDists.clear();
-	lis.breastDists.clear();
-	lis.shapeDists.clear();
+	lis.grids.ageDists.clear();
+	lis.grids.muscleSizeDists.clear();
+	lis.grids.breastDists.clear();
+	lis.grids.shapeDists.clear();
 }
 
 void CharacterSettingPanel::calcSelectorValues(Selector * sel)
@@ -435,16 +435,16 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	
 	switch(sel->getID()) {
 	case kAge:
-		lis.ageDists = lis.ageGrid.calculateDists(sel->cursorPos);
+		lis.grids.ageDists = lis.grids.ageGrid.calculateDists(sel->cursorPos);
 		break;
 	case kBreast:
-		lis.breastDists = lis.breastGrid.calculateDists(sel->cursorPos);
+		lis.grids.breastDists = lis.grids.breastGrid.calculateDists(sel->cursorPos);
 		break;
 	case kMuscleSize:
-		lis.muscleSizeDists = lis.muscleSizeGrid.calculateDists(sel->cursorPos);
+		lis.grids.muscleSizeDists = lis.grids.muscleSizeGrid.calculateDists(sel->cursorPos);
 		break;
 	case kShape:
-		lis.shapeDists = lis.shapeGrid.calculateDists(sel->cursorPos);
+		lis.grids.shapeDists = lis.grids.shapeGrid.calculateDists(sel->cursorPos);
 		break;
 	}
 	

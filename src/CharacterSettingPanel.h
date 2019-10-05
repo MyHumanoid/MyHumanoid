@@ -50,7 +50,17 @@ struct Grid
 	std::vector<float> calculateDists(glm::ivec2 cursorPos) const;
 };
 
-
+struct Grids {
+	Grid ageGrid;
+	Grid muscleSizeGrid;
+	Grid breastGrid;
+	Grid shapeGrid;
+	
+	std::vector<float> ageDists;
+	std::vector<float> muscleSizeDists;
+	std::vector<float> breastDists;
+	std::vector<float> shapeDists;
+};
 
 
 
@@ -70,16 +80,7 @@ public:
 	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
 	virtual bool mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source);
 	
-	
-	Grid ageGrid;
-	Grid muscleSizeGrid;
-	Grid breastGrid;
-	Grid shapeGrid;
-	
-	std::vector<float> ageDists;
-	std::vector<float> muscleSizeDists;
-	std::vector<float> breastDists;
-	std::vector<float> shapeDists;
+	Grids grids;
 };
 
 
