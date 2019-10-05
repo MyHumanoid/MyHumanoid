@@ -63,8 +63,6 @@ private:
 	bool textureDisabledIsInited;
 
 	float              alpha;
-	Color              overlay;
-	bool               overlayEffect;
 
 	bool enabled;
 	bool kill_mouse_drag;
@@ -83,14 +81,6 @@ public:
 	bool isEnabled() { return enabled; }
 
 	void setKillMouseDrag(bool kill) { kill_mouse_drag = kill; }
-	/*!
-	 * Set the Color for the overlay rectangle. The overlay is enabled at this
-	 * time.
-	 * @param c The color for the overlay. Transparency is set by the alpha
-	 * component.
-	 */
-	void setOverlayRectangle(const Color & c);
-	void setOverlayRectangle(bool overlayEffect);
 
 	void setOverlayTexture(const string & inFilename);
 	void setDisabledTexture(const string & inFilename);
@@ -101,7 +91,6 @@ public:
 	virtual void show();
 	virtual void hide();
 	virtual void draw();
-	virtual void drawOverlay();
 
 	bool isMouseDragged(const glm::ivec2 & inMousePos);
 	bool isMouseClick(const glm::ivec2 & inMousePos, int button, int state);

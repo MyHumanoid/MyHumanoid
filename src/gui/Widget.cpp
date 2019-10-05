@@ -55,10 +55,6 @@ void Widget::draw()
 {
 }
 
-void Widget::drawOverlay()
-{
-}
-
 void Widget::draw_wrapper()
 {
 	draw();

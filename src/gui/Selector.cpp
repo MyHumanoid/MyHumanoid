@@ -182,11 +182,6 @@ std::vector<float> Selector::getDists() const
 	return ret;
 }
 
-void Selector::drawOverlay()
-{
-	draw();
-}
-
 // draw function
 void Selector::draw()
 {

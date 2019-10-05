@@ -272,19 +272,6 @@ void Panel::draw()
 
 			w->draw_wrapper();
 		}
-
-		// draw overlay effects
-		// This is great, because widgets couldn't overlap effects. Perhaps there's
-		// a problem if a effect draws over another panel and this panel is drawn
-		// before the effect. If this case is a problem in future the effect drawing
-		// should be moved to the window class...
-		for(list<Widget *>::iterator wl_it = widgetList.begin(); wl_it != widgetList.end();
-		    wl_it++) {
-			Widget * w = (*wl_it);
-
-			w->drawOverlay();
-		}
-
 		glDisable(GL_BLEND);
 	}
 }

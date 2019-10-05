@@ -115,7 +115,6 @@ public:
 	virtual void show();
 	virtual void hide();
 	virtual void draw();
-	virtual void drawOverlay();
 
 protected:
 	bool lazyLoadTexture();

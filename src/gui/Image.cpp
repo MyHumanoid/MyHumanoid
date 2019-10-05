@@ -55,8 +55,6 @@ Image::Image(uint32_t inId, const std::string & inFilename, const Rect & inGeome
         , textureOverIsInited(false)
         , textureDisabledIsInited(false)
         , alpha(1.0)
-        , overlay(0, 0, 0, 0)
-        , overlayEffect(false)
         , enabled(true)
         , kill_mouse_drag(false)
 {
@@ -110,34 +108,6 @@ const Texture & Image::getTexturesOver()
 {
 	lazyLoadTexture(true);
 	return textureOver;
-}
-
-void Image::setOverlayRectangle(const Color & c)
-{
-	overlay       = c;
-	overlayEffect = true;
-}
-
-void Image::setOverlayRectangle(bool overlayEffect)
-{
-	this->overlayEffect = overlayEffect;
-}
-
-void Image::drawOverlay()
-{
-	if(isVisible()) {
-		if(overlayEffect && enabled) {
-			if(lazyLoadTexture(true)) {
-				cgutils::enableBlend();
-				cgutils::drawSquareFillTexture(getAbsoluteRect(), 1.0, textureOver);
-				glDisable(GL_BLEND);
-			} else {
-				cgutils::enableBlend();
-				cgutils::drawSquareFill(getAbsoluteRect(), overlay);
-				glDisable(GL_BLEND);
-			}
-		}
-	}
 }
 
 // draw function
