@@ -39,6 +39,14 @@
 namespace Animorph
 {
 
+struct CompositeSetting
+{
+	glm::ivec2 m_kAge = InvalidPoint;
+	glm::ivec2 m_kMuscleSize = InvalidPoint;
+	glm::ivec2 m_kBreast = InvalidPoint;
+	glm::ivec2 m_kShape = InvalidPoint;
+};
+
 /*! \brief A map of names and associated values
 
 The map can be saved to and loaded from a file.
@@ -74,10 +82,7 @@ public:
 	 */
 	bool save(const std::string & filename);
 	
-	glm::ivec2 m_kAge = InvalidPoint;
-	glm::ivec2 m_kMuscleSize = InvalidPoint;
-	glm::ivec2 m_kBreast = InvalidPoint;
-	glm::ivec2 m_kShape = InvalidPoint;
+	CompositeSetting m_comp;
 };
 
 } // namespace Animorph

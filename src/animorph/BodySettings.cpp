@@ -71,16 +71,16 @@ void BodySettings::fromStream(std::ifstream & in_stream)
 					
 					switch(id) {
 					case kAge:
-						m_kAge = glm::ivec2(x, y);
+						m_comp.m_kAge = glm::ivec2(x, y);
 						break;
 					case kMuscleSize:
-						m_kMuscleSize = glm::ivec2(x, y);
+						m_comp.m_kMuscleSize = glm::ivec2(x, y);
 						break;
 					case kBreast:
-						m_kBreast = glm::ivec2(x, y);
+						m_comp.m_kBreast = glm::ivec2(x, y);
 						break;
 					case kShape:
-						m_kShape = glm::ivec2(x, y);
+						m_comp.m_kShape = glm::ivec2(x, y);
 						break;
 					default:
 						log_error("Unexpected value");
@@ -102,25 +102,25 @@ void BodySettings::createStream(std::ostringstream & out_stream)
 	
 	glm::ivec2 tmp;
 	
-	tmp = m_kAge;
+	tmp = m_comp.m_kAge;
 	if(tmp != InvalidPoint) {
 		out_stream << "#t,A," << kAge << ","
 		           << tmp.x << "," << tmp.y << std::endl;
 	}
 	
-	tmp = m_kMuscleSize;
+	tmp = m_comp.m_kMuscleSize;
 	if(tmp != InvalidPoint) {
 		out_stream << "#t,M," << kMuscleSize << ","
 		           << tmp.x << "," << tmp.y << std::endl;
 	}
 	
-	tmp = m_kBreast;
+	tmp = m_comp.m_kBreast;
 	if(tmp != InvalidPoint) {
 		out_stream << "#t,B," << kBreast << ","
 		           << tmp.x << "," << tmp.y << std::endl;
 	}
 	
-	tmp = m_kShape;
+	tmp = m_comp.m_kShape;
 	if(tmp != InvalidPoint) {
 		out_stream << "#t,S," << kShape << ","
 		           << tmp.x << "," << tmp.y;
