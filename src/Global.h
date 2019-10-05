@@ -56,7 +56,6 @@ public:
 	{
 		this->fuzzyValues[index] = new glm::ivec2(inPoint);
 	}
-	void    resetFuzzyValues() { fuzzyValues.clear(); }
 	glm::ivec2 * getFuzzyValue(const uint32_t index) { return this->fuzzyValues[index]; }
 
 	glm::vec2 ageAndSex        = {0.f, 0.f};

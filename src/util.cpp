@@ -248,7 +248,7 @@ void loadDefaultBodySettings()
 	bool         state = bodyset.load(searchDataFile("default.bs"));
 
 	if(state) {
-		g_global.resetFuzzyValues();
+		g_global.fuzzyValues.clear();
 		state = loadSelectorsPositions(searchDataFile("default.bs"));
 
 		CharacterSettingPanel * tmpPanel = (CharacterSettingPanel *)mainWindow.getPanel(
