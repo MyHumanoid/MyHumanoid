@@ -43,18 +43,10 @@ namespace mhgui
 // constructor
 Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & inGeometry)
         : Widget(inId, inGeometry)
-        ,
-
-        texture()
-        ,
-
-        imageFilename(inFilename)
-        ,
-
-        textureIsInited(false)
-        ,
-
-        selectorSysListener(new SelectorSysListener())
+        , texture()
+        , imageFilename(inFilename)
+        , textureIsInited(false)
+        , selectorSysListener(new SelectorSysListener())
         , showLines(true)
         , cursorPos(0, 0)
         , rows(2)
@@ -65,19 +57,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
 {
 
 	setSysListener(selectorSysListener);
-
-	for(int i = 0; i < rows; i++) {
-		for(int j = 0; j < cols; j++) {
-			glm::ivec2 tmp(j * getSize().getWidth() / (cols - 1),
-			          i * getSize().getHeight() / (rows - 1));
-			points.push_back(tmp);
-		}
-	}
-
-	float cellWidth  = getSize().getWidth() / (cols - 1);
-	float cellHeight = getSize().getHeight() / (rows - 1);
-	cellRatio        = cellWidth / cellHeight;
-	maxValue         = glm::min(cellWidth, cellHeight * cellRatio);
 }
 
 Selector::~Selector()
