@@ -146,11 +146,6 @@ bool Component::isMouseClick(const glm::ivec2 & inMousePos, int button, int stat
 	} else if((button == GLUT_WHEEL_DOWN || button == GLUT_WHEEL_UP ||
 	           button == GLUT_WHEEL_RIGHT || button == GLUT_WHEEL_LEFT) &&
 	          isHit) {
-		if(listener)
-			isClick = listener->mouseWheel(inMousePos, button, this);
-
-		if(sysListener)
-			sysListener->mouseWheel(inMousePos, button, this);
 	}
 
 	//  }

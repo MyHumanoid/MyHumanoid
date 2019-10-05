@@ -49,7 +49,6 @@ public:
 	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
 	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
 	virtual bool mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source);
-	virtual bool mouseWheel(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
 	virtual bool keyType(unsigned char inKey, mhgui::Component * source);
 	
 	std::vector<float> ageDists;

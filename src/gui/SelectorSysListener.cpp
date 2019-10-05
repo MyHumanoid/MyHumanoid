@@ -60,11 +60,6 @@ bool SelectorSysListener::mouseDragged(const glm::ivec2 & inMousePos, Component 
 	return true;
 }
 
-bool SelectorSysListener::mouseWheel(const glm::ivec2 & inMousePos, int inButton, Component * source)
-{
-	return false;
-}
-
 bool SelectorSysListener::mousePressed(const glm::ivec2 & inMousePos, int button, Component * source)
 {
 	Selector * selectorSource = dynamic_cast<Selector *>(source); // req. RTTI!

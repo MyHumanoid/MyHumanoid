@@ -108,11 +108,6 @@ bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, mhgui::Compon
 	return true;
 }
 
-bool SelectorListener::mouseWheel(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source)
-{
-	return false;
-}
-
 bool SelectorListener::mousePressed(const glm::ivec2 & inMousePos, int button, mhgui::Component * source)
 {
 	return true;
