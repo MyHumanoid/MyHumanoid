@@ -274,7 +274,7 @@ void CharacterSettingPanel::createWidgets()
 	
 	selector->grid.calcPoints(selector->getSize(), 2, 5);
 	
-	selector->setListener(&selectorListener);
+	selector->setListener(&lis);
 	m_age = selector;
 	addWidget(selector);
 	
@@ -296,7 +296,7 @@ void CharacterSettingPanel::createWidgets()
 	
 	selector->grid.calcPoints(selector->getSize(), 2, 2);
 	
-	selector->setListener(&selectorListener);
+	selector->setListener(&lis);
 	m_muscleSize = selector;
 	addWidget(selector);
 
@@ -317,7 +317,7 @@ void CharacterSettingPanel::createWidgets()
 	
 	selector->grid.calcPoints(selector->getSize(), 2, 2);
 	
-	selector->setListener(&selectorListener);
+	selector->setListener(&lis);
 	m_breast = selector;
 	addWidget(selector);
 
@@ -338,7 +338,7 @@ void CharacterSettingPanel::createWidgets()
 	
 	selector->grid.calcPoints(selector->getSize(), 2, 2);
 	
-	selector->setListener(&selectorListener);
+	selector->setListener(&lis);
 	m_shape = selector;
 	addWidget(selector);
 
@@ -357,10 +357,10 @@ void CharacterSettingPanel::resetSlidersValues()
 	m_breast->cursorPos = glm::ivec2(96, 52);
 	m_shape->cursorPos = glm::ivec2(96, 52);
 	
-	selectorListener.ageDists.clear();
-	selectorListener.muscleSizeDists.clear();
-	selectorListener.breastDists.clear();
-	selectorListener.shapeDists.clear();
+	lis.ageDists.clear();
+	lis.muscleSizeDists.clear();
+	lis.breastDists.clear();
+	lis.shapeDists.clear();
 }
 
 void CharacterSettingPanel::calcSelectorValues(Selector * sel)
@@ -390,16 +390,16 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	
 	switch(sel->getID()) {
 	case kAge:
-		selectorListener.ageDists = sel->grid.calculateDists(sel->cursorPos);
+		lis.ageDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	case kBreast:
-		selectorListener.breastDists = sel->grid.calculateDists(sel->cursorPos);
+		lis.breastDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	case kMuscleSize:
-		selectorListener.muscleSizeDists = sel->grid.calculateDists(sel->cursorPos);
+		lis.muscleSizeDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	case kShape:
-		selectorListener.shapeDists = sel->grid.calculateDists(sel->cursorPos);
+		lis.shapeDists = sel->grid.calculateDists(sel->cursorPos);
 		break;
 	}
 	

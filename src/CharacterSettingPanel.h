@@ -80,7 +80,7 @@ private: // intentionally not implemented
 public:
 	std::vector<mhgui::Image *>    imageVector;
 	
-	SelectorListener   selectorListener;
+	SelectorListener   lis;
 	
 	
 	mhgui::Selector * m_age;
