@@ -60,7 +60,6 @@ Selector::Selector(uint32_t inId, const std::string & inFilename, const Rect & i
         , rows(2)
         , cols(2)
         , points()
-        , linesColor(0.0, 0.0, 0.0, 1.0)
         , backgroundColor(1.0, 1.0, 1.0, 1.0)
         , cursorColor(1.0, 0.0, 0.0, 1.0)
 {
@@ -194,6 +193,8 @@ void Selector::draw()
 		cgutils::drawSquareFill(cur, cursorColor);
 
 		if(showLines) {
+			auto linesColor = Color(0.0, 0.0, 0.0, 1.0);
+			
 			// lines
 			for(int i = 1; i < rows - 1; i++) {
 				int y = (i * size.getHeight() / (rows - 1));

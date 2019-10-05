@@ -66,7 +66,6 @@ public:
 
 	std::vector<glm::ivec2>  points; // from left-bottom point to right-up point
 
-	Color linesColor;
 	Color backgroundColor;
 	Color cursorColor;
 
@@ -93,7 +92,6 @@ public:
 
 	void                setCursorColor(const Color & inColor) { cursorColor = inColor; }
 	void                setBackgroundColor(const Color & inColor) { backgroundColor = inColor; }
-	void                setLinesColor(const Color & inColor) { linesColor = inColor; }
 
 	virtual void show();
 	virtual void hide();
