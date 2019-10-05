@@ -26,12 +26,42 @@
  */
 #pragma once
 
-#include "SelectorListener.h"
 #include "util.h"
+#include "gui/AbstractListener.h"
 #include <gui/Image.h>
 #include <gui/Panel.h>
 #include <gui/Selector.h>
 #include <vector>
+
+
+class SelectorListener : public mhgui::AbstractListener
+{
+public:
+	void calcWidgetTargets(mhgui::Selector & selectorSource, glm::ivec2 inMousePos);
+	void calcWidgetTargetsFOO();
+	
+	glm::ivec2 oldPos;
+	
+public:
+	SelectorListener();
+	virtual ~SelectorListener();
+	
+	virtual bool mouseOver(const glm::ivec2 & inMousePos, mhgui::Component * source);
+	virtual bool mouseOut(const glm::ivec2 & inMousePos, mhgui::Component * source);
+	virtual bool mousePressed(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
+	virtual bool mouseReleased(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
+	virtual bool mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source);
+	virtual bool mouseWheel(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source);
+	virtual bool keyType(unsigned char inKey, mhgui::Component * source);
+	
+	std::vector<float> ageDists;
+	std::vector<float> muscleSizeDists;
+	std::vector<float> breastDists;
+	std::vector<float> shapeDists;
+};
+
+
+
 
 class CharacterSettingPanel : public mhgui::Panel
 {

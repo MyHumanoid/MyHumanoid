@@ -142,8 +142,6 @@ set(myhumanoid_sources
 	src/MhUiMorph.cpp
 	src/MhUiPose.h
 	src/MhUiPose.cpp
-	src/SelectorListener.cpp
-	src/SelectorListener.h
 	src/util.cpp
 	src/util.h
 	src/Vfs.h

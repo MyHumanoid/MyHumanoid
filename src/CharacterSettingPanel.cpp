@@ -29,16 +29,222 @@
 #include "ComponentID.h"
 
 #include <algorithm>
+#include <assert.h>
+#include <stdio.h>
 
 #include <gui/Rect.h>
+#include <gui/Selector.h>
 #include <gui/Window.h>
 
+#include "ComponentID.h"
 #include "Global.h"
 #include "log/log.h"
 
 using mhgui::Rect;
 using mhgui::Image;
 using mhgui::Selector;
+
+
+static std::array<string, 10> ageLabels = {
+    "female_10",
+    "female_30",
+    "female_50",
+    "female_70",
+    "female_90",
+    "male_10",
+    "male_30",
+    "male_50",
+    "male_70",
+    "male_90"
+};
+
+static std::array<string, 4> muscleSizeLabels = {
+    "skinny_nomuscle",
+    "big_nomuscle",
+    "skinny_muscle",
+    "big_muscle"
+};
+
+static std::array<string, 4> breastLabels = {
+    "cone_little",
+    "cone_big",
+    "sphere_little",
+    "sphere_big"
+};
+
+static std::array<string, 4> shapeLabels = {
+    "brevilinear_vshape",
+    "brevilinear_peershape",
+    "longilinear_vshape",
+    "longilinear_peershape"
+};
+
+
+SelectorListener::SelectorListener()
+    : AbstractListener()
+    , oldPos(0, 0)
+{
+}
+
+SelectorListener::~SelectorListener()
+{
+}
+
+bool SelectorListener::mouseOver(const glm::ivec2 & inMousePos, mhgui::Component * source)
+{
+	return false;
+}
+
+bool SelectorListener::mouseOut(const glm::ivec2 & inMousePos, mhgui::Component * source)
+{
+	return false;
+}
+
+bool SelectorListener::mouseDragged(const glm::ivec2 & inMousePos, mhgui::Component * source)
+{
+	int xDist = abs(oldPos.x - inMousePos.x);
+	int yDist = abs(oldPos.y - inMousePos.y);
+	
+	mhgui::Selector * selectorSource = dynamic_cast<mhgui::Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
+	
+	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
+	
+	if(xDist > 3 || yDist > 3) {
+		oldPos = inMousePos;
+		calcWidgetTargets(*selectorSource, inMousePos);
+	}
+	
+	return true;
+}
+
+bool SelectorListener::mouseWheel(const glm::ivec2 & inMousePos, int inButton, mhgui::Component * source)
+{
+	return false;
+}
+
+bool SelectorListener::mousePressed(const glm::ivec2 & inMousePos, int button, mhgui::Component * source)
+{
+	return true;
+}
+
+bool SelectorListener::mouseReleased(const glm::ivec2 & inMousePos, int button, mhgui::Component * source)
+{
+	oldPos = inMousePos;
+	
+	mhgui::Selector * selectorSource = dynamic_cast<mhgui::Selector *>(source); // req. RTTI!
+	assert(selectorSource); // Check if this is really an Image object?
+	
+	//g_global.setFuzzyValue(selectorSource->getID(), inMousePos);
+	calcWidgetTargets(*selectorSource, inMousePos);
+	
+	g_mesh.calcNormals();
+	
+	return true;
+}
+
+bool SelectorListener::keyType(unsigned char key, mhgui::Component * source)
+{
+	return false;
+}
+
+void SelectorListener::calcWidgetTargets(mhgui::Selector & selectorSource, glm::ivec2 inMousePos)
+{
+	
+	switch(selectorSource.getID()) {
+	case kAge:
+		g_global.m_comp.m_kAge = inMousePos;
+		ageDists = selectorSource.getDists();
+		break;
+	case kMuscleSize:
+		g_global.m_comp.m_kMuscleSize = inMousePos;
+		muscleSizeDists = selectorSource.getDists();
+		break;
+	case kBreast:
+		g_global.m_comp.m_kBreast = inMousePos;
+		breastDists = selectorSource.getDists();
+		break;
+	case kShape:
+		g_global.m_comp.m_kShape = inMousePos;
+		shapeDists = selectorSource.getDists();
+		break;
+	}
+	
+	calcWidgetTargetsFOO();
+}
+
+void SelectorListener::calcWidgetTargetsFOO()
+{
+	unsigned int i = 0;
+	unsigned int j = 0;
+	unsigned int k = 0;
+	
+	// std::cout << "--------------------------" << std::endl;
+	for(const float & di_it : ageDists) {
+		if(i < ageLabels.size()) {
+			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
+			
+			g_mesh.setMorphTarget(tmpTargetName, di_it);
+		}
+	}
+	
+	for(const float & ms_it : muscleSizeDists) {
+		
+		i = 0;
+		
+		for(const float & di_it : ageDists) {
+			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
+				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
+				                     muscleSizeLabels[j] + ".target");
+				float  tmpTargetValue = di_it * ms_it;
+				
+				g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
+				
+				// breast widget
+				
+				k = 0;
+				if(i <= 4) {
+					
+					for(const float & br_it : breastDists) {
+						
+						if(k < breastLabels.size()) {
+							string tmpTargetName(
+							    "breast/" + ageLabels[i] + "_" +
+							    muscleSizeLabels[j] + "_" +
+							    breastLabels[k] + ".target");
+							float tmpTargetValue =
+							    di_it * ms_it * br_it;
+							
+							if(tmpTargetValue > 0) {
+								//log_info("{} {}", tmpTargetName, tmpTargetValue);
+							}
+							
+							g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
+						}
+						k++;
+					}
+				}
+			}
+			i++;
+		}
+		j++;
+	}
+	
+	i = 0;
+	
+	for(const float & sh_it : shapeDists) {
+		if(i < shapeLabels.size()) {
+			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
+			
+			g_mesh.setMorphTarget(tmpTargetName, sh_it);
+		}
+	}
+}
+
+
+
+
+
 
 CharacterSettingPanel::CharacterSettingPanel()
         : Panel(kComponentID_CharacterSettingPanel, Rect(0, 16, 192, 580))
