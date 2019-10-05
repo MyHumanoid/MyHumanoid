@@ -156,7 +156,7 @@ void SelectorListener::calcWidgetTargets(Selector & selectorSource)
 		breastDists = selectorSource.getDists();
 		break;
 
-	case kComponentID_CharacterSettingPanel_Shape:
+	case kShape:
 		shapeDists = selectorSource.getDists();
 		break;
 	}

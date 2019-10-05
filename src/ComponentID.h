@@ -49,5 +49,5 @@ static const uint32_t kMuscleSize =
         FOUR_CHAR_CONST('M', 's', 'S', 'z');
 static const uint32_t kBreast =
         FOUR_CHAR_CONST('B', 'r', 's', 't');
-static const uint32_t kComponentID_CharacterSettingPanel_Shape =
+static const uint32_t kShape =
         FOUR_CHAR_CONST('S', 'h', 'p', 'a');

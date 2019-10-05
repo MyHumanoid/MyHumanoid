@@ -85,7 +85,7 @@ void DisplayCharacterSettings()
 		if(bPos)
 			g_global.breastSizeShape = vec2(bPos->x, bPos->y) / foo;
 
-		glm::ivec2 * sPos = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
+		glm::ivec2 * sPos = g_global.getFuzzyValue(kShape);
 		if(sPos)
 			g_global.bodyShapeHeight = vec2(sPos->x, sPos->y) / foo;
 	}

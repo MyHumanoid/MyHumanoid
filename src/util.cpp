@@ -332,9 +332,9 @@ bool saveSelectorsPositions(const std::string & filename)
 		           << tmp->x << "," << tmp->y << endl;
 	}
 
-	tmp = g_global.getFuzzyValue(kComponentID_CharacterSettingPanel_Shape);
+	tmp = g_global.getFuzzyValue(kShape);
 	if(tmp != NULL) {
-		out_stream << "#t,S," << kComponentID_CharacterSettingPanel_Shape << ","
+		out_stream << "#t,S," << kShape << ","
 		           << tmp->x << "," << tmp->y;
 	}
 
