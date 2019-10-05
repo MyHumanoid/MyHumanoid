@@ -345,10 +345,10 @@ void CharacterSettingPanel::createWidgets()
 
 void CharacterSettingPanel::resetSlidersValues()
 {
-	m_age->setCursorPos(glm::ivec2(96, 52));
-	m_muscleSize->setCursorPos(glm::ivec2(96, 52));
-	m_breast->setCursorPos(glm::ivec2(96, 52));
-	m_shape->setCursorPos(glm::ivec2(96, 52));
+	m_age->cursorPos = glm::ivec2(96, 52);
+	m_muscleSize->cursorPos = glm::ivec2(96, 52);
+	m_breast->cursorPos = glm::ivec2(96, 52);
+	m_shape->cursorPos = glm::ivec2(96, 52);
 	
 	selectorListener.ageDists.clear();
 	selectorListener.muscleSizeDists.clear();
@@ -380,7 +380,7 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	}
 	
 	if(foo == InvalidPoint) {
-		sel->setCursorPos(glm::ivec2(96, 52));
+		sel->cursorPos = glm::ivec2(96, 52);
 	} else {
 		sel->setCursorPosFromMousePoint(foo);
 	}

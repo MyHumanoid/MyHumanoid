@@ -77,9 +77,6 @@ public:
 
 	void setShowLines(bool inShowLines) { showLines = inShowLines; }
 
-	void          setCursorPos(const glm::ivec2 & inCursorPos) { cursorPos = inCursorPos; }
-	const glm::ivec2 & getCursorPos() const { return cursorPos; }
-
 	void setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint);
 
 	std::vector<float> getDists() const;

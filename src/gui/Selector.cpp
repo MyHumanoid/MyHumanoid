@@ -88,8 +88,7 @@ void Selector::setCursorPosFromMousePoint(const glm::ivec2 & inMousePoint)
 	foo = glm::clamp(inMousePoint, getAbsolutePosition(), getAbsolutePosition() + getSize());
 	
 	// coordinate system change !!
-	glm::ivec2 tmp(foo.x, getAbsolutePosition().y + getSize().y - foo.y);
-	setCursorPos(tmp);
+	cursorPos = glm::ivec2(foo.x, getAbsolutePosition().y + getSize().y - foo.y);
 }
 
 // Return the ID assigned
