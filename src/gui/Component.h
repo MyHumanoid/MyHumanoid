@@ -34,14 +34,6 @@
 using std::cerr;
 using std::endl;
 
-// Construct a integer composed from a four char literal.
-// FOUR_CHAR_CONST('D','U','M','Y'); is a substitute of the uint32_t literal
-// 'DUMY'
-#ifndef FOUR_CHAR_CONST
-#define FOUR_CHAR_CONST(a, b, c, d)                                                                \
-	(((char)(a)) << 24 | ((char)(b)) << 16 | ((char)(c)) << 8 | ((char)(d)))
-#endif
-
 namespace mhgui
 {
 

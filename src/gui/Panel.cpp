@@ -33,6 +33,8 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
+#include "ComponentID.h"
+
 using namespace std;
 
 namespace mhgui

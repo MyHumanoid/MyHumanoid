@@ -40,6 +40,8 @@
 #include "gui/Panel.h"
 #include <iostream>
 
+#include "ComponentID.h"
+
 using namespace std;
 using namespace Animorph;
 
