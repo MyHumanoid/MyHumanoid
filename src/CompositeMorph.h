@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <vector>
 #include <glm/glm.hpp>
 #include "animorph/BodySettings.h"
@@ -11,19 +12,18 @@ struct Grid
 	float cellRatio;
 	
 	// from left-bottom point to right-up point
-	std::vector<glm::ivec2> points;
+	std::array<glm::ivec2, rows * cols> points;
 	
 	//void calcPoints(glm::ivec2 size, int inRows, int inCols);
 	
 	void calcPoints(glm::ivec2 size)
 	{
-		points.clear();
-		
-		for(int i = 0; i < rows; i++) {
-			for(int j = 0; j < cols; j++) {
-				glm::ivec2 tmp(j * size.x / (cols - 1),
-				               i * size.y / (rows - 1));
-				points.push_back(tmp);
+		for(int y = 0; y < rows; y++) {
+			for(int x = 0; x < cols; x++) {
+				glm::ivec2 tmp(x * size.x / (cols - 1),
+				               y * size.y / (rows - 1));
+				
+				points[y * cols + x] = tmp;
 			}
 		}
 		
