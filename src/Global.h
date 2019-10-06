@@ -31,7 +31,7 @@
 #include <gui/Camera.h>
 #include <gui/Texture.h>
 
-using Animorph::CompositeSetting;
+using Animorph::SavedCompSetting;
 
 extern Animorph::Mesh g_mesh;
 
@@ -49,10 +49,10 @@ struct Global {
 	bool       subdivision     = false;
 	
 	
-	CompositeSetting m_comp;
+	SavedCompSetting m_comp;
 	
 	void clearFuzzy() {
-		m_comp = CompositeSetting();
+		m_comp = SavedCompSetting();
 	}
 };
 

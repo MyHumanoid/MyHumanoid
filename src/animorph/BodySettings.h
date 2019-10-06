@@ -39,7 +39,7 @@
 namespace Animorph
 {
 
-struct CompositeSetting
+struct SavedCompSetting
 {
 	glm::ivec2 m_kAge = InvalidPoint;
 	glm::ivec2 m_kMuscleSize = InvalidPoint;
@@ -82,7 +82,7 @@ public:
 	 */
 	bool save(const std::string & filename);
 	
-	CompositeSetting m_comp;
+	SavedCompSetting m_comp;
 };
 
 } // namespace Animorph
