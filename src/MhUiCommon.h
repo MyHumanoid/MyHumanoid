@@ -210,11 +210,11 @@ void DrawTargetRow(const IconMap & icons, const std::pair<float, float> minMax,
 
 template <typename Applier>
 void DrawAppliedRow(const IconMap & icons, const std::pair<float, float> minMax,
-                    const std::string & target_name, const float & target_value, Applier && applier)
+                    const std::string & name, const float & value, Applier && applier)
 {
 	bool showTooltip = false;
 	
-	std::string targetImageName = removeExtension(target_name);
+	std::string targetImageName = removeExtension(name);
 
 	const auto & texIdIt     = icons.find(targetImageName);
 	bool         haveTexture = texIdIt != icons.end();
@@ -228,16 +228,16 @@ void DrawAppliedRow(const IconMap & icons, const std::pair<float, float> minMax,
 
 	// FIXME only the button in the first line is working
 	if(ImGui::Button("X")) {
-		applier(target_name, 0.f, true);
+		applier(name, 0.f, true);
 	}
 	showTooltip |= ImGui::IsItemHovered();
 	ImGui::SameLine();
 
-	float val = target_value;
+	float val = value;
 	float min = minMax.first;
 	float max = minMax.second;
-	if(ImGui::SliderFloat(target_name.c_str(), &val, min, max)) {
-		applier(target_name, val, false);
+	if(ImGui::SliderFloat(name.c_str(), &val, min, max)) {
+		applier(name, val, false);
 	}
 	showTooltip |= ImGui::IsItemHovered();
 

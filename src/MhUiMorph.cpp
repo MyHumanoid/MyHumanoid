@@ -33,9 +33,7 @@ void XYfoobar(OptTex texture, glm::ivec2 & value)
 		return;
 	}
 	
-	
 	ImGuiIO & io = ImGui::GetIO();
-	
 	
 	MhGui::ImageButton(texture.value(), ImVec2(192, 104));
 	vec2 pMin = ImGui::GetItemRectMin();
@@ -53,9 +51,6 @@ void XYfoobar(OptTex texture, glm::ivec2 & value)
 		
 		//value       = vec2(relPos) / vec2(size);
 	}
-	
-
-
 	//vec2        cursorPos    = pMin + vec2(value * vec2(size));
 	
 	vec2 cursorPos = pMin + vec2(value.x, 104) - vec2(0, value.y);
@@ -85,26 +80,22 @@ void DisplayCharacterSettings()
 	static const Textures tex;
 
 	
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(6));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(10, 10));
 	
-	ImGui::SetNextWindowSize(vec2(204, 490));
+	ImGui::SetNextWindowSize(vec2(212, 492));
 	ImGui::Begin("Character Setting",
 	             &g_config.characterSettings.visible,
 	             ImGuiWindowFlags_NoResize);
 	
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0));
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0, 12));
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, vec2(0));
 	
-	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Age/Sex");
 	XYfoobar(tex.ageGenderBkg, g_grids.agePos);
-	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Bodymass Weight/Muscle");
 	XYfoobar(tex.massBkg, g_grids.muscleSizePos);
-	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Breast Size/Shape");
 	XYfoobar(tex.breastBkg, g_grids.breastPos);
-	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Bodyshape Shape/Height");
 	XYfoobar(tex.shapeBkg, g_grids.shapePos);
 	
@@ -128,75 +119,75 @@ struct MorphGroupWin : public TileGroupChildWindow<MorphGroupWin> {
 
 	// clang-format off
 	const std::array<const Tile, 60> tiles = {
-		Tile("body_01",  "Torso parameters",         "torso"),
-		Tile("body_02",  "Head parameters",          "head"),
-		Tile("face_01",  "X",                        ""),
-		Tile("face_02",  "X",                        ""),
-		Tile("face_03",  "X",                        ""),
-		Tile("face_04",  "X",                        ""),
+		Tile("body_01",  "Torso",         "torso"),
+		Tile("body_02",  "Head",          "head"),
+		Tile("face_01",  "",              ""),
+		Tile("face_02",  "",              ""),
+		Tile("face_03",  "",              ""),
+		Tile("face_04",  "",              ""),
 		// ==========================================
-		Tile("body_03",  "Shoulders parameters",     "shoulders"),
-		Tile("body_04",  "Neck parameters",          "neck"),
-		Tile("face_05",  "X",                        ""),
-		Tile("face_06",  "Forehead parameters",      "forehead"),
-		Tile("face_07",  "X",                        ""),
-		Tile("face_08",  "X",                        ""),
+		Tile("body_03",  "Shoulders",     "shoulders"),
+		Tile("body_04",  "Neck",          "neck"),
+		Tile("face_05",  "",              ""),
+		Tile("face_06",  "Forehead",      "forehead"),
+		Tile("face_07",  "",              ""),
+		Tile("face_08",  "",              ""),
 		// ==========================================
-		Tile("body_05",  "Upper arms parameters",    "upper_arms"),
-		Tile("body_06",  "X",                        ""),
-		Tile("face_09",  "X",                        ""),
-		Tile("face_10",  "Eyes parameters",          "eyes"),
-		Tile("face_11",  "X",                        ""),
-		Tile("face_12",  "X",                        ""),
+		Tile("body_05",  "Upper arms",    "upper_arms"),
+		Tile("body_06",  "",              ""),
+		Tile("face_09",  "",              ""),
+		Tile("face_10",  "Eyes",          "eyes"),
+		Tile("face_11",  "",              ""),
+		Tile("face_12",  "",              ""),
 		// ==========================================
-		Tile("body_07",  "Lower arms parameters",    "lower_arms"),
-		Tile("body_08",  "Abdomen parameters",       "abdomen"),
-		Tile("face_13",  "Nose parameters",          "nose"),
-		Tile("face_14",  "Cheek parameters",         "cheek"),
-		Tile("face_15",  "Ears parameters",          "ears"),
-		Tile("face_16",  "X",                        ""),
+		Tile("body_07",  "Lower arms",    "lower_arms"),
+		Tile("body_08",  "Abdomen",       "abdomen"),
+		Tile("face_13",  "Nose",          "nose"),
+		Tile("face_14",  "Cheek",         "cheek"),
+		Tile("face_15",  "Ears",          "ears"),
+		Tile("face_16",  "",              ""),
 		// ==========================================
-		Tile("body_09",  "Hands parameters",         "hands"),
-		Tile("body_10",  "Pelvis parameters",        "pelvis"),
-		Tile("face_17",  "Mouth parameters",         "mouth"),
-		Tile("face_18",  "X",                        ""),
-		Tile("face_19",  "X",                        ""),
-		Tile("face_20",  "X",                        ""),
+		Tile("body_09",  "Hands",         "hands"),
+		Tile("body_10",  "Pelvis",        "pelvis"),
+		Tile("face_17",  "Mouth",         "mouth"),
+		Tile("face_18",  "",              ""),
+		Tile("face_19",  "",              ""),
+		Tile("face_20",  "",              ""),
 		// ==========================================
-		Tile("body_11",  "Upper legs parameters",    "upper_legs"),
-		Tile("body_12",  "X",                        ""),
-		Tile("face_21",  "Chin Jaw parameters",      "chin_jaw"),
-		Tile("face_22",  "X",                        ""),
-		Tile("face_23",  "X",                        ""),
-		Tile("face_24",  "X",                        ""),
+		Tile("body_11",  "Upper legs",    "upper_legs"),
+		Tile("body_12",  "",              ""),
+		Tile("face_21",  "Chin Jaw",      "chin_jaw"),
+		Tile("face_22",  "",              ""),
+		Tile("face_23",  "",              ""),
+		Tile("face_24",  "",              ""),
 		// ==========================================
-		Tile("body_13",  "X",                        ""),
-		Tile("body_14",  "X",                        ""),
-		Tile("hands_01", "Forefinger parameters",    "forefinger"),
-		Tile("hands_02", "Middlefinger parameters",  "middlefinger"),
-		Tile("hands_03", "Ringfinger parameters",    "ringfinger"),
-		Tile("hands_04", "X",                        ""),
+		Tile("body_13",  "",              ""),
+		Tile("body_14",  "",              ""),
+		Tile("hands_01", "Forefinger",    "forefinger"),
+		Tile("hands_02", "Middlefinger",  "middlefinger"),
+		Tile("hands_03", "Ringfinger",    "ringfinger"),
+		Tile("hands_04", "",              ""),
 		// ==========================================
-		Tile("body_15",  "Lower legs parameters",    "lower_legs"),
-		Tile("body_16",  "X",                        ""),
-		Tile("hands_05", "Pollex parameters",        "pollex"),
-		Tile("hands_06", "X",                        ""),
-		Tile("hands_07", "Littlefinger parameters",  "littlefinger"),
-		Tile("hands_08", "X",                        ""),
+		Tile("body_15",  "Lower legs",    "lower_legs"),
+		Tile("body_16",  "",              ""),
+		Tile("hands_05", "Pollex",        "pollex"),
+		Tile("hands_06", "",              ""),
+		Tile("hands_07", "Littlefinger",  "littlefinger"),
+		Tile("hands_08", "",              ""),
 		// ==========================================
-		Tile("body_17",  "Feet parameters",          "feet"),
-		Tile("body_18",  "X",                        ""),
-		Tile("hands_09", "X",                        ""),
-		Tile("hands_10", "X",     ""),
-		Tile("hands_11", "X",     ""),
-		Tile("hands_12", "X",     ""),
+		Tile("body_17",  "Feet",          "feet"),
+		Tile("body_18",  "",              ""),
+		Tile("hands_09", "",              ""),
+		Tile("hands_10", "",     ""),
+		Tile("hands_11", "",     ""),
+		Tile("hands_12", "",     ""),
 		// ==========================================
-		Tile("teeth_01", "Tongue parameters",        "tongue"),
-		Tile("teeth_02", "Teeth parameters",         "teeth"),
-		Tile("teeth_03", "X",     ""),
-		Tile("teeth_04", "X",     ""),
-		Tile("teeth_05", "X",     ""),
-		Tile("teeth_06", "X",     ""),
+		Tile("teeth_01", "Tongue",        "tongue"),
+		Tile("teeth_02", "Teeth",         "teeth"),
+		Tile("teeth_03", "",     ""),
+		Tile("teeth_04", "",     ""),
+		Tile("teeth_05", "",     ""),
+		Tile("teeth_06", "",     ""),
 	};
 	// clang-format on
 };
@@ -206,13 +197,18 @@ auto applier = [](const std::string & name, const float & value, const bool dele
 	g_mesh.calcNormals();
 };
 
+auto nopApplier = [](const std::string & name, const float & value, const bool deleteOnZero) {
+
+};
+
+
 void DisplayMorphTargets()
 {
-	constexpr static ImGuiWindowFlags winFlags =
-	        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize;
-
-	ImGui::SetNextWindowSize(vec2(380, 510));
-	if(!ImGui::Begin("Morph Targets", &g_config.morphTargets.visible, winFlags)) {
+	ImGui::SetNextWindowSize(vec2(380, 540));
+	if(!ImGui::Begin("Morph Targets",
+	                 &g_config.morphTargets.visible,
+	                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize)
+	) {
 		ImGui::End();
 		return;
 	}
@@ -247,23 +243,22 @@ void DisplayMorphTargets()
 
 		Animorph::BodySettings bodyset = g_mesh.morphTargets();
 
-		for(const auto & targetEntry : g_mesh.targets()) {
-			const string & target_name(targetEntry.first);
+		for(const auto & [name, value] : g_mesh.targets()) {
 
-			if(isCompositeMorphTarget(target_name)) {
+			if(isCompositeMorphTarget(name)) {
 				continue;
 			}
 
-			if(!pathStartsWith(target_name, tileWin.m_category)) {
+			if(!pathStartsWith(name, tileWin.m_category)) {
 				continue;
 			}
 
-			float target_value = bodyset.m_targets[target_name];
+			float target_value = bodyset.m_targets[name];
 
 
 			const auto & minmax = std::make_pair(0, 1);
 
-			DrawTargetRow(g_targetImageTextures, minmax, target_name, target_value,
+			DrawTargetRow(g_targetImageTextures, minmax, name, target_value,
 			              tileWin.m_tooltip, applier);
 		}
 		ImGui::EndChild();
@@ -282,19 +277,30 @@ void DisplayMorphTargetsApplied()
 		ImGui::End();
 		return;
 	}
+	
+	if(ImGui::CollapsingHeader("Composite Targets")) {
+		for(const auto & [name, value] : g_mesh.morphTargets().m_targets) {
+			
+			if(!isCompositeMorphTarget(name)) {
+				continue;
+			}
+			
+			DrawAppliedRow(g_targetImageTextures,
+			               std::make_pair(0.f, 1.f),
+			               name, value, nopApplier);
+		}
+	}
+	
+	for(const auto & [name, value] : g_mesh.morphTargets().m_targets) {
 
-	for(const auto & bodyset_it : g_mesh.morphTargets().m_targets) {
-
-		string target_name(bodyset_it.first);
-
-		if(isCompositeMorphTarget(target_name)) {
+		if(isCompositeMorphTarget(name)) {
 			continue;
 		}
-
-		float target_value = bodyset_it.second;
-
-		DrawAppliedRow(g_targetImageTextures, std::make_pair(0.f, 1.f), target_name,
-		               target_value, applier);
+		
+		DrawAppliedRow(g_targetImageTextures,
+		               std::make_pair(0.f, 1.f),
+		               name, value, applier);
 	}
+	
 	ImGui::End();
 }
