@@ -1,6 +1,6 @@
 #include "animorph/PoseRotation.h"
 
-#include "log/log.h"
+#include "Logger.h"
 
 namespace Animorph
 {

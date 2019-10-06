@@ -1,7 +1,7 @@
 #include "render/DebugGl.h"
 
 #include "GlInclude.h"
-#include "log/log.h"
+#include "Logger.h"
 
 static void openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity,
                                    GLsizei length, const GLchar * message, const void * userParam)

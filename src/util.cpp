@@ -38,7 +38,7 @@
 #include <vector>
 
 #include "CompositeMorph.h"
-#include "log/log.h"
+#include "Logger.h"
 #include "Vfs.h"
 
 using std::string;

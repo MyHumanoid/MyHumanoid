@@ -31,7 +31,7 @@
 #include "gui/Camera.h"
 #include "gui/Rect.h"
 
-#include "log/log.h"
+#include "Logger.h"
 
 #include "render/DebugGl.h"
 

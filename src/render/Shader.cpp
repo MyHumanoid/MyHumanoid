@@ -8,7 +8,7 @@
 
 #include "GlInclude.h"
 
-#include "log/log.h"
+#include "Logger.h"
 #include "Vfs.h"
 
 std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * fragment_path)

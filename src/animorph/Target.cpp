@@ -1,6 +1,6 @@
 #include "animorph/Target.h"
 
-#include "log/log.h"
+#include "Logger.h"
 
 namespace Animorph
 {

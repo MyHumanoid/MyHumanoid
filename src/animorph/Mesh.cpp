@@ -5,8 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-#include "log/log.h"
-#include "log/Profiler.h"
+#include "Logger.h"
+#include "Profiler.h"
 
 namespace Animorph
 {

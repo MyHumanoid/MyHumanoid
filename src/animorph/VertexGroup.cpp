@@ -1,7 +1,7 @@
 #include "animorph/VertexGroup.h"
 #include "animorph/util.h"
 
-#include "log/log.h"
+#include "Logger.h"
 
 using std::string;
 

@@ -10,7 +10,7 @@
 
 #include <physfs.h>
 
-#include "log/log.h"
+#include "Logger.h"
 
 namespace vfs
 {

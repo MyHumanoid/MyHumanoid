@@ -2,8 +2,8 @@
 
 #include <fmt/format.h>
 
-#include "log/log.h"
-#include "util/StringUtils.h"
+#include "Logger.h"
+#include "StringUtils.h"
 #include "Vfs.h"
 
 namespace Animorph

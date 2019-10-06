@@ -1,9 +1,9 @@
-#include "log/Profiler.h"
+#include "Profiler.h"
 
 #include <unordered_map>
 #include <glm/glm.hpp>
 
-#include "log/log.h"
+#include "Logger.h"
 
 struct ProfilerFuncData {
 	long min = std::numeric_limits<long>::max();

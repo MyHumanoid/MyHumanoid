@@ -2,7 +2,7 @@
 
 #include <physfs.h>
 
-#include "log/log.h"
+#include "Logger.h"
 #include "Global.h"
 
 #include "SimpleIni.h"

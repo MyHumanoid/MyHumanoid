@@ -1,6 +1,6 @@
 #include "animorph/FaceVector.h"
 
-#include "log/log.h"
+#include "Logger.h"
 
 namespace Animorph
 {

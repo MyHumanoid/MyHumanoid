@@ -50,13 +50,13 @@
 #include <gui/GLUTWrapper.h>
 #include <gui/Window.h>
 
-#include "log/log.h"
-#include "log/Profiler.h"
+#include "Logger.h"
+#include "Profiler.h"
 
 #include "render/RenderUtils.h"
 #include "render/Shader.h"
 
-#include "util/StringUtils.h"
+#include "StringUtils.h"
 
 #include <time.h>
 

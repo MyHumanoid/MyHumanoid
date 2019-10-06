@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "log/log.h"
+#include "Logger.h"
 
 namespace Animorph
 {

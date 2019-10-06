@@ -10,9 +10,9 @@
 
 #include "animorph/PoseTarget.h"
 #include "render/RenderUtils.h"
-#include "util/StringUtils.h"
+#include "StringUtils.h"
 
-#include "log/log.h"
+#include "Logger.h"
 #include "MhUi.h"
 #include "Vfs.h"
 

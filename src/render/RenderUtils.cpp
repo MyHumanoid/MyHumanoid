@@ -10,8 +10,8 @@
 #include <glm/glm.hpp>
 #include <physfs.h>
 
-#include "log/log.h"
-#include "util/StringUtils.h"
+#include "Logger.h"
+#include "StringUtils.h"
 #include "Vfs.h"
 
 

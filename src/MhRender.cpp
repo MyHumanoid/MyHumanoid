@@ -9,7 +9,7 @@
 #include "gui/CGUtilities.h"
 #include "gui/Window.h"
 #include "render/RenderUtils.h"
-#include "log/log.h"
+#include "Logger.h"
 #include "render/Shader.h"
 #include "Global.h"
 

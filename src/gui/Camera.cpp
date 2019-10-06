@@ -32,7 +32,7 @@
 #include "gui/CGUtilities.h"
 #include <iostream>
 
-#include "log/log.h"
+#include "Logger.h"
 
 #define MAX_LINE 3500
 

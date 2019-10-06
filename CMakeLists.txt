@@ -98,13 +98,6 @@ set(render_sources
 	src/render/Shader.cpp
 )
 
-set(log_sources
-	src/log/log.h
-	src/log/log.cpp
-	src/log/Profiler.h
-	src/log/Profiler.cpp
-)
-
 set(myhumanoid_sources
 	src/ComponentID.h
 	src/CompositeMorph.h
@@ -112,6 +105,8 @@ set(myhumanoid_sources
 	src/GlInclude.h
 	src/Global.cpp
 	src/Global.h
+	src/Logger.h
+	src/Logger.cpp
 	src/MhConfig.h
 	src/MhConfig.cpp
 	src/MhMain.cpp
@@ -123,11 +118,13 @@ set(myhumanoid_sources
 	src/MhUiMorph.cpp
 	src/MhUiPose.h
 	src/MhUiPose.cpp
+	src/Profiler.h
+	src/Profiler.cpp
+	src/StringUtils.h
 	src/util.cpp
 	src/util.h
 	src/Vfs.h
 	src/Vfs.cpp
-	src/util/StringUtils.h
 )
 
 set(shader_sources
