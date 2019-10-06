@@ -44,30 +44,19 @@
 using std::string;
 
 
-const string searchFile(const StringVector & name_vector)
+const string searchFile(const string & try_name)
 {
-	for(unsigned int i = 0; i < name_vector.size(); i++) {
-		const string & try_name = name_vector[i];
-		
-		auto res = vfs::getType(try_name);
-		if(res == vfs::FileType::Regular) {
-			return try_name;
-		}
+	auto res = vfs::getType(try_name);
+	if(res == vfs::FileType::Regular) {
+		return try_name;
 	}
 	
 	return string();
 }
 
-const StringVector getDataAlternatives(const string & data)
-{
-	StringVector name_vector;
-	name_vector.push_back("data/data/" + data);
-	return name_vector;
-}
-
 const string searchDataFile(const string & data_file)
 {
-	string s(searchFile(getDataAlternatives(data_file)));
+	string s(searchFile("data/data/" + data_file));
 	if(s.empty()) {
 		fprintf(stderr,
 		        "*** WARNING in searchDataFile() : attempt to load file '%s'"
@@ -77,31 +66,19 @@ const string searchDataFile(const string & data_file)
 	return s;
 }
 
-const string searchDir(const StringVector & name_vector)
+const string searchDir(const string & try_name)
 {
-	for(unsigned int i = 0; i < name_vector.size(); i++) {
-		const string & try_name = name_vector[i];
-		
-		auto res = vfs::getType(try_name);
-		if(res == vfs::FileType::Directory) {
-			return try_name;
-		}
+	auto res = vfs::getType(try_name);
+	if(res == vfs::FileType::Directory) {
+		return try_name;
 	}
 	return string();
 }
 
 const string searchDataDir(const string & data_dir)
 {
-	return searchDir(getDataAlternatives(data_dir));
+	return searchDir("data/data/" + data_dir);
 }
-
-const StringVector getPixmapsAlternatives(const string & pixmap)
-{
-	StringVector name_vector;
-	name_vector.push_back("data/pixmaps/" + pixmap);
-	return name_vector;
-}
-
 
 
 

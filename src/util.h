@@ -30,14 +30,9 @@
 #include <string>
 #include <vector>
 
-using std::string;
-using std::vector;
+const std::string searchDataFile(const std::string & data_file);
 
-typedef vector<string> StringVector;
-
-const std::string searchDataFile(const string & data_file);
-
-const string searchDataDir(const string & data_dir);
+const std::string searchDataDir(const std::string & data_dir);
 
 void CreateWeightsFile();
 
