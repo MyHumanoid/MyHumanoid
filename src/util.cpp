@@ -43,53 +43,6 @@
 
 using std::string;
 
-const string searchDataFile(const string & data_file)
-{
-	string s(searchFile(getDataAlternatives(data_file)));
-	if(s.empty()) {
-		fprintf(stderr,
-		        "*** WARNING in searchDataFile() : attempt to load file '%s'"
-		        "' but this could not found in data/!\n",
-		        data_file.c_str());
-	}
-	return s;
-}
-
-const string searchPixmapFile(const string & pixmap_file)
-{
-	string s(searchFile(getPixmapsAlternatives(pixmap_file)));
-	if(s.empty()) {
-		fprintf(stderr,
-		        "*** WARNING in searchPixmapFile() : attempt to load file '%s'"
-		        "' but this could not found in pixmaps/!\n",
-		        pixmap_file.c_str());
-	}
-	return s;
-}
-
-const string searchDataDir(const string & data_dir)
-{
-	return searchDir(getDataAlternatives(data_dir));
-}
-
-const string searchPixmapDir(const string & pixmap_dir)
-{
-	return searchDir(getPixmapsAlternatives(pixmap_dir));
-}
-
-const StringVector getPixmapsAlternatives(const string & pixmap)
-{
-	StringVector name_vector;
-	name_vector.push_back("data/pixmaps/" + pixmap);
-	return name_vector;
-}
-
-const StringVector getDataAlternatives(const string & data)
-{
-	StringVector name_vector;
-	name_vector.push_back("data/data/" + data);
-	return name_vector;
-}
 
 const string searchFile(const StringVector & name_vector)
 {
@@ -101,8 +54,27 @@ const string searchFile(const StringVector & name_vector)
 			return try_name;
 		}
 	}
-
+	
 	return string();
+}
+
+const StringVector getDataAlternatives(const string & data)
+{
+	StringVector name_vector;
+	name_vector.push_back("data/data/" + data);
+	return name_vector;
+}
+
+const string searchDataFile(const string & data_file)
+{
+	string s(searchFile(getDataAlternatives(data_file)));
+	if(s.empty()) {
+		fprintf(stderr,
+		        "*** WARNING in searchDataFile() : attempt to load file '%s'"
+		        "' but this could not found in data/!\n",
+		        data_file.c_str());
+	}
+	return s;
 }
 
 const string searchDir(const StringVector & name_vector)
@@ -117,6 +89,24 @@ const string searchDir(const StringVector & name_vector)
 	}
 	return string();
 }
+
+const string searchDataDir(const string & data_dir)
+{
+	return searchDir(getDataAlternatives(data_dir));
+}
+
+const StringVector getPixmapsAlternatives(const string & pixmap)
+{
+	StringVector name_vector;
+	name_vector.push_back("data/pixmaps/" + pixmap);
+	return name_vector;
+}
+
+
+
+
+
+
 
 bool GetSymmVertexConfig(int * symm_vertex)
 {

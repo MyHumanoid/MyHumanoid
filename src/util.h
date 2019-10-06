@@ -35,29 +35,10 @@ using std::vector;
 
 typedef vector<string> StringVector;
 
-const StringVector getPixmapsAlternatives(const string & pixmap);
-const StringVector getDataAlternatives(const string & data);
-
 const std::string searchDataFile(const string & data_file);
-const std::string searchPixmapFile(const string & pixmap_file);
 
 const string searchDataDir(const string & data_dir);
-const string searchPixmapDir(const string & pixmap_dir);
-
-const string searchFile(const StringVector & name_vector);
-const string searchDir(const StringVector & name_vector);
-
-const string getHomeDir();
-
-void loadRenderingPaths();
-void saveRenderingPaths(string path, int RENDER_TYPE);
 
 void CreateWeightsFile();
 
-int ParseParameter(string cmd);
-
 void loadDefaultBodySettings();
-
-template <class T> struct deleteFunctor {
-	void operator()(T & t) { delete t; }
-};
