@@ -74,6 +74,14 @@ struct Grids {
 		shapeGrid.calcPoints(glm::ivec2(192, 104));
 	}
 	
+	void clearDists()
+	{
+		ageGrid.dists.clear();
+		muscleSizeGrid.dists.clear();
+		breastGrid.dists.clear();
+		shapeGrid.dists.clear();
+	}
+	
 	void calcDists();
 	void applyCompositeMorphTargets() const;
 	
