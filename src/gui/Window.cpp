@@ -36,7 +36,6 @@
 #include "gui/Camera.h"
 #include "gui/Window.h"
 
-#include "gui/Panel.h"
 #include <iostream>
 
 #include "ComponentID.h"
@@ -56,8 +55,6 @@ Window::Window(const Rect & rect, const string & t)
         , light1Lum(+1.0)             //!< light 1 luminosity
         , light0Pos(+1.0, +1.0, +1.0) //!< light 0 position
         , light1Pos(-1.0, +1.0, +1.0) //!< light 1 position
-        , panelList()
-        , panelListChangedCount(0)
         , inCamera(NULL)
         , mWindowId(0)
 {
@@ -76,110 +73,6 @@ void Window::setCamera(Camera * p_camera)
 
 void Window::draw()
 {
-	drawPanels();
-}
-
-// Add panel into window
-bool Window::addPanel(Panel * p)
-{
-	if(p == NULL)
-		return false;
-
-	Panel * panel = dynamic_cast<Panel *>(p);
-	// Just Panels are allowed!
-	assert(panel);
-
-	panelList.push_back(panel);
-	++panelListChangedCount; // mark a change of the Panel List
-
-	// do a reshape event for update
-	reshape(getRect().size, *inCamera);
-
-	return true;
-}
-
-// For each panel, draw all widgets
-void Window::drawPanels()
-{
-	cgutils::enableOrthographicProjection();
-
-	for(list<Panel *>::const_iterator pl_it = panelList.begin();
-		pl_it != panelList.end(); pl_it++) {
-		Panel * panel = dynamic_cast<Panel *>(*pl_it);
-		assert(panel); // assert if this is not a Panel!
-
-		// printf("Drawing Panel '%s'\n", panel->getIDAsString().c_str());
-		panel->draw();
-	}
-	cgutils::disableOrthographicProjection();
-};
-
-// For each panel, check if click is over his widgets
-bool Window::isMouseClickPanel(const glm::ivec2 & inMousePos, int button, int state)
-{
-	bool isClick = false;
-
-	int rememberedPanelListChangedCount = panelListChangedCount;
-
-	for(list<Panel *>::reverse_iterator pl_it = panelList.rbegin(); pl_it != panelList.rend();
-	    pl_it++) {
-		Panel * panel = (*pl_it);
-
-		isClick = panel->isMouseClickWidgets(inMousePos, button, state);
-		if(isClick == true) {
-			break;
-		}
-
-		isClick = panel->isMouseClick(inMousePos, button, state);
-		if(isClick == true) {
-			break;
-		}
-
-		/* Check if the panel List has been changed in between
-		 * (triggered by a Panel- or a Widget Listener for example)
-		 * If it has then "reinitialize" the iterator because it is
-		 * possible that it became invalide because of this change
-		 * of the list! */
-		if(panelListChangedCount != rememberedPanelListChangedCount) {
-			rememberedPanelListChangedCount = panelListChangedCount;
-			pl_it = panelList.rbegin(); // reinitailize the iterator
-		}
-	}
-
-	return isClick;
-}
-
-bool Window::isMouseDraggedPanel(const glm::ivec2 & inMousePos)
-{
-	bool dragged = false;
-
-	int rememberedPanelListChangedCount = panelListChangedCount;
-
-	for(list<Panel *>::reverse_iterator pl_it = panelList.rbegin(); pl_it != panelList.rend();
-	    pl_it++) {
-		Panel * panel = (*pl_it);
-
-		dragged = panel->isMouseDraggedWidgets(inMousePos);
-		if(dragged == true) {
-			break;
-		}
-
-		dragged = panel->isMouseDragged(inMousePos);
-		if(dragged == true) {
-			break;
-		}
-
-		/* Check if the panel List has been changed in between
-		 * (triggered by a Panel- or a Widget Listener for example)
-		 * If it has then "reinitialize" the iterator because it is
-		 * possible that it became invalide because of this change
-		 * of the list! */
-		if(panelListChangedCount != rememberedPanelListChangedCount) {
-			rememberedPanelListChangedCount = panelListChangedCount;
-			pl_it = panelList.rbegin(); // reinitailize the iterator
-		}
-	}
-	return dragged;
 }
 
 // Init window with some classic openGL commands
@@ -193,13 +86,6 @@ void Window::initWindow()
 void Window::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 {
 	cgutils::reshape(inSize, inCamera);
-
-	for(list<Panel *>::const_iterator pl_it = panelList.begin(); pl_it != panelList.end();
-	    pl_it++) {
-		Panel * panel = (*pl_it);
-
-		panel->calcWidgetPosition();
-	}
 
 	setSize(inSize);
 }

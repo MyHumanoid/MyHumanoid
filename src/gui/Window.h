@@ -56,9 +56,6 @@ class Window : public Component
 	glm::vec3 light0Pos;
 	glm::vec3 light1Pos;
 
-	list<Panel *> panelList; ///< Panels contain widgets, we contain the panels
-	int           panelListChangedCount;
-
 	Camera * inCamera;
 	int      mWindowId; ///< The GLUT Window ID;
 
@@ -69,27 +66,11 @@ public:
 	Window & operator=(Window &) = delete;
 	Window(const Window &)       = delete;
 
-	void drawPanels();
-
-	// Some "shortcut functions" that wrap a series of OpenGL lines
 	void initWindow();
-	// void toggleFullscreen (); --> this needs to be implemented!
 
-	/// For a GLUT callback
 	void reshape(const glm::ivec2 & inSize, const Camera & inCamera);
 
 	void setCamera(Camera * p_camera);
-
-	// main functions
-	bool    addPanel(Panel * p /*, bool now = true*/);
-
-	bool isMouseClickPanel(const glm::ivec2 & inMousePos, int button, int state);
-	bool isMouseDraggedPanel(const glm::ivec2 & inMousePos);
-
-	void defaultDisplay();
-
-	// texture functions
-	bool loadPNG(const string & filename);
 
 	virtual void draw();
 };

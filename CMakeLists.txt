@@ -85,20 +85,12 @@ set(gui_sources
 	src/gui/Component.h
 	src/gui/Component.cpp
 	src/gui/GLUTWrapper.h
-	src/gui/Image.h
-	src/gui/Image.cpp
 	src/gui/ImageData.h
 	src/gui/ImageData.cpp
-	src/gui/Panel.h
-	src/gui/Panel.cpp
 	src/gui/Rect.h
 	src/gui/Rect.cpp
-	src/gui/Selector.h
-	src/gui/Selector.cpp
 	src/gui/Texture.h
 	src/gui/Texture.cpp
-	src/gui/Widget.h
-	src/gui/Widget.cpp
 	src/gui/Window.h
 	src/gui/Window.cpp
 )

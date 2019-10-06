@@ -48,9 +48,6 @@
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
 #include <gui/GLUTWrapper.h>
-#include <gui/Image.h>
-#include <gui/Panel.h>
-#include <gui/Widget.h>
 #include <gui/Window.h>
 
 #include "log/log.h"
@@ -882,7 +879,6 @@ static void mouse(int button, int state, int x, int y)
 	// cout << "mouse: " << button << endl;
 	g_global.camera->mouseRotateStart(x, y);
 
-	if(!mainWindow.isMouseClickPanel(glm::ivec2(x, y), button, state)) {
 		switch(button) {
 		case GLUT_LEFT_BUTTON:
 			break;
@@ -926,20 +922,15 @@ static void mouse(int button, int state, int x, int y)
 			break;
 #endif // GLUT_WHEEL_LEFT
 		}
-	}
-	// mainWindow.isMouseClickPanel  (Point(x, y), button, state);
 }
 
 static void activeMotion(int x, int y)
 {
-	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-	if(!mainWindow.isMouseDraggedPanel(glm::ivec2(x, y))) {
 		if(right_button_down) {
 			g_global.camera->moveMouse(x, y);
 		} else {
 			g_global.camera->rotateMouse(x, y);
 		}
-	}
 }
 
 #include "physfs.h"
