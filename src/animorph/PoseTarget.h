@@ -31,7 +31,6 @@
 #include "PoseRotation.h"
 #include "PoseTranslation.h"
 #include "util.h"
-#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>

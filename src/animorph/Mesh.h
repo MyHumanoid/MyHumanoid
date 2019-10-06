@@ -43,7 +43,6 @@
 #include "VertexGroup.h"
 #include "VertexVector.h"
 #include "util.h"
-#include <fstream>
 #include <iostream>
 #include <memory>
 #include <stdio.h>

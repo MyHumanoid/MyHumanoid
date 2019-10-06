@@ -30,8 +30,6 @@
 #include "Mesh.h"
 #include "util.h"
 #include "xmlParser.h"
-#include <fstream>
-#include <iostream>
 
 using std::ostringstream;
 using std::string;

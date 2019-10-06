@@ -31,7 +31,6 @@
 #include "FaceVector.h"
 #include "FileReader.h"
 #include "Vertex.h"
-#include <fstream>
 #include <iostream>
 
 namespace Animorph

@@ -30,7 +30,6 @@
 #include "Matrix.h"
 #include "Mesh.h"
 #include "util.h"
-#include <fstream>
 #include <iostream>
 
 using std::ostringstream;

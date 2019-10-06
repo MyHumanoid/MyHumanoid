@@ -29,8 +29,6 @@
 
 #include "Face.h"
 #include "FileReader.h"
-#include <fstream>
-#include <iostream>
 
 namespace Animorph
 {

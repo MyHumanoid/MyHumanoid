@@ -1,7 +1,5 @@
 #include "animorph/Material.h"
 
-#include <fstream>
-
 namespace Animorph
 {
 

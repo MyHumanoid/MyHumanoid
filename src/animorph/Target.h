@@ -59,7 +59,6 @@ The format of Target files:
 class Target : public std::vector<TargetData>
 {
 private:
-	// void fromStream (std::ifstream &in_stream);
 	void createStream(std::ostringstream & out_stream);
 	/// The indices of the vertices from the Target file
 	UnsortedUsedVertex modVertex;

@@ -27,7 +27,6 @@
  */
 #pragma once
 
-#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -35,7 +34,6 @@
 #include "FileReader.h"
 #include <glm/vec2.hpp>
 
-using std::ifstream;
 using std::string;
 using std::vector;
 
