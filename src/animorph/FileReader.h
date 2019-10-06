@@ -27,8 +27,6 @@
  */
 #pragma once
 
-#include <fstream>
-#include <iostream>
 #include <sstream>
 
 /// define the maximum length of an input line
@@ -41,7 +39,7 @@ namespace Animorph
  */
 class FileReader
 {
-	std::ifstream m_stream;
+	std::istringstream m_stream;
 	char * locale;
 	
 public:
@@ -51,18 +49,18 @@ public:
 	FileReader();
 	~FileReader();
 	
-	bool get(std::ifstream::char_type & c);
-	
-	bool getline(std::string & buffer);
-	
 	/*!
 	 * \param filename the file to open for reading
 	 * \return false if the file could be opened.
 	 */
 	bool open(const std::string & filename);
-
+	
 	/// closes the currently opened file
 	void close();
+	
+	bool get(std::istringstream::char_type & c);
+	
+	bool getline(std::string & buffer);
 };
 
 } // namespace Animorph
