@@ -5,6 +5,7 @@
 
 using std::string;
 
+Grids g_grids;
 
 static std::array<string, 10> ageLabels = {
     "female_10",

@@ -120,24 +120,24 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & sel, glm::ivec2 inMou
 	switch(sel.getID()) {
 	case kAge:
 		g_global.m_comp.m_kAge = inMousePos;
-		grids.agePos = sel.cursorPos;
+		g_grids.agePos = sel.cursorPos;
 		break;
 	case kMuscleSize:
 		g_global.m_comp.m_kMuscleSize = inMousePos;
-		grids.muscleSizePos = sel.cursorPos;
+		g_grids.muscleSizePos = sel.cursorPos;
 		break;
 	case kBreast:
 		g_global.m_comp.m_kBreast = inMousePos;
-		grids.breastPos = sel.cursorPos;
+		g_grids.breastPos = sel.cursorPos;
 		break;
 	case kShape:
 		g_global.m_comp.m_kShape = inMousePos;
-		grids.shapePos = sel.cursorPos;
+		g_grids.shapePos = sel.cursorPos;
 		break;
 	}
 	
-	grids.calcDists();
-	grids.applyCompositeMorphTargets();
+	g_grids.calcDists();
+	g_grids.applyCompositeMorphTargets();
 }
 
 
@@ -256,7 +256,7 @@ void CharacterSettingPanel::resetSlidersValues()
 	m_breast->cursorPos = glm::ivec2(96, 52);
 	m_shape->cursorPos = glm::ivec2(96, 52);
 	
-	lis.grids.clearDists();
+	g_grids.clearDists();
 }
 
 void CharacterSettingPanel::calcSelectorValues(Selector * sel)
@@ -286,16 +286,16 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	
 	switch(sel->getID()) {
 	case kAge:
-		lis.grids.agePos = sel->cursorPos;
+		g_grids.agePos = sel->cursorPos;
 		break;
 	case kBreast:
-		lis.grids.breastPos = sel->cursorPos;
+		g_grids.breastPos = sel->cursorPos;
 		break;
 	case kMuscleSize:
-		lis.grids.muscleSizePos = sel->cursorPos;
+		g_grids.muscleSizePos = sel->cursorPos;
 		break;
 	case kShape:
-		lis.grids.shapePos = sel->cursorPos;
+		g_grids.shapePos = sel->cursorPos;
 		break;
 	}
 	
@@ -312,10 +312,10 @@ void CharacterSettingPanel::updateUi()
 	calcSelectorValues(m_shape);
 	
 	log_info("----");
-	log_info("age    old: {} new: {}", lis.grids.agePos, test.agePos);
-	log_info("muscle old: {} new: {}", lis.grids.muscleSizePos, test.muscleSizePos);
-	log_info("breast old: {} new: {}", lis.grids.breastPos, test.breastPos);
-	log_info("shape  old: {} new: {}", lis.grids.shapePos, test.shapePos);
+	log_info("age    old: {} new: {}", g_grids.agePos, test.agePos);
+	log_info("muscle old: {} new: {}", g_grids.muscleSizePos, test.muscleSizePos);
+	log_info("breast old: {} new: {}", g_grids.breastPos, test.breastPos);
+	log_info("shape  old: {} new: {}", g_grids.shapePos, test.shapePos);
 	
-	lis.grids.calcDists();
+	g_grids.calcDists();
 }
