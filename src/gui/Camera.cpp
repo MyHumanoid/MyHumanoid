@@ -312,12 +312,12 @@ void Autozoom::fromStream(Animorph::FileReader & in_stream, const std::string & 
 
 	float p0, p1, p2, r1, r2, c0, c1, c2;
 	char  verts[MAX_LINE];
-	char  buffer[MAX_LINE];
+	std::string buffer;
 
-	in_stream.getline(buffer, MAX_LINE);
+	in_stream.getline(buffer);
 
 	/// TODO: lettura del file
-	if(sscanf(buffer, "%f,%f,%f,%f,%f,%f,%f,%f,%s", &p0, &p1, &p2, &r1, &r2, &c0, &c1, &c2,
+	if(sscanf(buffer.c_str(), "%f,%f,%f,%f,%f,%f,%f,%f,%s", &p0, &p1, &p2, &r1, &r2, &c0, &c1, &c2,
 	          verts) == 9) {
 		glm::vec3 pos(p0, p1, p2);
 		glm::vec2 xyRot(r1, r2);

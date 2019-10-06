@@ -21,16 +21,16 @@ void MaterialVector::fromStream(FileReader & in_stream)
 {
 	clear();
 
-	char  buffer[MAX_LINE_BUFFER];
+	std::string buffer;
 	char  name[MAX_LINE_BUFFER];
 	float c0, c1, c2 = 0.0;
 	float alpha = 1.0;
 
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
+	while(in_stream.getline(buffer)) {
 		Material mat;
 		Color    color;
 
-		if(sscanf(buffer, "%[^,],%f,%f,%f,%f\n", name, &c0, &c1, &c2, &alpha) == 5) {
+		if(sscanf(buffer.c_str(), "%[^,],%f,%f,%f,%f\n", name, &c0, &c1, &c2, &alpha) == 5) {
 			mat.name = name;
 			color.rgba(c0, c1, c2, alpha);
 			mat.color = color;

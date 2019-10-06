@@ -20,9 +20,9 @@ bool FileReader::get(std::ifstream::char_type & c)
 	return (bool) m_stream.get(c);
 }
 
-bool FileReader::getline(std::ifstream::char_type *c, size_t s)
+bool FileReader::getline(std::string & buffer)
 {
-	return (bool)m_stream.getline(c, s);
+	return (bool) std::getline(m_stream, buffer);
 }
 
 bool FileReader::open(const std::string & filename)

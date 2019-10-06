@@ -35,12 +35,12 @@ void FaceVector::fromGeometryStream(FileReader & in_stream)
 
 	clear();
 
-	char buffer[MAX_LINE_BUFFER];
+	std::string buffer;
 	int  v0, v1, v2, v3;
 	
 	int line = 0;
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
-		nr_faces = sscanf(buffer, "%d,%d,%d,%d\n", &v0, &v1, &v2, &v3);
+	while(in_stream.getline(buffer)) {
+		nr_faces = sscanf(buffer.c_str(), "%d,%d,%d,%d\n", &v0, &v1, &v2, &v3);
 		line += 1;
 
 		if(nr_faces == 3) {
@@ -57,11 +57,11 @@ void FaceVector::fromGeometryStream(FileReader & in_stream)
 void FaceVector::fromColorsStream(FileReader & in_stream)
 {
 	int  n = 0;
-	char buffer[MAX_LINE_BUFFER];
+	std::string buffer;
 	int  mat_index;
 
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
-		if(sscanf(buffer, "%d\n", &mat_index) == 1) {
+	while(in_stream.getline(buffer)) {
+		if(sscanf(buffer.c_str(), "%d\n", &mat_index) == 1) {
 			try {
 				Face & face = (*this).at(n);
 

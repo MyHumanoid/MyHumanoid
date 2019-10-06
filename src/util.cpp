@@ -92,12 +92,12 @@ bool GetSymmVertexConfig(int * symm_vertex)
 	if(!file_reader.open("data/base.sym"))
 		return false;
 
-	char buffer[MAX_LINE_BUFFER];
+	std::string buffer;
 	int  sx, dx;
 
-	while(file_reader.getline(buffer, MAX_LINE_BUFFER)) {
+	while(file_reader.getline(buffer)) {
 
-		if(sscanf(buffer, "%d,%d", &sx, &dx) == 2) {
+		if(sscanf(buffer.c_str(), "%d,%d", &sx, &dx) == 2) {
 			symm_vertex[dx] = sx;
 		}
 	}
@@ -118,7 +118,7 @@ void CreateWeightsFile()
 
 	file_write.open("data/vertex_complete.weights");
 
-	char buffer[MAX_LINE_BUFFER * 4];
+	std::string buffer;
 	int  weight[Animorph::SK_JOINT_END];
 	int  actual_weight[Animorph::SK_JOINT_END];
 
@@ -141,10 +141,9 @@ void CreateWeightsFile()
 		return;
 
 	for(unsigned int i = 0; i < size_vx; i++) {
-		memset(buffer, 0, MAX_LINE_BUFFER * 4);
 		out_stream[i].str("");
 
-		file_reader.getline(buffer, MAX_LINE_BUFFER * 4);
+		file_reader.getline(buffer);
 		
 		out_stream[i] << buffer << std::endl;
 	}

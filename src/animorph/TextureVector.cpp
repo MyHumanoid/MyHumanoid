@@ -7,12 +7,12 @@ void TextureVector::fromUVStream(FileReader & in_stream)
 {
 	unsigned int    nr_uv_coord;
 	int             n = 0;
-	char            buffer[MAX_LINE_BUFFER];
+	std::string buffer;
 	float           v[4], u[4];
 	TextureVector & texture_vector = (*this);
 
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
-		nr_uv_coord = sscanf(buffer, "%f %f %f %f %f %f %f %f\n", &u[0], &v[0], &u[1],
+	while(in_stream.getline(buffer)) {
+		nr_uv_coord = sscanf(buffer.c_str(), "%f %f %f %f %f %f %f %f\n", &u[0], &v[0], &u[1],
 		                     &v[1], &u[2], &v[2], &u[3], &v[3]);
 
 		TextureFace texture_face;

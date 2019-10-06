@@ -790,9 +790,9 @@ void ColladaExporter::loadBindPoses(const std::string & filename, XMLNode * xNod
 	float a, b, c, d;
 
 
-	char buffer[MAX_LINE_BUFFER];
-	while(file_reader.getline(buffer, MAX_LINE_BUFFER)) {
-		if(sscanf(buffer, "%f %f %f %f", &a, &b, &c, &d) == 4) { // ok
+	std::string buffer;
+	while(file_reader.getline(buffer)) {
+		if(sscanf(buffer.c_str(), "%f %f %f %f", &a, &b, &c, &d) == 4) { // ok
 			out_stream.str("");
 			out_stream << buffer;
 			xNode_binding->addText(out_stream.str().c_str());
@@ -848,9 +848,9 @@ void ColladaExporter::loadVertexWeights(const std::string & filename, XMLNode * 
 
 	if(!file_reader.open(filename))
 		return;
-
-	char buffer[MAX_LINE_BUFFER * 4];
-	while(file_reader.getline(buffer, MAX_LINE_BUFFER * 4)) {
+	
+	std::string buffer;
+	while(file_reader.getline(buffer)) {
 		out_stream.str("");
 		out_stream << buffer;
 

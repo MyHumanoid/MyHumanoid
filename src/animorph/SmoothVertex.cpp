@@ -20,8 +20,8 @@ void SmoothVertex::fromStream(FileReader & in_stream)
 {
 	clear();
 
-	char buffer[MAX_LINE];
-	while(in_stream.getline(buffer, MAX_LINE)) {
+	std::string buffer;
+	while(in_stream.getline(buffer)) {
 		SmoothData vertexes;
 
 		stringTokeni(buffer, ",", vertexes);

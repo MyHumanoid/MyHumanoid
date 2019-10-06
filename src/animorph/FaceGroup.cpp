@@ -28,14 +28,14 @@ void FaceGroup::fromStream(FileReader & in_stream)
 
 	m_groups.clear();
 
-	char buffer[MAX_LINE];
-	while(in_stream.getline(buffer, MAX_LINE)) {
+	std::string buffer;
+	while(in_stream.getline(buffer)) {
 		if(isalpha(buffer[0])) // line is a fgroup identifier
 		{
-			char * p;
-			p = strrchr(buffer, ',');
+			const char * p;
+			p = strrchr(buffer.c_str(), ',');
 			if(p == NULL)
-				p = buffer;
+				p = buffer.c_str();
 			else
 				p++;
 
@@ -100,10 +100,10 @@ void FaceGroup::createStreamVisibilities(std::ostringstream & out_stream)
 
 void FaceGroup::fromStreamVisibilities(FileReader & in_stream)
 {
-	char buffer[MAX_LINE];
+	std::string buffer;
 	char line[MAX_LINE];
-	while(in_stream.getline(buffer, MAX_LINE)) {
-		if(sscanf(buffer, "nv,%s", line) == 1) {
+	while(in_stream.getline(buffer)) {
+		if(sscanf(buffer.c_str(), "nv,%s", line) == 1) {
 			// ema     if(find(line) != end())
 			{
 				m_groups[line].visible = false;

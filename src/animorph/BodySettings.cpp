@@ -42,10 +42,10 @@ void BodySettings::fromStream(FileReader & in_stream)
 	// empty map before load new settings
 	m_targets.clear();
 
-	char buffer[MAX_LINE_BUFFER];
+	std::string buffer;
 	char bs_name[MAX_LINE_BUFFER];
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
-		if(sscanf(buffer, "%[^,],%f\n", bs_name, &bs_value) == 2) {
+	while(in_stream.getline(buffer)) {
+		if(sscanf(buffer.c_str(), "%[^,],%f\n", bs_name, &bs_value) == 2) {
 			if(bs_value != 0.0) {
 				// remove "targets/" prefix in MH2.0 bodysettings
 				// as side effect a sub directory with name "targets" is forbidden!!
@@ -65,7 +65,7 @@ void BodySettings::fromStream(FileReader & in_stream)
 				
 				uint32_t id;
 				int      x, y;
-				if(sscanf(buffer, "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
+				if(sscanf(buffer.c_str(), "#t,%*c,%u,%i,%i", &id, &x, &y) == 3) {
 					
 					switch(id) {
 					case kAge:

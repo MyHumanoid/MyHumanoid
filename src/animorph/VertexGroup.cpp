@@ -28,8 +28,8 @@ void VertexGroup::fromStream(FileReader & in_stream)
 
 	clear();
 
-	char buffer[MAX_LINE_BUFFER];
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
+	std::string buffer;
+	while(in_stream.getline(buffer)) {
 		if(isalpha(buffer[0])) // line is a vgroup identifier
 		{
 			vgroup_ident = buffer;
@@ -37,7 +37,7 @@ void VertexGroup::fromStream(FileReader & in_stream)
 			UtilStringDelSurround(vgroup_ident, "\n\r\t:");
 		} else // line is a vgroup number
 		{
-			if(sscanf(buffer, "%d,%f\n", &vertex_number, &weight) == 2) {
+			if(sscanf(buffer.c_str(), "%d,%f\n", &vertex_number, &weight) == 2) {
 				if(vgroup_ident != "") {
 					VGroupData & vgd   = (*this)[vgroup_ident];
 					vgd[vertex_number] = weight;

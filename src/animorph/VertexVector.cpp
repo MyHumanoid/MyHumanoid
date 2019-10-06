@@ -22,14 +22,14 @@ bool VertexVector::load(const std::string & filename)
 
 void VertexVector::fromStream(FileReader & in_stream)
 {
-	char  buffer[MAX_LINE_BUFFER];
+	std::string buffer;
 	float x, y, z;
 	x = y = z = 0.0;
 
 	clear();
 
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER)) {
-		if(sscanf(buffer, "%f,%f,%f\n", &x, &y, &z) == 3) {
+	while(in_stream.getline(buffer)) {
+		if(sscanf(buffer.c_str(), "%f,%f,%f\n", &x, &y, &z) == 3) {
 			Vertex vertex(x, y, z);
 
 			push_back(vertex);
@@ -71,13 +71,13 @@ bool origVertexVector::load(const std::string & filename)
 
 void origVertexVector::fromStream(FileReader & in_stream)
 {
-	char buffer[MAX_LINE_BUFFER];
-	char buffer1[MAX_LINE_BUFFER];
+	std::string buffer;
+	std::string buffer1;
 
 	clear();
 
-	while(in_stream.getline(buffer, MAX_LINE_BUFFER) &&
-	      in_stream.getline(buffer1, MAX_LINE_BUFFER)) {
+	while(in_stream.getline(buffer) &&
+	      in_stream.getline(buffer1)) {
 		std::vector<int> i_faceVerts;
 
 		stringTokeni(buffer, ",", i_faceVerts);

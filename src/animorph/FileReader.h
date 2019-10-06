@@ -53,7 +53,7 @@ public:
 	
 	bool get(std::ifstream::char_type & c);
 	
-	bool getline(std::ifstream::char_type * c, size_t s);
+	bool getline(std::string & buffer);
 	
 	/*!
 	 * \param filename the file to open for reading
