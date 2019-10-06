@@ -77,7 +77,6 @@ set(animorph_sources
 )
 
 set(gui_sources
-	src/gui/AbstractListener.h
 	src/gui/Camera.h
 	src/gui/Camera.cpp
 	src/gui/CGUtilities.h

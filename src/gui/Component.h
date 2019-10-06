@@ -37,8 +37,6 @@ using std::endl;
 namespace mhgui
 {
 
-class AbstractListener;
-
 class Component
 {
 private:
@@ -46,7 +44,6 @@ private:
 	Rect               geometry;
 	Rect               absoluteGeometry;
 	glm::ivec2              zeroPoint;
-	AbstractListener * listener;
 
 	// On mouse pressed -> true; on mouse released -> false
 	mutable bool active;
@@ -58,8 +55,6 @@ public:
 	Component(uint32_t inId, const Rect & inGeometry);
 
 	virtual ~Component();
-
-	void setListener(AbstractListener * inListener) { listener = inListener; }
 
 	void setPosition(const glm::ivec2 & inPos);
 
@@ -80,10 +75,6 @@ public:
 	const uint32_t getID() const { return id; }
 
 	bool isLastMouseOver() const { return mouseOver; }
-
-	virtual bool isMouseOver(const glm::ivec2 & inMousePos);
-	virtual bool isMouseClick(const glm::ivec2 & inMousePos, int button, int state);
-	virtual bool isMouseDragged(const glm::ivec2 & inMousePos);
 
 protected:
 	const glm::ivec2 & getAbsolutePosition() const { return absoluteGeometry.pos; }

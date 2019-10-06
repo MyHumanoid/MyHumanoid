@@ -26,7 +26,6 @@
  */
 
 #include "gui/Component.h"
-#include "gui/AbstractListener.h"
 #include "gui/GLUTWrapper.h"
 
 namespace mhgui
@@ -44,9 +43,7 @@ Component::Component(uint32_t inId, const Rect & inGeometry)
         , geometry(inGeometry)
         , absoluteGeometry(inGeometry)
         , zeroPoint(0, 0)
-        , listener(NULL)
-        , // No listener per default (use setListener())
-        active(false)
+        , active(false)
         , clickConsumed(false)
         , mouseOver(false)
 {
@@ -76,53 +73,6 @@ void Component::setZeroPoint(const glm::ivec2 & inZero)
 
 	absoluteGeometry = geometry;
 	absoluteGeometry.moveBy(inZero);
-}
-
-bool Component::isMouseOver(const glm::ivec2 & inMousePos)
-{
-	bool isOver = false;
-
-	if(absoluteGeometry.isHitBy(inMousePos)) {
-
-		mouseOver = true;
-	} else if(mouseOver) {
-		mouseOver = false;
-	}
-	return isOver;
-};
-
-bool Component::isMouseClick(const glm::ivec2 & inMousePos, int button, int state)
-{
-	bool isClick = false;
-	bool isHit   = absoluteGeometry.isHitBy(inMousePos);
-
-	//  if (absoluteGeometry.isHitBy(inMousePos))
-	//  {
-	if((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) && state == GLUT_DOWN &&
-	   isHit) {
-		if(listener)
-			isClick = listener->mousePressed(inMousePos, button, this);
-	} else if((button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) && state == GLUT_UP &&
-	          isActive()) {
-		if(listener)
-			isClick = listener->mouseReleased(inMousePos, button, this);
-	}
-
-	//  }
-	else if(active == true)
-		active = false;
-
-	return isClick;
-};
-
-bool Component::isMouseDragged(const glm::ivec2 & inMousePos)
-{
-	bool dragged = false;
-	if(isActive()) {
-		if(listener)
-			dragged = listener->mouseDragged(inMousePos, this);
-	}
-	return dragged;
 }
 
 } // namespace mhgui
