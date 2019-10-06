@@ -36,7 +36,6 @@
 
 #include "Camera.h"
 #include "GLUTWrapper.h"
-#include "ImageData.h"
 #include "Rect.h"
 
 using std::string;
@@ -62,8 +61,6 @@ void reshape(const glm::ivec2 & inSize, const mhgui::Camera & inCamera);
 void enableOrthographicProjection();
 
 void disableOrthographicProjection();
-
-void drawSquareFillTexture(const Rect & inRect, float alpha, const mhgui::Texture & inTexture);
 
 void drawSquareFill(const Rect & inRect, const Color & c);
 

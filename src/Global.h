@@ -29,7 +29,6 @@
 #include "animorph/BodySettings.h"
 #include <animorph/Mesh.h>
 #include <gui/Camera.h>
-#include <gui/Texture.h>
 
 using Animorph::SavedCompSetting;
 

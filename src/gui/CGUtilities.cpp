@@ -30,7 +30,6 @@
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"
 #include "gui/Rect.h"
-#include "gui/Texture.h"
 
 #include "log/log.h"
 
@@ -39,7 +38,6 @@
 using Animorph::Color;
 using mhgui::Rect;
 using mhgui::Camera;
-using mhgui::Texture;
 
 void cgutils::drawLine2D(const glm::ivec2 & start, const glm::ivec2 & end, const Color & c)
 {
@@ -210,14 +208,6 @@ void cgutils::drawAxis()
 	if(!glIsEnabled(GL_DEPTH_TEST)) {
 		glEnable(GL_DEPTH_TEST);
 	}
-}
-
-void cgutils::drawSquareFillTexture(const Rect & inRect, float alpha, const Texture & inTexture)
-{
-	float zlayer = 0.0;
-
-	glColor4f(1.0, 1.0, 1.0, alpha);
-	inTexture.mapToGeometry(inRect, zlayer);
 }
 
 void cgutils::drawSquareFill(const mhgui::Rect & inRect, const Color & c)

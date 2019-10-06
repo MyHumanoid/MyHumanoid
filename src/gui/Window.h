@@ -32,10 +32,7 @@
 #include <glm/vec3.hpp>
 #include <list>
 #include <string>
-//#include "Panel.h"
 #include "Camera.h"
-#include "ImageData.h"
-#include "Texture.h"
 
 using std::list;
 using std::string;

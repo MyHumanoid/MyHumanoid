@@ -84,12 +84,8 @@ set(gui_sources
 	src/gui/Component.h
 	src/gui/Component.cpp
 	src/gui/GLUTWrapper.h
-	src/gui/ImageData.h
-	src/gui/ImageData.cpp
 	src/gui/Rect.h
 	src/gui/Rect.cpp
-	src/gui/Texture.h
-	src/gui/Texture.cpp
 	src/gui/Window.h
 	src/gui/Window.cpp
 )
