@@ -27,7 +27,7 @@ void CreateTargetImageTextures()
 }
 
 
-void XYfoobar(OptTex texture, const glm::ivec2 & value)
+void XYfoobar(OptTex texture, glm::ivec2 & value)
 {
 	if(!texture) {
 		return;
@@ -44,6 +44,13 @@ void XYfoobar(OptTex texture, const glm::ivec2 & value)
 		vec2 relPos = vec2(io.MousePos) - pMin;
 		relPos      = glm::max(relPos, vec2(0));
 		relPos      = glm::min(relPos, size);
+		
+		value.x = relPos.x;
+		value.y = size.y - relPos.y;
+		
+		g_grids.calcDists();
+		g_grids.applyCompositeMorphTargets();
+		
 		//value       = vec2(relPos) / vec2(size);
 	}
 	
@@ -77,8 +84,6 @@ void DisplayCharacterSettings()
 
 	static const Textures tex;
 
-	Grids foo;
-	foo.fromSavedPositions(g_global.m_comp);
 	
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(6));
 	
@@ -92,16 +97,16 @@ void DisplayCharacterSettings()
 	
 	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Age/Sex");
-	XYfoobar(tex.ageGenderBkg, foo.agePos);
+	XYfoobar(tex.ageGenderBkg, g_grids.agePos);
 	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Bodymass Weight/Muscle");
-	XYfoobar(tex.massBkg, foo.muscleSizePos);
+	XYfoobar(tex.massBkg, g_grids.muscleSizePos);
 	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Breast Size/Shape");
-	XYfoobar(tex.breastBkg, foo.breastPos);
+	XYfoobar(tex.breastBkg, g_grids.breastPos);
 	ImGui::Dummy(vec2(0.0f, 10.0f));
 	//ImGui::Text("Bodyshape Shape/Height");
-	XYfoobar(tex.shapeBkg, foo.shapePos);
+	XYfoobar(tex.shapeBkg, g_grids.shapePos);
 	
 	ImGui::PopStyleVar(3);
 	
