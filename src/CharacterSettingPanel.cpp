@@ -163,6 +163,8 @@ CharacterSettingPanel::~CharacterSettingPanel()
 
 void CharacterSettingPanel::createWidgets()
 {
+	using glm::ivec2;
+	
 	const Color c(1.0, 0.0, 0.0);
 	// --------------------------------------------------------------------------
 	Image * image = new Image(kComponentID_Dummy, searchPixmapFile("ui/dummy_image.png"),
@@ -176,8 +178,6 @@ void CharacterSettingPanel::createWidgets()
 	
 	selector = new Selector(kAge,
 	                        searchPixmapFile("ui/age_selector.png"), Rect(0, 0, 192, 104));
-	
-	lis.grids.ageGrid.calcPoints(selector->getSize(), 2, 5);
 	
 	selector->setListener(&lis);
 	m_age = selector;
@@ -199,8 +199,6 @@ void CharacterSettingPanel::createWidgets()
 	        new Selector(kMuscleSize,
 	                     searchPixmapFile("ui/muscle_size_selector.png"), Rect(0, 0, 192, 104));
 	
-	lis.grids.muscleSizeGrid.calcPoints(selector->getSize(), 2, 2);
-	
 	selector->setListener(&lis);
 	m_muscleSize = selector;
 	addWidget(selector);
@@ -220,8 +218,6 @@ void CharacterSettingPanel::createWidgets()
 	selector = new Selector(kBreast,
 	                        searchPixmapFile("ui/breast_selector.png"), Rect(0, 0, 192, 104));
 	
-	lis.grids.breastGrid.calcPoints(selector->getSize(), 2, 2);
-	
 	selector->setListener(&lis);
 	m_breast = selector;
 	addWidget(selector);
@@ -240,8 +236,6 @@ void CharacterSettingPanel::createWidgets()
 	// -------------------------------------------------------------------------
 	selector = new Selector(kShape,
 	                        searchPixmapFile("ui/shape_selector.png"), Rect(0, 0, 192, 104));
-	
-	lis.grids.shapeGrid.calcPoints(selector->getSize(), 2, 2);
 	
 	selector->setListener(&lis);
 	m_shape = selector;
@@ -312,10 +306,19 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 
 void CharacterSettingPanel::updateUi()
 {
+	Grids test;
+	test.fromSavedPositions(g_global.m_comp);
+	
 	calcSelectorValues(m_age);
 	calcSelectorValues(m_breast);
 	calcSelectorValues(m_muscleSize);
 	calcSelectorValues(m_shape);
+	
+	log_info("----");
+	log_info("age    old: {} new: {}", lis.grids.agePos, test.agePos);
+	log_info("muscle old: {} new: {}", lis.grids.muscleSizePos, test.muscleSizePos);
+	log_info("breast old: {} new: {}", lis.grids.breastPos, test.breastPos);
+	log_info("shape  old: {} new: {}", lis.grids.shapePos, test.shapePos);
 	
 	lis.grids.calcDists();
 }

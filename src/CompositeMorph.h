@@ -35,6 +35,14 @@ struct Grids {
 	std::vector<float> breastDists;
 	std::vector<float> shapeDists;
 	
+	Grids()
+	{
+		ageGrid.calcPoints(glm::ivec2(192, 104), 2, 5);
+		muscleSizeGrid.calcPoints(glm::ivec2(192, 104), 2, 2);
+		breastGrid.calcPoints(glm::ivec2(192, 104), 2, 2);
+		shapeGrid.calcPoints(glm::ivec2(192, 104), 2, 2);
+	}
+	
 	void calcDists();
 	void applyCompositeMorphTargets() const;
 	

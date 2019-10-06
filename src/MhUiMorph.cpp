@@ -33,9 +33,8 @@ void XYfoobar(OptTex texture, const glm::ivec2 & value)
 		return;
 	}
 	
-	auto *    dl = ImGui::GetForegroundDrawList();
-	ImGuiIO & io = ImGui::GetIO();
 	
+	ImGuiIO & io = ImGui::GetIO();
 	
 	
 	MhGui::ImageButton(texture.value(), ImVec2(192, 104));
@@ -54,10 +53,12 @@ void XYfoobar(OptTex texture, const glm::ivec2 & value)
 	
 	vec2 cursorPos = pMin + vec2(value.x, 104) - vec2(0, value.y);
 	
-	float       radius       = 6.0f;
+	float       radius       = 5.0f;
 	const ImU32 col_white    = IM_COL32(255, 255, 255, 255);
 	const ImU32 col_midgrey  = IM_COL32(128, 128, 128, 255);
-	const ImU32 col_midgrey2 = IM_COL32(150,   0,  24, 128);
+	const ImU32 col_midgrey2 = IM_COL32(255,   0,  24, 128);
+	
+	auto * dl = ImGui::GetWindowDrawList();
 	dl->AddCircleFilled(cursorPos, radius, col_midgrey2, 12);
 	dl->AddCircle(cursorPos, radius + 1, col_midgrey);
 	dl->AddCircle(cursorPos, radius, col_white);
@@ -79,9 +80,9 @@ void DisplayCharacterSettings()
 	Grids foo;
 	foo.fromSavedPositions(g_global.m_comp);
 	
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(1));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(6));
 	
-	ImGui::SetNextWindowSize(vec2(194, 490));
+	ImGui::SetNextWindowSize(vec2(204, 490));
 	ImGui::Begin("Character Setting",
 	             &g_config.characterSettings.visible,
 	             ImGuiWindowFlags_NoResize);
