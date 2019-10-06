@@ -5,7 +5,17 @@
 namespace Animorph
 {
 
-int FileReader::open(const std::string & filename)
+FileReader::FileReader()
+	: locale(NULL)
+{
+}
+
+FileReader::~FileReader()
+{
+	close();
+}
+
+bool FileReader::open(const std::string & filename)
 {
 	//std::ifstream & if_stream = (*this);
 

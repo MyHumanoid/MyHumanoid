@@ -41,41 +41,34 @@ namespace Animorph
  */
 class FileReader
 {
-private:
 	std::ifstream m_stream;
 	char * locale;
-
-	// Intentionally declared as private because not implemented yet
-private:
-	FileReader(const FileReader &);
-	FileReader & operator=(const FileReader &);
-
+	
 public:
-	FileReader()
-	        : locale(NULL)
-	{
-	}
+	FileReader(const FileReader &) = delete;
+	FileReader & operator=(const FileReader &) = delete;
+	
+	FileReader();
+	~FileReader();
 	
 	auto & get(std::ifstream::char_type c)
 	{
 		return m_stream.get(c);
 	}
 	
-	auto & getline(std::ifstream::char_type * c, size_t s) {
+	auto & getline(std::ifstream::char_type * c, size_t s)
+	{
 		return m_stream.getline(c, s);
 	}
-
-	/// destructor closes the file
-	virtual ~FileReader() { close(); }
-
+	
 	/*!
 	 * \param filename the file to open for reading
-	 * \return 0 if the file could be opened.
+	 * \return false if the file could be opened.
 	 */
-	virtual int open(const std::string & filename);
+	bool open(const std::string & filename);
 
 	/// closes the currently opened file
-	virtual void close();
+	void close();
 };
 
 } // namespace Animorph
