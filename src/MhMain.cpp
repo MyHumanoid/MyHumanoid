@@ -154,7 +154,8 @@ static void saveBodySettings(const string & filename)
 {
 	Animorph::BodySettings bodyset = g_mesh.morphTargets();
 	
-	bodyset.m_comp = g_global.m_comp;
+	//bodyset.m_comp = g_global.m_comp;
+	g_grids.toSavedPositions(bodyset.m_comp);
 	
 	bool state = bodyset.save(filename);
 
@@ -173,9 +174,10 @@ static void loadBodySettings(const string & filename)
 	if(state) {
 		g_global.clearFuzzy();
 		
-		g_global.m_comp = bodyset.m_comp;
+		//g_global.m_comp = bodyset.m_comp;
+		g_grids.fromSavedPositions(bodyset.m_comp);
 		
-		mhgui::g_mainWindow->characterSettingPanel->updateUi();
+		//mhgui::g_mainWindow->characterSettingPanel->updateUi();
 	}
 
 	if(state) {
@@ -301,9 +303,10 @@ void loadCharacter(const std::string & character_name)
 		
 		auto & bodyset = f->second;
 		
-		g_global.m_comp = bodyset.m_comp;
+		//g_global.m_comp = bodyset.m_comp;
+		g_grids.fromSavedPositions(bodyset.m_comp);
 		
-		mhgui::g_mainWindow->characterSettingPanel->updateUi();
+		//mhgui::g_mainWindow->characterSettingPanel->updateUi();
 	}
 }
 

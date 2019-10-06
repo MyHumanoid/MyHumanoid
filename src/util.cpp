@@ -249,9 +249,10 @@ void loadDefaultBodySettings()
 	if(state) {
 		g_global.clearFuzzy();
 		
-		g_global.m_comp = bodyset.m_comp;
+		//g_global.m_comp = bodyset.m_comp;
+		g_grids.fromSavedPositions(bodyset.m_comp);
 		
-		mhgui::g_mainWindow->characterSettingPanel->updateUi();
+		//mhgui::g_mainWindow->characterSettingPanel->updateUi();
 	}
 
 	if(state) {
