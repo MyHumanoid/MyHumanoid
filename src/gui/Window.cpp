@@ -50,7 +50,6 @@ Window * g_mainWindow;
 Window::Window(const Rect & rect, const string & t)
         : geometry(rect)
         , title(t)                    //!< The window title bar
-        , fullscreen(false)           //!< full screen no
         , light0Lum(+1.0)             //!< light 0 luminosity
         , light1Lum(+1.0)             //!< light 1 luminosity
         , light0Pos(+1.0, +1.0, +1.0) //!< light 0 position
@@ -69,10 +68,6 @@ Window::~Window()
 void Window::setCamera(Camera * p_camera)
 {
 	inCamera = p_camera;
-}
-
-void Window::draw()
-{
 }
 
 void Window::setSize(const glm::ivec2 & inSize)

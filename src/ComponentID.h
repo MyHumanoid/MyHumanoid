@@ -38,20 +38,9 @@
 	(((char)(a)) << 24 | ((char)(b)) << 16 | ((char)(c)) << 8 | ((char)(d)))
 #endif
 
-static const uint32_t kComponentID_Dummy = FOUR_CHAR_CONST('D', 'M', 'M', 'Y');
-
-// ------------------------------------------------------------------
-// The Character Setting Panel
-// ------------------------------------------------------------------
-static const uint32_t kComponentID_CharacterSettingPanel = FOUR_CHAR_CONST('p', 'a', 'C', 'A');
-
 static const uint32_t kAge = FOUR_CHAR_CONST('A', 'g', 'e', 'X');
-static const uint32_t kMuscleSize =
-        FOUR_CHAR_CONST('M', 's', 'S', 'z');
-static const uint32_t kBreast =
-        FOUR_CHAR_CONST('B', 'r', 's', 't');
-static const uint32_t kShape =
-        FOUR_CHAR_CONST('S', 'h', 'p', 'a');
-
+static const uint32_t kMuscleSize = FOUR_CHAR_CONST('M', 's', 'S', 'z');
+static const uint32_t kBreast = FOUR_CHAR_CONST('B', 'r', 's', 't');
+static const uint32_t kShape = FOUR_CHAR_CONST('S', 'h', 'p', 'a');
 
 static const glm::ivec2 InvalidPoint = glm::ivec2(-666, -666);

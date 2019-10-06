@@ -737,7 +737,6 @@ static void display()
 	}
 
 	drawBackground();
-	mhgui::g_mainWindow->draw();
 
 	if(g_global.drawGrid) {
 		cgutils::drawGrid(mhgui::g_mainWindow->getSize(), 220, 70, grid_color, border_color, 50);
