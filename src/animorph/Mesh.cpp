@@ -7,6 +7,7 @@
 
 #include "Logger.h"
 #include "Profiler.h"
+#include "Vfs.h"
 
 namespace Animorph
 {
@@ -354,18 +355,25 @@ void Mesh::calcNormals()
 	calcVertexNormals();
 }
 
-bool Mesh::loadGroups(const string & groups_filename)
+bool Mesh::loadGroups(const string & partsFile)
 {
+	auto groups_filename = searchDataFile(partsFile);
+	
 	return m_facegroup.load(groups_filename);
 }
 
-bool Mesh::loadSmoothVertex(const string & filename)
+bool Mesh::loadSmoothVertex(const string & smoothFile)
 {
+	auto filename = searchDataFile(smoothFile);
+	
 	return m_smoothvertex.load(filename);
 }
 
-bool Mesh::loadMesh(const string & mesh_filename, const string & faces_filename)
+bool Mesh::loadMesh(const string & meshFile, const string & faceFile)
 {
+	auto mesh_filename = searchDataFile(meshFile);
+	auto faces_filename = searchDataFile(faceFile);
+	
 	bool vload = m_vert_morph.load(mesh_filename);
 	bool fload = m_faces.loadGeometry(faces_filename);
 
@@ -399,8 +407,11 @@ PoseTarget * Mesh::getPoseTargetForName(const string & inTargetname) const
 	return poseTarget;
 }
 
-bool Mesh::loadMaterial(const string & material_filename, const string & face_colors_filename)
+bool Mesh::loadMaterial(const string & matFile, const string & colFile)
 {
+	auto material_filename = searchDataFile(matFile);
+	auto face_colors_filename = searchDataFile(colFile);
+	
 	bool mload  = m_materials.loadMaterials(material_filename);
 	bool fcload = m_faces.loadColors(face_colors_filename);
 
@@ -409,8 +420,10 @@ bool Mesh::loadMaterial(const string & material_filename, const string & face_co
 	return true;
 }
 
-bool Mesh::loadTextureVector(const string & filename)
+bool Mesh::loadTextureVector(const string & uvFile)
 {
+	auto filename = searchDataFile(uvFile);
+	
 	return m_texture_vector.load(filename);
 }
 

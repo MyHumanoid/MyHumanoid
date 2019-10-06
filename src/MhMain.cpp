@@ -961,30 +961,24 @@ int main(int argc, char ** argv)
 	LoadBodyShader(0);
 	LoadBackgroundShader();
 	
-	bool mesh_loaded =
-	        g_mesh.loadMesh(searchDataFile("base.vertices"), searchDataFile("base.faces"));
+	bool mesh_loaded = g_mesh.loadMesh("base.vertices", "base.faces");
+	bool material_loaded = g_mesh.loadMaterial("base.materials", "base.colors");
+	g_mesh.loadTextureVector("base.uv");
+	bool groups_loaded = g_mesh.loadGroups("base.parts");
+	bool smooth_loaded = g_mesh.loadSmoothVertex("base.smooth");
+	
 	if(!mesh_loaded) {
 		log_error("couldn't load mesh geometry");
 		return 1;
 	}
-
-	bool material_loaded = g_mesh.loadMaterial(searchDataFile("base.materials"),
-	                                           searchDataFile("base.colors"));
 	if(!material_loaded) {
 		log_error("couldn't load mesh material informations");
 		return 1;
 	}
-
-	g_mesh.loadTextureVector(searchDataFile("base.uv"));
-
-	// load face groups with factory function
-	bool groups_loaded = g_mesh.loadGroups(searchDataFile("base.parts"));
 	if(!groups_loaded) {
 		log_error("couldn't load face groups");
 		return 1;
 	}
-
-	bool smooth_loaded = g_mesh.loadSmoothVertex(searchDataFile("base.smooth"));
 	if(!smooth_loaded) {
 		log_error("couldn't load smooth info");
 		return 1;

@@ -304,9 +304,9 @@ public:
 	/** @name Loading
 	 */
 	//@{
-	bool loadMesh(const string & mesh_filename, const string & faces_filename);
+	bool loadMesh(const string & meshFile, const string & faceFile);
 
-	bool loadMaterial(const string & material_filename, const string & face_colors_filename);
+	bool loadMaterial(const string & matFile, const string & colFile);
 
 	bool loadTextureVector(const string & filename);
 
@@ -338,8 +338,8 @@ public:
 	 */
 	void loadCharacters(const string & characters_root_path, int recursive_level = 1);
 
-	bool loadGroups(const string & groups_filename);
-	bool loadSmoothVertex(const string & filename);
+	bool loadGroups(const string & partsFile);
+	bool loadSmoothVertex(const string & smoothFile);
 
 	//@}
 
