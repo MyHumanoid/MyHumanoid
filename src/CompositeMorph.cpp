@@ -177,3 +177,16 @@ void Grids::fromSavedPositions(const Animorph::SavedCompSetting & saved)
 		shapePos = defPos;
 	}
 }
+
+void Grids::toSavedPositions(Animorph::SavedCompSetting & saved)
+{
+	using glm::ivec2;
+	
+	int yOff = 16;
+	auto size = ivec2(192, 104);
+	
+	saved.m_kAge = ivec2(agePos.x, yOff + 10 + size.y - agePos.y);
+	saved.m_kMuscleSize = ivec2(muscleSizePos.x, yOff + 124 + size.y - muscleSizePos.y);
+	saved.m_kBreast = ivec2(breastPos.x, yOff + 238 + size.y - breastPos.y);
+	saved.m_kShape = ivec2(shapePos.x, yOff + 352 + size.y - shapePos.y);
+}

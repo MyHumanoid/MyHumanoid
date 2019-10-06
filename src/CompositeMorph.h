@@ -86,6 +86,7 @@ struct Grids {
 	
 	
 	void fromSavedPositions(const Animorph::SavedCompSetting & saved);
+	void toSavedPositions(Animorph::SavedCompSetting & saved);
 };
 
 extern Grids g_grids;

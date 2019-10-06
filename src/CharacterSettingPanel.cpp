@@ -136,6 +136,20 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & sel, glm::ivec2 inMou
 		break;
 	}
 	
+	log_info("----");
+	log_info("age    old: {}", g_global.m_comp.m_kAge);
+	log_info("muscle old: {}", g_global.m_comp.m_kMuscleSize);
+	log_info("breast old: {}", g_global.m_comp.m_kBreast);
+	log_info("shape  old: {}", g_global.m_comp.m_kShape);
+	
+	g_grids.toSavedPositions(g_global.m_comp);
+	
+	log_info("=====");
+	log_info("age    new: {}", g_global.m_comp.m_kAge);
+	log_info("muscle new: {}", g_global.m_comp.m_kMuscleSize);
+	log_info("breast new: {}", g_global.m_comp.m_kBreast);
+	log_info("shape  new: {}", g_global.m_comp.m_kShape);
+	
 	g_grids.calcDists();
 	g_grids.applyCompositeMorphTargets();
 }
