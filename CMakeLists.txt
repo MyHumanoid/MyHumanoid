@@ -124,6 +124,8 @@ set(myhumanoid_sources
 	src/CharacterSettingPanel.cpp
 	src/CharacterSettingPanel.h
 	src/ComponentID.h
+	src/CompositeMorph.h
+	src/CompositeMorph.cpp
 	src/GlInclude.h
 	src/Global.cpp
 	src/Global.h
