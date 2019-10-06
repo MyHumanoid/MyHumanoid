@@ -8,11 +8,13 @@
 template<int rows, int cols>
 struct Grid
 {
+	static constexpr auto flatSize = rows * cols;
+	
 	float maxValue;
 	float cellRatio;
 	
 	// from left-bottom point to right-up point
-	std::array<glm::ivec2, rows * cols> points;
+	std::array<glm::ivec2, flatSize> points;
 	
 	void calcPoints(glm::ivec2 size)
 	{
@@ -48,7 +50,7 @@ struct Grid
 		}
 	}
 	
-	std::array<float, rows * cols> dists;
+	std::array<float, flatSize> dists;
 };
 
 struct Grids {
