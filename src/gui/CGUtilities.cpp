@@ -39,17 +39,6 @@ using Animorph::Color;
 using mhgui::Rect;
 using mhgui::Camera;
 
-void cgutils::drawLine2D(const glm::ivec2 & start, const glm::ivec2 & end, const Color & c)
-{
-	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glBegin(GL_LINES);
-
-	glVertex3f(start.x, start.y, 0.0);
-	glVertex3f(end.x, end.y, 0.0);
-
-	glEnd();
-}
-
 /*! Draw a grid on XY plane.*/
 void cgutils::drawGrid(const glm::ivec2 & inSize, const int xMargin, const int yMargin, const Color & c,
                        const Color & b, int squareSize)
@@ -350,20 +339,6 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	return winID;
 }
 
-void cgutils::drawString(const glm::ivec2 & inPoint, FontType font, const string & str, const Color & c)
-{
-	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glRasterPos2f(inPoint.x, inPoint.y);
-
-	// TODO: anchor text in the upper left corner instead of lower left!
-
-	for(string::const_iterator str_it = str.begin(); str_it != str.end(); str_it++) {
-		char ch = *str_it;
-
-		glutBitmapCharacter(font, ch);
-	}
-}
-
 void cgutils::drawString3D(const glm::vec3 & pos, FontType font, const string & str,
                            const Color & c)
 {
@@ -381,36 +356,4 @@ void cgutils::enableBlend()
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-// TODO: temporary broken; fix it!
-int cgutils::getFontWidth(FontType font)
-{
-	if(font == GLUT_BITMAP_8_BY_13)
-		return 13;
-
-	if(font == GLUT_BITMAP_9_BY_15)
-		return 15;
-
-	if(font == GLUT_BITMAP_TIMES_ROMAN_10)
-		return 10;
-
-	if(font == GLUT_BITMAP_TIMES_ROMAN_24)
-		return 24;
-
-	if(font == GLUT_BITMAP_HELVETICA_10)
-		return 10;
-
-	if(font == GLUT_BITMAP_HELVETICA_12)
-		return 12;
-
-	if(font == GLUT_BITMAP_HELVETICA_18)
-		return 18;
-
-	return 0;
-}
-
-int cgutils::getFontLength(FontType font, const string & str)
-{
-	return glutBitmapLength(font, (unsigned char *)str.c_str());
 }

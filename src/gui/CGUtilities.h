@@ -69,20 +69,12 @@ void drawSquare(const Rect & inRect, const Color & c);
 int initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
                const glm::vec3 & light1Pos, float light0Lum, float light1Lum);
 
-void drawString(const glm::ivec2 & inPoint, FontType font, const string & str, const Color & c);
-
 void drawString3D(const glm::vec3 & pos, FontType font, const string & str, const Color & c);
 
 void redisplay();
 
 void enableBlend();
 
-int getFontWidth(FontType font);
-
-int getFontLength(FontType font, const string & str);
-
 void mhWireCube(const float twoxyz[6]);
-
-void drawLine2D(const glm::ivec2 & start, const glm::ivec2 & end, const Color & c);
 
 } // namespace cgutils
