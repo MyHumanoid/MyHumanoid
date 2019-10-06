@@ -52,18 +52,33 @@ void Grids::calcDists()
 
 void Grids::applyCompositeMorphTargets() const
 {
+	static_assert(std::tuple_size<decltype(ageGrid.dists)>::value ==
+	              std::tuple_size<decltype(ageLabels)>::value,
+	              "");
+	
+	static_assert(std::tuple_size<decltype(muscleSizeGrid.dists)>::value ==
+	              std::tuple_size<decltype(muscleSizeLabels)>::value,
+	              "");
+	
+	static_assert(std::tuple_size<decltype(breastGrid.dists)>::value ==
+	              std::tuple_size<decltype(breastLabels)>::value,
+	              "");
+	
+	static_assert(std::tuple_size<decltype(shapeGrid.dists)>::value ==
+	              std::tuple_size<decltype(shapeLabels)>::value,
+	              "");
+	
+	
+	// std::cout << "--------------------------" << std::endl;
+	for(size_t i = 0; i < ageGrid.dists.size(); ++i) {
+		
+		string tmpTargetName("ages/" + ageLabels[i] + ".target");
+		g_mesh.setMorphTarget(tmpTargetName, ageGrid.dists[i]);
+	}
+	
 	unsigned int i = 0;
 	unsigned int j = 0;
 	unsigned int k = 0;
-	
-	// std::cout << "--------------------------" << std::endl;
-	for(const float & di_it : ageGrid.dists) {
-		if(i < ageLabels.size()) {
-			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
-			
-			g_mesh.setMorphTarget(tmpTargetName, di_it);
-		}
-	}
 	
 	for(const float & ms_it : muscleSizeGrid.dists) {
 		
@@ -107,14 +122,10 @@ void Grids::applyCompositeMorphTargets() const
 		j++;
 	}
 	
-	i = 0;
+	for(size_t i = 0; i < shapeGrid.dists.size(); ++i) {
 	
-	for(const float & sh_it : shapeGrid.dists) {
-		if(i < shapeLabels.size()) {
-			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
-			
-			g_mesh.setMorphTarget(tmpTargetName, sh_it);
-		}
+		string tmpTargetName("shapes/" + shapeLabels[i] + ".target");
+		g_mesh.setMorphTarget(tmpTargetName, shapeGrid.dists[i]);
 	}
 }
 
