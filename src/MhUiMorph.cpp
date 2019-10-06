@@ -9,7 +9,7 @@
 #include "gui/Window.h"
 #include "Global.h"
 #include "ComponentID.h"
-
+#include "CompositeMorph.h"
 #include "MhConfig.h"
 #include "MhUiCommon.h"
 
@@ -27,7 +27,7 @@ void CreateTargetImageTextures()
 }
 
 
-void XYfoobar(OptTex texture, glm::vec2 & value)
+void XYfoobar(OptTex texture, glm::ivec2 & value)
 {
 	if(!texture) {
 		return;
@@ -43,10 +43,13 @@ void XYfoobar(OptTex texture, glm::vec2 & value)
 		vec2 relPos = vec2(io.MousePos) - pMin;
 		relPos      = glm::max(relPos, vec2(0));
 		relPos      = glm::min(relPos, size);
-		value       = vec2(relPos) / vec2(size);
+		//value       = vec2(relPos) / vec2(size);
 	}
 
-	vec2        cursorPos    = pMin + vec2(value * vec2(size));
+	//vec2        cursorPos    = pMin + vec2(value * vec2(size));
+	
+	vec2 cursorPos = pMin + vec2(value.x, 104) - vec2(0, value.y);
+	
 	float       radius       = 6.0f;
 	const ImU32 col_white    = IM_COL32(255, 255, 255, 255);
 	const ImU32 col_midgrey  = IM_COL32(128, 128, 128, 255);
@@ -69,21 +72,21 @@ void DisplayCharacterSettings()
 
 	static const Textures tex;
 
-	{
-		//vec2 foo = vec2(192, 104);
-	}
-
+	Grids foo;
+	foo.fromSavedPositions(g_global.m_comp);
+	
+	
 	ImGui::SetNextWindowSize(vec2(220, 800));
 	ImGui::Begin("Character Setting");
 
-//	ImGui::Text("Age/Sex");
-//	XYfoobar(tex.ageGenderBkg, g_global.ageAndSex);
-//	ImGui::Text("Bodymass Weight/Muscle");
-//	XYfoobar(tex.massBkg, g_global.bodyWeightMuscle);
-//	ImGui::Text("Breast Size/Shape");
-//	XYfoobar(tex.breastBkg, g_global.breastSizeShape);
-//	ImGui::Text("Bodyshape Shape/Height");
-//	XYfoobar(tex.shapeBkg, g_global.bodyShapeHeight);
+	ImGui::Text("Age/Sex");
+	XYfoobar(tex.ageGenderBkg, foo.agePos);
+	ImGui::Text("Bodymass Weight/Muscle");
+	XYfoobar(tex.massBkg, foo.muscleSizePos);
+	ImGui::Text("Breast Size/Shape");
+	XYfoobar(tex.breastBkg, foo.breastPos);
+	ImGui::Text("Bodyshape Shape/Height");
+	XYfoobar(tex.shapeBkg, foo.shapePos);
 
 	ImGui::End();
 }

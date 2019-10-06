@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include "animorph/BodySettings.h"
 
 struct Grid
 {
@@ -19,7 +20,6 @@ struct Grid
 };
 
 struct Grids {
-	
 	glm::ivec2 agePos;
 	glm::ivec2 muscleSizePos;
 	glm::ivec2 breastPos;
@@ -37,4 +37,8 @@ struct Grids {
 	
 	void calcDists();
 	void applyCompositeMorphTargets() const;
+	
+	
+	
+	void fromSavedPositions(const Animorph::SavedCompSetting & saved);
 };

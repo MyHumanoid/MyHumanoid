@@ -158,3 +158,51 @@ void Grids::applyCompositeMorphTargets() const
 		}
 	}
 }
+
+
+
+void Grids::fromSavedPositions(const Animorph::SavedCompSetting & saved)
+{
+	using glm::ivec2;
+	
+	constexpr auto size = ivec2(192, 104);
+	
+	if(saved.m_kAge != InvalidPoint){
+		constexpr auto pos = ivec2(0, 10);
+		
+		agePos = glm::ivec2(saved.m_kAge.x,
+		                    pos.y + size.y - saved.m_kAge.y);
+	} else {
+		agePos = glm::ivec2(96, 52);
+	}
+	
+	
+	if(saved.m_kMuscleSize != InvalidPoint){
+		constexpr auto pos = ivec2(0, 124);
+		
+		muscleSizePos = glm::ivec2(saved.m_kAge.x,
+		                           pos.y + size.y - saved.m_kMuscleSize.y);
+	} else {
+		muscleSizePos = glm::ivec2(96, 52);
+	}
+	
+	
+	if(saved.m_kBreast != InvalidPoint){
+		constexpr auto pos = ivec2(0, 238);
+		
+		breastPos = glm::ivec2(saved.m_kAge.x,
+		                           pos.y + size.y - saved.m_kBreast.y);
+	} else {
+		breastPos = glm::ivec2(96, 52);
+	}
+	
+	
+	if(saved.m_kShape != InvalidPoint){
+		constexpr auto pos = ivec2(0, 352);
+		
+		shapePos = glm::ivec2(saved.m_kAge.x,
+		                       pos.y + size.y - saved.m_kShape.y);
+	} else {
+		shapePos = glm::ivec2(96, 52);
+	}
+}
