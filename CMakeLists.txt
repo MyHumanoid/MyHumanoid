@@ -144,7 +144,6 @@ find_package(OpenGL     REQUIRED)
 find_package(GLEW       REQUIRED)
 find_package(GLUT       REQUIRED)
 find_package(glm        REQUIRED)
-find_package(PNG        REQUIRED)
 find_package(PhysFS 2.1 REQUIRED)
 
 add_executable(MyHumanoid
@@ -176,7 +175,6 @@ target_include_directories(MyHumanoid PRIVATE
 	${GLEW_INCLUDE_DIRS}
 	${GLUT_INCLUDE_DIRS}
 	${GLM_INCLUDE_DIRS}
-	${PNG_INCLUDE_DIRS}
 	${PHYSFS_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 )
@@ -185,7 +183,6 @@ target_link_libraries(MyHumanoid PRIVATE
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}
 	GLUT::GLUT
-	${PNG_LIBRARY}
 	${PHYSFS_LIBRARY}
 	fmt
 	imgui
