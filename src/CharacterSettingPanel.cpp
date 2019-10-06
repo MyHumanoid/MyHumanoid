@@ -256,10 +256,10 @@ void CharacterSettingPanel::resetSlidersValues()
 	m_breast->cursorPos = glm::ivec2(96, 52);
 	m_shape->cursorPos = glm::ivec2(96, 52);
 	
-	lis.grids.ageDists.clear();
-	lis.grids.muscleSizeDists.clear();
-	lis.grids.breastDists.clear();
-	lis.grids.shapeDists.clear();
+	lis.grids.ageGrid.dists.clear();
+	lis.grids.muscleSizeGrid.dists.clear();
+	lis.grids.breastGrid.dists.clear();
+	lis.grids.shapeGrid.dists.clear();
 }
 
 void CharacterSettingPanel::calcSelectorValues(Selector * sel)

@@ -14,8 +14,6 @@ struct Grid
 	// from left-bottom point to right-up point
 	std::array<glm::ivec2, rows * cols> points;
 	
-	//void calcPoints(glm::ivec2 size, int inRows, int inCols);
-	
 	void calcPoints(glm::ivec2 size)
 	{
 		for(int y = 0; y < rows; y++) {
@@ -54,8 +52,7 @@ struct Grid
 		return ret;
 	}
 	
-	
-	//std::vector<float> calculateDists(glm::ivec2 cursorPos) const;
+	std::vector<float> dists;
 };
 
 struct Grids {
@@ -68,11 +65,6 @@ struct Grids {
 	Grid<2, 2> muscleSizeGrid;
 	Grid<2, 2> breastGrid;
 	Grid<2, 2> shapeGrid;
-	
-	std::vector<float> ageDists;
-	std::vector<float> muscleSizeDists;
-	std::vector<float> breastDists;
-	std::vector<float> shapeDists;
 	
 	Grids()
 	{

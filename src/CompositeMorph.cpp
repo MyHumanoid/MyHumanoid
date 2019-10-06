@@ -44,10 +44,10 @@ static std::array<string, 4> shapeLabels = {
 
 void Grids::calcDists()
 {
-	ageDists = ageGrid.calculateDists(agePos);
-	breastDists = breastGrid.calculateDists(breastPos);
-	muscleSizeDists = muscleSizeGrid.calculateDists(muscleSizePos);
-	shapeDists = shapeGrid.calculateDists(shapePos);
+	ageGrid.dists = ageGrid.calculateDists(agePos);
+	breastGrid.dists = breastGrid.calculateDists(breastPos);
+	muscleSizeGrid.dists = muscleSizeGrid.calculateDists(muscleSizePos);
+	shapeGrid.dists = shapeGrid.calculateDists(shapePos);
 }
 
 void Grids::applyCompositeMorphTargets() const
@@ -57,7 +57,7 @@ void Grids::applyCompositeMorphTargets() const
 	unsigned int k = 0;
 	
 	// std::cout << "--------------------------" << std::endl;
-	for(const float & di_it : ageDists) {
+	for(const float & di_it : ageGrid.dists) {
 		if(i < ageLabels.size()) {
 			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
 			
@@ -65,11 +65,11 @@ void Grids::applyCompositeMorphTargets() const
 		}
 	}
 	
-	for(const float & ms_it : muscleSizeDists) {
+	for(const float & ms_it : muscleSizeGrid.dists) {
 		
 		i = 0;
 		
-		for(const float & di_it : ageDists) {
+		for(const float & di_it : ageGrid.dists) {
 			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
 				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
 				                     muscleSizeLabels[j] + ".target");
@@ -82,7 +82,7 @@ void Grids::applyCompositeMorphTargets() const
 				k = 0;
 				if(i <= 4) {
 					
-					for(const float & br_it : breastDists) {
+					for(const float & br_it : breastGrid.dists) {
 						
 						if(k < breastLabels.size()) {
 							string tmpTargetName(
@@ -109,7 +109,7 @@ void Grids::applyCompositeMorphTargets() const
 	
 	i = 0;
 	
-	for(const float & sh_it : shapeDists) {
+	for(const float & sh_it : shapeGrid.dists) {
 		if(i < shapeLabels.size()) {
 			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
 			
