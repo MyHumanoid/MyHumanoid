@@ -124,7 +124,7 @@ std::vector<float> Grid::calculateDists(glm::ivec2 cursorPos) const
 }
 
 
-void Grids::calcWidgetTargetsFOO() const
+void Grids::applyCompositeMorphTargets() const
 {
 	unsigned int i = 0;
 	unsigned int j = 0;
@@ -278,7 +278,7 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & sel, glm::ivec2 inMou
 		break;
 	}
 	
-	grids.calcWidgetTargetsFOO();
+	grids.applyCompositeMorphTargets();
 }
 
 

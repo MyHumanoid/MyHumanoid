@@ -61,7 +61,7 @@ struct Grids {
 	std::vector<float> breastDists;
 	std::vector<float> shapeDists;
 	
-	void calcWidgetTargetsFOO() const;
+	void applyCompositeMorphTargets() const;
 };
 
 
