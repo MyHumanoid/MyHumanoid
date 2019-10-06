@@ -60,6 +60,8 @@ struct Grids {
 	std::vector<float> muscleSizeDists;
 	std::vector<float> breastDists;
 	std::vector<float> shapeDists;
+	
+	void calcWidgetTargetsFOO() const;
 };
 
 

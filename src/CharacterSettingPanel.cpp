@@ -123,6 +123,75 @@ std::vector<float> Grid::calculateDists(glm::ivec2 cursorPos) const
 	return ret;
 }
 
+
+void Grids::calcWidgetTargetsFOO() const
+{
+	unsigned int i = 0;
+	unsigned int j = 0;
+	unsigned int k = 0;
+	
+	// std::cout << "--------------------------" << std::endl;
+	for(const float & di_it : ageDists) {
+		if(i < ageLabels.size()) {
+			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
+			
+			g_mesh.setMorphTarget(tmpTargetName, di_it);
+		}
+	}
+	
+	for(const float & ms_it : muscleSizeDists) {
+		
+		i = 0;
+		
+		for(const float & di_it : ageDists) {
+			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
+				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
+				                     muscleSizeLabels[j] + ".target");
+				float  tmpTargetValue = di_it * ms_it;
+				
+				g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
+				
+				// breast widget
+				
+				k = 0;
+				if(i <= 4) {
+					
+					for(const float & br_it : breastDists) {
+						
+						if(k < breastLabels.size()) {
+							string tmpTargetName(
+							    "breast/" + ageLabels[i] + "_" +
+							    muscleSizeLabels[j] + "_" +
+							    breastLabels[k] + ".target");
+							float tmpTargetValue =
+							    di_it * ms_it * br_it;
+							
+							if(tmpTargetValue > 0) {
+								//log_info("{} {}", tmpTargetName, tmpTargetValue);
+							}
+							
+							g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
+						}
+						k++;
+					}
+				}
+			}
+			i++;
+		}
+		j++;
+	}
+	
+	i = 0;
+	
+	for(const float & sh_it : shapeDists) {
+		if(i < shapeLabels.size()) {
+			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
+			
+			g_mesh.setMorphTarget(tmpTargetName, sh_it);
+		}
+	}
+}
+
 // ================================================================================================
 
 SelectorListener::SelectorListener()
@@ -209,75 +278,7 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & sel, glm::ivec2 inMou
 		break;
 	}
 	
-	calcWidgetTargetsFOO();
-}
-
-void SelectorListener::calcWidgetTargetsFOO()
-{
-	unsigned int i = 0;
-	unsigned int j = 0;
-	unsigned int k = 0;
-	
-	// std::cout << "--------------------------" << std::endl;
-	for(const float & di_it : grids.ageDists) {
-		if(i < ageLabels.size()) {
-			string tmpTargetName("ages/" + ageLabels[i++] + ".target");
-			
-			g_mesh.setMorphTarget(tmpTargetName, di_it);
-		}
-	}
-	
-	for(const float & ms_it : grids.muscleSizeDists) {
-		
-		i = 0;
-		
-		for(const float & di_it : grids.ageDists) {
-			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
-				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
-				                     muscleSizeLabels[j] + ".target");
-				float  tmpTargetValue = di_it * ms_it;
-				
-				g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
-				
-				// breast widget
-				
-				k = 0;
-				if(i <= 4) {
-					
-					for(const float & br_it : grids.breastDists) {
-						
-						if(k < breastLabels.size()) {
-							string tmpTargetName(
-							    "breast/" + ageLabels[i] + "_" +
-							    muscleSizeLabels[j] + "_" +
-							    breastLabels[k] + ".target");
-							float tmpTargetValue =
-							    di_it * ms_it * br_it;
-							
-							if(tmpTargetValue > 0) {
-								//log_info("{} {}", tmpTargetName, tmpTargetValue);
-							}
-							
-							g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
-						}
-						k++;
-					}
-				}
-			}
-			i++;
-		}
-		j++;
-	}
-	
-	i = 0;
-	
-	for(const float & sh_it : grids.shapeDists) {
-		if(i < shapeLabels.size()) {
-			string tmpTargetName("shapes/" + shapeLabels[i++] + ".target");
-			
-			g_mesh.setMorphTarget(tmpTargetName, sh_it);
-		}
-	}
+	grids.calcWidgetTargetsFOO();
 }
 
 
