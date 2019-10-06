@@ -83,6 +83,13 @@ std::vector<float> Grid::calculateDists(glm::ivec2 cursorPos) const
 	return ret;
 }
 
+void Grids::calcDists()
+{
+	ageDists = ageGrid.calculateDists(agePos);
+	breastDists = breastGrid.calculateDists(breastPos);
+	muscleSizeDists = muscleSizeGrid.calculateDists(muscleSizePos);
+	shapeDists = shapeGrid.calculateDists(shapePos);
+}
 
 void Grids::applyCompositeMorphTargets() const
 {

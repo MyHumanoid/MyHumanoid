@@ -121,25 +121,22 @@ void SelectorListener::calcWidgetTargets(mhgui::Selector & sel, glm::ivec2 inMou
 	case kAge:
 		g_global.m_comp.m_kAge = inMousePos;
 		grids.agePos = sel.cursorPos;
-		grids.ageDists = grids.ageGrid.calculateDists(grids.agePos);
 		break;
 	case kMuscleSize:
 		g_global.m_comp.m_kMuscleSize = inMousePos;
 		grids.muscleSizePos = sel.cursorPos;
-		grids.muscleSizeDists = grids.muscleSizeGrid.calculateDists(grids.muscleSizePos);
 		break;
 	case kBreast:
 		g_global.m_comp.m_kBreast = inMousePos;
 		grids.breastPos = sel.cursorPos;
-		grids.breastDists = grids.breastGrid.calculateDists(grids.breastPos);
 		break;
 	case kShape:
 		g_global.m_comp.m_kShape = inMousePos;
 		grids.shapePos = sel.cursorPos;
-		grids.shapeDists = grids.shapeGrid.calculateDists(grids.shapePos);
 		break;
 	}
 	
+	grids.calcDists();
 	grids.applyCompositeMorphTargets();
 }
 
@@ -299,19 +296,15 @@ void CharacterSettingPanel::calcSelectorValues(Selector * sel)
 	switch(sel->getID()) {
 	case kAge:
 		lis.grids.agePos = sel->cursorPos;
-		lis.grids.ageDists = lis.grids.ageGrid.calculateDists(lis.grids.agePos);
 		break;
 	case kBreast:
 		lis.grids.breastPos = sel->cursorPos;
-		lis.grids.breastDists = lis.grids.breastGrid.calculateDists(lis.grids.breastPos);
 		break;
 	case kMuscleSize:
 		lis.grids.muscleSizePos = sel->cursorPos;
-		lis.grids.muscleSizeDists = lis.grids.muscleSizeGrid.calculateDists(lis.grids.muscleSizePos);
 		break;
 	case kShape:
 		lis.grids.shapePos = sel->cursorPos;
-		lis.grids.shapeDists = lis.grids.shapeGrid.calculateDists(lis.grids.shapePos);
 		break;
 	}
 	
@@ -323,4 +316,6 @@ void CharacterSettingPanel::updateUi()
 	calcSelectorValues(m_breast);
 	calcSelectorValues(m_muscleSize);
 	calcSelectorValues(m_shape);
+	
+	lis.grids.calcDists();
 }

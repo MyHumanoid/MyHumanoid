@@ -35,5 +35,6 @@ struct Grids {
 	std::vector<float> breastDists;
 	std::vector<float> shapeDists;
 	
+	void calcDists();
 	void applyCompositeMorphTargets() const;
 };
