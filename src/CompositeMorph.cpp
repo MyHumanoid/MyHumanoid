@@ -168,40 +168,36 @@ void Grids::fromSavedPositions(const Animorph::SavedCompSetting & saved)
 	constexpr auto size = ivec2(192, 104);
 	
 	if(saved.m_kAge != InvalidPoint){
-		constexpr auto pos = ivec2(0, 10);
+		const int bottom = 10 + size.y;
 		
-		agePos = glm::ivec2(saved.m_kAge.x,
-		                    pos.y + size.y - saved.m_kAge.y);
+		agePos = glm::ivec2(saved.m_kAge.x, bottom - saved.m_kAge.y);
 	} else {
 		agePos = glm::ivec2(96, 52);
 	}
 	
 	
 	if(saved.m_kMuscleSize != InvalidPoint){
-		constexpr auto pos = ivec2(0, 124);
+		const int bottom = 124 + size.y;
 		
-		muscleSizePos = glm::ivec2(saved.m_kAge.x,
-		                           pos.y + size.y - saved.m_kMuscleSize.y);
+		muscleSizePos = glm::ivec2(saved.m_kMuscleSize.x, bottom - saved.m_kMuscleSize.y);
 	} else {
 		muscleSizePos = glm::ivec2(96, 52);
 	}
 	
 	
 	if(saved.m_kBreast != InvalidPoint){
-		constexpr auto pos = ivec2(0, 238);
+		const int bottom = 238 + size.y;
 		
-		breastPos = glm::ivec2(saved.m_kAge.x,
-		                           pos.y + size.y - saved.m_kBreast.y);
+		breastPos = glm::ivec2(saved.m_kBreast.x, bottom - saved.m_kBreast.y);
 	} else {
 		breastPos = glm::ivec2(96, 52);
 	}
 	
 	
 	if(saved.m_kShape != InvalidPoint){
-		constexpr auto pos = ivec2(0, 352);
+		const int bottom = 352 + size.y;
 		
-		shapePos = glm::ivec2(saved.m_kAge.x,
-		                       pos.y + size.y - saved.m_kShape.y);
+		shapePos = glm::ivec2(saved.m_kShape.x, bottom - saved.m_kShape.y);
 	} else {
 		shapePos = glm::ivec2(96, 52);
 	}

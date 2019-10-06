@@ -27,7 +27,7 @@ void CreateTargetImageTextures()
 }
 
 
-void XYfoobar(OptTex texture, glm::ivec2 & value)
+void XYfoobar(OptTex texture, const glm::ivec2 & value)
 {
 	if(!texture) {
 		return;
@@ -35,7 +35,9 @@ void XYfoobar(OptTex texture, glm::ivec2 & value)
 	
 	auto *    dl = ImGui::GetForegroundDrawList();
 	ImGuiIO & io = ImGui::GetIO();
-
+	
+	
+	
 	MhGui::ImageButton(texture.value(), ImVec2(192, 104));
 	vec2 pMin = ImGui::GetItemRectMin();
 	vec2 size = ImGui::GetItemRectSize();
@@ -45,6 +47,8 @@ void XYfoobar(OptTex texture, glm::ivec2 & value)
 		relPos      = glm::min(relPos, size);
 		//value       = vec2(relPos) / vec2(size);
 	}
+	
+
 
 	//vec2        cursorPos    = pMin + vec2(value * vec2(size));
 	
@@ -53,7 +57,7 @@ void XYfoobar(OptTex texture, glm::ivec2 & value)
 	float       radius       = 6.0f;
 	const ImU32 col_white    = IM_COL32(255, 255, 255, 255);
 	const ImU32 col_midgrey  = IM_COL32(128, 128, 128, 255);
-	const ImU32 col_midgrey2 = IM_COL32(128, 128, 128, 128);
+	const ImU32 col_midgrey2 = IM_COL32(150,   0,  24, 128);
 	dl->AddCircleFilled(cursorPos, radius, col_midgrey2, 12);
 	dl->AddCircle(cursorPos, radius + 1, col_midgrey);
 	dl->AddCircle(cursorPos, radius, col_white);
@@ -75,19 +79,31 @@ void DisplayCharacterSettings()
 	Grids foo;
 	foo.fromSavedPositions(g_global.m_comp);
 	
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vec2(1));
 	
-	ImGui::SetNextWindowSize(vec2(220, 800));
-	ImGui::Begin("Character Setting");
-
-	ImGui::Text("Age/Sex");
+	ImGui::SetNextWindowSize(vec2(194, 490));
+	ImGui::Begin("Character Setting",
+	             &g_config.characterSettings.visible,
+	             ImGuiWindowFlags_NoResize);
+	
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0));
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, vec2(0));
+	
+	ImGui::Dummy(vec2(0.0f, 10.0f));
+	//ImGui::Text("Age/Sex");
 	XYfoobar(tex.ageGenderBkg, foo.agePos);
-	ImGui::Text("Bodymass Weight/Muscle");
+	ImGui::Dummy(vec2(0.0f, 10.0f));
+	//ImGui::Text("Bodymass Weight/Muscle");
 	XYfoobar(tex.massBkg, foo.muscleSizePos);
-	ImGui::Text("Breast Size/Shape");
+	ImGui::Dummy(vec2(0.0f, 10.0f));
+	//ImGui::Text("Breast Size/Shape");
 	XYfoobar(tex.breastBkg, foo.breastPos);
-	ImGui::Text("Bodyshape Shape/Height");
+	ImGui::Dummy(vec2(0.0f, 10.0f));
+	//ImGui::Text("Bodyshape Shape/Height");
 	XYfoobar(tex.shapeBkg, foo.shapePos);
-
+	
+	ImGui::PopStyleVar(3);
+	
 	ImGui::End();
 }
 
