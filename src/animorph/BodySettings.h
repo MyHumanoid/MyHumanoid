@@ -61,7 +61,7 @@ class BodySettings
 {
 private:
 	void createStream(std::ostringstream & out_stream);
-	void fromStream(std::ifstream & in_stream);
+	void fromStream(FileReader &in_stream);
 
 public:
 	std::map<std::string, float> m_targets;

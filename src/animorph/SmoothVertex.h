@@ -52,7 +52,7 @@ The format of EdgeStrips files:
 class SmoothVertex : public std::vector<SmoothData>
 {
 private:
-	void fromStream(std::ifstream & in_stream);
+	void fromStream(FileReader &in_stream);
 
 public:
 	/// Load the Strip data from a file

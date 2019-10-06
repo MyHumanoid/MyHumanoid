@@ -67,9 +67,9 @@ The format of FaceGroup file:
 class FaceGroup
 {
 private:
-	void fromStream(std::ifstream & in_stream);
+	void fromStream(FileReader &in_stream);
 	void createStreamVisibilities(std::ostringstream & out_stream);
-	void fromStreamVisibilities(std::ifstream & in_stream);
+	void fromStreamVisibilities(FileReader &in_stream);
 
 public:
 	std::map<std::string, FGroup> m_groups;

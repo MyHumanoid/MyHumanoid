@@ -119,7 +119,7 @@ public:
 class Autozoom : public std::map<std::string, AutozoomData>
 {
 private:
-	void fromStream(std::ifstream & in_stream, const std::string & filename);
+	void fromStream(Animorph::FileReader & in_stream, const std::string & filename);
 	void createStream(std::ostringstream & out_stream, const std::string & filename,
 	                  const Camera & camera);
 

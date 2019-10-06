@@ -9,9 +9,7 @@ bool MaterialVector::loadMaterials(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStream(file_reader);
@@ -19,7 +17,7 @@ bool MaterialVector::loadMaterials(const std::string & filename)
 	return true;
 }
 
-void MaterialVector::fromStream(std::ifstream & in_stream)
+void MaterialVector::fromStream(FileReader & in_stream)
 {
 	clear();
 

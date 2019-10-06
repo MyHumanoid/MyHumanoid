@@ -3,7 +3,7 @@
 namespace Animorph
 {
 
-void TextureVector::fromUVStream(ifstream & in_stream)
+void TextureVector::fromUVStream(FileReader & in_stream)
 {
 	unsigned int    nr_uv_coord;
 	int             n = 0;
@@ -38,9 +38,7 @@ bool TextureVector::load(const string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromUVStream(file_reader);

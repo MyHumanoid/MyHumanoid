@@ -8,9 +8,7 @@ bool SmoothVertex::load(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStream(file_reader);
@@ -18,7 +16,7 @@ bool SmoothVertex::load(const std::string & filename)
 	return true;
 }
 
-void SmoothVertex::fromStream(std::ifstream & in_stream)
+void SmoothVertex::fromStream(FileReader & in_stream)
 {
 	clear();
 

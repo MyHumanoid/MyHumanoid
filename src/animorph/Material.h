@@ -54,7 +54,7 @@ The format of Material file:
 class MaterialVector : public std::vector<Material>
 {
 private:
-	void fromStream(std::ifstream & in_stream);
+	void fromStream(FileReader &in_stream);
 
 public:
 	/// load a Material file

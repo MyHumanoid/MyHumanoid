@@ -304,7 +304,7 @@ void Camera::moveCameraAnimated(const std::string & filename, AutozoomData data,
 }
 
 /*! Load of camera data files. */
-void Autozoom::fromStream(std::ifstream & in_stream, const std::string & filename)
+void Autozoom::fromStream(Animorph::FileReader & in_stream, const std::string & filename)
 {
 	AutozoomData data;
 
@@ -345,9 +345,7 @@ bool Autozoom::lazyLoadData(const std::string & filename)
 
 	Animorph::FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStream(file_reader, filename);

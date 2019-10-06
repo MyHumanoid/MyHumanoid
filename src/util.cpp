@@ -88,9 +88,8 @@ const string searchDataDir(const string & data_dir)
 bool GetSymmVertexConfig(int * symm_vertex)
 {
 	Animorph::FileReader file_reader;
-	file_reader.open("data/base.sym");
 
-	if(!file_reader)
+	if(!file_reader.open("data/base.sym"))
 		return false;
 
 	char buffer[MAX_LINE_BUFFER];
@@ -131,9 +130,7 @@ void CreateWeightsFile()
 
 	int index;
 
-	file_reader.open("data/vertex_sx.weights");
-
-	if(!file_reader)
+	if(!file_reader.open("data/vertex_sx.weights"))
 		return;
 
 	for(unsigned int v = 0; v < size_vx; v++) {

@@ -782,12 +782,13 @@ void ColladaExporter::loadBindPoses(const std::string & filename, XMLNode * xNod
                                     int jointCounter)
 {
 	FileReader         file_reader;
+	if(!file_reader.open(filename))
+		return;
+	
 	std::ostringstream out_stream;
-	file_reader.open(filename);
 	int   line = 0;
 	float a, b, c, d;
-	if(!file_reader)
-		return;
+
 
 	char buffer[MAX_LINE_BUFFER];
 	while(file_reader.getline(buffer, MAX_LINE_BUFFER)) {
@@ -842,10 +843,10 @@ void ColladaExporter::loadVertexWeights(const std::string & filename, XMLNode * 
 
 	FileReader         file_reader;
 	std::ostringstream out_stream;
-	file_reader.open(filename);
+	
 	unsigned int line = 0;
 
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return;
 
 	char buffer[MAX_LINE_BUFFER * 4];
@@ -865,9 +866,8 @@ void ColladaExporter::loadWeightsVector(const std::string & filename, XMLNode * 
 {
 	FileReader         file_reader;
 	std::ostringstream out_stream;
-	file_reader.open(filename);
 
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return;
 
 	out_stream.str("");

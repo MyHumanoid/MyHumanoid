@@ -49,7 +49,7 @@ typedef std::vector<glm::vec2> TextureFace;
 class TextureVector : public vector<TextureFace>
 {
 private:
-	void fromUVStream(ifstream & in_stream);
+	void fromUVStream(FileReader &in_stream);
 
 public:
 	bool load(const string & filename);

@@ -48,7 +48,7 @@ The format of Vertices file:
 class VertexVector : public std::vector<Vertex>
 {
 private:
-	void fromStream(std::ifstream & in_stream);
+	void fromStream(FileReader &in_stream);
 
 public:
 	bool load(const std::string & filename);
@@ -59,7 +59,7 @@ public:
 class origVertexVector : public std::vector<origVertex>
 {
 private:
-	void fromStream(std::ifstream & in_stream);
+	void fromStream(FileReader & in_stream);
 
 public:
 	bool load(const std::string & filename);

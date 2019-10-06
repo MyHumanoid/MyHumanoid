@@ -39,9 +39,10 @@ namespace Animorph
 
 /*! \brief Wrapper for ifstream using C locale
  */
-class FileReader : public std::ifstream
+class FileReader
 {
 private:
+	std::ifstream m_stream;
 	char * locale;
 
 	// Intentionally declared as private because not implemented yet
@@ -53,6 +54,15 @@ public:
 	FileReader()
 	        : locale(NULL)
 	{
+	}
+	
+	auto & get(std::ifstream::char_type c)
+	{
+		return m_stream.get(c);
+	}
+	
+	auto & getline(std::ifstream::char_type * c, size_t s) {
+		return m_stream.getline(c, s);
 	}
 
 	/// destructor closes the file

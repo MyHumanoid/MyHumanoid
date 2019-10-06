@@ -12,9 +12,7 @@ bool VertexGroup::load(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStream(file_reader);
@@ -22,7 +20,7 @@ bool VertexGroup::load(const std::string & filename)
 	return true;
 }
 
-void VertexGroup::fromStream(std::ifstream & in_stream)
+void VertexGroup::fromStream(FileReader & in_stream)
 {
 	int    vertex_number;
 	float  weight;

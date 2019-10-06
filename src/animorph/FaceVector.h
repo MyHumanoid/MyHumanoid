@@ -53,8 +53,8 @@ The format of Face colors file:
 class FaceVector : public std::vector<Face>
 {
 private:
-	void fromGeometryStream(std::ifstream & in_stream);
-	void fromColorsStream(std::ifstream & in_stream);
+	void fromGeometryStream(FileReader &in_stream);
+	void fromColorsStream(FileReader &in_stream);
 
 public:
 	/// load the Face data from a file

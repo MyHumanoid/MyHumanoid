@@ -12,9 +12,7 @@ bool VertexVector::load(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStream(file_reader);
@@ -22,7 +20,7 @@ bool VertexVector::load(const std::string & filename)
 	return true;
 }
 
-void VertexVector::fromStream(std::ifstream & in_stream)
+void VertexVector::fromStream(FileReader & in_stream)
 {
 	char  buffer[MAX_LINE_BUFFER];
 	float x, y, z;
@@ -63,9 +61,7 @@ bool origVertexVector::load(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStream(file_reader);
@@ -73,7 +69,7 @@ bool origVertexVector::load(const std::string & filename)
 	return true;
 }
 
-void origVertexVector::fromStream(std::ifstream & in_stream)
+void origVertexVector::fromStream(FileReader & in_stream)
 {
 	char buffer[MAX_LINE_BUFFER];
 	char buffer1[MAX_LINE_BUFFER];

@@ -11,9 +11,7 @@ bool FaceGroup::load(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStream(file_reader);
@@ -23,7 +21,7 @@ bool FaceGroup::load(const std::string & filename)
 	return true;
 }
 
-void FaceGroup::fromStream(std::ifstream & in_stream)
+void FaceGroup::fromStream(FileReader & in_stream)
 {
 	FGroup data;
 	string fgroup_ident;
@@ -81,9 +79,7 @@ bool FaceGroup::loadVisibilities(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromStreamVisibilities(file_reader);
@@ -102,7 +98,7 @@ void FaceGroup::createStreamVisibilities(std::ostringstream & out_stream)
 	}
 }
 
-void FaceGroup::fromStreamVisibilities(std::ifstream & in_stream)
+void FaceGroup::fromStreamVisibilities(FileReader & in_stream)
 {
 	char buffer[MAX_LINE];
 	char line[MAX_LINE];

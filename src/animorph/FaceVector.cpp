@@ -9,9 +9,7 @@ bool FaceVector::loadGeometry(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromGeometryStream(file_reader);
@@ -23,9 +21,7 @@ bool FaceVector::loadColors(const std::string & filename)
 {
 	FileReader file_reader;
 
-	file_reader.open(filename);
-
-	if(!file_reader)
+	if(!file_reader.open(filename))
 		return false;
 
 	fromColorsStream(file_reader);
@@ -33,7 +29,7 @@ bool FaceVector::loadColors(const std::string & filename)
 	return true;
 }
 
-void FaceVector::fromGeometryStream(std::ifstream & in_stream)
+void FaceVector::fromGeometryStream(FileReader & in_stream)
 {
 	int nr_faces;
 
@@ -58,7 +54,7 @@ void FaceVector::fromGeometryStream(std::ifstream & in_stream)
 	}
 }
 
-void FaceVector::fromColorsStream(std::ifstream & in_stream)
+void FaceVector::fromColorsStream(FileReader & in_stream)
 {
 	int  n = 0;
 	char buffer[MAX_LINE_BUFFER];
