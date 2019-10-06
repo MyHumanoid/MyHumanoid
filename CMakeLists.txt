@@ -81,8 +81,6 @@ set(gui_sources
 	src/gui/Camera.cpp
 	src/gui/CGUtilities.h
 	src/gui/CGUtilities.cpp
-	src/gui/Component.h
-	src/gui/Component.cpp
 	src/gui/GLUTWrapper.h
 	src/gui/Rect.h
 	src/gui/Rect.cpp

@@ -48,7 +48,7 @@ Window * g_mainWindow;
 
 // Constructor
 Window::Window(const Rect & rect, const string & t)
-        : Component(FOUR_CHAR_CONST('M', 'W', 'i', 'n'), rect)
+        : geometry(rect)
         , title(t)                    //!< The window title bar
         , fullscreen(false)           //!< full screen no
         , light0Lum(+1.0)             //!< light 0 luminosity
@@ -73,6 +73,11 @@ void Window::setCamera(Camera * p_camera)
 
 void Window::draw()
 {
+}
+
+void Window::setSize(const glm::ivec2 & inSize)
+{
+	geometry.resizeTo(inSize);
 }
 
 // Init window with some classic openGL commands

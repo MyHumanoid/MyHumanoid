@@ -26,13 +26,13 @@
  */
 #pragma once
 
-#include "Component.h"
 #include <animorph/Color.h>
 #include <animorph/Matrix.h>
 #include <glm/vec3.hpp>
 #include <list>
 #include <string>
 #include "Camera.h"
+#include "gui/Rect.h"
 
 using std::list;
 using std::string;
@@ -44,8 +44,19 @@ namespace mhgui
 class Panel;
 
 /// Object oriented interface to a GLUT window
-class Window : public Component
+class Window
 {
+	uint32_t           id;
+	Rect               geometry;
+	glm::ivec2              zeroPoint;
+	
+	// On mouse pressed -> true; on mouse released -> false
+	mutable bool active;
+	
+	bool         clickConsumed;
+	mutable bool mouseOver;
+	
+	
 	string    title;
 	bool      fullscreen;
 	float     light0Lum;
@@ -70,6 +81,11 @@ public:
 	void setCamera(Camera * p_camera);
 
 	virtual void draw();
+	
+	const Rect & getRect() const { return geometry; }
+	
+	const glm::ivec2 & getSize() const { return geometry.size; }
+	void setSize(const glm::ivec2 & inSize);
 };
 
 extern Window * g_mainWindow;

@@ -965,7 +965,7 @@ int main(int argc, char ** argv)
 	bool mesh_loaded =
 	        g_mesh.loadMesh(searchDataFile("base.vertices"), searchDataFile("base.faces"));
 	if(!mesh_loaded) {
-		cerr << "couldn't load mesh geometry" << endl;
+		log_error("couldn't load mesh geometry");
 		return 1;
 	}
 

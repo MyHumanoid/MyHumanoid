@@ -181,8 +181,8 @@ void CreateWeightsFile()
 		out_stream[i].str("");
 
 		file_reader.getline(buffer, MAX_LINE_BUFFER * 4);
-
-		out_stream[i] << buffer << endl;
+		
+		out_stream[i] << buffer << std::endl;
 	}
 
 	for(unsigned int j = 0; j < size_vx; j++) {
@@ -234,7 +234,7 @@ void CreateWeightsFile()
 				file_write << joint << " ";
 				file_write << actual_weight[joint] << " ";
 			}
-			file_write << endl;
+			file_write << std::endl;
 		}
 	}
 	file_write.close();
