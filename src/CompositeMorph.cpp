@@ -44,10 +44,10 @@ static std::array<string, 4> shapeLabels = {
 
 void Grids::calcDists()
 {
-	ageGrid.dists = ageGrid.calculateDists(agePos);
-	breastGrid.dists = breastGrid.calculateDists(breastPos);
-	muscleSizeGrid.dists = muscleSizeGrid.calculateDists(muscleSizePos);
-	shapeGrid.dists = shapeGrid.calculateDists(shapePos);
+	ageGrid.calculateDists(agePos);
+	breastGrid.calculateDists(breastPos);
+	muscleSizeGrid.calculateDists(muscleSizePos);
+	shapeGrid.calculateDists(shapePos);
 }
 
 void Grids::applyCompositeMorphTargets() const

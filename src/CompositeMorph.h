@@ -32,27 +32,23 @@ struct Grid
 		maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
 	}
 	
-	std::vector<float> calculateDists(glm::ivec2 cursorPos) const
+	void calculateDists(glm::ivec2 cursorPos)
 	{
-		std::vector<float> ret;
-		
-		for(const auto & vp_it : points) {
-			const glm::ivec2 & tmp(vp_it);
+		for(int i = 0; i < (rows * cols); ++i) {
+			const glm::ivec2 & tmp = points[i];
 			
 			float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
                               pow((tmp.y - cursorPos.y) * cellRatio, 2));
 			float value = 1 - (dist / maxValue);
 			if(value > 0) {
-				ret.push_back(value);
+				dists[i] = value;
 			} else {
-				ret.push_back(0.0f);
+				dists[i] = 0.0f;
 			}
 		}
-		
-		return ret;
 	}
 	
-	std::vector<float> dists;
+	std::array<float, rows * cols> dists;
 };
 
 struct Grids {
@@ -76,10 +72,10 @@ struct Grids {
 	
 	void clearDists()
 	{
-		ageGrid.dists.clear();
-		muscleSizeGrid.dists.clear();
-		breastGrid.dists.clear();
-		shapeGrid.dists.clear();
+		ageGrid.dists.fill(0.f);
+		muscleSizeGrid.dists.fill(0.f);
+		breastGrid.dists.fill(0.f);
+		shapeGrid.dists.fill(0.f);
 	}
 	
 	void calcDists();
