@@ -51,15 +51,9 @@ public:
 	FileReader();
 	~FileReader();
 	
-	auto & get(std::ifstream::char_type c)
-	{
-		return m_stream.get(c);
-	}
+	bool get(std::ifstream::char_type & c);
 	
-	auto & getline(std::ifstream::char_type * c, size_t s)
-	{
-		return m_stream.getline(c, s);
-	}
+	bool getline(std::ifstream::char_type * c, size_t s);
 	
 	/*!
 	 * \param filename the file to open for reading
