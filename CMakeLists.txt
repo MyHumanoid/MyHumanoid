@@ -121,8 +121,6 @@ set(log_sources
 )
 
 set(myhumanoid_sources
-	src/CharacterSettingPanel.cpp
-	src/CharacterSettingPanel.h
 	src/ComponentID.h
 	src/CompositeMorph.h
 	src/CompositeMorph.cpp

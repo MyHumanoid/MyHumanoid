@@ -41,8 +41,6 @@ using std::list;
 using std::string;
 
 
-class CharacterSettingPanel;
-
 namespace mhgui
 {
 
@@ -94,9 +92,6 @@ public:
 	bool loadPNG(const string & filename);
 
 	virtual void draw();
-	
-	
-	CharacterSettingPanel * characterSettingPanel;
 };
 
 extern Window * g_mainWindow;

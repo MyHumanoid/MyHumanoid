@@ -72,6 +72,16 @@ struct Grids {
 		shapeGrid.calcPoints(glm::ivec2(192, 104));
 	}
 	
+	void clearPos()
+	{
+		auto defPos = glm::ivec2(96, 52);
+		
+		agePos = defPos;
+		muscleSizePos = defPos;
+		breastPos = defPos;
+		shapePos = defPos;
+	}
+	
 	void clearDists()
 	{
 		ageGrid.dists.fill(0.f);

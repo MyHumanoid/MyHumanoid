@@ -63,11 +63,11 @@
 
 #include <time.h>
 
-#include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
 #include "util.h"
 
+#include "CompositeMorph.h"
 #include "MhConfig.h"
 #include "MhRender.h"
 #include "Vfs.h"
@@ -266,7 +266,7 @@ static void saveAutozoom(const string & filename)
 
 static void ResetMeshMorph()
 {
-	mhgui::g_mainWindow->characterSettingPanel->resetSlidersValues();
+	g_grids.clearPos();
 	
 	Animorph::BodySettings bodyset_empty;
 	g_mesh.doMorph(bodyset_empty);
@@ -966,8 +966,6 @@ int main(int argc, char ** argv)
 	g_global.camera   = new mhgui::Camera();
 	g_global.autozoom = new mhgui::Autozoom();
 	
-	
-	mhgui::g_mainWindow->characterSettingPanel = new CharacterSettingPanel();
 	mhgui::g_mainWindow->initWindow();
 	
 	LoadBodyShader(0);
@@ -1016,8 +1014,6 @@ int main(int argc, char ** argv)
 
 	init = false;
 	mhgui::g_mainWindow->setCamera(g_global.camera);
-	mhgui::g_mainWindow->addPanel(mhgui::g_mainWindow->characterSettingPanel);
-	mhgui::g_mainWindow->characterSettingPanel->createWidgets();
 	
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);

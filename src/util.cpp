@@ -26,7 +26,6 @@
  */
 #include "util.h"
 
-#include "CharacterSettingPanel.h"
 #include "ComponentID.h"
 #include "Global.h"
 #include <animorph/DirectoryList.h>
@@ -38,6 +37,7 @@
 #include <string>
 #include <vector>
 
+#include "CompositeMorph.h"
 #include "log/log.h"
 #include "Vfs.h"
 
