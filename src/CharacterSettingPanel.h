@@ -51,6 +51,12 @@ struct Grid
 };
 
 struct Grids {
+	
+	glm::ivec2 agePos;
+	glm::ivec2 muscleSizePos;
+	glm::ivec2 breastPos;
+	glm::ivec2 shapePos;
+	
 	Grid ageGrid;
 	Grid muscleSizeGrid;
 	Grid breastGrid;
