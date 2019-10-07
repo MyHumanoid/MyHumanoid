@@ -63,11 +63,12 @@ jobs:
         cd build
         cmake --build . --target ALL_BUILD --config Release
         ls
-        ls build/Release
+        ls Release
     - name: package
       run: |
         mkdir build-package
         cp build/Release/* build-package/
+        cp build/MyHumanoid.data build-package/
         ls build-package
     - uses: actions/upload-artifact@master
       with:
