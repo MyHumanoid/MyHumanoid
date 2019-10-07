@@ -203,9 +203,22 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 		${CMAKE_CURRENT_BINARY_DIR}/data
 	)
 else()
+	file(GLOB_RECURSE data_files RELATIVE ${CMAKE_SOURCE_DIR} "data/*")
+    
+	foreach(loop_var ${data_files})
+	    set(files_str "${files_str}\n${CMAKE_CURRENT_SOURCE_DIR}/${loop_var}")
+	endforeach(loop_var)
+	
+	file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/dataFilesList.txt
+	     "${files_str}"
+	)
+	
+	message(${files_str})
+	
 	add_custom_command(TARGET MyHumanoid POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E tar "cfv" MyHumanoid.zip
-		--format=zip "${CMAKE_CURRENT_SOURCE_DIR}/data/*"
+		--files-from="${CMAKE_CURRENT_BINARY_DIR}/dataFilesList.txt"
+		--format=zip "${CMAKE_CURRENT_SOURCE_DIR}/data/"
 		WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data"
 		COMMENT "Packing data "
 	)

@@ -50,7 +50,6 @@ jobs:
         freeglut:x64-windows
         glew:x64-windows
         glm:x64-windows
-        libpng:x64-windows
         physfs:x64-windows
     - name: configure
       run: |
@@ -64,11 +63,11 @@ jobs:
         cd build
         cmake --build . --target ALL_BUILD --config Release
         ls
+        ls build/Release
     - name: package
       run: |
         mkdir build-package
         cp build/Release/* build-package/
-        cp data build-package/
         ls build-package
     - uses: actions/upload-artifact@master
       with:
