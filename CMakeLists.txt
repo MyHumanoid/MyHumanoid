@@ -202,4 +202,16 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 		${CMAKE_CURRENT_SOURCE_DIR}/data
 		${CMAKE_CURRENT_BINARY_DIR}/data
 	)
+else()
+	add_custom_command(TARGET MyHumanoid POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E tar "cfv" MyHumanoid.zip
+		--format=zip "${CMAKE_CURRENT_SOURCE_DIR}/data/*"
+		WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data"
+		COMMENT "Packing data "
+	)
+	add_custom_command(TARGET MyHumanoid POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E rename
+		"${CMAKE_CURRENT_SOURCE_DIR}/data/MyHumanoid.zip"
+		"${CMAKE_CURRENT_BINARY_DIR}/MyHumanoid.data"
+	)
 endif()
