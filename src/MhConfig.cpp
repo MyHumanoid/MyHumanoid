@@ -39,19 +39,17 @@ struct Section {
 
 void LoadConfig()
 {
-	CSimpleIniA ini;
-	ini.SetUnicode(true);
-	ini.SetMultiKey(true);
-	ini.SetMultiLine(true);
-	
-	std::string data;
-	
-	if(!vfs::loadString(fileName, data)) {
+	auto iniData = fs::loadString(fileName);
+	if(!iniData) {
 		log_error("Config data load failed");
 		return;
 	}
 	
-	ini.LoadData(data);
+	CSimpleIniA ini;
+	ini.SetUnicode(true);
+	ini.SetMultiKey(true);
+	ini.SetMultiLine(true);
+	ini.LoadData(iniData.value());
 	
 	auto ok = ini.LoadFile(fileName);
 	if(ok < 0) {
@@ -107,7 +105,7 @@ void SaveConfig()
 	std::string buffer;
 	ini.Save(buffer);
 	
-	vfs::writeString(fileName, buffer);
+	fs::saveString(fileName, buffer);
 	
 //	auto ok = ini.SaveFile(fileName);
 //	if(ok < 0) {

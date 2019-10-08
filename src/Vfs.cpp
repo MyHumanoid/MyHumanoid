@@ -148,5 +148,31 @@ void copyToFilesystem(const std::string & inPath, const std::string outPath) {
 	PHYSFS_close(file);
 }
 
-
 } // namespace vfs
+
+std::optional<std::string> fs::loadString(const std::string & filePath)
+{
+	std::ifstream in(filePath, std::ios::in | std::ios::binary);
+	if(!in) {
+		return std::nullopt;
+	}
+	
+	std::string value;
+	in.seekg(0, std::ios::end);
+	value.resize(in.tellg());
+	in.seekg(0, std::ios::beg);
+	in.read(&value[0], value.size());
+	in.close();
+	return value;
+}
+
+bool fs::saveString(const std::string & filePath, const std::string & value)
+{
+	std::ofstream out(filePath, std::ios::out | std::ios::binary);
+	if(!out) {
+		return false;
+	}
+	
+	out << value;
+	return true;
+}

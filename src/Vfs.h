@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 // TODO remove
 #include "util.h"
@@ -38,3 +39,11 @@ bool writeString(const char * fileName, const std::string & value);
 void copyToFilesystem(const std::string & inPath, const std::string outPath);
 
 } // namespace vfs
+
+
+namespace fs {
+	std::optional<std::string> loadString(const std::string & filePath);
+	
+	bool saveString(const std::string & filePath, const std::string & value);
+}
+
