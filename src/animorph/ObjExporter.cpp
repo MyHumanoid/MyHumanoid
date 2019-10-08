@@ -228,7 +228,7 @@ static void writeMtl(const Mesh & mesh, const string & mtlPath, const string & o
 		
 		{
 			// Diffuse Texture
-			std::string inTexPath = "pixmaps/ui/" + mat.name + "_color.png";
+			std::string inTexPath = "data/pixmaps/ui/" + mat.name + "_color.png";
 			if(vfs::exists(inTexPath)) {
 				std::string foo = removeExtension(objName) + "_"+ mat.name + "_color.png";
 				stream << "map_kd " << foo << std::endl;

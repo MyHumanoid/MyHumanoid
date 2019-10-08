@@ -22,7 +22,7 @@ static IconMap g_poseImageTextures;
 
 void CreatePoseImageTextures()
 {
-	loadTexturesFromDir(g_poseImageTextures, "pixmaps/rotimg");
+	loadTexturesFromDir(g_poseImageTextures, "data/pixmaps/rotimg");
 }
 
 struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {

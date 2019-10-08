@@ -22,7 +22,7 @@ void loadTextures()
 {
 	for(auto & [name, value] : g_mesh.facegroup().m_groups) {
 		
-		std::string fileName = "pixmaps/ui/" + name + "_color.png";
+		std::string fileName = "data/pixmaps/ui/" + name + "_color.png";
 		value.texture        = LoadTextureFromFile(fileName.c_str());
 		if(!value.texture) {
 			log_error("couldn't load base skin_color Texture Data {}_color.png", name);
@@ -43,9 +43,9 @@ void LoadBodyShader(int version)
 	
 	std::optional<mh::Shader> shader;
 	if(version == 1) {
-		shader = LoadShader("shader/body.vert", "shader/body.frag");
+		shader = LoadShader("data/shader/body.vert", "data/shader/body.frag");
 	} else {
-		shader = LoadShader("shader/body_2.vert", "shader/body_2.frag");
+		shader = LoadShader("data/shader/body_2.vert", "data/shader/body_2.frag");
 	}
 	
 	if(shader) {
@@ -58,7 +58,7 @@ void LoadBackgroundShader()
 {
 	log_info("Loading Background Shader");
 	
-	auto shader = LoadShader("shader/background.vert", "shader/background.frag");
+	auto shader = LoadShader("data/shader/background.vert", "data/shader/background.frag");
 	
 	if(shader) {
 		glDeleteProgram(g_backgroundShader->handle);

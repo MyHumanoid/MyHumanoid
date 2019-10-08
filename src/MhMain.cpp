@@ -142,7 +142,7 @@ static IconMap g_charactersIconTextures;
 
 static void CreateCaractersIconTextures()
 {
-	loadTexturesFromDir(g_charactersIconTextures, "pixmaps/bsimg/");
+	loadTexturesFromDir(g_charactersIconTextures, "data/pixmaps/bsimg");
 }
 
 // ================================================================================================

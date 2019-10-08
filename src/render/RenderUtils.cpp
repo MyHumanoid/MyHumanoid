@@ -81,21 +81,22 @@ void loadTexturesFromDir(IconMap & target, const std::string & baseDir)
 {
 	auto dirs = vfs::list(baseDir, true);
 	for(const auto & dir : dirs) {
-		auto files = vfs::list(dir.c_str());
+		auto files = vfs::list(dir);
 		
 		for(const auto & file: files) {
-			auto ret = LoadTextureFromFile(file.c_str());
+			auto ret = LoadTextureFromFile(file);
 			
-			if(ret) {
-				auto foo = file;
-				foo.erase(0, baseDir.length() + 1);
-				std::string foobar = removeExtension(foo);
-	
-				log_debug("Loaded {} as {}", std::string(file), std::string(foobar));
-				target.insert(IconMap::value_type(foobar, ret.value()));
-			} else {
+			if(!ret) {
 				log_error("Failed to load file {}", file);
+				continue;
 			}
+			
+			auto foo = file;
+			foo.erase(0, baseDir.length() + 1);
+			std::string foobar = removeExtension(foo);
+
+			log_debug("Loaded {} as {}", file, foobar);
+			target.insert(IconMap::value_type(foobar, ret.value()));
 		}
 	}
 }

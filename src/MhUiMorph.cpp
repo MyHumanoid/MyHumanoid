@@ -23,7 +23,7 @@ static IconMap g_targetImageTextures;
 
 void CreateTargetImageTextures()
 {
-	loadTexturesFromDir(g_targetImageTextures, "pixmaps/tgimg");
+	loadTexturesFromDir(g_targetImageTextures, "data/pixmaps/tgimg");
 }
 
 
