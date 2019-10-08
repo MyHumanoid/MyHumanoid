@@ -71,10 +71,10 @@ void DisplayCharacterSettings()
 	using glm::vec2;
 
 	struct Textures {
-		OptTex ageGenderBkg = LoadTextureFromFile("pixmaps/ui/age_selector.png");
-		OptTex massBkg      = LoadTextureFromFile("pixmaps/ui/muscle_size_selector.png");
-		OptTex breastBkg    = LoadTextureFromFile("pixmaps/ui/breast_selector.png");
-		OptTex shapeBkg     = LoadTextureFromFile("pixmaps/ui/shape_selector.png");
+		OptTex ageGenderBkg = LoadTextureFromFile("data/pixmaps/ui/age_selector.png");
+		OptTex massBkg      = LoadTextureFromFile("data/pixmaps/ui/muscle_size_selector.png");
+		OptTex breastBkg    = LoadTextureFromFile("data/pixmaps/ui/breast_selector.png");
+		OptTex shapeBkg     = LoadTextureFromFile("data/pixmaps/ui/shape_selector.png");
 	};
 
 	static const Textures tex;

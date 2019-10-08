@@ -30,7 +30,7 @@ void loadTextures()
 		
 		
 		{
-			std::string dir = "data/rib_data/textures_data/";
+			std::string dir = "data/data/rib_data/textures_data/";
 			value.specular  = LoadTextureFromFile(dir + name + "_specular.png");
 			value.bump      = LoadTextureFromFile(dir + name + "_bump.png");
 		}

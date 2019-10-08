@@ -17,11 +17,11 @@ namespace vfs
 
 bool init() {
 	PHYSFS_permitSymbolicLinks(1);
-	PHYSFS_mount("./data", "/", 1);
-	PHYSFS_mount("./", "/", 1);
+	PHYSFS_mount("./data", "/data", 1);
+	//PHYSFS_mount("./", "/", 1);
 	
-	auto ok = PHYSFS_setWriteDir("./");
-	return ok != 0;
+	//auto ok = PHYSFS_setWriteDir("./");
+	return true;//ok != 0;
 }
 
 void deinit() {

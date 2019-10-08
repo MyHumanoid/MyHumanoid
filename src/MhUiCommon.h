@@ -34,7 +34,7 @@ struct Tile {
 	{
 		m_tooltip   = _tip;
 		m_category  = _targ;
-		m_imageBase = "pixmaps/ui/" + img;
+		m_imageBase = "data/pixmaps/ui/" + img;
 		m_tex       = LoadTextureFromFile(m_imageBase + ".png");
 		m_texOver   = LoadTextureFromFile(m_imageBase + "_over.png");
 	}
