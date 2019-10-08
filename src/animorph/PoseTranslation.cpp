@@ -50,7 +50,7 @@ bool PoseTranslation::load(const std::string & filename)
 	if(tmp == NULL) // end of file reached?
 		return false;
 
-	ret = sscanf(tmp, "%f,%f,%f", &originalSize[0], &originalSize[1], &originalSize[2]);
+	ret = sscanf(tmp, "%f,%f,%f", &originalSize.x, &originalSize.y, &originalSize.z);
 
 	if(ret == EOF) // end of file reached?
 		return false;
@@ -163,9 +163,9 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 	int ysize = maxYSet.size();
 	int zsize = maxZSet.size();
 
-	formFactor = glm::vec3((maxX / xsize - minX / xsize) / originalSize[0],
-	                       (maxY / ysize - minY / ysize) / originalSize[1],
-	                       (maxZ / zsize - minZ / zsize) / originalSize[2]);
+	formFactor = glm::vec3((maxX / xsize - minX / xsize) / originalSize.x,
+	                       (maxY / ysize - minY / ysize) / originalSize.y,
+	                       (maxZ / zsize - minZ / zsize) / originalSize.z);
 }
 
 }

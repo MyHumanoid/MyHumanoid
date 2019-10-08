@@ -76,7 +76,7 @@ class PoseTranslation
 {
 private:
 	Target *  target;
-	float     originalSize[3];
+	glm::vec3 originalSize;
 	glm::vec3 formFactor;
 	float     minAngle;
 	float     maxAngle;
