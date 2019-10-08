@@ -47,4 +47,16 @@ struct formatter<glm::ivec2> {
 	}
 };
 
+template <>
+struct formatter<glm::vec3> {
+	template <typename ParseContext>
+	constexpr auto parse(ParseContext & ctx) {
+		return ctx.begin();
+	}
+	
+	template <typename FormatContext>
+	auto format(const glm::vec3 & p, FormatContext & ctx) {
+		return format_to(ctx.out(), "({}, {}, {})", p.x, p.y, p.z);
+	}
+};
 } // namespace fmt
