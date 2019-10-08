@@ -11,7 +11,8 @@ namespace Animorph
 bool VertexVector::load(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 
@@ -60,7 +61,8 @@ int VertexVector::setCoordinates(std::vector<glm::vec3> & vertexvector_orginal)
 bool origVertexVector::load(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 

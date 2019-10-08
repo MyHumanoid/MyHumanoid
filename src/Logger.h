@@ -21,7 +21,7 @@ void log_internal(const char * file, int line, LogLevel level, T &&... p)
 		std::size_t found = s.find("src");
 		std::string foo = s.substr(found + 4);
 		
-		std::cout << fmt::format("{: <30}", fmt::format("{}:{}", foo, line)) <<
+		std::cout << fmt::format("{: <36}", fmt::format("{}:{}", foo, line)) <<
 		    fmt::format(std::forward<T>(p)...) << std::endl;
 	}
 }

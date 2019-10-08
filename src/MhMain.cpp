@@ -936,6 +936,12 @@ static void activeMotion(int x, int y)
 
 int main(int argc, char ** argv)
 {
+	if(argc == 2) {
+		if(argv[1] && argv[1] == std::string("--debug")) {
+			g_logLevel = LogLevel::debug;
+		}
+	}
+	
 	PHYSFS_init(argv[0]);
 	vfs::init();
 	

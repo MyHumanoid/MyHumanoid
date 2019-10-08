@@ -1,12 +1,15 @@
 #include "animorph/Material.h"
 
+#include "Logger.h"
+
 namespace Animorph
 {
 
 bool MaterialVector::loadMaterials(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 

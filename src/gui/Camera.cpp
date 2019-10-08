@@ -344,7 +344,8 @@ bool Autozoom::lazyLoadData(const std::string & filename)
 	// read the file
 
 	Animorph::FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 

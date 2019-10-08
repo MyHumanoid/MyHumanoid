@@ -1,5 +1,7 @@
 #include "animorph/PoseTranslation.h"
+
 #include <cstdio>
+#include "Logger.h"
 
 #define FF_VERTEX_N 10
 
@@ -36,7 +38,9 @@ bool PoseTranslation::load(const std::string & filename)
 	::setlocale(LC_NUMERIC, "C");
 
 	// info file
-	FILE * fd = fopen((filename + ".info").c_str(), "r");
+	std::string infoFileName = filename + ".info";
+	log_debug("Open File: {}", infoFileName);
+	FILE * fd = fopen(infoFileName.c_str(), "r");
 
 	if(fd == NULL)
 		return false;

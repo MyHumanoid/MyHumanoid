@@ -10,7 +10,8 @@ namespace Animorph
 bool BodySettings::load(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 

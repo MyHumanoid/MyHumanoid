@@ -26,7 +26,9 @@ bool PoseSemiTarget::load(const std::string & filename)
 	bool rc  = true; // assume "success" by default
 
 	// info file
-	FILE * fd = fopen((filename + ".info").c_str(), "r");
+	std::string infoFile = filename + ".info";
+	log_debug("Open File: {}", infoFile);
+	FILE * fd = fopen(infoFile.c_str(), "r");
 
 	if(fd == NULL)
 		return false;
@@ -49,7 +51,8 @@ bool PoseSemiTarget::load(const std::string & filename)
 		return false;
 
 	fclose(fd);
-
+	
+	log_debug("Open File: {}", filename);
 	fd = fopen(filename.c_str(), "r");
 
 	if(fd == NULL)

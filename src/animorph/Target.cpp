@@ -18,7 +18,8 @@ void Target::createStream(std::ostringstream & out_stream)
 bool Target::load(const std::string & filename)
 {
 	clear();
-
+	
+	log_debug("Open File: {}", filename);
 	FILE * fd = fopen(filename.c_str(), "r");
 	if(!fd)
 		return false;

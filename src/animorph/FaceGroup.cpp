@@ -1,6 +1,7 @@
 #include "animorph/FaceGroup.h"
 
 #include <string.h>
+#include "Logger.h"
 
 namespace Animorph
 {
@@ -10,7 +11,8 @@ const int MAX_LINE = 350000;
 bool FaceGroup::load(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 
@@ -78,7 +80,8 @@ bool FaceGroup::saveVisibilities(const std::string & filename, std::ios_base::op
 bool FaceGroup::loadVisibilities(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 

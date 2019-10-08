@@ -1,5 +1,7 @@
 #include "animorph/TextureVector.h"
 
+#include "Logger.h"
+
 namespace Animorph
 {
 
@@ -37,7 +39,8 @@ void TextureVector::fromUVStream(FileReader & in_stream)
 bool TextureVector::load(const string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 

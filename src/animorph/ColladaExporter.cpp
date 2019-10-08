@@ -1,6 +1,8 @@
 #include "animorph/ColladaExporter.h"
 #include "animorph/xmlParser.h"
 
+#include "Logger.h"
+
 namespace Animorph
 {
 
@@ -782,6 +784,8 @@ void ColladaExporter::loadBindPoses(const std::string & filename, XMLNode * xNod
                                     int jointCounter)
 {
 	FileReader         file_reader;
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return;
 	
@@ -845,7 +849,8 @@ void ColladaExporter::loadVertexWeights(const std::string & filename, XMLNode * 
 	std::ostringstream out_stream;
 	
 	unsigned int line = 0;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return;
 	
@@ -866,7 +871,8 @@ void ColladaExporter::loadWeightsVector(const std::string & filename, XMLNode * 
 {
 	FileReader         file_reader;
 	std::ostringstream out_stream;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return;
 

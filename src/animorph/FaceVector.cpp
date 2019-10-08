@@ -8,7 +8,8 @@ namespace Animorph
 bool FaceVector::loadGeometry(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 
@@ -20,7 +21,8 @@ bool FaceVector::loadGeometry(const std::string & filename)
 bool FaceVector::loadColors(const std::string & filename)
 {
 	FileReader file_reader;
-
+	
+	log_debug("Open File: {}", filename);
 	if(!file_reader.open(filename))
 		return false;
 
