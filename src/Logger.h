@@ -14,28 +14,23 @@ enum class LogLevel {
 extern LogLevel g_logLevel;
 
 template <typename... T>
-void log_debug(T &&... p)
+void log_internal(const char * file, int line, LogLevel level, T &&... p)
 {
-	if(g_logLevel <= LogLevel::debug) {
-		std::cout << fmt::format(std::forward<T>(p)...) << std::endl;
+	if(g_logLevel <= level) {
+		std::string s = file;
+		std::size_t found = s.find("src");
+		std::string foo = s.substr(found + 4);
+		
+		std::cout << fmt::format("{: <30}", fmt::format("{}:{}", foo, line)) <<
+		    fmt::format(std::forward<T>(p)...) << std::endl;
 	}
 }
 
-template <typename... T>
-void log_info(T &&... p)
-{
-	if(g_logLevel <= LogLevel::info) {
-		std::cout << fmt::format(std::forward<T>(p)...) << std::endl;
-	}
-}
 
-template <typename... T>
-void log_error(T &&... p)
-{
-	if(g_logLevel <= LogLevel::error) {
-		std::cerr << fmt::format(std::forward<T>(p)...) << std::endl;
-	}
-}
+#define log_debug(...) log_internal(__FILE__, __LINE__, LogLevel::debug, __VA_ARGS__)
+#define log_info(...)  log_internal(__FILE__, __LINE__, LogLevel::info, __VA_ARGS__)
+#define log_error(...) log_internal(__FILE__, __LINE__, LogLevel::error, __VA_ARGS__)
+
 
 namespace fmt {
 
