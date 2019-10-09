@@ -17,10 +17,8 @@ PoseRotation::PoseRotation()
 
 bool PoseRotation::load(const std::string & filename)
 {
-	char str[MAX_LINE_BUFFER];
-	char tmp[MAX_LINE_BUFFER];
+	std::string vertexNumber;
 	char ax;
-	// char sign;
 
 	clear();
 
@@ -28,36 +26,34 @@ bool PoseRotation::load(const std::string & filename)
 
 	int  ret = 0;
 	bool rc  = true; // assume "success" by default
-
-	// info file
-	std::string infoFile = filename + ".info";
-	log_debug("Open File: {}", infoFile);
-	FILE * fd = fopen(infoFile.c_str(), "r");
-
-	if(fd == NULL)
-		return false;
-
-	fgets(str, MAX_LINE_BUFFER, fd);
-
-	if(str == NULL) // end of file reached?
-		return false;
-
-	fgets(tmp, MAX_LINE_BUFFER, fd);
-	ret = sscanf(tmp, "%c", &ax);
-
-	if(ret == EOF) // end of file reached?
-		return false;
-
-	fgets(tmp, MAX_LINE_BUFFER, fd);
-	ret = sscanf(tmp, "%f,%f", &minAngle, &maxAngle);
-
-	if(ret == EOF) // end of file reached?
-		return false;
-
-	fclose(fd);
+	
+	{
+		// info file
+		std::string infoFile = filename + ".info";
+		
+		FileReader reader;
+		if(!reader.open(infoFile)) {
+			return false;
+		}
+		
+		if(!reader.getline(vertexNumber)) {
+			return false;
+		}
+		
+		std::string buffer;
+		if(!reader.getline(buffer)) {
+			return false;
+		}
+		sscanf(buffer.c_str(), "%c", &ax);
+		
+		if(!reader.getline(buffer)) {
+			return false;
+		}
+		sscanf(buffer.c_str(), "%f,%f", &minAngle, &maxAngle);
+	}
 	
 	log_debug("Open File: {}", filename);
-	fd = fopen(filename.c_str(), "r");
+	FILE * fd = fopen(filename.c_str(), "r");
 
 	if(fd == NULL)
 		return false;
@@ -90,7 +86,7 @@ bool PoseRotation::load(const std::string & filename)
 
 	fclose(fd);
 
-	string vertexNumber(str);
+	//string vertexNumber(str);
 	stringTokeni(vertexNumber, ", ", centerVertexNumbers);
 
 	switch(ax) {
