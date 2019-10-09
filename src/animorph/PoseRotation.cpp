@@ -24,7 +24,6 @@ bool PoseRotation::load(const std::string & filename)
 
 	PoseRotation & target(*this);
 
-	int  ret = 0;
 	bool rc  = true; // assume "success" by default
 	
 	{
@@ -52,41 +51,30 @@ bool PoseRotation::load(const std::string & filename)
 		sscanf(buffer.c_str(), "%f,%f", &minAngle, &maxAngle);
 	}
 	
-	log_debug("Open File: {}", filename);
-	FILE * fd = fopen(filename.c_str(), "r");
-
-	if(fd == NULL)
-		return false;
-
-	// get the current locale
-	char * locale = ::setlocale(LC_NUMERIC, NULL);
-
-	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
-	::setlocale(LC_NUMERIC, "C");
-
-	for(;;) {
-		PoseTargetData td;
-
-		ret = fscanf(fd, "%d,%f", &td.vertex_number, &td.rotation);
-
-		if(ret == EOF) // end of file reached?
-			break;
-
-		if((ret != 2) && (ret != 0)) {
-			log_error("Illegal line while reading target '{}'!", filename);
-			clear();
-			rc = false; // mark the error
-			break;
+	{
+		FileReader reader;
+		log_debug("Open File: {}", filename);
+		if(!reader.open(filename)) {
+			return false;
 		}
-
-		modVertex.push_back(td.vertex_number);
-
-		target.push_back(td);
+		
+		std::string buffer;
+		while(reader.getline(buffer)) {
+			PoseTargetData td;
+	
+			int ret = sscanf(buffer.c_str(), "%d,%f", &td.vertex_number, &td.rotation);
+	
+			if((ret != 2) && (ret != 0)) {
+				log_error("Illegal line while reading target '{}'!", filename);
+				clear();
+				return false;
+			}
+	
+			modVertex.push_back(td.vertex_number);
+			target.push_back(td);
+		}
 	}
-
-	fclose(fd);
-
-	//string vertexNumber(str);
+	
 	stringTokeni(vertexNumber, ", ", centerVertexNumbers);
 
 	switch(ax) {
@@ -100,10 +88,7 @@ bool PoseRotation::load(const std::string & filename)
 		axis = Z_AXIS;
 		break;
 	}
-
-	// reset locale after file was written
-	::setlocale(LC_NUMERIC, locale);
-
+	
 	return rc;
 }
 
