@@ -17,6 +17,7 @@ namespace vfs
 
 bool init() {
 	PHYSFS_permitSymbolicLinks(1);
+	PHYSFS_mount("./MyHumanoid.data", "/data", 1);
 	PHYSFS_mount("./data", "/data", 1);
 	//PHYSFS_mount("./", "/", 1);
 	
