@@ -31,8 +31,6 @@ set(animorph_sources
 	src/animorph/FileReader.cpp
 	src/animorph/ObjExporter.h
 	src/animorph/ObjExporter.cpp
-	src/animorph/PoseSemiTarget.h
-	src/animorph/PoseSemiTarget.cpp
 	src/animorph/Target.h
 	src/animorph/Target.cpp
 	src/animorph/Vertex.h
