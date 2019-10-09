@@ -25,54 +25,29 @@ PoseTranslation::PoseTranslation()
 
 bool PoseTranslation::load(const std::string & filename)
 {
-	char        tmp[MAX_LINE_BUFFER];
-	vector<int> tmpVector();
-	int         ret = 0;
-
-	bool rc = true; // assume "success" by default
-
-	// get the current locale
-	char * locale = ::setlocale(LC_NUMERIC, NULL);
-
-	// set it to "C"-Style ( the . (dot) means the decimal marker for floats)
-	::setlocale(LC_NUMERIC, "C");
-
-	// info file
 	std::string infoFileName = filename + ".info";
-	log_debug("Open File: {}", infoFileName);
-	FILE * fd = fopen(infoFileName.c_str(), "r");
-
-	if(fd == NULL)
+	
+	FileReader reader;
+	if(!reader.open(infoFileName)) {
 		return false;
-
-	// form factor
-	fgets(tmp, MAX_LINE_BUFFER, fd);
-	if(tmp == NULL) // end of file reached?
+	}
+	
+	std::string buffer;
+	if(!reader.getline(buffer)) {
 		return false;
-
-	ret = sscanf(tmp, "%f,%f,%f", &originalSize.x, &originalSize.y, &originalSize.z);
-
-	if(ret == EOF) // end of file reached?
+	}
+	sscanf(buffer.c_str(), "%f,%f,%f", &originalSize.x, &originalSize.y, &originalSize.z);
+	
+	if(!reader.getline(buffer)) {
 		return false;
-
-	fgets(tmp, MAX_LINE_BUFFER, fd);
-	if(tmp == NULL) // end of file reached?
-		return false;
-
-	ret = sscanf(tmp, "%f,%f", &minAngle, &maxAngle);
-
-	if(ret == EOF) // end of file reached?
-		return false;
-
-	fclose(fd);
-
-	// reset locale after file was written
-	::setlocale(LC_NUMERIC, locale);
-
+	}
+	sscanf(buffer.c_str(), "%f,%f", &minAngle, &maxAngle);
+	
+	
 	if(!target->load(filename))
 		return false;
 
-	return rc;
+	return true;
 }
 
 void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
