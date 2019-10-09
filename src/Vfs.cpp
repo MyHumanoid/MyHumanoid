@@ -95,6 +95,9 @@ bool loadString(const std::string &fileName, std::string & value) {
 		value.resize(fileSize, 0);
 		PHYSFS_sint64 readData = PHYSFS_readBytes(file, value.data(), fileSize);
 		if(fileSize == readData) {
+			if(!PHYSFS_close(file)) {
+				log_error("Failed to close file: {}", fileName);
+			}
 			return true;
 		}
 	}
