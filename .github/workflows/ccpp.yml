@@ -45,6 +45,7 @@ jobs:
       with:
         fetch-depth: 1
     - name: install
+      shell: bash
       run: >
         vcpkg install
         freeglut:x64-windows
@@ -52,6 +53,7 @@ jobs:
         glm:x64-windows
         physfs:x64-windows
     - name: configure
+      shell: bash
       run: |
         cmake --version
         mkdir build
@@ -59,12 +61,14 @@ jobs:
         cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
         ls
     - name: build
+      shell: bash
       run: |
         cd build
         cmake --build . --target ALL_BUILD --config Release
         ls
         ls Release
     - name: package
+      shell: bash
       run: |
         mkdir build-package
         cp build/Release/* build-package/
@@ -75,6 +79,7 @@ jobs:
         name: MyHumanoid-windows
         path: build-package
     - name: Pack Build
+      shell: bash
       run: |
         zip -r MyHumanoid-windows-snapshot.zip build-package
     - name: Create Release
