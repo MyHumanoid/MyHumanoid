@@ -74,18 +74,6 @@ set(animorph_sources
 	src/animorph/VertexVector.cpp
 )
 
-set(gui_sources
-	src/gui/Camera.h
-	src/gui/Camera.cpp
-	src/gui/CGUtilities.h
-	src/gui/CGUtilities.cpp
-	src/gui/GLUTWrapper.h
-	src/gui/Rect.h
-	src/gui/Rect.cpp
-	src/gui/Window.h
-	src/gui/Window.cpp
-)
-
 set(render_sources
 	src/render/DebugGl.h
 	src/render/DebugGl.cpp
@@ -97,6 +85,15 @@ set(render_sources
 )
 
 set(myhumanoid_sources
+	src/gui/Camera.h
+	src/gui/Camera.cpp
+	src/gui/CGUtilities.h
+	src/gui/CGUtilities.cpp
+	src/gui/GLUTWrapper.h
+	src/gui/Rect.h
+	src/gui/Rect.cpp
+	src/gui/Window.h
+	src/gui/Window.cpp
 	src/ComponentID.h
 	src/CompositeMorph.h
 	src/CompositeMorph.cpp
@@ -141,18 +138,16 @@ find_package(GLUT       REQUIRED)
 find_package(glm        REQUIRED)
 find_package(PhysFS 2.1 REQUIRED)
 
+
 add_executable(MyHumanoid
 	${animorph_sources}
-	${gui_sources}
-	${log_sources}
 	${render_sources}
 	${myhumanoid_sources}
 	${shader_sources}
 )
 set_target_properties(MyHumanoid PROPERTIES
 	CXX_STANDARD 17
-#	CXX_EXTENSIONS OFF
-#	INTERPROCEDURAL_OPTIMIZATION TRUE
+	INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE
 )
 target_compile_features(MyHumanoid PRIVATE
 	cxx_std_17
@@ -186,17 +181,8 @@ target_link_libraries(MyHumanoid PRIVATE
 	nativefiledialog
 )
 
-#file(CREATE_LINK
-	#${CMAKE_CURRENT_SOURCE_DIR}/pixmaps
-	#${CMAKE_CURRENT_BINARY_DIR}/pixmaps
-	#SYMBOLIC
-#)
-macro(create_symlink filepath sympath)
-	execute_process(COMMAND "${CMAKE_COMMAND}" -E create_symlink ${filepath} ${sympath})
-endmacro(create_symlink)
-
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-	create_symlink(
+	execute_process(COMMAND "${CMAKE_COMMAND}" -E create_symlink
 		${CMAKE_CURRENT_SOURCE_DIR}/data
 		${CMAKE_CURRENT_BINARY_DIR}/data
 	)
@@ -211,7 +197,7 @@ else()
 	     "${files_str}"
 	)
 	
-	message(${files_str})
+	#message(${files_str})
 	
 	add_custom_command(TARGET MyHumanoid POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E tar "cfv" MyHumanoid.zip
