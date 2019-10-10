@@ -81,7 +81,8 @@ jobs:
     - name: Pack Build
       shell: bash
       run: |
-        zip -r MyHumanoid-windows-snapshot.zip build-package
+        7z a -tzip MyHumanoid-windows-snapshot.zip build-package
+        7z t MyHumanoid-windows-snapshot.zip
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
