@@ -11,7 +11,7 @@
 namespace vfs
 {
 
-bool init();
+void init();
 
 void deinit();
 

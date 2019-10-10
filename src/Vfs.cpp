@@ -15,14 +15,14 @@
 namespace vfs
 {
 
-bool init() {
+void init() {
 	PHYSFS_permitSymbolicLinks(1);
-	PHYSFS_mount("./MyHumanoid.data", "/data", 1);
-	PHYSFS_mount("./data", "/data", 1);
-	//PHYSFS_mount("./", "/", 1);
-	
-	//auto ok = PHYSFS_setWriteDir("./");
-	return true;//ok != 0;
+	if(PHYSFS_mount("./MyHumanoid.data", "/data", 1)) {
+		log_info("Added MyHumanoid.data file");
+	}
+	if(PHYSFS_mount("./data", "/data", 1)) {
+		log_info("Added data directory");
+	}
 }
 
 void deinit() {
