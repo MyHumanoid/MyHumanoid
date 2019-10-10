@@ -11,7 +11,8 @@ jobs:
   build-linux:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v1
+    - name: checkout
+      uses: actions/checkout@v1
       with:
         fetch-depth: 1
     - name: install
@@ -34,14 +35,16 @@ jobs:
       run: |
         cd build
         cmake --build . --target all
-    - uses: actions/upload-artifact@master
+    - name: upload
+      uses: actions/upload-artifact@v1
       with:
         name: MyHumanoid-linux
         path: build
   build-windows:
     runs-on: windows-2019
     steps:
-    - uses: actions/checkout@v1
+    - name: checkout
+      uses: actions/checkout@v1
       with:
         fetch-depth: 1
     - name: install
@@ -74,15 +77,28 @@ jobs:
         cp build/Release/* build-package/
         cp build/MyHumanoid.data build-package/
         ls build-package
-    - uses: actions/upload-artifact@master
+    - name: upload
+      uses: actions/upload-artifact@v1
       with:
         name: MyHumanoid-windows
         path: build-package
+  publish-artifacts:
+    needs: [build-linux, build-windows]
+    runs-on: ubuntu-18.04
+    steps:
+    - name: download linux
+      uses: actions/download-artifact@v1
+      with:
+        name: MyHumanoid-linux
+    - name: download windows
+      uses: actions/download-artifact@v1
+      with:
+        name: MyHumanoid-windows
     - name: Pack Build
       shell: bash
       run: |
-        7z a -tzip MyHumanoid-windows-snapshot.zip build-package
-        7z t MyHumanoid-windows-snapshot.zip
+        7z a -tzip MyHumanoid-linux-snapshot.zip MyHumanoid-linux
+        7z a -tzip MyHumanoid-windows-snapshot.zip MyHumanoid-windows
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
@@ -91,8 +107,18 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Snapshot ${{ github.ref }}
-        draft: true
+        draft: false
         prerelease: true
+    - name: upload linux
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: MyHumanoid-linux-snapshot.zip
+        asset_name: MyHumanoid-linux-snapshot.zip
+        asset_content_type: application/zip
     - name: Upload Release
       id: upload-release-asset
       uses: actions/upload-release-asset@v1.0.0
@@ -100,6 +126,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./MyHumanoid-windows-snapshot.zip
+        asset_path: MyHumanoid-windows-snapshot.zip
         asset_name: MyHumanoid-windows-snapshot.zip
         asset_content_type: application/zip
