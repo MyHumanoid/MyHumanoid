@@ -97,8 +97,14 @@ jobs:
     - name: Pack Build
       shell: bash
       run: |
-        7z a -tzip MyHumanoid-linux-snapshot.zip MyHumanoid-linux
-        7z a -tzip MyHumanoid-windows-snapshot.zip MyHumanoid-windows
+        7za a -tzip MyHumanoid-linux-snapshot.zip MyHumanoid-linux
+        echo "--------------------------------"
+        7za l MyHumanoid-linux-snapshot.zip
+        echo "================================"
+        7za a -tzip MyHumanoid-windows-snapshot.zip MyHumanoid-windows
+        echo "--------------------------------"
+        7za l MyHumanoid-windows-snapshot.zip
+        echo "================================"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
