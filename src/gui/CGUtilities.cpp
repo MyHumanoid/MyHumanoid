@@ -143,62 +143,6 @@ void cgutils::disableOrthographicProjection()
 	}
 }
 
-/*!Draw the XYZ axis.*/
-void cgutils::drawAxis()
-{
-	float wid    = 2.8;
-	char  axis[] = "XYZ";
-
-	if(glIsEnabled(GL_LIGHTING)) {
-		glDisable(GL_LIGHTING);
-	}
-	if(glIsEnabled(GL_DEPTH_TEST)) {
-		glDisable(GL_DEPTH_TEST);
-	}
-
-	glBegin(GL_LINES);
-	glColor3f(0.5, 1, 0.5);
-	glVertex3f(0, 0, -wid);
-	glVertex3f(0, 0, wid);
-	glColor3f(0.5, 0.5, 1);
-	glVertex3f(-wid, 0, 0);
-	glVertex3f(wid, 0, 0);
-	glColor3f(1, 0.5, 0.5);
-	glVertex3f(0, -wid, 0);
-	glVertex3f(0, wid, 0);
-	glEnd();
-	glPushMatrix();
-	glTranslatef(0, wid, 0);
-	glRasterPos2f(0.05, 0.05);
-	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, axis[1]);
-	glRotatef(-90, 1, 0, 0);
-	glutSolidCone(0.03, 0.1, 8, 4);
-	glPopMatrix();
-	glPushMatrix();
-	glColor3f(0.5, 0.5, 1);
-	glTranslatef(wid, 0, 0);
-	glRasterPos2f(0.05, 0.05);
-	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, axis[0]);
-	glRotatef(90, 0, 1, 0);
-	glutSolidCone(0.03, .1, 8, 4);
-	glPopMatrix();
-	glPushMatrix();
-	glColor3f(0.5, 1, .5);
-	glTranslatef(0, 0, wid);
-	glRasterPos2f(0.05, 0.05);
-	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, axis[2]);
-	glRotatef(90, 0, 0, 1);
-	glutSolidCone(0.03, 0.1, 8, 4);
-	glPopMatrix();
-
-	if(!glIsEnabled(GL_LIGHTING)) {
-		glEnable(GL_LIGHTING);
-	}
-	if(!glIsEnabled(GL_DEPTH_TEST)) {
-		glEnable(GL_DEPTH_TEST);
-	}
-}
-
 void cgutils::drawSquareFill(const mhgui::Rect & inRect, const Color & c)
 {
 	float zlayer = 0.0;

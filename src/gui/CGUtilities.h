@@ -54,8 +54,6 @@ namespace cgutils
 void drawGrid(const glm::ivec2 & inSize, const int xMargin, const int yMargin, const Color & c,
               const Color & b, int squareSize);
 
-void drawAxis();
-
 void reshape(const glm::ivec2 & inSize, const mhgui::Camera & inCamera);
 
 void enableOrthographicProjection();

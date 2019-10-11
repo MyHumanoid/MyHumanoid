@@ -729,7 +729,6 @@ static void display()
 	renderMesh();
 
 	if(g_displayAxis) {
-		cgutils::drawAxis();
 	}
 	
 	if(g_global.quotedBox) {
