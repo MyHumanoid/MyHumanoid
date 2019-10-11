@@ -53,10 +53,6 @@ namespace cgutils
 {
 void reshape(const glm::ivec2 & inSize, const mhgui::Camera & inCamera);
 
-void enableOrthographicProjection();
-
-void disableOrthographicProjection();
-
 int initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
                const glm::vec3 & light1Pos, float light0Lum, float light1Lum);
 

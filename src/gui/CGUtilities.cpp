@@ -39,59 +39,6 @@ using Animorph::Color;
 using mhgui::Rect;
 using mhgui::Camera;
 
-/*! Set orthographic projection before drawing the widgets.*/
-void cgutils::enableOrthographicProjection()
-{
-	// Get the actual windows size
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	GLint & w = viewport[2];
-	GLint & h = viewport[3];
-
-	// switch to projection mode
-
-	if(glIsEnabled(GL_LIGHTING)) {
-		glDisable(GL_LIGHTING);
-	}
-	if(glIsEnabled(GL_DEPTH_TEST)) {
-		glDisable(GL_DEPTH_TEST);
-	}
-
-	// glEnable (GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);
-	// save projection matrix
-	glPushMatrix();
-	// reset matrix
-	glLoadIdentity();
-
-	// set a 2D orthographic projection
-	glOrtho(0, w, h, 0, -1, 1);
-
-	glClear(GL_DEPTH_BUFFER_BIT);
-	// invert the y axis, down is positive (GLUT has different Y than openGL)
-	// glScalef (1, -1, 1);
-	// move the origin from the bottom left corner
-	// to the upper left corner (GLUT has different Y than openGL)
-	// glTranslatef (0, -h, 0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-}
-
-/*! Restore the projection after drawed the widget.*/
-void cgutils::disableOrthographicProjection()
-{
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	// glDisable (GL_DEPTH_TEST);
-
-	if(!glIsEnabled(GL_LIGHTING)) {
-		glEnable(GL_LIGHTING);
-	}
-	if(!glIsEnabled(GL_DEPTH_TEST)) {
-		glEnable(GL_DEPTH_TEST);
-	}
-}
-
 void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
 	const GLdouble pi = 3.1415926535897932384626433832795;
