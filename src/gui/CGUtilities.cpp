@@ -113,34 +113,7 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 
 	initDebugGl();
 
-	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_NORMALIZE);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHT1);
-
-	// Light0 features
-	float light_diffuse0[]  = {light0Lum, light0Lum, light0Lum, light0Lum};
-	float light_specular0[] = {1.0, 1.0, 1.0, 1.0};
-
-	// Light1 features
-	float light_diffuse1[]  = {light1Lum, light1Lum, light1Lum, light1Lum};
-	float light_specular1[] = {1.0, 1.0, 1.0, 1.0};
-
-	// Lights positions
-	float light_position0[] = {light0Pos.x, light0Pos.y, light0Pos.z, 0.0};
-	float light_position1[] = {light1Pos.x, light1Pos.y, light1Pos.z, 0.0};
-
-	// Apply lights positions
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
-	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
-
-	// Apply lights features
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse0);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular0);
-
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse1);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
 
 	// Clear the background
 	glClearColor(0, 0, 0, 1);
