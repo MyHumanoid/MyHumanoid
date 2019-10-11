@@ -148,19 +148,6 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	return winID;
 }
 
-void cgutils::drawString3D(const glm::vec3 & pos, FontType font, const string & str,
-                           const Color & c)
-{
-	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glRasterPos3f(pos.x, pos.y, pos.z);
-
-	for(string::const_iterator str_it = str.begin(); str_it != str.end(); str_it++) {
-		char ch = *str_it;
-
-		glutBitmapCharacter(font, ch);
-	}
-}
-
 void cgutils::enableBlend()
 {
 	glEnable(GL_BLEND);

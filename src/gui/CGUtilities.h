@@ -56,8 +56,6 @@ void reshape(const glm::ivec2 & inSize, const mhgui::Camera & inCamera);
 int initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
                const glm::vec3 & light1Pos, float light0Lum, float light1Lum);
 
-void drawString3D(const glm::vec3 & pos, FontType font, const string & str, const Color & c);
-
 void redisplay();
 
 void enableBlend();
