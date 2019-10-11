@@ -57,10 +57,6 @@ void enableOrthographicProjection();
 
 void disableOrthographicProjection();
 
-void drawSquareFill(const Rect & inRect, const Color & c);
-
-void drawSquare(const Rect & inRect, const Color & c);
-
 int initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
                const glm::vec3 & light1Pos, float light0Lum, float light1Lum);
 

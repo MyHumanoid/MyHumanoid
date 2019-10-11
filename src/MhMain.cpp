@@ -738,7 +738,6 @@ static void display()
 	drawBackground();
 
 	if(g_global.drawGrid) {
-		cgutils::drawSquare(Rect(0, 0, 1, 1), border_color);
 	}
 
 	DisplayMainMenu();

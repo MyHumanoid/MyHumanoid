@@ -92,37 +92,6 @@ void cgutils::disableOrthographicProjection()
 	}
 }
 
-void cgutils::drawSquareFill(const mhgui::Rect & inRect, const Color & c)
-{
-	float zlayer = 0.0;
-
-	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);
-	glVertex3f(inRect.pos.x, inRect.pos.y, zlayer);
-	glTexCoord2f(1, 0);
-	glVertex3f(inRect.pos.x + inRect.size.x, inRect.pos.y, zlayer);
-	glTexCoord2f(1, 1);
-	glVertex3f(inRect.pos.x + inRect.size.x, inRect.pos.y + inRect.size.y, zlayer);
-	glTexCoord2f(0, 1);
-	glVertex3f(inRect.pos.x, inRect.pos.y + inRect.size.y, zlayer);
-	glEnd();
-}
-
-void cgutils::drawSquare(const Rect & inRect, const Color & c)
-{
-	float zlayer = 0.0;
-
-	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(inRect.pos.x, inRect.pos.y + 1, zlayer);
-	glVertex3f(inRect.pos.x - 1 + inRect.size.x, inRect.pos.y, zlayer);
-	glVertex3f(inRect.pos.x - 1 + inRect.size.x, inRect.pos.y + inRect.size.y,
-	           zlayer);
-	glVertex3f(inRect.pos.x, inRect.pos.y + inRect.size.y, zlayer);
-	glEnd();
-}
-
 void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
 	const GLdouble pi = 3.1415926535897932384626433832795;
