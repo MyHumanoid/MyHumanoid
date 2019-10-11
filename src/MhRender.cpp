@@ -104,63 +104,6 @@ void drawBackground()
 	glUseProgram(0);
 }
 
-// function which draws an axis aligned wireframe bounding box, given two
-// points.
-void RenderBoundingBox(const float twoxyz[6])
-{
-	float sx, sy, sz, tx, ty, tz; // scale and translate the glutWireCube(1)
-	sx = twoxyz[3] - twoxyz[0];
-	sy = twoxyz[4] - twoxyz[1];
-	sz = twoxyz[5] - twoxyz[2];
-	
-	tx = twoxyz[0] + sx / 2;
-	ty = twoxyz[1] + sy / 2;
-	tz = twoxyz[2] + sz / 2;
-	
-	const Color box_color(0.8f, 0.8f, 0.8f, 0.75f);
-	
-	char strz[100], strx[100], stry[100];
-	// conversions int to char[]. units?(these are not meters! we keep this value
-	// anyway.)
-	snprintf(strz, sizeof(strz), "D = %5.2f", sz * 10);
-	snprintf(strx, sizeof(strx), "W = %5.2f", sx * 10);
-	snprintf(stry, sizeof(stry), "H = %5.2f", sy * 10);
-	
-	cgutils::enableBlend();
-	glEnable(GL_LINE_SMOOTH);
-	glDisable(GL_LIGHTING);
-	
-	// Set the color for the bounding box
-	::glColor4fv(box_color.getAsOpenGLVector());
-	
-	glPushMatrix();
-	glTranslatef(tx, ty, tz);
-	glScalef(sx, sy, sz);
-	glutWireCube(1);
-	glPopMatrix();
-	
-	glPushMatrix();
-	
-	// draws the D quote
-	const glm::vec3 posz(twoxyz[3] + 0.5, twoxyz[4] + 0.5, tz);
-	cgutils::drawString3D(posz, GLUT_BITMAP_9_BY_15, strz, box_color);
-	
-	// draws the W quote
-	const glm::vec3 posx(tx - 0.5, twoxyz[4] + 0.75, twoxyz[5] + 0.5);
-	cgutils::drawString3D(posx, GLUT_BITMAP_9_BY_15, strx, box_color);
-	
-	// draws the H
-	const glm::vec3 posy(twoxyz[3] + 1.5, ty, twoxyz[5] + 0.5);
-	cgutils::drawString3D(posy, GLUT_BITMAP_9_BY_15, stry, box_color);
-	
-	glPopMatrix();
-	glFlush();
-	
-	glEnable(GL_LIGHTING);
-	glDisable(GL_LINE_SMOOTH);
-	glDisable(GL_BLEND);
-}
-
 void renderMesh()
 {
 	using Animorph::MaterialVector;
