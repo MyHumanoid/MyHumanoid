@@ -738,8 +738,6 @@ static void display()
 	drawBackground();
 
 	if(g_global.drawGrid) {
-		cgutils::drawGrid(mhgui::g_mainWindow->getSize(), 220, 70, grid_color, border_color, 50);
-	} else {
 		cgutils::drawSquare(Rect(0, 0, 1, 1), border_color);
 	}
 

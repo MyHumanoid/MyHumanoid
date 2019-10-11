@@ -39,57 +39,6 @@ using Animorph::Color;
 using mhgui::Rect;
 using mhgui::Camera;
 
-/*! Draw a grid on XY plane.*/
-void cgutils::drawGrid(const glm::ivec2 & inSize, const int xMargin, const int yMargin, const Color & c,
-                       const Color & b, int squareSize)
-{
-	int i;
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, inSize.x, 0, inSize.y, -20.0, 20.0);
-	glScalef(1, -1, 1);
-	glTranslatef(0, -inSize.y, 0.0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	enableBlend();
-
-	glTranslatef(0, 0, -0.1);
-	glColor4f(c.red(), c.green(), c.blue(), c.alpha());
-	glBegin(GL_LINES);
-
-	for(i = squareSize + xMargin; i < inSize.x - xMargin; i += squareSize) {
-		glVertex3f(i, yMargin, 0.0);
-		glVertex3f(i, inSize.y - yMargin, 0.0);
-	}
-
-	for(i = squareSize + yMargin; i < inSize.y - yMargin; i += squareSize) {
-		glVertex3f(xMargin, i, 0.0);
-		glVertex3f(inSize.x - xMargin, i, 0.0);
-	}
-
-	glEnd();
-
-	drawSquareFill(Rect(xMargin, yMargin, 10, 10), b);
-	drawSquareFill(
-	        Rect(inSize.x - xMargin - 10, inSize.y - yMargin - 10, 10, 10),
-	        b);
-
-	drawSquareFill(Rect(xMargin, inSize.y - yMargin - 40, 3, 40), b);
-	drawSquareFill(Rect(xMargin, inSize.y - yMargin, 40, 3), b);
-
-	drawSquareFill(Rect(inSize.x - xMargin, yMargin, 3, 40), b);
-	drawSquareFill(Rect(inSize.x - xMargin - 40, yMargin, 40, 3), b);
-
-	glDisable(GL_BLEND);
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-}
-
 /*! Set orthographic projection before drawing the widgets.*/
 void cgutils::enableOrthographicProjection()
 {
