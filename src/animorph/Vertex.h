@@ -44,27 +44,13 @@ public:
 	/// vertex coordinate
 	glm::vec3 pos;
 
-	/// vertex normal
-	glm::vec3 no;
-
-	// vertex color
-	// Color color;
-
 	Vertex()
 	        : pos(0.f)
-	        , no(0.f)
 	{
 	}
 
-	/// construct Vertex with coordinates
-	/*!
-	 * \param x the x component to the vertex coordinate
-	 * \param y the y component to the vertex coordinate
-	 * \param z the z component to the vertex coordinate
-	 */
 	Vertex(float x, float y, float z)
 	        : pos(x, y, z)
-	        , no(0.f)
 	{
 	}
 };

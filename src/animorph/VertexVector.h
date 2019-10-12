@@ -51,6 +51,7 @@ private:
 
 public:
 	std::vector<Vertex> m_verts;
+	std::vector<glm::vec3> m_normals;
 	
 	bool load(const std::string & filename);
 

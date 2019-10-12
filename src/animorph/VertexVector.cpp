@@ -17,7 +17,9 @@ bool VertexVector::load(const std::string & filename)
 		return false;
 
 	fromStream(file_reader);
-
+	
+	m_normals.resize(m_verts.size());
+	
 	return true;
 }
 

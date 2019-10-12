@@ -318,14 +318,14 @@ void Mesh::calcVertexNormals()
 	
 	for(unsigned int i = 0; i < m_vert_morph.m_verts.size(); i++) {
 		const VertexMeta & vMeta = m_vert_meta[i];
-		Vertex & vertex = m_vert_morph.m_verts[i];
+		glm::vec3 & normal = m_vert_morph.m_normals[i];
 
 		const auto & faces = vMeta.getSharedFaces();
 		for(unsigned int j = 0; j < faces.size(); j++) {
-			vertex.no += m_faces.at(faces[j]).no;
+			normal += m_faces.at(faces[j]).no;
 		}
 
-		vertex.no = glm::normalize(vertex.no);
+		normal = glm::normalize(normal);
 	}
 }
 

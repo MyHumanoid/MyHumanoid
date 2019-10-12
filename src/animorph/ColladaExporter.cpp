@@ -224,9 +224,9 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	xNode_float_array.addAttribute("id", (temp2 + "-array").c_str());
 
 	for(unsigned int i = 0; i < vertexvector.m_verts.size(); i++) {
-		const Vertex & vertex = vertexvector.m_verts[i];
+		const glm::vec3 & normal = vertexvector.m_normals[i];
 
-		glm::vec3 vector = vertex.no * tm;
+		glm::vec3 vector = normal * tm;
 
 		normals_stream << vector.x << " " << vector.y << " " << vector.z << " ";
 		normals_stream << vector.x << " " << vector.y << " " << vector.z << " ";
