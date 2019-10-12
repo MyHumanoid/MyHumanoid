@@ -58,37 +58,4 @@ int VertexVector::setCoordinates(std::vector<glm::vec3> & vertexvector_orginal)
 	return 0;
 }
 
-bool origVertexVector::load(const std::string & filename)
-{
-	FileReader file_reader;
-	
-	log_debug("Open File: {}", filename);
-	if(!file_reader.open(filename))
-		return false;
-
-	fromStream(file_reader);
-
-	return true;
-}
-
-void origVertexVector::fromStream(FileReader & in_stream)
-{
-	std::string buffer;
-	std::string buffer1;
-
-	clear();
-
-	while(in_stream.getline(buffer) &&
-	      in_stream.getline(buffer1)) {
-		std::vector<int> i_faceVerts;
-
-		stringTokeni(buffer, ",", i_faceVerts);
-
-		std::vector<int> i_edgeVerts;
-
-		stringTokeni(buffer1, ",", i_edgeVerts);
-		push_back(origVertex(i_faceVerts, i_edgeVerts));
-	}
-}
-
 }

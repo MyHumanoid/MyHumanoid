@@ -55,13 +55,4 @@ public:
 	int setCoordinates(std::vector<glm::vec3> & vertexvector);
 };
 
-class origVertexVector : public std::vector<origVertex>
-{
-private:
-	void fromStream(FileReader & in_stream);
-
-public:
-	bool load(const std::string & filename);
-};
-
 } // namespace Animorph
