@@ -84,24 +84,4 @@ public:
 	const std::vector<int> & getSharedFaces() const;
 };
 
-class origVertex : public Vertex
-{
-private:
-	/// Vertices from which this one is generated
-	int              valence, fvalence;
-	std::vector<int> faceVerts;
-	std::vector<int> edgeVerts;
-
-public:
-	/// construct origVertex
-	origVertex(std::vector<int> & i_faceVerts, std::vector<int> & i_edgeVerts);
-
-	int getFaceVertexAtIndex(int inIndex) const { return faceVerts[inIndex]; }
-
-	int getEdgeVertexAtIndex(int inIndex) const { return edgeVerts[inIndex]; }
-
-	int getValence() { return valence; }
-	int getFValence() { return fvalence; }
-};
-
 } // namespace Animorph
