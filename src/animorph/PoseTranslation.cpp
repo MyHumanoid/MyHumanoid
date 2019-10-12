@@ -73,41 +73,41 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 	    target_it++) {
 		const TargetData & td(*target_it);
 		if(counter < n_vertex) {
-			minXSet.insert(vertexvector[td.vertex_number].pos.x);
-			maxXSet.insert(vertexvector[td.vertex_number].pos.x);
+			minXSet.insert(vertexvector.m_verts[td.vertex_number].pos.x);
+			maxXSet.insert(vertexvector.m_verts[td.vertex_number].pos.x);
 
-			minYSet.insert(vertexvector[td.vertex_number].pos.y);
-			maxYSet.insert(vertexvector[td.vertex_number].pos.y);
+			minYSet.insert(vertexvector.m_verts[td.vertex_number].pos.y);
+			maxYSet.insert(vertexvector.m_verts[td.vertex_number].pos.y);
 
-			minZSet.insert(vertexvector[td.vertex_number].pos.z);
-			maxZSet.insert(vertexvector[td.vertex_number].pos.z);
+			minZSet.insert(vertexvector.m_verts[td.vertex_number].pos.z);
+			maxZSet.insert(vertexvector.m_verts[td.vertex_number].pos.z);
 
 			counter++;
 		} else {
-			if(vertexvector[td.vertex_number].pos.x < *(--minXSet.end())) {
-				minXSet.insert(vertexvector[td.vertex_number].pos.x);
+			if(vertexvector.m_verts[td.vertex_number].pos.x < *(--minXSet.end())) {
+				minXSet.insert(vertexvector.m_verts[td.vertex_number].pos.x);
 				minXSet.erase(--(minXSet.end()));
 			}
-			if(vertexvector[td.vertex_number].pos.x > *(maxXSet.begin())) {
-				maxXSet.insert(vertexvector[td.vertex_number].pos.x);
+			if(vertexvector.m_verts[td.vertex_number].pos.x > *(maxXSet.begin())) {
+				maxXSet.insert(vertexvector.m_verts[td.vertex_number].pos.x);
 				maxXSet.erase(maxXSet.begin());
 			}
 
-			if(vertexvector[td.vertex_number].pos.y < *(--minYSet.end())) {
-				minYSet.insert(vertexvector[td.vertex_number].pos.y);
+			if(vertexvector.m_verts[td.vertex_number].pos.y < *(--minYSet.end())) {
+				minYSet.insert(vertexvector.m_verts[td.vertex_number].pos.y);
 				minYSet.erase(--(minYSet.end()));
 			}
-			if(vertexvector[td.vertex_number].pos.y > *(maxYSet.begin())) {
-				maxYSet.insert(vertexvector[td.vertex_number].pos.y);
+			if(vertexvector.m_verts[td.vertex_number].pos.y > *(maxYSet.begin())) {
+				maxYSet.insert(vertexvector.m_verts[td.vertex_number].pos.y);
 				maxYSet.erase(maxYSet.begin());
 			}
 
-			if(vertexvector[td.vertex_number].pos.z < *(--minZSet.end())) {
-				minZSet.insert(vertexvector[td.vertex_number].pos.z);
+			if(vertexvector.m_verts[td.vertex_number].pos.z < *(--minZSet.end())) {
+				minZSet.insert(vertexvector.m_verts[td.vertex_number].pos.z);
 				minZSet.erase(--(minZSet.end()));
 			}
-			if(vertexvector[td.vertex_number].pos.z > *(maxZSet.begin())) {
-				maxZSet.insert(vertexvector[td.vertex_number].pos.z);
+			if(vertexvector.m_verts[td.vertex_number].pos.z > *(maxZSet.begin())) {
+				maxZSet.insert(vertexvector.m_verts[td.vertex_number].pos.z);
 				maxZSet.erase(maxZSet.begin());
 			}
 		}

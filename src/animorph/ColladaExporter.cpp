@@ -175,13 +175,13 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	xNode_float_array = xNode_source_position.addChild("float_array");
 
 	std::ostringstream float_array_stream;
-	float_array_stream << vertexvector.size() * 3;
+	float_array_stream << vertexvector.m_verts.size() * 3;
 
 	xNode_float_array.addAttribute("count", float_array_stream.str().c_str());
 	xNode_float_array.addAttribute("id", (temp2 + "-array").c_str());
 
-	for(unsigned int i = 0; i < vertexvector.size(); i++) {
-		const Vertex & vertex = vertexvector[i];
+	for(unsigned int i = 0; i < vertexvector.m_verts.size(); i++) {
+		const Vertex & vertex = vertexvector.m_verts[i];
 
 		glm::vec3 vector = vertex.pos * tm;
 
@@ -193,7 +193,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	xNode_accessor         = xNode_technique_common.addChild("accessor");
 
 	std::ostringstream accessor_count_stream;
-	accessor_count_stream << vertexvector.size();
+	accessor_count_stream << vertexvector.m_verts.size();
 	xNode_accessor.addAttribute("count", accessor_count_stream.str().c_str());
 	xNode_accessor.addAttribute("source", ("#" + temp2 + "-array").c_str());
 	xNode_accessor.addAttribute("stride", "3");
@@ -218,13 +218,13 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	xNode_float_array = xNode_source_normals.addChild("float_array");
 
 	std::ostringstream float_array_normals_stream;
-	float_array_normals_stream << vertexvector.size() * 3;
+	float_array_normals_stream << vertexvector.m_verts.size() * 3;
 
 	xNode_float_array.addAttribute("count", float_array_normals_stream.str().c_str());
 	xNode_float_array.addAttribute("id", (temp2 + "-array").c_str());
 
-	for(unsigned int i = 0; i < vertexvector.size(); i++) {
-		const Vertex & vertex = vertexvector[i];
+	for(unsigned int i = 0; i < vertexvector.m_verts.size(); i++) {
+		const Vertex & vertex = vertexvector.m_verts[i];
 
 		glm::vec3 vector = vertex.no * tm;
 
@@ -662,7 +662,7 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	xNode_vertex_weights = xNode_skin.addChild("vertex_weights");
 
 	out_stream.str("");
-	out_stream << vertexvector.size();
+	out_stream << vertexvector.m_verts.size();
 	xNode_vertex_weights.addAttribute("count", out_stream.str().c_str());
 	xNode_input1 = xNode_vertex_weights.addChild("input");
 	xNode_input1.addAttribute("semantic", "JOINT");
@@ -676,7 +676,7 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 
 	xNode_vcount = xNode_vertex_weights.addChild("vcount");
 	out_stream.str("");
-	for(unsigned int i = 0; i < vertexvector.size(); i++) {
+	for(unsigned int i = 0; i < vertexvector.m_verts.size(); i++) {
 		out_stream << jointcounter << " ";
 	}
 	xNode_vcount.addText(out_stream.str().c_str());
@@ -863,7 +863,7 @@ void ColladaExporter::loadVertexWeights(const std::string & filename, XMLNode * 
 		line++;
 	}
 
-	if(line != vertexvector.size()) {
+	if(line != vertexvector.m_verts.size()) {
 		line++;
 	}
 }

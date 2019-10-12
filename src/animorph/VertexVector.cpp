@@ -27,13 +27,13 @@ void VertexVector::fromStream(FileReader & in_stream)
 	float x, y, z;
 	x = y = z = 0.0;
 
-	clear();
+	m_verts.clear();
 
 	while(in_stream.getline(buffer)) {
 		if(sscanf(buffer.c_str(), "%f,%f,%f\n", &x, &y, &z) == 3) {
 			Vertex vertex(x, y, z);
 
-			push_back(vertex);
+			m_verts.push_back(vertex);
 		} else {
 			log_error("illegal line in vertex data file: {}", buffer);
 		}
@@ -45,11 +45,11 @@ int VertexVector::setCoordinates(std::vector<glm::vec3> & vertexvector_orginal)
 	VertexVector & vertexvector_morph = (*this);
 
 	// false number of vertices!
-	if(vertexvector_orginal.size() != size())
+	if(vertexvector_orginal.size() != m_verts.size())
 		return -1;
 
-	for(unsigned int i = 0; i < size(); i++) {
-		Vertex &    vertex_morph   = vertexvector_morph[i];
+	for(unsigned int i = 0; i < m_verts.size(); i++) {
+		Vertex &    vertex_morph   = vertexvector_morph.m_verts[i];
 		glm::vec3 & vertex_orginal = vertexvector_orginal[i];
 
 		vertex_morph.pos = vertex_orginal;

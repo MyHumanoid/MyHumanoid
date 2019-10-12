@@ -44,12 +44,14 @@ The format of Vertices file:
 ...
 \endverbatim
 */
-class VertexVector : public std::vector<Vertex>
+class VertexVector
 {
 private:
 	void fromStream(FileReader &in_stream);
 
 public:
+	std::vector<Vertex> m_verts;
+	
 	bool load(const std::string & filename);
 
 	int setCoordinates(std::vector<glm::vec3> & vertexvector);

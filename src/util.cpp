@@ -123,7 +123,7 @@ void CreateWeightsFile()
 	int  actual_weight[Animorph::SK_JOINT_END];
 
 	const VertexVector & vertexvector(g_mesh.getVertexVectorMorphOnlyRef());
-	unsigned int         size_vx = vertexvector.size();
+	unsigned int         size_vx = vertexvector.m_verts.size();
 
 	int *                symm_vertex = new int[size_vx];
 	std::ostringstream * out_stream  = (std::ostringstream *)new std::ostringstream[size_vx];

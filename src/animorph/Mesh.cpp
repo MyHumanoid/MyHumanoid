@@ -295,7 +295,7 @@ void Mesh::calcSharedVertices()
 		m_vert_meta.clear();
 	}
 	
-	m_vert_meta.resize(m_vert_morph.size());
+	m_vert_meta.resize(m_vert_morph.m_verts.size());
 	
 	for(unsigned int i = 0; i < m_faces.size(); i++) {
 		int vertex_number;
@@ -314,11 +314,11 @@ void Mesh::calcSharedVertices()
 
 void Mesh::calcVertexNormals()
 {
-	assert(m_vert_morph.size() == m_vert_meta.size());
+	assert(m_vert_morph.m_verts.size() == m_vert_meta.size());
 	
-	for(unsigned int i = 0; i < m_vert_morph.size(); i++) {
+	for(unsigned int i = 0; i < m_vert_morph.m_verts.size(); i++) {
 		const VertexMeta & vMeta = m_vert_meta[i];
-		Vertex & vertex = m_vert_morph[i];
+		Vertex & vertex = m_vert_morph.m_verts[i];
 
 		const auto & faces = vMeta.getSharedFaces();
 		for(unsigned int j = 0; j < faces.size(); j++) {
@@ -334,9 +334,9 @@ void Mesh::calcFaceNormals()
 	for(unsigned int i = 0; i < m_faces.size(); i++) {
 		Face & face = m_faces[i];
 		if(face.getSize() >= 3) {
-			const Vertex & vertex1(m_vert_morph[face.getVertexAtIndex(0)]);
-			const Vertex & vertex2(m_vert_morph[face.getVertexAtIndex(1)]);
-			const Vertex & vertex3(m_vert_morph[face.getVertexAtIndex(2)]);
+			const Vertex & vertex1(m_vert_morph.m_verts[face.getVertexAtIndex(0)]);
+			const Vertex & vertex2(m_vert_morph.m_verts[face.getVertexAtIndex(1)]);
+			const Vertex & vertex3(m_vert_morph.m_verts[face.getVertexAtIndex(2)]);
 
 			const glm::vec3 v1_tmp(vertex2.pos - vertex1.pos);
 			const glm::vec3 v2_tmp(vertex3.pos - vertex1.pos);
@@ -386,8 +386,8 @@ bool Mesh::loadMesh(const string & meshFile, const string & faceFile)
 
 	// create initial copy for original mesh
 	m_vert_orginal.clear();
-	for(unsigned int i = 0; i < m_vert_morph.size(); i++) {
-		const Vertex & vertex_morph(m_vert_morph[i]);
+	for(unsigned int i = 0; i < m_vert_morph.m_verts.size(); i++) {
+		const Vertex & vertex_morph(m_vert_morph.m_verts[i]);
 		m_vert_orginal.push_back(vertex_morph.pos);
 	}
 
@@ -547,9 +547,9 @@ bool Mesh::setMorphTarget(const string & target_name, float morph_value)
 	for(const TargetData & td : *target) {
 		// vertexvector_morph[td.vertex_number].co += (td.morph_vector -
 		// vertexvector_orginal[td.vertex_number]) * real_morph_value;
-		m_vert_morph[td.vertex_number].pos += td.morph_vector * real_morph_value;
+		m_vert_morph.m_verts[td.vertex_number].pos += td.morph_vector * real_morph_value;
 
-		m_vert_morph_only[td.vertex_number].pos += td.morph_vector * real_morph_value;
+		m_vert_morph_only.m_verts[td.vertex_number].pos += td.morph_vector * real_morph_value;
 	}
 
 	if(morph_value == 0.0) {
@@ -664,8 +664,8 @@ void Mesh::doPoseRotation(const PoseRotation & pr, float morph_value, const Used
 		theta = real_value * td.rotation;
 		rotMatrix.setRotation(theta * M_PI_180, axis);
 
-		m_vert_morph[td.vertex_number].pos =
-		        ((m_vert_morph[td.vertex_number].pos - pr.getCenter()) * rotMatrix) +
+		m_vert_morph.m_verts[td.vertex_number].pos =
+		        ((m_vert_morph.m_verts[td.vertex_number].pos - pr.getCenter()) * rotMatrix) +
 		        pr.getCenter();
 	}
 }
@@ -702,7 +702,7 @@ void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value,
 		// vertexvector_morph[td.vertex_number].co) * (morph_value * formFactor);
 		// vertexvector_morph[td.vertex_number].co += (td.morph_vector * formFactor)
 		// * real_value;
-		m_vert_morph[td.vertex_number].pos += glm::vec3(formFactor.x * td.morph_vector.x,
+		m_vert_morph.m_verts[td.vertex_number].pos += glm::vec3(formFactor.x * td.morph_vector.x,
 		                                               formFactor.y * td.morph_vector.y,
 		                                               formFactor.z * td.morph_vector.z) *
 		                                     real_value;
@@ -768,8 +768,8 @@ void Mesh::applySmooth(const int recursive_level)
 
 			glm::vec3 centeroid(calcCenteroid(
 			        vector<int>(smoothData_it++, smooth.end()), m_vert_morph));
-			m_vert_morph[vToMove].pos = (centeroid + m_vert_morph[vToMove].pos);
-			m_vert_morph[vToMove].pos /= 2;
+			m_vert_morph.m_verts[vToMove].pos = (centeroid + m_vert_morph.m_verts[vToMove].pos);
+			m_vert_morph.m_verts[vToMove].pos /= 2;
 		}
 	}
 }

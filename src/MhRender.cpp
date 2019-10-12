@@ -180,7 +180,7 @@ void renderMesh()
 			}
 			
 			for(size_t j = 0; j != face.getSize(); ++j) {
-				const Vertex & vertex = vertexvector[face.vertices[j]];
+				const Vertex & vertex = vertexvector.m_verts[face.vertices[j]];
 				const glm::vec2 & uv = texture_face[j];
 				
 				::glNormal3fv(glm::value_ptr(vertex.no));

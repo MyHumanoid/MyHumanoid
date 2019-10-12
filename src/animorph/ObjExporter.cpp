@@ -106,7 +106,7 @@ static void createOBJStream(Mesh & mesh,
 
 		for(VertexData::const_iterator vertexgroup_it = vertexgroupdata.begin();
 		    vertexgroup_it != vertexgroupdata.end(); vertexgroup_it++) {
-			const Vertex & vertex(vertexvector[(*vertexgroup_it).first]);
+			const Vertex & vertex(vertexvector.m_verts[(*vertexgroup_it).first]);
 			glm::vec3      v(vertex.pos * tm);
 			
 			obj.vertex(v);
