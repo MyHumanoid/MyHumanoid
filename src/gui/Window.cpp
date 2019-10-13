@@ -49,11 +49,7 @@ Window * g_mainWindow;
 // Constructor
 Window::Window(const Rect & rect, const string & t)
         : geometry(rect)
-        , title(t)                    //!< The window title bar
-        , light0Lum(+1.0)             //!< light 0 luminosity
-        , light1Lum(+1.0)             //!< light 1 luminosity
-        , light0Pos(+1.0, +1.0, +1.0) //!< light 0 position
-        , light1Pos(-1.0, +1.0, +1.0) //!< light 1 position
+        , title(t)
         , inCamera(NULL)
         , mWindowId(0)
 {
@@ -75,14 +71,11 @@ void Window::setSize(const glm::ivec2 & inSize)
 	geometry.resizeTo(inSize);
 }
 
-// Init window with some classic openGL commands
 void Window::initWindow()
 {
-	mWindowId = cgutils::initWindow(getRect(), title.c_str(), light0Pos, light1Pos, light0Lum,
-	                                light1Lum);
+	mWindowId = cgutils::initWindow(getRect(), title.c_str());
 }
 
-// Glut call back functions
 void Window::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 {
 	cgutils::reshape(inSize, inCamera);

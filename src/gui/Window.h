@@ -46,14 +46,8 @@ class Panel;
 /// Object oriented interface to a GLUT window
 class Window
 {
-	Rect               geometry;
-	
-	string    title;
-	float     light0Lum;
-	float     light1Lum;
-	glm::vec3 light0Pos;
-	glm::vec3 light1Pos;
-
+	Rect     geometry;
+	string   title;
 	Camera * inCamera;
 	int      mWindowId; ///< The GLUT Window ID;
 

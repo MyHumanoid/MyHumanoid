@@ -86,8 +86,7 @@ void cgutils::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 }
 
 // Init window with some classic openGL commands
-int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 & light0Pos,
-                        const glm::vec3 & light1Pos, float light0Lum, float light1Lum)
+int cgutils::initWindow(const Rect & rect, const char * title)
 {
 
 	glutInitContextVersion(4, 2);
@@ -97,29 +96,24 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	glutInitWindowSize(rect.size.x, rect.size.y);
 	glutInitWindowPosition(rect.pos.x, rect.pos.y);
 	int winID = glutCreateWindow(title);
-
-	glewInit();
-
-	{
-		log_info("GL   version: {}", glGetString(GL_VERSION));
-		log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
-		log_info("GLEW Version: {}.{}.{}",
-		         GLEW_VERSION_MAJOR,
-		         GLEW_VERSION_MINOR,
-		         GLEW_VERSION_MICRO);
-
-		glewExperimental = true;
-		GLenum err       = glewInit();
-		if(err != GLEW_OK) {
-			log_error("GLEW error: {}", glewGetErrorString(err));
-		}
+	
+	glewExperimental = true;
+	GLenum err       = glewInit();
+	if(err != GLEW_OK) {
+		log_error("GLEW error: {}", glewGetErrorString(err));
 	}
+
+	log_info("GL   version: {}", glGetString(GL_VERSION));
+	log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	log_info("GLEW Version: {}.{}.{}",
+			 GLEW_VERSION_MAJOR,
+			 GLEW_VERSION_MINOR,
+			 GLEW_VERSION_MICRO);
 
 	initDebugGl();
 
 	glEnable(GL_DEPTH_TEST);
 
-	// Clear the background
 	glClearColor(0, 0, 0, 1);
 
 	return winID;
