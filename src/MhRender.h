@@ -1,6 +1,9 @@
 #pragma once
 
+#include <optional>
+
 #include "GlInclude.h"
+#include "render/GlTypes.h"
 
 struct RenderBackground {
 	
@@ -14,11 +17,13 @@ struct RenderBackground {
 
 extern RenderBackground g_renderBackground;
 
+struct RenderBody {
+	std::optional<mh::Shader> m_shader;
+	
+	void init();
+	void loadShader(int version);
+	void loadTexture();
+	void render();
+};
 
-void loadTextures();
-
-void LoadBodyShader(int version);
-
-void RenderBoundingBox(const float twoxyz[6]);
-
-void renderMesh();
+extern RenderBody g_renderBody;

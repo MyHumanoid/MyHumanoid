@@ -688,8 +688,8 @@ static void display()
 
 	g_global.camera->applyMatrix();
 	
-	renderMesh();
-
+	g_renderBody.render();
+	
 	if(g_displayAxis) {
 	}
 	
@@ -716,7 +716,7 @@ static void display()
 	if(g_requestShaderReload) {
 		g_requestShaderReload = false;
 		
-		LoadBodyShader(g_requestShaderVersion);
+		g_renderBody.loadShader(g_requestShaderVersion);
 	}
 	if(g_requestBackgroundShaderReload) {
 		g_requestBackgroundShaderReload = false;
@@ -918,7 +918,7 @@ int main(int argc, char ** argv)
 	
 	mhgui::g_mainWindow->initWindow();
 	
-	LoadBodyShader(0);
+	g_renderBody.init();
 	g_renderBackground.init();
 	
 	bool mesh_loaded = g_mesh.loadMesh("base.vertices", "base.faces");
@@ -948,7 +948,7 @@ int main(int argc, char ** argv)
 	CreatePoseImageTextures();
 	CreateCaractersIconTextures();
 
-	loadTextures();
+	g_renderBody.loadTexture();
 	g_global.m_enableTexture = true;
 
 	g_mesh.loadTargets(searchDataDir("targets"));

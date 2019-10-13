@@ -14,45 +14,7 @@
 #include "Global.h"
 
 
-std::optional<mh::Shader> g_bodyShader;
 std::optional<mh::Shader> g_backgroundShader;
-
-
-void loadTextures()
-{
-	for(auto & [name, value] : g_mesh.facegroup().m_groups) {
-		
-		std::string fileName = "data/pixmaps/ui/" + name + "_color.png";
-		value.texture        = LoadTextureFromFile(fileName.c_str());
-		if(!value.texture) {
-			log_error("couldn't load base skin_color Texture Data {}_color.png", name);
-		}
-		
-		
-		{
-			std::string dir = "data/data/rib_data/textures_data/";
-			value.specular  = LoadTextureFromFile(dir + name + "_specular.png");
-			value.bump      = LoadTextureFromFile(dir + name + "_bump.png");
-		}
-	}
-}
-
-void LoadBodyShader(int version)
-{
-	log_info("Loading Shader set {}", version);
-	
-	std::optional<mh::Shader> shader;
-	if(version == 1) {
-		shader = LoadShader("data/shader/body.vert", "data/shader/body.frag");
-	} else {
-		shader = LoadShader("data/shader/body_2.vert", "data/shader/body_2.frag");
-	}
-	
-	if(shader) {
-		glDeleteProgram(g_bodyShader->handle);
-		g_bodyShader = shader.value();
-	}
-}
 
 RenderBackground g_renderBackground;
 
@@ -110,7 +72,50 @@ void RenderBackground::render()
 	glUseProgram(0);
 }
 
-void renderMesh()
+RenderBody g_renderBody;
+
+void RenderBody::init()
+{
+	loadShader(0);
+}
+
+void RenderBody::loadShader(int version)
+{
+	log_info("Loading Shader set {}", version);
+	
+	std::optional<mh::Shader> shader;
+	if(version == 1) {
+		shader = LoadShader("data/shader/body.vert", "data/shader/body.frag");
+	} else {
+		shader = LoadShader("data/shader/body_2.vert", "data/shader/body_2.frag");
+	}
+	
+	if(shader) {
+		glDeleteProgram(m_shader->handle);
+		m_shader = shader.value();
+	}
+}
+
+void RenderBody::loadTexture()
+{
+	for(auto & [name, value] : g_mesh.facegroup().m_groups) {
+		
+		std::string fileName = "data/pixmaps/ui/" + name + "_color.png";
+		value.texture        = LoadTextureFromFile(fileName.c_str());
+		if(!value.texture) {
+			log_error("couldn't load base skin_color Texture Data {}_color.png", name);
+		}
+		
+		
+		{
+			std::string dir = "data/data/rib_data/textures_data/";
+			value.specular  = LoadTextureFromFile(dir + name + "_specular.png");
+			value.bump      = LoadTextureFromFile(dir + name + "_bump.png");
+		}
+	}
+}
+
+void RenderBody::render()
 {
 	using Animorph::MaterialVector;
 	using Animorph::TextureVector;
@@ -133,7 +138,7 @@ void renderMesh()
 	
 	cgutils::enableBlend();
 	
-	glUseProgram(g_bodyShader->handle);
+	glUseProgram(m_shader->handle);
 	
 	for(auto & [goupName, groupValue] : g_mesh.facegroup().m_groups) {
 		
@@ -144,19 +149,19 @@ void renderMesh()
 			if(groupValue.texture) {
 				glActiveTexture(GL_TEXTURE0);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture0"),
+				glUniform1i(glGetUniformLocation(m_shader->handle, "texture0"),
 				            0);
 			}
 			if(groupValue.specular) {
 				glActiveTexture(GL_TEXTURE1);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture1"),
+				glUniform1i(glGetUniformLocation(m_shader->handle, "texture1"),
 				            1);
 			}
 			if(groupValue.bump) {
 				glActiveTexture(GL_TEXTURE2);
 				::glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
-				glUniform1i(glGetUniformLocation(g_bodyShader->handle, "texture2"),
+				glUniform1i(glGetUniformLocation(m_shader->handle, "texture2"),
 				            2);
 			}
 		}
