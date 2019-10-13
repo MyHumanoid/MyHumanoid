@@ -10,62 +10,56 @@
 #include "Logger.h"
 #include "Vfs.h"
 
-std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * fragment_path)
+
+static void compileShader(GLuint shaderId, std::string & shaderStr)
 {
-	std::string vertShaderStr;
-	vfs::loadString(vertex_path, vertShaderStr);
+	const char * vertSrc = shaderStr.c_str();
+	glShaderSource(shaderId, 1, &vertSrc, NULL);
+	glCompileShader(shaderId);
 	
-	std::string  fragShaderStr;
-	vfs::loadString(fragment_path, fragShaderStr);
-	
-	const char * vertShaderSrc = vertShaderStr.c_str();
-	const char * fragShaderSrc = fragShaderStr.c_str();
-	
-	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-		
 	GLint result = GL_FALSE;
 	int   logLength;
-
-	log_info("Compiling vertex shader");
-	glShaderSource(vertShader, 1, &vertShaderSrc, NULL);
-	glCompileShader(vertShader);
-
-	// Check vertex shader
-	glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
-	glGetShaderiv(vertShader, GL_INFO_LOG_LENGTH, &logLength);
+	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &logLength);
 	if(logLength) {
 		std::string vertShaderError;
 		vertShaderError.resize(logLength, 0);
-		glGetShaderInfoLog(vertShader, logLength, NULL, vertShaderError.data());
+		glGetShaderInfoLog(shaderId, logLength, NULL, vertShaderError.data());
 		log_error("{}", vertShaderError);
 	}
+}
+
+
+
+std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * fragment_path)
+{
+	log_info("Compiling vertex shader");
+	std::string vertShaderStr;
+	vfs::loadString(vertex_path, vertShaderStr);
+	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
+	compileShader(vertShader, vertShaderStr);
 
 	log_info("Compiling fragment shader");
-	glShaderSource(fragShader, 1, &fragShaderSrc, NULL);
-	glCompileShader(fragShader);
-
-	// Check fragment shader
-	glGetShaderiv(fragShader, GL_COMPILE_STATUS, &result);
-	glGetShaderiv(fragShader, GL_INFO_LOG_LENGTH, &logLength);
-	if(logLength) {
-		std::vector<char> fragShaderError(logLength);
-		glGetShaderInfoLog(fragShader, logLength, NULL, fragShaderError.data());
-		log_error("{}", fragShaderError[0]);
-	}
+	std::string fragShaderStr;
+	vfs::loadString(fragment_path, fragShaderStr);
+	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+	compileShader(fragShader, fragShaderStr);
 	
 	log_info("Linking program");
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vertShader);
 	glAttachShader(program, fragShader);
 	glLinkProgram(program);
-
+	
+	GLint result = GL_FALSE;
+	int   logLength;
 	glGetProgramiv(program, GL_LINK_STATUS, &result);
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
 	if(logLength) {
-		std::vector<char> programError(logLength);
+		std::string programError;
+		programError.resize(logLength, 0);
 		glGetProgramInfoLog(program, logLength, NULL, programError.data());
-		log_error("{}", programError[0]);
+		log_error("{}", programError);
 	}
 
 	glDeleteShader(vertShader);
