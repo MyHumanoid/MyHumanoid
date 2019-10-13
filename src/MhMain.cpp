@@ -693,7 +693,7 @@ static void display()
 	if(g_displayAxis) {
 	}
 	
-	drawBackground();
+	g_renderBackground.render();
 
 	if(g_global.drawGrid) {
 	}
@@ -721,7 +721,7 @@ static void display()
 	if(g_requestBackgroundShaderReload) {
 		g_requestBackgroundShaderReload = false;
 		
-		LoadBackgroundShader();
+		g_renderBackground.loadShader();
 	}
 
 	// TODO this is a hack
@@ -919,7 +919,7 @@ int main(int argc, char ** argv)
 	mhgui::g_mainWindow->initWindow();
 	
 	LoadBodyShader(0);
-	LoadBackgroundShader();
+	g_renderBackground.init();
 	
 	bool mesh_loaded = g_mesh.loadMesh("base.vertices", "base.faces");
 	bool material_loaded = g_mesh.loadMaterial("base.materials", "base.colors");

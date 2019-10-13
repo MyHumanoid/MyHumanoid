@@ -35,9 +35,10 @@ std::optional<mh::Shader> LoadShader(const char * vertex_path, const char * frag
 	glGetShaderiv(vertShader, GL_COMPILE_STATUS, &result);
 	glGetShaderiv(vertShader, GL_INFO_LOG_LENGTH, &logLength);
 	if(logLength) {
-		std::vector<char> vertShaderError(logLength);
+		std::string vertShaderError;
+		vertShaderError.resize(logLength, 0);
 		glGetShaderInfoLog(vertShader, logLength, NULL, vertShaderError.data());
-		log_error("{}", vertShaderError[0]);
+		log_error("{}", vertShaderError);
 	}
 
 	log_info("Compiling fragment shader");

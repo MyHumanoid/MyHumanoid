@@ -90,7 +90,7 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
                         const glm::vec3 & light1Pos, float light0Lum, float light1Lum)
 {
 
-	glutInitContextVersion(3, 3);
+	glutInitContextVersion(4, 2);
 	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 	glutInitContextFlags(/*GLUT_FORWARD_COMPATIBLE | */ GLUT_DEBUG);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
@@ -101,8 +101,12 @@ int cgutils::initWindow(const Rect & rect, const char * title, const glm::vec3 &
 	glewInit();
 
 	{
-		log_info("GLEW Version: {}.{}.{}", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR,
-		       GLEW_VERSION_MICRO);
+		log_info("GL   version: {}", glGetString(GL_VERSION));
+		log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		log_info("GLEW Version: {}.{}.{}",
+		         GLEW_VERSION_MAJOR,
+		         GLEW_VERSION_MINOR,
+		         GLEW_VERSION_MICRO);
 
 		glewExperimental = true;
 		GLenum err       = glewInit();

@@ -54,7 +54,32 @@ void LoadBodyShader(int version)
 	}
 }
 
-void LoadBackgroundShader()
+RenderBackground g_renderBackground;
+
+void RenderBackground::init() {
+	{
+		glGenVertexArrays(1, &m_vertexArrayObject);
+		glGenBuffers(1, &m_vertexBufferObject);
+		
+		glBindVertexArray(m_vertexArrayObject);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+		glEnableVertexAttribArray(0);
+		
+		static constexpr GLfloat bufferData[] = {
+			-1.0f, -1.0f,
+			 1.0f, -1.0f,
+			-1.0f,  1.0f,
+			-1.0f,  1.0f,
+			 1.0f, -1.0f,
+			 1.0f,  1.0f,
+		};
+		glBufferData(GL_ARRAY_BUFFER, sizeof(bufferData), bufferData, GL_STATIC_DRAW);
+	}
+	loadShader();
+}
+
+void RenderBackground::loadShader()
 {
 	log_info("Loading Background Shader");
 	
@@ -66,7 +91,7 @@ void LoadBackgroundShader()
 	}
 }
 
-void drawBackground()
+void RenderBackground::render()
 {
 	using glm::vec2;
 	
@@ -79,27 +104,8 @@ void drawBackground()
 		glProgramUniform2f(g_backgroundShader->handle, myLoc, size.x, size.y);
 	}
 	
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-	
-	glBegin(GL_QUADS);
-	// bottom
-	glVertex2f(-1.0, -1.0);
-	glVertex2f(1.0, -1.0);
-	// top
-	glVertex2f(1.0, 1.0);
-	glVertex2f(-1.0, 1.0);
-	glEnd();
-	
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	glBindVertexArray(m_vertexArrayObject);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	
 	glUseProgram(0);
 }
