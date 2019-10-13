@@ -14,8 +14,6 @@
 #include "Global.h"
 
 
-std::optional<mh::Shader> g_backgroundShader;
-
 RenderBackground g_renderBackground;
 
 void RenderBackground::init() {
@@ -48,8 +46,8 @@ void RenderBackground::loadShader()
 	auto shader = LoadShader("data/shader/background.vert", "data/shader/background.frag");
 	
 	if(shader) {
-		glDeleteProgram(g_backgroundShader->handle);
-		g_backgroundShader = shader.value();
+		glDeleteProgram(m_shader->handle);
+		m_shader = shader.value();
 	}
 }
 
@@ -60,10 +58,10 @@ void RenderBackground::render()
 	auto inSize = mhgui::g_mainWindow->getSize();
 	vec2 size = vec2(inSize.x, inSize.y);
 	
-	glUseProgram(g_backgroundShader->handle);
-	GLint myLoc = glGetUniformLocation(g_backgroundShader->handle, "u_viewportResolution");
+	glUseProgram(m_shader->handle);
+	GLint myLoc = glGetUniformLocation(m_shader->handle, "u_viewportResolution");
 	if(myLoc != -1) {
-		glProgramUniform2f(g_backgroundShader->handle, myLoc, size.x, size.y);
+		glProgramUniform2f(m_shader->handle, myLoc, size.x, size.y);
 	}
 	
 	glBindVertexArray(m_vertexArrayObject);

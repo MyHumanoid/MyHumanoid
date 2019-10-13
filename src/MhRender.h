@@ -9,6 +9,7 @@ struct RenderBackground {
 	
 	GLuint m_vertexArrayObject;
 	GLuint m_vertexBufferObject;
+	std::optional<mh::Shader> m_shader;
 	
 	void init();
 	void loadShader();
