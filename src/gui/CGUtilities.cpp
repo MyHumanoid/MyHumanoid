@@ -24,10 +24,12 @@
  *  For individual developers look into the AUTHORS file.
  *
  */
+#include "gui/CGUtilities.h"
+
+#include <glm/ext.hpp>
 
 #include "GlInclude.h"
 
-#include "gui/CGUtilities.h"
 #include "gui/Camera.h"
 #include "gui/Rect.h"
 
@@ -38,6 +40,8 @@
 using Animorph::Color;
 using mhgui::Rect;
 using mhgui::Camera;
+
+glm::mat4 g_projectionMatrix;
 
 void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
@@ -72,6 +76,10 @@ void cgutils::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 			              static_cast<float>(inSize.x) /
 			                      static_cast<float>(inSize.y),
 			              kZNear, kZFar);
+		
+		glm::vec2 fSize = inSize;
+		
+		g_projectionMatrix = glm::perspectiveFov(kFOVY, fSize.x, fSize.y, kZNear, kZFar);
 	} else {
 		float ratioW = static_cast<float>(inSize.x) /
 		               static_cast<float>(inSize.y);
@@ -79,6 +87,8 @@ void cgutils::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 		                ratioW); // provvisorio: ricavare un fattore dalla distanza
 		float scaley = (zToCenter * 0.08761); // della camera dall'origine
 		glOrtho(-scalex, scalex, -scaley, scaley, kZNear, kZFar);
+		
+		g_projectionMatrix = glm::ortho(-scalex, scalex, -scaley, scaley, kZNear, kZFar);
 	}
 
 	glMatrixMode(GL_MODELVIEW);

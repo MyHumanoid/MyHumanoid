@@ -114,6 +114,7 @@ void RenderBody::loadTexture()
 }
 
 extern Matrix g_modelViewMatrix;
+extern glm::mat4 g_projectionMatrix;
 
 void RenderBody::render()
 {
@@ -142,6 +143,9 @@ void RenderBody::render()
 	
 	glUniformMatrix4fv(glGetUniformLocation(m_shader->handle, "u_modelViewMatrix"),
 					   1, GL_FALSE, &g_modelViewMatrix.data[0]);
+	
+	glUniformMatrix4fv(glGetUniformLocation(m_shader->handle, "u_projectionMatrix"),
+	                   1, GL_FALSE, glm::value_ptr(g_projectionMatrix));
 	
 	
 	for(auto & [goupName, groupValue] : g_mesh.facegroup().m_groups) {

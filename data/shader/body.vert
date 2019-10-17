@@ -34,6 +34,7 @@ uniform vec4 light_specular[2] = vec4[2](
 );
 
 uniform mat4 u_modelViewMatrix;
+uniform mat4 u_projectionMatrix;
 
 varying vec4 v_frontColor;
 varying vec2 v_texCoord0;
@@ -98,7 +99,7 @@ void flight(in vec3 normal, in vec4 ecPosition)
 void main(void)
 {
 	// Do fixed functionality vertex transform
-	gl_Position = gl_ProjectionMatrix * u_modelViewMatrix * gl_Vertex;
+	gl_Position = u_projectionMatrix * u_modelViewMatrix * gl_Vertex;
 	
 	vec3 transformedNormal = normalize(gl_NormalMatrix * gl_Normal);
 	
