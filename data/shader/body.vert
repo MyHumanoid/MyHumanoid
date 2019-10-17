@@ -33,6 +33,9 @@ uniform vec4 light_specular[2] = vec4[2](
 	vec4(1.0, 1.0, 1.0, 1.0)
 );
 
+varying vec4 v_frontColor;
+varying vec2 v_texCoord0;
+
 
 vec4 Ambient;
 vec4 Diffuse;
@@ -87,7 +90,7 @@ void flight(in vec3 normal, in vec4 ecPosition)
 	      + Diffuse  * gl_Color;
 	      + Specular * mat_specular;
 	
-	gl_FrontColor = clamp(color, 0.0, 1.0);
+	v_frontColor = clamp(color, 0.0, 1.0);
 }
 
 void main(void)
@@ -101,9 +104,5 @@ void main(void)
 	vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;
 	flight(transformedNormal, ecPosition);
 	
-	gl_TexCoord[0] = gl_MultiTexCoord0;
-	gl_TexCoord[1] = gl_MultiTexCoord1;
-	gl_TexCoord[2] = gl_MultiTexCoord2;
-	gl_TexCoord[3] = gl_MultiTexCoord3;
-	gl_TexCoord[4] = gl_MultiTexCoord4;
+	v_texCoord0 = gl_MultiTexCoord0.xy;
 }

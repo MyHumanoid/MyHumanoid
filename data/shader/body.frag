@@ -1,13 +1,19 @@
-#version 120
+#version 440
 
 // Fixed function shading emulation
 
 uniform sampler2D texUnit0;
 
-void main (void) 
+varying vec4 v_frontColor;
+varying vec2 v_texCoord0;
+
+layout(location = 0)
+out vec4 o_fragColor;
+
+void main()
 {
-	vec4 color = gl_Color;
-	vec4 texture0Arg0 = texture2D(texUnit0, gl_TexCoord[0].xy);
+	vec4 color = v_frontColor;
+	vec4 texture0Arg0 = texture2D(texUnit0, v_texCoord0);
 	color = clamp(color * texture0Arg0, 0.0, 1.0);
-	gl_FragColor = color;
+	o_fragColor = color;
 }
