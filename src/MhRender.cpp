@@ -113,6 +113,8 @@ void RenderBody::loadTexture()
 	}
 }
 
+extern Matrix g_modelViewMatrix;
+
 void RenderBody::render()
 {
 	using Animorph::MaterialVector;
@@ -137,6 +139,10 @@ void RenderBody::render()
 	cgutils::enableBlend();
 	
 	glUseProgram(m_shader->handle);
+	
+	glUniformMatrix4fv(glGetUniformLocation(m_shader->handle, "u_modelViewMatrix"),
+					   1, GL_FALSE, &g_modelViewMatrix.data[0]);
+	
 	
 	for(auto & [goupName, groupValue] : g_mesh.facegroup().m_groups) {
 		
