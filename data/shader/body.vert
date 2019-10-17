@@ -104,7 +104,7 @@ void main(void)
 	vec3 transformedNormal = normalize(gl_NormalMatrix * gl_Normal);
 	
 	// Eye-coordinate position of vertex, needed in various calculations
-	vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;
+	vec4 ecPosition = u_modelViewMatrix * gl_Vertex;
 	flight(transformedNormal, ecPosition);
 	
 	v_texCoord0 = gl_MultiTexCoord0.xy;
