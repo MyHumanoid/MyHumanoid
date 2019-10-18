@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# Based on:
-# Copyright (C) 2018  Malte Kießling
-
 project(imgui)
 
 set(imgui_dir ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
