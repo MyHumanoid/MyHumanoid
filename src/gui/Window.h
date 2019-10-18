@@ -44,7 +44,7 @@ namespace mhgui
 class Panel;
 
 /// Object oriented interface to a GLUT window
-class Window
+struct Window
 {
 	Rect     geometry;
 	string   title;

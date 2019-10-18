@@ -26,12 +26,8 @@
  */
 
 #include "GlInclude.h"
-#include <GL/freeglut.h>
 
 #include "MhUi.h"
-#include <examples/imgui_impl_glut.h>
-#include <examples/imgui_impl_opengl2.h>
-
 #include "gui/CGUtilities.h"
 #include "gui/Camera.h"
 #include "gui/Window.h"
@@ -57,8 +53,6 @@ Window::Window(const Rect & rect, const string & t)
 
 Window::~Window()
 {
-	if(mWindowId > 0)
-		glutDestroyWindow(mWindowId);
 }
 
 void Window::setCamera(Camera * p_camera)

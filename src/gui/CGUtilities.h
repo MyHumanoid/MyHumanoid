@@ -35,7 +35,6 @@
 #include <glm/vec3.hpp>
 
 #include "Camera.h"
-#include "GLUTWrapper.h"
 #include "Rect.h"
 
 using std::string;

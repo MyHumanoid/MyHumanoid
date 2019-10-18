@@ -89,7 +89,6 @@ set(myhumanoid_sources
 	src/gui/Camera.cpp
 	src/gui/CGUtilities.h
 	src/gui/CGUtilities.cpp
-	src/gui/GLUTWrapper.h
 	src/gui/Rect.h
 	src/gui/Rect.cpp
 	src/gui/Window.h
@@ -134,7 +133,7 @@ set(shader_sources
 
 find_package(OpenGL     REQUIRED)
 find_package(GLEW       REQUIRED)
-find_package(GLUT       REQUIRED)
+find_package(SDL2       REQUIRED)
 find_package(glm        REQUIRED)
 find_package(PhysFS 2.1 REQUIRED)
 
@@ -163,7 +162,7 @@ endif()
 target_include_directories(MyHumanoid PRIVATE
 	${OPENGL_INCLUDE_DIRS}
 	${GLEW_INCLUDE_DIRS}
-	${GLUT_INCLUDE_DIRS}
+	${SDL2_INCLUDE_DIRS}
 	${GLM_INCLUDE_DIRS}
 	${PHYSFS_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -172,7 +171,7 @@ target_include_directories(MyHumanoid PRIVATE
 target_link_libraries(MyHumanoid PRIVATE
 	${OPENGL_LIBRARIES}
 	${GLEW_LIBRARIES}
-	GLUT::GLUT
+	${SDL2_LIBRARIES}
 	${PHYSFS_LIBRARY}
 	fmt
 	imgui

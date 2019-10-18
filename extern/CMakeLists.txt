@@ -18,14 +18,14 @@ set(imgui_src
 	${imgui_dir}/imstb_truetype.h
 	${imgui_dir}/misc/cpp/imgui_stdlib.cpp
 	${imgui_dir}/misc/cpp/imgui_stdlib.h
-	${imgui_dir}/examples/imgui_impl_glut.h
-	${imgui_dir}/examples/imgui_impl_glut.cpp
 	${imgui_dir}/examples/imgui_impl_opengl3.h
 	${imgui_dir}/examples/imgui_impl_opengl3.cpp
+	${imgui_dir}/examples/imgui_impl_sdl.h
+	${imgui_dir}/examples/imgui_impl_sdl.cpp
 )
 
 find_package(GLEW REQUIRED)
-find_package(GLUT REQUIRED)
+find_package(SDL2 REQUIRED)
 
 add_library(imgui STATIC
 	${imgui_src}
@@ -33,12 +33,12 @@ add_library(imgui STATIC
 target_link_libraries(imgui
 PRIVATE
 	GLEW::GLEW
-	GLUT::GLUT
+	${SDL2_LIBRARIES}
 )
 target_include_directories(imgui
 PRIVATE
 	${GLEW_INCLUDE_DIRS}
-	${GLUT_INCLUDE_DIRS}
+	${SDL2_INCLUDE_DIRS}
 PUBLIC
 	${imgui_dir}
 )

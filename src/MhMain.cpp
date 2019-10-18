@@ -25,13 +25,13 @@
  *
  */
 
+#include <stdexcept>
 #include <iostream>
 #include <unordered_map>
 
 #include <fmt/format.h>
 
 #include "GlInclude.h"
-#include <GL/freeglut.h>
 
 #include "MhUi.h"
 #include "MhUiMorph.h"
@@ -47,12 +47,12 @@
 
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
-#include <gui/GLUTWrapper.h>
 #include <gui/Window.h>
 
 #include "Logger.h"
 #include "Profiler.h"
 
+#include "render/DebugGl.h"
 #include "render/RenderUtils.h"
 #include "render/Shader.h"
 
@@ -69,6 +69,10 @@
 #include "MhRender.h"
 #include "Vfs.h"
 
+#include "physfs.h"
+
+#include "SDL2/SDL.h"
+
 #define kTimerRendering 1000
 
 
@@ -78,7 +82,6 @@ static constexpr char mh_version[]  = "0.1.0";
 bool  init; // shows the init status
 int   average           = 0;
 int   n_display         = 0;
-bool  right_button_down = false;
 int   tickCount         = 0;
 float kTimePerRaster(0.03f);
 bool  oldCameraTimerTrigger = false;
@@ -710,68 +713,6 @@ void DisplayMainMenu()
 
 // ================================================================================================
 
-struct FooRect {
-	glm::ivec2 pos;
-	glm::ivec2 size;
-};
-
-FooRect g_mainWinRect;
-
-// Display function
-static void display()
-{
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGLUT_NewFrame();
-
-	g_global.camera->applyMatrix();
-	
-	g_renderBody.render();
-	
-	if(g_displayAxis) {
-	}
-	
-	g_renderBackground.render();
-
-	if(g_global.drawGrid) {
-	}
-
-	DisplayMainMenu();
-
-	ImGui::Render();
-	// ImGuiIO& io = ImGui::GetIO();
-	// glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
-	// glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-	// glClear(GL_COLOR_BUFFER_BIT);
-	// glUseProgram(0); // You may want this if using this code in an OpenGL 3+
-	// context where shaders may be bound, but prefer using the GL3+ code.
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	glutSwapBuffers();
-	glutPostRedisplay();
-
-
-	if(g_requestShaderReload) {
-		g_requestShaderReload = false;
-		
-		g_renderBody.loadShader(g_requestShaderVersion);
-	}
-	if(g_requestBackgroundShaderReload) {
-		g_requestBackgroundShaderReload = false;
-		
-		g_renderBackground.loadShader();
-	}
-
-	// TODO this is a hack
-	g_mainWinRect.pos.x  = glutGet(GLUT_WINDOW_X);
-	g_mainWinRect.pos.y  = glutGet(GLUT_WINDOW_Y);
-	g_mainWinRect.size.x = glutGet(GLUT_WINDOW_WIDTH);
-	g_mainWinRect.size.y = glutGet(GLUT_WINDOW_HEIGHT);
-
-	if(g_userRequestedQuit) {
-		glutLeaveMainLoop();
-	}
-};
-
 static void reshape(int w, int h)
 {
 	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
@@ -779,10 +720,8 @@ static void reshape(int w, int h)
 	g_global.camera->reshape(w, h);
 }
 
-static void timerTrigger(int val)
+static void timerTrigger()
 {
-	(void)val;
-
 	bool     tmp;
 	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 
@@ -791,139 +730,156 @@ static void timerTrigger(int val)
 	if(!g_global.camera->isPerspective()) {
 		reshape(mainWindow.getSize().x, mainWindow.getSize().y);
 	}
-	glutTimerFunc(50, timerTrigger, 1);
 }
 
-static void special(int key)
-{
-		switch(key) {
-		case GLUT_KEY_UP:
-			g_global.camera->move(0, 1, 0);
-			break;
-		case GLUT_KEY_DOWN:
-			g_global.camera->move(0, -1, 0);
-			break;
-		case GLUT_KEY_LEFT:
-			g_global.camera->move(-1, 0, 0);
-			break;
-		case GLUT_KEY_RIGHT:
-			g_global.camera->move(1, 0, 0);
-			break;
-		}
-}
+//static void special(int key)
+//{
+//		switch(key) {
+//		case GLUT_KEY_UP:
+//			g_global.camera->move(0, 1, 0);
+//			break;
+//		case GLUT_KEY_DOWN:
+//			g_global.camera->move(0, -1, 0);
+//			break;
+//		case GLUT_KEY_LEFT:
+//			g_global.camera->move(-1, 0, 0);
+//			break;
+//		case GLUT_KEY_RIGHT:
+//			g_global.camera->move(1, 0, 0);
+//			break;
+//		}
+//}
 
-static void keyboard(unsigned char key)
+static void keyboard(SDL_Keycode key)
 {
 	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
 	
-		switch(toupper(key)) {
-		case '+':
+	switch(key) {
+		case SDLK_KP_PLUS:
 			g_global.camera->move(0, 0, 1);
 			break;
-		case '-':
+		case SDLK_KP_MINUS:
 			g_global.camera->move(0, 0, -1);
 			break;
-		case '8':
+		case SDLK_KP_8:
 			g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::X_AXIS);
 			break;
-		case '2':
+		case SDLK_KP_2:
 			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::X_AXIS);
 			break;
-		case '1':
+		case SDLK_KP_1:
 			g_global.camera->resetRotation();
 			// camera->resetPosition();
 			// camera->rotate (-M_PI/2, X_AXIS);
 			// camera->move (0,0,-75);
 			break;
-		case '7':
+		case SDLK_KP_7:
 			g_global.camera->resetRotation();
 			g_global.camera->rotate(glm::pi<float>() / 2, Animorph::X_AXIS);
 			break;
-		case '6':
+		case SDLK_KP_6:
 			g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::Y_AXIS);
 			break;
-		case '5':
+		case SDLK_KP_5:
 			g_global.camera->setPerspective(!g_global.camera->isPerspective());
 			reshape(mainWindow.getSize().x, mainWindow.getSize().y);
 			break;
-		case '4':
+		case SDLK_KP_4:
 			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
 			break;
-		case '3':
+		case SDLK_KP_3:
 			g_global.camera->resetRotation();
 			g_global.camera->rotate(-glm::pi<float>() / 2, Animorph::Y_AXIS);
 			break;
-		case '.':
+		case SDLK_KP_COMMA:
 			g_global.camera->resetPosition();
 			g_global.camera->move(0, 0, -125);
 			break;
-		default:
-			break;
-		}
+	default:
+		break;
+	}
 }
 
-static void mouse(int button, int state, int x, int y)
-{
-	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-
-	// cout << "mouse: " << button << endl;
-	g_global.camera->mouseRotateStart(x, y);
-
-		switch(button) {
-		case GLUT_LEFT_BUTTON:
-			break;
-		case GLUT_MIDDLE_BUTTON:
-			break;
-		case GLUT_RIGHT_BUTTON:
-			if(state == GLUT_DOWN) {
-				right_button_down = true;
-			} else {
-				right_button_down = false;
-			}
-			break;
-
-#ifdef GLUT_WHEEL_UP
-		case GLUT_WHEEL_UP: // 3
-			g_global.camera->move(0, 0, 1);
-			if(!g_global.camera->isPerspective()) {
-				reshape(mainWindow.getSize().x,
-				        mainWindow.getSize().y);
-			}
-			break;
-#endif // GLUT_WHEEL_UP
-
-#ifdef GLUT_WHEEL_DOWN
-		case GLUT_WHEEL_DOWN: // 4
-			g_global.camera->move(0, 0, -1);
-			if(!g_global.camera->isPerspective()) {
-				reshape(mainWindow.getSize().x,
-				        mainWindow.getSize().y);
-			}
-			break;
-#endif // GLUT_WHEEL_DOWN
-
-#ifdef GLUT_WHEEL_RIGHT
-		case GLUT_WHEEL_RIGHT: // 5
-			break;
-#endif // GLUT_WHEEL_RIGHT
-
-#ifdef GLUT_WHEEL_LEFT
-		case GLUT_WHEEL_LEFT: // 6
-			break;
-#endif // GLUT_WHEEL_LEFT
+struct SDLWindow {
+	
+	SDL_Window *mainwindow; /* Our window handle */
+	SDL_GLContext maincontext; /* Our opengl context handle */
+	
+	SDLWindow(const Rect & rect, const std::string & title)
+	{
+		if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+			throw std::runtime_error("Unable to initialize SDL");
 		}
-}
-
-static void activeMotion(int x, int y)
-{
-		if(right_button_down) {
-			g_global.camera->moveMouse(x, y);
-		} else {
-			g_global.camera->rotateMouse(x, y);
+		
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+		
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+		
+		/* Create our window centered at 512x512 resolution */
+		mainwindow = SDL_CreateWindow(title.c_str(),
+		                              rect.pos.x,
+		                              rect.pos.y,
+		                              rect.size.x,
+		                              rect.size.y,
+		                              SDL_WINDOW_OPENGL
+		                                  | SDL_WINDOW_SHOWN
+		                                  | SDL_WINDOW_RESIZABLE);
+		if (!mainwindow) {
+			throw std::runtime_error("Unable to create window");
 		}
-}
-
-#include "physfs.h"
+		
+		SDL_SetWindowMinimumSize(mainwindow, 800, 600);
+		
+		//checkSDLError(__LINE__);
+		
+		/* Create our opengl context and attach it to our window */
+		maincontext = SDL_GL_CreateContext(mainwindow);
+		//checkSDLError(__LINE__);
+		
+		
+		glewExperimental = true;
+		GLenum err       = glewInit();
+		if(err != GLEW_OK) {
+			log_error("GLEW error: {}", glewGetErrorString(err));
+		}
+		
+		log_info("GL   version: {}", glGetString(GL_VERSION));
+		log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		log_info("GLEW Version: {}.{}.{}",
+		         GLEW_VERSION_MAJOR,
+		         GLEW_VERSION_MINOR,
+		         GLEW_VERSION_MICRO);
+		
+		initDebugGl();
+		
+		glEnable(GL_DEPTH_TEST);
+		
+		glClearColor(0, 0, 0, 1);
+		
+		/* This makes our buffer swap syncronized with the monitor's vertical refresh */
+		SDL_GL_SetSwapInterval(1);
+	}
+	
+	void swap()
+	{
+		SDL_GL_SwapWindow(mainwindow);
+	}
+	
+	~SDLWindow()
+	{
+		/* Delete our opengl context, destroy our window, and shutdown SDL */
+		SDL_GL_DeleteContext(maincontext);
+		SDL_DestroyWindow(mainwindow);
+		SDL_Quit();
+	}
+};
 
 int main(int argc, char ** argv)
 {
@@ -935,8 +891,6 @@ int main(int argc, char ** argv)
 	
 	PHYSFS_init(argv[0]);
 	vfs::init();
-	
-	glutInit(&argc, argv);
 	
 	LoadConfig();
 	
@@ -953,7 +907,11 @@ int main(int argc, char ** argv)
 	g_global.camera   = new mhgui::Camera();
 	g_global.autozoom = new mhgui::Autozoom();
 	
-	mhgui::g_mainWindow->initWindow();
+	
+	SDLWindow sdlWindow(mainWinRect, winTitle);
+	
+	
+	//mhgui::g_mainWindow->initWindow();
 	
 	g_renderBody.init();
 	g_renderBackground.init();
@@ -999,20 +957,16 @@ int main(int argc, char ** argv)
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
 	
-	glutDisplayFunc(display);
-	glutTimerFunc(1000, timerTrigger, 1); // Autozoom
-	glutCloseFunc([]() -> void {
-		// TODO glut does not let us prevent closing in a sane way
-		// just let it happen for now :/
+//	glutCloseFunc([]() -> void {
+//		// TODO glut does not let us prevent closing in a sane way
+//		// just let it happen for now :/
 
-		//		g_userRequestedQuit = true;
-		//		Window &mainWindow(*g_mainWindow);
+//		//		g_userRequestedQuit = true;
+//		//		Window &mainWindow(*g_mainWindow);
 
-		// TODO WHY?
-		// mainWindow.mainLoop();
-	});
-
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+//		// TODO WHY?
+//		// mainWindow.mainLoop();
+//	});
 
 	::glPolygonOffset(1.0, 1.0);
 
@@ -1027,69 +981,13 @@ int main(int argc, char ** argv)
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
 	ImGui::StyleColorsDark();
-	ImGui_ImplGLUT_Init();
-
+	
+	ImGui_ImplSDL2_InitForOpenGL(sdlWindow.mainwindow, sdlWindow.maincontext);
 	{
-		glutReshapeFunc([](int w, int h) -> void {
-			ImGuiIO & io   = ImGui::GetIO();
-			io.DisplaySize = ImVec2((float)w, (float)h);
-
-			reshape(w, h);
-		});
-
-		glutMotionFunc([](int x, int y) -> void {
-			ImGuiIO & io = ImGui::GetIO();
-			io.MousePos  = ImVec2((float)x, (float)y);
-
-			if(!io.WantCaptureMouse) {
-				activeMotion(x, y);
-			}
-		});
-
-		glutPassiveMotionFunc([](int x, int y) -> void {
-			ImGuiIO & io = ImGui::GetIO();
-			io.MousePos  = ImVec2((float)x, (float)y);
-
-			if(!io.WantCaptureMouse) {
-			}
-		});
-
-		glutMouseFunc([](int glut_button, int state, int x, int y) -> void {
-			ImGui_ImplGLUT_MouseFunc(glut_button, state, x, y);
-
-			ImGuiIO & io = ImGui::GetIO();
-			if(!io.WantCaptureMouse) {
-				mouse(glut_button, state, x, y);
-			}
-		});
-
-		glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);
-
-		glutKeyboardFunc([](unsigned char c, int x, int y) -> void {
-			ImGui_ImplGLUT_KeyboardFunc(c, x, y);
-
-			ImGuiIO & io = ImGui::GetIO();
-			if(!io.WantCaptureKeyboard) {
-				keyboard(c);
-			}
-		});
-
-		glutKeyboardUpFunc(ImGui_ImplGLUT_KeyboardUpFunc);
-
-		glutSpecialFunc([](int key, int x, int y) -> void {
-			ImGui_ImplGLUT_SpecialFunc(key, x, y);
-
-			ImGuiIO & io = ImGui::GetIO();
-			if(!io.WantCaptureKeyboard) {
-				special(key);
-			}
-		});
-
-		glutSpecialUpFunc(ImGui_ImplGLUT_SpecialUpFunc);
+		const char* glsl_version = "#version 130";
+		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
-
-	ImGui_ImplOpenGL3_Init();
-
+	
 	// Load Fonts
 	// - If no fonts are loaded, dear imgui will use the default font. You can
 	// also load multiple fonts and use ImGui::PushFont()/PopFont() to select
@@ -1113,15 +1011,163 @@ int main(int argc, char ** argv)
 	// ImFont* font =
 	// io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f,
 	// NULL, io.Fonts->GetGlyphRangesJapanese()); IM_ASSERT(font != NULL);
-
-	glutMainLoop();
+	
+	bool mouseDownLeft = false;
+	bool mouseDownRight = false;
+	
+	bool runMainloop = true;
+	while(runMainloop) {
+		SDL_Event event;
+		while(SDL_PollEvent(&event)) {
+			ImGui_ImplSDL2_ProcessEvent(&event);
+			
+			switch(event.type) {
+				case SDL_QUIT: {
+					runMainloop = false;
+					break;
+				}
+				case SDL_WINDOWEVENT: {
+					switch(event.window.event) {
+						case SDL_WINDOWEVENT_CLOSE: {
+							if(event.window.windowID == SDL_GetWindowID(sdlWindow.mainwindow)) {
+								runMainloop = false;
+							}
+							break;
+						}
+						case SDL_WINDOWEVENT_RESIZED: {
+							reshape(event.window.data1, event.window.data2);
+							break;
+						}
+					}
+					break;
+				}
+			    case SDL_MOUSEBUTTONDOWN: {
+				    int x = event.button.x;
+				    int y = event.button.y;
+				    
+					ImGuiIO & io = ImGui::GetIO();
+					io.MousePos  = ImVec2((float)x, (float)y);
+				    if(!io.WantCaptureMouse) {
+						if(event.button.button == SDL_BUTTON_LEFT) {
+						   mouseDownLeft = true;
+						   g_global.camera->mouseRotateStart(event.button.x, event.button.y);
+						}
+						if(event.button.button == SDL_BUTTON_RIGHT) {
+							mouseDownRight = true;
+							g_global.camera->mouseRotateStart(event.button.x, event.button.y);
+						}
+				    }
+				    break;
+			    }
+			    case SDL_MOUSEBUTTONUP: {
+				    int x = event.button.x;
+				    int y = event.button.y;
+				    
+				    ImGuiIO & io = ImGui::GetIO();
+				    io.MousePos  = ImVec2((float)x, (float)y);
+				    if(!io.WantCaptureMouse) {
+						if(event.button.button == SDL_BUTTON_LEFT) {
+							mouseDownLeft = false;
+						}
+						if(event.button.button == SDL_BUTTON_RIGHT) {
+							mouseDownRight = false;
+						}
+				    }
+				    break;
+			    }
+				case SDL_MOUSEMOTION: {
+				    int x = event.button.x;
+				    int y = event.button.y;
+				    
+				    ImGuiIO & io = ImGui::GetIO();
+				    io.MousePos  = ImVec2((float)x, (float)y);
+				    if(!io.WantCaptureMouse) {
+						if(mouseDownLeft) {
+							g_global.camera->rotateMouse(event.motion.x, event.motion.y);
+						}
+						if(mouseDownRight) {
+							g_global.camera->moveMouse(event.motion.x, event.motion.y);
+						}
+				    }
+					break;
+				}
+				case SDL_MOUSEWHEEL: {
+				    if(event.wheel.y > 0) {
+					    g_global.camera->move(0, 0, 1);
+//					    if(!g_global.camera->isPerspective()) {
+//						    reshape(g_mainWindow.getSize().x,
+//						            mainWindow.getSize().y);
+//					    }
+					} else if(event.wheel.y < 0) {
+						g_global.camera->move(0, 0, -1);
+//					    if(!g_global.camera->isPerspective()) {
+//						    reshape(mainWindow.getSize().x,
+//						            mainWindow.getSize().y);
+//					    }
+					}
+					break;
+				}
+				case SDL_KEYUP: {
+				    keyboard(event.key.keysym.sym);
+					
+					break;
+				}
+			}
+		}
+		
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL2_NewFrame(sdlWindow.mainwindow);
+		ImGui::NewFrame();
+		
+		timerTrigger();
+		
+		g_global.camera->applyMatrix();
+		
+		g_renderBody.render();
+		
+		g_renderBackground.render();
+		
+		DisplayMainMenu();
+		
+		ImGui::Render();
+		// ImGuiIO& io = ImGui::GetIO();
+		// glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
+		// glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+		// glClear(GL_COLOR_BUFFER_BIT);
+		// glUseProgram(0); // You may want this if using this code in an OpenGL 3+
+		// context where shaders may be bound, but prefer using the GL3+ code.
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		
+		
+		if(g_requestShaderReload) {
+			g_requestShaderReload = false;
+			
+			g_renderBody.loadShader(g_requestShaderVersion);
+		}
+		if(g_requestBackgroundShaderReload) {
+			g_requestBackgroundShaderReload = false;
+			
+			g_renderBackground.loadShader();
+		}
+		
+		sdlWindow.swap();
+	}
 
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 	
-	g_config.windowMain.pos = g_mainWinRect.pos;
-	g_config.windowMain.siz = g_mainWinRect.size;
+	{
+		auto & p = g_config.windowMain.pos;
+		SDL_GetWindowPosition(sdlWindow.mainwindow, &p.x, &p.y);
+	}
+	{
+		auto & s = g_config.windowMain.siz;
+		SDL_GetWindowSize(sdlWindow.mainwindow, &s.x, &s.y);
+	}
+
 	SaveConfig();
 	
 	vfs::deinit();

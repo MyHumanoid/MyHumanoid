@@ -25,8 +25,8 @@
 
 
 #include <imgui.h>
-#include <examples/imgui_impl_glut.h>
 #include <examples/imgui_impl_opengl3.h>
+#include <examples/imgui_impl_sdl.h>
 
 #include <utility>
 #include <string>

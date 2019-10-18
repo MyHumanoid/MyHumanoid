@@ -27,11 +27,10 @@
 
 #include "gui/Camera.h"
 
-#include <glm/ext.hpp>
-
-#include "gui/CGUtilities.h"
 #include <iostream>
-
+#include <glm/ext.hpp>
+#include "gui/CGUtilities.h"
+#include "GlInclude.h"
 #include "Logger.h"
 
 #define MAX_LINE 3500

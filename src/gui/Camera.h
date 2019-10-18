@@ -26,7 +26,6 @@
  */
 #pragma once
 
-#include "GLUTWrapper.h"
 #include <animorph/FileWriter.h>
 #include <animorph/Matrix.h>
 #include <glm/vec2.hpp>
