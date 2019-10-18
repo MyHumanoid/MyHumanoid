@@ -58,6 +58,7 @@ struct Global {
 extern Global g_global;
 
 struct WindowVisibility {
+	bool glInfo = false;
 	bool performance         = false;
 	bool show_demo_window    = false;
 	bool about               = false;

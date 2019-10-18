@@ -417,6 +417,36 @@ void DisplayPerformance()
 	ImGui::End();
 }
 
+
+void DisplayGlInfo()
+{
+	if(!ImGui::Begin("Gl info", &g_displayWin.glInfo)) {
+		ImGui::End();
+		return;
+	}
+	
+	ImGui::Text("Vendor:   %s", glGetString(GL_VENDOR));
+	ImGui::Text("Renderer: %s", glGetString(GL_RENDERER));
+	ImGui::Text("Version:  %s", glGetString(GL_VERSION));
+	ImGui::Text("GLSL:     %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	
+	if (ImGui::CollapsingHeader("Extensions")) {
+		static ImGuiTextFilter filter;
+		filter.Draw();
+		
+		GLint count;
+		glGetIntegerv(GL_NUM_EXTENSIONS, &count);
+		for(GLint i = 0; i < count; ++i) {
+			auto extName = (const char *)(glGetStringi(GL_EXTENSIONS, i));
+			if(extName != nullptr && filter.PassFilter(extName)) {
+				ImGui::Text("%s", extName);
+			}
+		}
+	}
+	
+	ImGui::End();
+}
+
 void DisplayAbout()
 {
 
@@ -631,6 +661,9 @@ void DisplayMainMenu()
 				ProfilerClear();
 			}
 #endif
+			if(ImGui::MenuItem("Gl Info")) {
+				g_displayWin.glInfo = true;
+			}
 			ImGui::Checkbox("Performance", &g_displayWin.performance);
 			ImGui::Separator();
 			if(ImGui::MenuItem("About ...")) {
@@ -659,7 +692,11 @@ void DisplayMainMenu()
 			DisplayPoseTargetsApplied();
 		}
 	}
-
+	
+	if(g_displayWin.glInfo) {
+		DisplayGlInfo();
+	}
+	
 	if(g_displayWin.performance) {
 		DisplayPerformance();
 		if(g_displayWin.show_demo_window) {
