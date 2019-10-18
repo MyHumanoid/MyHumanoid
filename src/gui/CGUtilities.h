@@ -52,8 +52,6 @@ namespace cgutils
 {
 void reshape(const glm::ivec2 & inSize, const mhgui::Camera & inCamera);
 
-int initWindow(const Rect & rect, const char * title);
-
 void redisplay();
 
 void enableBlend();

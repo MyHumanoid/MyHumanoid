@@ -47,7 +47,6 @@
 
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>
-#include <gui/Window.h>
 
 #include "Logger.h"
 #include "Profiler.h"
@@ -713,22 +712,24 @@ void DisplayMainMenu()
 
 // ================================================================================================
 
-static void reshape(int w, int h)
+glm::ivec2 g_mainWinSize;
+
+static void reshape()
 {
-	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-	mainWindow.reshape(glm::ivec2(w, h), *g_global.camera);
+	int w = g_mainWinSize.x;
+	int h = g_mainWinSize.y;
+	
+	cgutils::reshape(glm::ivec2(w, h), *g_global.camera);
 	g_global.camera->reshape(w, h);
 }
 
 static void timerTrigger()
 {
 	bool     tmp;
-	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-
 	tmp = g_global.camera->timerTrigger();
 
 	if(!g_global.camera->isPerspective()) {
-		reshape(mainWindow.getSize().x, mainWindow.getSize().y);
+		reshape();
 	}
 }
 
@@ -752,8 +753,6 @@ static void timerTrigger()
 
 static void keyboard(SDL_Keycode key)
 {
-	mhgui::Window & mainWindow(*mhgui::g_mainWindow);
-	
 	switch(key) {
 		case SDLK_KP_PLUS:
 			g_global.camera->move(0, 0, 1);
@@ -782,7 +781,7 @@ static void keyboard(SDL_Keycode key)
 			break;
 		case SDLK_KP_5:
 			g_global.camera->setPerspective(!g_global.camera->isPerspective());
-			reshape(mainWindow.getSize().x, mainWindow.getSize().y);
+			reshape();
 			break;
 		case SDLK_KP_4:
 			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
@@ -901,7 +900,6 @@ int main(int argc, char ** argv)
 	                        g_config.windowMain.siz.x, g_config.windowMain.siz.y);
 	
 	std::string winTitle = mh_app_name + std::string(" ") + mh_version;
-	mhgui::g_mainWindow         = new mhgui::Window(mainWinRect, winTitle);
 
 	// g_global.mesh     = new Mesh();
 	g_global.camera   = new mhgui::Camera();
@@ -952,7 +950,6 @@ int main(int argc, char ** argv)
 	g_mesh.loadCharacters(searchDataDir("bs_data"));
 
 	init = false;
-	mhgui::g_mainWindow->setCamera(g_global.camera);
 	
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
@@ -1035,8 +1032,13 @@ int main(int argc, char ** argv)
 							}
 							break;
 						}
+				        case SDL_WINDOWEVENT_SIZE_CHANGED:
 						case SDL_WINDOWEVENT_RESIZED: {
-							reshape(event.window.data1, event.window.data2);
+							g_mainWinSize = {
+								event.window.data1,
+								event.window.data2
+							};
+							reshape();
 							break;
 						}
 					}

@@ -32,7 +32,6 @@
 #include <animorph/util.h>
 #include <gui/CGUtilities.h>
 
-#include <gui/Window.h>
 #include <iostream>
 #include <string>
 #include <vector>

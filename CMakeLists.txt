@@ -91,8 +91,6 @@ set(myhumanoid_sources
 	src/gui/CGUtilities.cpp
 	src/gui/Rect.h
 	src/gui/Rect.cpp
-	src/gui/Window.h
-	src/gui/Window.cpp
 	src/ComponentID.h
 	src/CompositeMorph.h
 	src/CompositeMorph.cpp

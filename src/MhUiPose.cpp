@@ -8,7 +8,6 @@
 
 #include "MhUi.h"
 
-#include "gui/Window.h"
 #include "Global.h"
 #include "ComponentID.h"
 

@@ -7,7 +7,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "gui/CGUtilities.h"
-#include "gui/Window.h"
 #include "render/RenderUtils.h"
 #include "Logger.h"
 #include "render/Shader.h"
@@ -51,12 +50,13 @@ void RenderBackground::loadShader()
 	}
 }
 
+extern glm::ivec2 g_mainWinSize;
+
 void RenderBackground::render()
 {
 	using glm::vec2;
 	
-	auto inSize = mhgui::g_mainWindow->getSize();
-	vec2 size = vec2(inSize.x, inSize.y);
+	vec2 size = vec2(g_mainWinSize);
 	
 	glUseProgram(m_shader->handle);
 	GLint myLoc = glGetUniformLocation(m_shader->handle, "u_viewportResolution");
