@@ -106,6 +106,8 @@ set(myhumanoid_sources
 	src/MhRender.cpp
 	src/MhUi.h
 	src/MhUiCommon.h
+	src/MhUiMain.h
+	src/MhUiMain.cpp
 	src/MhUiMorph.h
 	src/MhUiMorph.cpp
 	src/MhUiPose.h

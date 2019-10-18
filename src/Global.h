@@ -67,3 +67,8 @@ struct WindowVisibility {
 extern WindowVisibility g_displayWin;
 
 extern bool g_morphMode;
+
+
+static constexpr char mh_app_name[] = "MyHumanoid";
+static constexpr char mh_version[]  = "0.1.0";
+
