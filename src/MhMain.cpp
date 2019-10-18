@@ -1020,6 +1020,7 @@ int main(int argc, char ** argv)
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
 			ImGui_ImplSDL2_ProcessEvent(&event);
+			const ImGuiIO & imio = ImGui::GetIO();
 			
 			switch(event.type) {
 				case SDL_QUIT: {
@@ -1041,75 +1042,61 @@ int main(int argc, char ** argv)
 					}
 					break;
 				}
-			    case SDL_MOUSEBUTTONDOWN: {
-				    int x = event.button.x;
-				    int y = event.button.y;
-				    
-					ImGuiIO & io = ImGui::GetIO();
-					io.MousePos  = ImVec2((float)x, (float)y);
-				    if(!io.WantCaptureMouse) {
+				case SDL_MOUSEBUTTONDOWN: {
+					if(!imio.WantCaptureMouse) {
 						if(event.button.button == SDL_BUTTON_LEFT) {
-						   mouseDownLeft = true;
-						   g_global.camera->mouseRotateStart(event.button.x, event.button.y);
+							mouseDownLeft = true;
+							g_global.camera->mouseRotateStart(event.button.x, event.button.y);
 						}
 						if(event.button.button == SDL_BUTTON_RIGHT) {
 							mouseDownRight = true;
 							g_global.camera->mouseRotateStart(event.button.x, event.button.y);
 						}
-				    }
-				    break;
-			    }
-			    case SDL_MOUSEBUTTONUP: {
-				    int x = event.button.x;
-				    int y = event.button.y;
-				    
-				    ImGuiIO & io = ImGui::GetIO();
-				    io.MousePos  = ImVec2((float)x, (float)y);
-				    if(!io.WantCaptureMouse) {
+					}
+					break;
+				}
+				case SDL_MOUSEBUTTONUP: {
+					if(!imio.WantCaptureMouse) {
 						if(event.button.button == SDL_BUTTON_LEFT) {
 							mouseDownLeft = false;
 						}
 						if(event.button.button == SDL_BUTTON_RIGHT) {
 							mouseDownRight = false;
 						}
-				    }
-				    break;
-			    }
+					}
+					break;
+				}
 				case SDL_MOUSEMOTION: {
-				    int x = event.button.x;
-				    int y = event.button.y;
-				    
-				    ImGuiIO & io = ImGui::GetIO();
-				    io.MousePos  = ImVec2((float)x, (float)y);
-				    if(!io.WantCaptureMouse) {
+					if(!imio.WantCaptureMouse) {
 						if(mouseDownLeft) {
 							g_global.camera->rotateMouse(event.motion.x, event.motion.y);
 						}
 						if(mouseDownRight) {
 							g_global.camera->moveMouse(event.motion.x, event.motion.y);
 						}
-				    }
+					}
 					break;
 				}
 				case SDL_MOUSEWHEEL: {
-				    if(event.wheel.y > 0) {
-					    g_global.camera->move(0, 0, 1);
-//					    if(!g_global.camera->isPerspective()) {
-//						    reshape(g_mainWindow.getSize().x,
-//						            mainWindow.getSize().y);
-//					    }
-					} else if(event.wheel.y < 0) {
-						g_global.camera->move(0, 0, -1);
-//					    if(!g_global.camera->isPerspective()) {
-//						    reshape(mainWindow.getSize().x,
-//						            mainWindow.getSize().y);
-//					    }
+					if(!imio.WantCaptureMouse) {
+						if(event.wheel.y > 0) {
+							g_global.camera->move(0, 0, 1);
+		//					    if(!g_global.camera->isPerspective()) {
+		//						    reshape(g_mainWindow.getSize().x,
+		//						            mainWindow.getSize().y);
+		//					    }
+						} else if(event.wheel.y < 0) {
+							g_global.camera->move(0, 0, -1);
+		//					    if(!g_global.camera->isPerspective()) {
+		//						    reshape(mainWindow.getSize().x,
+		//						            mainWindow.getSize().y);
+		//					    }
+						}
 					}
 					break;
 				}
 				case SDL_KEYUP: {
-				    keyboard(event.key.keysym.sym);
-					
+					keyboard(event.key.keysym.sym);
 					break;
 				}
 			}
@@ -1131,14 +1118,7 @@ int main(int argc, char ** argv)
 		DisplayMainMenu();
 		
 		ImGui::Render();
-		// ImGuiIO& io = ImGui::GetIO();
-		// glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
-		// glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		// glClear(GL_COLOR_BUFFER_BIT);
-		// glUseProgram(0); // You may want this if using this code in an OpenGL 3+
-		// context where shaders may be bound, but prefer using the GL3+ code.
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		
 		
 		if(g_requestShaderReload) {
 			g_requestShaderReload = false;
