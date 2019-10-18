@@ -51,27 +51,18 @@ Camera::Camera()
         , cam_pos()
         , cam_center()
         , mode(false)
-        ,
-
-        mCameraPos(0.0f, 0.0f, 0.0f)
+        , mCameraPos(0.0f, 0.0f, 0.0f)
         , mAngleX(0)
         , mAngleY(0)
         , mAngleZ(0)
         , startVector(0.0f, 0.0f, -30.0f)
         , endVector(0.0f, -7.0f, -3.0f)
-        ,
-
-        startAngleX((0.0 * glm::pi<float>()) / 180.0f)
+        , startAngleX((0.0 * glm::pi<float>()) / 180.0f)
         , endAngleX((-90.0 * glm::pi<float>()) / 180.0f)
-        ,
-
-        startAngleY((0.0 * glm::pi<float>()) / 180.0f)
+        , startAngleY((0.0 * glm::pi<float>()) / 180.0f)
         , endAngleY((00.0 * glm::pi<float>()) / 180.0f)
-        ,
-
-        timeForMorph(1.0)
-        , // in Seconds
-        step(-1)
+        , timeForMorph(1.0) // in Seconds
+        , step(-1)
 {
 }
 
