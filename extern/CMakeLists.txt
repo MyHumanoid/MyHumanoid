@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+add_subdirectory(fmt)
+
 project(imgui)
 
 set(imgui_dir ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
@@ -103,10 +105,4 @@ endif()
 
 # ============================================================
 
-add_library(fmt STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/fmt/src/format.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/fmt/src/posix.cc
-)
-target_include_directories(fmt PUBLIC
-	${CMAKE_CURRENT_SOURCE_DIR}/fmt/include
-)
+
