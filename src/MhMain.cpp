@@ -201,23 +201,19 @@ int main2(int argc, char * argv[])
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	
 	
-	// FIXME WTF why does it move ? window decoration ?
-	g_config.windowMain.pos -= glm::ivec2(2, 21);
-	
 	std::string title = mh_app_name + std::string(" ") + mh_version;
 	
-	Rect rect = Rect(g_config.windowMain.pos.x, g_config.windowMain.pos.y,
-	                 g_config.windowMain.siz.x, g_config.windowMain.siz.y);
+	const auto & winRect = g_config.windowMain;
 	
-	/* Create our window centered at 512x512 resolution */
 	mainwindow = SDL_CreateWindow(title.c_str(),
-	                              rect.pos.x,
-	                              rect.pos.y,
-	                              rect.size.x,
-	                              rect.size.y,
+	                              winRect.pos.x,
+	                              winRect.pos.y,
+	                              winRect.siz.x,
+	                              winRect.siz.y,
 	                              SDL_WINDOW_OPENGL
 	                                  | SDL_WINDOW_SHOWN
 	                                  | SDL_WINDOW_RESIZABLE);
+	
 	if (!mainwindow) {
 		throw std::runtime_error("Unable to create window");
 	}
@@ -475,6 +471,13 @@ int main2(int argc, char * argv[])
 	{
 		auto & p = g_config.windowMain.pos;
 		SDL_GetWindowPosition(mainwindow, &p.x, &p.y);
+		
+		glm::ivec2 topLeftBorder;
+		SDL_GetWindowBordersSize(mainwindow,
+		                         &topLeftBorder.y, &topLeftBorder.x,
+		                         nullptr, nullptr);
+		
+		p -= topLeftBorder;
 	}
 	{
 		auto & s = g_config.windowMain.siz;
