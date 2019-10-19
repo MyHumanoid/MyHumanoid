@@ -11,7 +11,7 @@
 namespace vfs
 {
 
-void init();
+void init(const char * argv0);
 
 void deinit();
 

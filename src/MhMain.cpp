@@ -69,8 +69,6 @@
 #include "MhRender.h"
 #include "Vfs.h"
 
-#include "physfs.h"
-
 #include "SDL2/SDL.h"
 
 #define kTimerRendering 1000
@@ -179,88 +177,10 @@ static void keyboard(SDL_Keycode key)
 	}
 }
 
-struct SDLWindow {
-	
-	SDL_Window *mainwindow; /* Our window handle */
-	SDL_GLContext maincontext; /* Our opengl context handle */
-	
-	SDLWindow(const Rect & rect, const std::string & title)
-	{
-		if(SDL_Init(SDL_INIT_VIDEO) < 0) {
-			throw std::runtime_error("Unable to initialize SDL");
-		}
-		
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-		
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
-		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-		
-		/* Create our window centered at 512x512 resolution */
-		mainwindow = SDL_CreateWindow(title.c_str(),
-		                              rect.pos.x,
-		                              rect.pos.y,
-		                              rect.size.x,
-		                              rect.size.y,
-		                              SDL_WINDOW_OPENGL
-		                                  | SDL_WINDOW_SHOWN
-		                                  | SDL_WINDOW_RESIZABLE);
-		if (!mainwindow) {
-			throw std::runtime_error("Unable to create window");
-		}
-		
-		SDL_SetWindowMinimumSize(mainwindow, 800, 600);
-		
-		//checkSDLError(__LINE__);
-		
-		/* Create our opengl context and attach it to our window */
-		maincontext = SDL_GL_CreateContext(mainwindow);
-		//checkSDLError(__LINE__);
-		
-		
-		glewExperimental = true;
-		GLenum err       = glewInit();
-		if(err != GLEW_OK) {
-			log_error("GLEW error: {}", glewGetErrorString(err));
-		}
-		
-		log_info("GL   version: {}", glGetString(GL_VERSION));
-		log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
-		log_info("GLEW Version: {}.{}.{}",
-		         GLEW_VERSION_MAJOR,
-		         GLEW_VERSION_MINOR,
-		         GLEW_VERSION_MICRO);
-		
-		initDebugGl();
-		
-		glEnable(GL_DEPTH_TEST);
-		
-		glClearColor(0, 0, 0, 1);
-		
-		/* This makes our buffer swap syncronized with the monitor's vertical refresh */
-		SDL_GL_SetSwapInterval(1);
-	}
-	
-	void swap()
-	{
-		SDL_GL_SwapWindow(mainwindow);
-	}
-	
-	~SDLWindow()
-	{
-		/* Delete our opengl context, destroy our window, and shutdown SDL */
-		SDL_GL_DeleteContext(maincontext);
-		SDL_DestroyWindow(mainwindow);
-		SDL_Quit();
-	}
-};
+SDL_Window *mainwindow; /* Our window handle */
+SDL_GLContext maincontext; /* Our opengl context handle */
 
-int main(int argc, char ** argv)
+int main2(int argc, char * argv[])
 {
 	if(argc == 2) {
 		if(argv[1] && argv[1] == std::string("--debug")) {
@@ -268,28 +188,84 @@ int main(int argc, char ** argv)
 		}
 	}
 	
-	PHYSFS_init(argv[0]);
-	vfs::init();
+	// throw std::overflow_error("TEST exception");
+	
+	vfs::init(argv[0]);
 	
 	LoadConfig();
 	
+	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+		throw std::runtime_error("Unable to initialize SDL");
+	}
+	
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	
+	
 	// FIXME WTF why does it move ? window decoration ?
 	g_config.windowMain.pos -= glm::ivec2(2, 21);
-
-	Rect mainWinRect = Rect(g_config.windowMain.pos.x, g_config.windowMain.pos.y,
-	                        g_config.windowMain.siz.x, g_config.windowMain.siz.y);
 	
-	std::string winTitle = mh_app_name + std::string(" ") + mh_version;
-
-	// g_global.mesh     = new Mesh();
+	std::string title = mh_app_name + std::string(" ") + mh_version;
+	
+	Rect rect = Rect(g_config.windowMain.pos.x, g_config.windowMain.pos.y,
+	                 g_config.windowMain.siz.x, g_config.windowMain.siz.y);
+	
+	/* Create our window centered at 512x512 resolution */
+	mainwindow = SDL_CreateWindow(title.c_str(),
+	                              rect.pos.x,
+	                              rect.pos.y,
+	                              rect.size.x,
+	                              rect.size.y,
+	                              SDL_WINDOW_OPENGL
+	                                  | SDL_WINDOW_SHOWN
+	                                  | SDL_WINDOW_RESIZABLE);
+	if (!mainwindow) {
+		throw std::runtime_error("Unable to create window");
+	}
+	
+	SDL_SetWindowMinimumSize(mainwindow, 800, 600);
+	
+	//checkSDLError(__LINE__);
+	
+	/* Create our opengl context and attach it to our window */
+	maincontext = SDL_GL_CreateContext(mainwindow);
+	//checkSDLError(__LINE__);
+	
+	
+	glewExperimental = true;
+	GLenum err       = glewInit();
+	if(err != GLEW_OK) {
+		log_error("GLEW error: {}", glewGetErrorString(err));
+	}
+	
+	log_info("GL   version: {}", glGetString(GL_VERSION));
+	log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	log_info("GLEW Version: {}.{}.{}",
+	         GLEW_VERSION_MAJOR,
+	         GLEW_VERSION_MINOR,
+	         GLEW_VERSION_MICRO);
+	
+	initDebugGl();
+	
+	glEnable(GL_DEPTH_TEST);
+	
+	glClearColor(0, 0, 0, 1);
+	
+	/* This makes our buffer swap syncronized with the monitor's vertical refresh */
+	SDL_GL_SetSwapInterval(1);
+	
+	
 	g_global.camera   = new mhgui::Camera();
 	g_global.autozoom = new mhgui::Autozoom();
 	
-	
-	SDLWindow sdlWindow(mainWinRect, winTitle);
-	
-	
-	//mhgui::g_mainWindow->initWindow();
 	
 	g_renderBody.init();
 	g_renderBackground.init();
@@ -359,7 +335,7 @@ int main(int argc, char ** argv)
 
 	ImGui::StyleColorsDark();
 	
-	ImGui_ImplSDL2_InitForOpenGL(sdlWindow.mainwindow, sdlWindow.maincontext);
+	ImGui_ImplSDL2_InitForOpenGL(mainwindow, maincontext);
 	{
 		const char* glsl_version = "#version 130";
 		ImGui_ImplOpenGL3_Init(glsl_version);
@@ -407,7 +383,7 @@ int main(int argc, char ** argv)
 				case SDL_WINDOWEVENT: {
 					switch(event.window.event) {
 						case SDL_WINDOWEVENT_CLOSE: {
-							if(event.window.windowID == SDL_GetWindowID(sdlWindow.mainwindow)) {
+							if(event.window.windowID == SDL_GetWindowID(mainwindow)) {
 								runMainloop = false;
 							}
 							break;
@@ -486,7 +462,7 @@ int main(int argc, char ** argv)
 		
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame(sdlWindow.mainwindow);
+		ImGui_ImplSDL2_NewFrame(mainwindow);
 		ImGui::NewFrame();
 		
 		timerTrigger();
@@ -504,7 +480,7 @@ int main(int argc, char ** argv)
 		
 		ExecuteDeferredActions();
 		
-		sdlWindow.swap();
+		SDL_GL_SwapWindow(mainwindow);
 	}
 
 	// Cleanup
@@ -514,16 +490,38 @@ int main(int argc, char ** argv)
 	
 	{
 		auto & p = g_config.windowMain.pos;
-		SDL_GetWindowPosition(sdlWindow.mainwindow, &p.x, &p.y);
+		SDL_GetWindowPosition(mainwindow, &p.x, &p.y);
 	}
 	{
 		auto & s = g_config.windowMain.siz;
-		SDL_GetWindowSize(sdlWindow.mainwindow, &s.x, &s.y);
+		SDL_GetWindowSize(mainwindow, &s.x, &s.y);
 	}
-
+	
+	/* Delete our opengl context, destroy our window, and shutdown SDL */
+	SDL_GL_DeleteContext(maincontext);
+	SDL_DestroyWindow(mainwindow);
+	SDL_Quit();
+	
 	SaveConfig();
 	
 	vfs::deinit();
 	
 	return 0;
+}
+
+int main(int argc, char * argv[])
+{
+	try {
+		return main2(argc, argv);
+	} catch(...) {
+		// TODO log this
+		auto eptr = std::current_exception();
+		
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+		                         "MyHumanoid",
+		                         "ERROR\nFailed to start.\nCheck the log.",
+		                         NULL);
+		
+		return 1;
+	} 
 }

@@ -15,7 +15,8 @@
 namespace vfs
 {
 
-void init() {
+void init(const char * argv0) {
+	PHYSFS_init(argv0);
 	PHYSFS_permitSymbolicLinks(1);
 	if(PHYSFS_mount("./MyHumanoid.data", "/data", 1)) {
 		log_info("Added MyHumanoid.data file");
