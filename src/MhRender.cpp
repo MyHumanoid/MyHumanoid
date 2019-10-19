@@ -229,16 +229,14 @@ void RenderBody::render()
 	
 	glUseProgram(m_shader->handle);
 	
-	glUniformMatrix4fv(glGetUniformLocation(m_shader->handle, "u_modelViewMatrix"),
-					   1, GL_FALSE, &g_modelViewMatrix.data[0]);
+	glm::mat4 modelViewMatrix = glm::make_mat4(g_modelViewMatrix.data);
+	glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(modelViewMatrix)));
 	
-	{
-		// TODO proper gl_NormalMatrix;
-		glm::mat3 normalMatrix = glm::mat3(glm::make_mat4(g_modelViewMatrix.data));
-		
-		glUniformMatrix3fv(glGetUniformLocation(m_shader->handle, "u_NormalMatrix"),
-		                   1, GL_FALSE, glm::value_ptr(normalMatrix));
-	}
+	glUniformMatrix4fv(glGetUniformLocation(m_shader->handle, "u_modelViewMatrix"),
+	                   1, GL_FALSE, glm::value_ptr(modelViewMatrix));
+	
+	glUniformMatrix3fv(glGetUniformLocation(m_shader->handle, "u_NormalMatrix"),
+	                   1, GL_FALSE, glm::value_ptr(normalMatrix));
 	
 	glUniformMatrix4fv(glGetUniformLocation(m_shader->handle, "u_projectionMatrix"),
 	                   1, GL_FALSE, glm::value_ptr(g_projectionMatrix));
