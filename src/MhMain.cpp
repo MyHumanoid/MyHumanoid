@@ -85,9 +85,6 @@ const Color border_color(1.0, 0.55, 0.0, 0.8);
 const Color grid_color(0.35, 0.50, 0.30, 0.50);
 const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
-#include <nfd.h>
-
-
 // ================================================================================================
 
 glm::ivec2 g_mainWinSize;
@@ -111,27 +108,21 @@ static void timerTrigger()
 	}
 }
 
-//static void special(int key)
-//{
-//		switch(key) {
-//		case GLUT_KEY_UP:
-//			g_global.camera->move(0, 1, 0);
-//			break;
-//		case GLUT_KEY_DOWN:
-//			g_global.camera->move(0, -1, 0);
-//			break;
-//		case GLUT_KEY_LEFT:
-//			g_global.camera->move(-1, 0, 0);
-//			break;
-//		case GLUT_KEY_RIGHT:
-//			g_global.camera->move(1, 0, 0);
-//			break;
-//		}
-//}
-
 static void keyboard(SDL_Keycode key)
 {
 	switch(key) {
+		case SDLK_UP:
+			g_global.camera->move(0, 1, 0);
+			break;
+		case SDLK_DOWN:
+			g_global.camera->move(0, -1, 0);
+			break;
+		case SDLK_LEFT:
+			g_global.camera->move(-1, 0, 0);
+			break;
+		case SDLK_RIGHT:
+			g_global.camera->move(1, 0, 0);
+			break;
 		case SDLK_KP_PLUS:
 			g_global.camera->move(0, 0, 1);
 			break;
@@ -172,8 +163,8 @@ static void keyboard(SDL_Keycode key)
 			g_global.camera->resetPosition();
 			g_global.camera->move(0, 0, -125);
 			break;
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
