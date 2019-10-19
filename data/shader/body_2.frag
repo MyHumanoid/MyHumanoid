@@ -1,4 +1,4 @@
-#version 140
+#version 440
 
 uniform sampler2D texture0;
 uniform sampler2D texture1;
@@ -101,14 +101,12 @@ vec4 flight(in vec3 normal, in vec4 ecPosition)
 
 void main()
 {
-	vec3 transformedNormal = normalize(gl_NormalMatrix * io_vertexNormal);
-	
-	vec4 color = flight(transformedNormal, vec4(io_FragPos, 1.0));
+	vec4 color = flight(io_vertexNormal, vec4(io_FragPos, 1.0));
 	
 	vec4 texColor = texture2D(texture0, io_texCoord);
 	
 	color = clamp(color * texColor, 0.0, 1.0);
-	gl_FragColor = color;
+	io_fragmentColor = color;
 	
 	
 	//vec4 color = io_vertexColor;
