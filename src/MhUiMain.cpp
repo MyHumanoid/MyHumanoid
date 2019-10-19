@@ -210,7 +210,9 @@ static void ResetMeshMorph()
 // ================================================================================================
 // ================================================================================================
 
-static bool g_userRequestedQuit = false;
+bool g_userRequestedQuit = false;
+bool g_userAcceptedQuit = false;
+
 static bool g_displayAxis       = false;
 
 static bool g_requestShaderReload  = false;
@@ -434,7 +436,7 @@ void DisplayQuitPopup()
 		ImGui::Text("Do you really want to quit?\n");
 		ImGui::Separator();
 		if(ImGui::Button("YES", ImVec2(120, 0))) {
-			g_userRequestedQuit = true;
+			g_userAcceptedQuit = true;
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
@@ -461,10 +463,9 @@ void DisplayMainMenu()
 				exportCollada(filename);
 			}
 			ImGui::Separator();
-			if(ImGui::Button("Quit...")) {
-				ImGui::OpenPopup("Quit?");
+			if(ImGui::MenuItem("Quit...")) {
+				g_userRequestedQuit = true;
 			}
-			DisplayQuitPopup();
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("View")) {
@@ -641,6 +642,13 @@ void DisplayMainMenu()
 	if(g_displayWin.about) {
 		DisplayAbout();
 	}
+	
+	if(g_userRequestedQuit) {
+		g_userRequestedQuit = false;
+		ImGui::OpenPopup("Quit?");
+	}
+	
+	DisplayQuitPopup();
 }
 
 void ExecuteDeferredActions()

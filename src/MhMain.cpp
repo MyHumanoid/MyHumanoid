@@ -301,17 +301,6 @@ int main2(int argc, char * argv[])
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
 	
-//	glutCloseFunc([]() -> void {
-//		// TODO glut does not let us prevent closing in a sane way
-//		// just let it happen for now :/
-
-//		//		g_userRequestedQuit = true;
-//		//		Window &mainWindow(*g_mainWindow);
-
-//		// TODO WHY?
-//		// mainWindow.mainLoop();
-//	});
-
 	::glPolygonOffset(1.0, 1.0);
 
 	loadDefaultBodySettings();
@@ -368,17 +357,17 @@ int main2(int argc, char * argv[])
 			
 			switch(event.type) {
 				case SDL_QUIT: {
-					runMainloop = false;
+					g_userRequestedQuit = true;
 					break;
 				}
 				case SDL_WINDOWEVENT: {
 					switch(event.window.event) {
-						case SDL_WINDOWEVENT_CLOSE: {
-							if(event.window.windowID == SDL_GetWindowID(mainwindow)) {
-								runMainloop = false;
-							}
-							break;
-						}
+//						case SDL_WINDOWEVENT_CLOSE: {
+//							if(event.window.windowID == SDL_GetWindowID(mainwindow)) {
+//								g_userRequestedQuit = true;
+//							}
+//							break;
+//						}
 				        case SDL_WINDOWEVENT_SIZE_CHANGED:
 						case SDL_WINDOWEVENT_RESIZED: {
 							g_mainWinSize = {
@@ -472,6 +461,10 @@ int main2(int argc, char * argv[])
 		ExecuteDeferredActions();
 		
 		SDL_GL_SwapWindow(mainwindow);
+		
+		if(g_userAcceptedQuit) {
+			runMainloop = false;
+		}
 	}
 
 	// Cleanup
