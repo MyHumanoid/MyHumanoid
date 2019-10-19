@@ -5,17 +5,17 @@
 uniform sampler2D texUnit0;
 
 layout(location = 0)
-in vec4 v_frontColor;
+in vec4 i_Color;
 layout(location = 1)
-in vec2 v_texCoord0;
+in vec2 i_texCoord;
 
 layout(location = 0)
-out vec4 o_fragColor;
+out vec4 o_Color;
 
 void main()
 {
-	vec4 color = v_frontColor;
-	vec4 texture0Arg0 = texture2D(texUnit0, v_texCoord0);
+	vec4 color = i_Color;
+	vec4 texture0Arg0 = texture2D(texUnit0, i_texCoord);
 	color = clamp(color * texture0Arg0, 0.0, 1.0);
-	o_fragColor = color;
+	o_Color = color;
 }
