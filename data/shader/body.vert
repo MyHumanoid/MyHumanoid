@@ -1,4 +1,4 @@
-#version 120
+#version 440
 
 // Fixed function shading emulation
 
@@ -36,8 +36,20 @@ uniform vec4 light_specular[2] = vec4[2](
 uniform mat4 u_modelViewMatrix;
 uniform mat4 u_projectionMatrix;
 
-varying vec4 v_frontColor;
-varying vec2 v_texCoord0;
+
+layout(location = 0)
+in vec3 in_Vertex;
+layout(location = 1)
+in vec3 in_Normal;
+layout(location = 2)
+in vec4 in_Color;
+layout(location = 3)
+in vec2 in_TexCoord;
+
+layout(location = 0)
+out vec4 v_frontColor;
+layout(location = 1)
+out vec2 v_texCoord0;
 
 
 vec4 Ambient;
@@ -90,7 +102,7 @@ void flight(in vec3 normal, in vec4 ecPosition)
 	
 	vec4 color = sceneColor
 	      + Ambient  * mat_ambient
-	      + Diffuse  * gl_Color;
+	      + Diffuse  * in_Color;
 	      + Specular * mat_specular;
 	
 	v_frontColor = clamp(color, 0.0, 1.0);
@@ -99,13 +111,17 @@ void flight(in vec3 normal, in vec4 ecPosition)
 void main(void)
 {
 	// Do fixed functionality vertex transform
-	gl_Position = u_projectionMatrix * u_modelViewMatrix * gl_Vertex;
+	gl_Position = u_projectionMatrix * u_modelViewMatrix * vec4(in_Vertex, 1.0);//gl_Vertex;
 	
-	vec3 transformedNormal = normalize(gl_NormalMatrix * gl_Normal);
+	// TODO proper gl_NormalMatrix;
+	//vec3 transformedNormal = normalize(gl_NormalMatrix * gl_Normal);
+	mat3 NormalMatrix = mat3(u_modelViewMatrix);
+	
+	vec3 transformedNormal = NormalMatrix * in_Normal;
 	
 	// Eye-coordinate position of vertex, needed in various calculations
-	vec4 ecPosition = u_modelViewMatrix * gl_Vertex;
+	vec4 ecPosition = u_modelViewMatrix * vec4(in_Vertex, 1.0);//gl_Vertex;
 	flight(transformedNormal, ecPosition);
 	
-	v_texCoord0 = gl_MultiTexCoord0.xy;
+	v_texCoord0 = in_TexCoord;
 }

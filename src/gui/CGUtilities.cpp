@@ -59,8 +59,6 @@ void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar
 void cgutils::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 {
 	glViewport(0, 0, inSize.x, inSize.y);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
 
 	const float kZFar     = 1000.0f;
 	const float kZNear    = 1.0f;
@@ -69,14 +67,6 @@ void cgutils::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 
 	if(inCamera.isPerspective()) // if perspective
 	{
-		if(inSize.y == 0)
-			perspectiveGL(kFOVY, static_cast<float>(inSize.x), kZNear, kZFar);
-		else
-			perspectiveGL(kFOVY,
-			              static_cast<float>(inSize.x) /
-			                      static_cast<float>(inSize.y),
-			              kZNear, kZFar);
-		
 		glm::vec2 fSize = inSize;
 		
 		g_projectionMatrix = glm::perspectiveFov(kFOVY, fSize.x, fSize.y, kZNear, kZFar);
@@ -86,13 +76,9 @@ void cgutils::reshape(const glm::ivec2 & inSize, const Camera & inCamera)
 		float scalex = (zToCenter * 0.08761 *
 		                ratioW); // provvisorio: ricavare un fattore dalla distanza
 		float scaley = (zToCenter * 0.08761); // della camera dall'origine
-		glOrtho(-scalex, scalex, -scaley, scaley, kZNear, kZFar);
 		
 		g_projectionMatrix = glm::ortho(-scalex, scalex, -scaley, scaley, kZNear, kZFar);
 	}
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 }
 
 void cgutils::enableBlend()

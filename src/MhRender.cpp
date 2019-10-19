@@ -72,9 +72,99 @@ void RenderBackground::render()
 
 RenderBody g_renderBody;
 
+
+struct Buffers {
+	std::vector<glm::vec3> vert;
+	std::vector<glm::vec3> normal;
+	std::vector<glm::vec4> color;
+	std::vector<glm::vec2> texCoord;
+	
+	struct GlBuffers {
+		GLuint vert;
+		GLuint normal;
+		GLuint color;
+		GLuint texCoord;
+	};
+	GlBuffers glBuffers;
+	
+	GLuint m_vertexArrayObject;
+	
+	void init()
+	{
+		glGenBuffers(1, &glBuffers.vert);
+		glGenBuffers(1, &glBuffers.normal);
+		glGenBuffers(1, &glBuffers.color);
+		glGenBuffers(1, &glBuffers.texCoord);
+		
+		glGenVertexArrays(1, &m_vertexArrayObject);
+		glBindVertexArray(m_vertexArrayObject);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.vert);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		glEnableVertexAttribArray(0);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.normal);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		glEnableVertexAttribArray(1);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.color);
+		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+		glEnableVertexAttribArray(2);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.texCoord);
+		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+		glEnableVertexAttribArray(3);
+	}
+	
+	void clear()
+	{
+		vert.clear();
+		normal.clear();
+		color.clear();
+		texCoord.clear();
+	}
+	
+	void copy()
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.vert);
+		glBufferData(GL_ARRAY_BUFFER,
+		             vert.size() * sizeof(glm::vec3),
+		             vert.data(),
+		             GL_DYNAMIC_DRAW);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.normal);
+		glBufferData(GL_ARRAY_BUFFER,
+		             normal.size() * sizeof(glm::vec3),
+		             normal.data(),
+		             GL_DYNAMIC_DRAW);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.color);
+		glBufferData(GL_ARRAY_BUFFER,
+		             color.size() * sizeof(glm::vec4),
+		             color.data(),
+		             GL_DYNAMIC_DRAW);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffers.texCoord);
+		glBufferData(GL_ARRAY_BUFFER,
+		             texCoord.size() * sizeof(glm::vec2),
+		             texCoord.data(),
+		             GL_DYNAMIC_DRAW);
+	}
+	
+	void render()
+	{
+		glBindVertexArray(m_vertexArrayObject);
+		glDrawArrays(GL_TRIANGLES, 0, vert.size());
+	}
+};
+
+static Buffers g_buffers;
+
+
 void RenderBody::init()
 {
-	loadShader(0);
+	loadShader(1);
+	g_buffers.init();
 }
 
 void RenderBody::loadShader(int version)
@@ -134,8 +224,6 @@ void RenderBody::render()
 	
 	const VertexVector & vertexvector(g_mesh.getVertexVectorRef());
 	
-	int istri = -1; // to remember which type was the latest drawn geometry and
-	    // avoid too many glBegin
 	
 	cgutils::enableBlend();
 	
@@ -152,6 +240,8 @@ void RenderBody::render()
 		
 		if(groupValue.visible == false)
 			continue;
+		
+		g_buffers.clear();
 		
 		if(g_global.m_enableTexture) {
 			if(groupValue.texture) {
@@ -178,16 +268,8 @@ void RenderBody::render()
 			const Face &        face         = facevector[faceIndex];
 			const TextureFace & texture_face = texturevector[faceIndex];
 			
-			int facesize = (int)face.getSize();
 			
-			if(istri != facesize) {
-				if(istri != -1) {
-					::glEnd();
-				}
-				
-				::glBegin(facesize == 4 ? GL_QUADS : GL_TRIANGLES);
-				istri = facesize;
-			}
+			glm::vec4 faceColor;
 			
 			int material_index = face.getMaterialIndex();
 			if(material_index != -1) {
@@ -195,24 +277,34 @@ void RenderBody::render()
 				const Color &    color(material.color);
 				
 				// Set the color for these vertices
-				::glColor4fv(color.getAsOpenGLVector());
+				
+				faceColor = glm::vec4(color.r, color.g, color.b, color.a);
 			}
 			
-			for(size_t j = 0; j != face.getSize(); ++j) {
+			auto pushVert = [&](int j) {
 				const int & vertIndex = face.vertices[j];
-				
 				const Vertex & vertex = vertexvector.m_verts[vertIndex];
 				const glm::vec3 & normal = vertexvector.m_normals[vertIndex];
 				const glm::vec2 & uv = texture_face[j];
 				
-				::glNormal3fv(glm::value_ptr(normal));
-				::glTexCoord2f(uv.x, uv.y);
-				::glVertex3fv(glm::value_ptr(vertex.pos));
+				g_buffers.vert.push_back(vertex.pos);
+				g_buffers.normal.push_back(normal);
+				g_buffers.color.push_back(faceColor);
+				g_buffers.texCoord.push_back(uv);
+			};
+			
+			pushVert(0);
+			pushVert(1);
+			pushVert(2);
+			if(face.getSize() == 4) {
+				pushVert(0);
+				pushVert(2);
+				pushVert(3);
 			}
 		}
 		
-		::glEnd();
-		istri = -1;
+		g_buffers.copy();
+		g_buffers.render();
 	}
 	
 	glUseProgram(0);

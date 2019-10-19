@@ -214,9 +214,6 @@ void Camera::applyMatrix()
 	g_modelViewMatrix = m_tmp;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glMultMatrixf(m_tmp.data);
 }
 
 /*! Set the camera mode. Ortho (false) or perspective (true). */

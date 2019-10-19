@@ -4,8 +4,10 @@
 
 uniform sampler2D texUnit0;
 
-varying vec4 v_frontColor;
-varying vec2 v_texCoord0;
+layout(location = 0)
+in vec4 v_frontColor;
+layout(location = 1)
+in vec2 v_texCoord0;
 
 layout(location = 0)
 out vec4 o_fragColor;
