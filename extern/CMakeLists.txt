@@ -2,6 +2,7 @@
 
 add_subdirectory(fmt)
 add_subdirectory(imgui)
+add_subdirectory(simpleini)
 
 project(foo)
 
@@ -15,19 +16,6 @@ target_sources(stb_image INTERFACE
 target_include_directories(stb_image INTERFACE
 	${CMAKE_CURRENT_SOURCE_DIR}/stb
 )
-
-# ============================================================
-
-add_library(simpleini STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/ConvertUTF.c
-	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/ConvertUTF.h
-	${CMAKE_CURRENT_SOURCE_DIR}/simpleini/SimpleIni.h
-)
-target_include_directories(simpleini PUBLIC
-	${CMAKE_CURRENT_SOURCE_DIR}/simpleini
-)
-
-# ============================================================
 
 set(nfd_dir ${CMAKE_CURRENT_SOURCE_DIR}/nativefiledialog)
 
