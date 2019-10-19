@@ -252,19 +252,19 @@ void RenderBody::render()
 		if(g_global.m_enableTexture) {
 			if(groupValue.texture) {
 				glActiveTexture(GL_TEXTURE0);
-				::glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
+				glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
 				glUniform1i(glGetUniformLocation(m_shader->handle, "texture0"),
 				            0);
 			}
 			if(groupValue.specular) {
 				glActiveTexture(GL_TEXTURE1);
-				::glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
+				glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
 				glUniform1i(glGetUniformLocation(m_shader->handle, "texture1"),
 				            1);
 			}
 			if(groupValue.bump) {
 				glActiveTexture(GL_TEXTURE2);
-				::glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
+				glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
 				glUniform1i(glGetUniformLocation(m_shader->handle, "texture2"),
 				            2);
 			}
@@ -274,15 +274,12 @@ void RenderBody::render()
 			const Face &        face         = facevector[faceIndex];
 			const TextureFace & texture_face = texturevector[faceIndex];
 			
-			
 			glm::vec4 faceColor;
 			
 			int material_index = face.getMaterialIndex();
 			if(material_index != -1) {
 				const Material & material(materialvector[material_index]);
 				const Color &    color(material.color);
-				
-				// Set the color for these vertices
 				
 				faceColor = glm::vec4(color.r, color.g, color.b, color.a);
 			}
@@ -314,16 +311,6 @@ void RenderBody::render()
 	}
 	
 	glUseProgram(0);
-	
-	//	glColor3ub( 255, 255, 255 );
-	//	for(const auto & strip: mesh->edgestrip) {
-	//		glBegin(GL_LINE_STRIP);
-	//		for(const auto & index: strip) {
-	//			const Vertex &vertex = vertexvector[index];
-	//			::glVertex3fv(glm::value_ptr(vertex.co));
-	//		}
-	//		glEnd();
-	//	}
 	
 	glDisable(GL_BLEND);
 }
