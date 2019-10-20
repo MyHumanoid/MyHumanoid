@@ -11,27 +11,11 @@
 
 - Redo from scratch all target icons
 
-- a little transparency bug in some toolbar icons
-
 - Select the best targets, and delete retundant/nosense targets
-
-- BUG: something is wrong with axis and grid angle
-  -> grid corrected, but axis too?
-
-- BUG: if closing MakeHuman not with <ESC>, but with window menu I get a segfault and core file on Linux. Need to investigate this!
-
-- rewrite README.txt and explain licence
 
 - the target buttons in face and body are mirrored. See if this is a mhgui or makehuman problem and fix it
 
 - show splash image
-
-- use windres in xmingw 
-
-- replace the "cp" command in Makefile.am with "find --exec cp"
-
-- fix the "make distcheck" problem
-
 
 GUI
 
@@ -54,10 +38,3 @@ ANIMORPH
 
 - Add a geometry smooth function, like Blender special transformation.
   It'a a sort of mesh relax. [@Manuel: could you explain this?]
-
-- split animorph into several small libraries
-
-- export vertex groups in OBJ file
-
-- use the same convention to get data from objects. Currently sometimes 
-  we access "x" direct or x() or getX().
