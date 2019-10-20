@@ -1,4 +1,4 @@
-#version 440
+#version 450 core
 
 uniform mat4 u_modelViewMatrix;
 uniform mat3 u_NormalMatrix;

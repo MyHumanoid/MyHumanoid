@@ -1,4 +1,4 @@
-#version 440
+#version 450 core
 
 layout(location = 0)
 in vec2 i_Vertex;
