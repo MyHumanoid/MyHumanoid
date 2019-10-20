@@ -13,10 +13,14 @@ in vec4 i_Color;
 layout(location = 3)
 in vec2 i_TexCoord;
 
-out vec3 io_vertexNormal;
-out vec4 io_vertexColor;
-out vec2 io_texCoord;
-out vec3 io_FragPos;
+layout(location = 0)
+out vec3 o_vertexNormal;
+layout(location = 1)
+out vec4 o_vertexColor;
+layout(location = 2)
+out vec2 o_texCoord;
+layout(location = 3)
+out vec3 o_FragPos;
 
 void main(void)
 {
@@ -24,9 +28,9 @@ void main(void)
 	
 	gl_Position = u_projectionMatrix * u_modelViewMatrix * vert;
 	
-	io_FragPos = vec3(u_modelViewMatrix * vert);
+	o_FragPos = vec3(u_modelViewMatrix * vert);
 	
-	io_vertexNormal = normalize(u_NormalMatrix * i_Normal);
-	io_vertexColor = i_Color;
-	io_texCoord = i_TexCoord;
+	o_vertexNormal = normalize(u_NormalMatrix * i_Normal);
+	o_vertexColor = i_Color;
+	o_texCoord = i_TexCoord;
 }

@@ -4,11 +4,16 @@ uniform sampler2D texture0;
 uniform sampler2D texture1;
 uniform sampler2D texture2;
 
+layout(location = 0)
 in vec3 io_vertexNormal;
+layout(location = 1)
 in vec4 io_vertexColor;
+layout(location = 2)
 in vec2 io_texCoord;
+layout(location = 3)
 in vec3 io_FragPos;
 
+layout(location = 0)
 out vec4 io_fragmentColor;
 
 
