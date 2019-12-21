@@ -15,28 +15,47 @@
 #include "Vfs.h"
 
 
-static const stbi_io_callbacks adapter = {
-    [](void * user, char * data, int size)->int{
-	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
-	    return PHYSFS_readBytes(f, data, size);
-    },
-    [](void * user, int n)->void{
-	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
-	    auto pos = PHYSFS_tell(f);
-	    PHYSFS_seek(f, pos + n);
-    },
-    [](void * user)->int{
-	    PHYSFS_File * f = static_cast<PHYSFS_File *>(user);
-	    return PHYSFS_eof(f);
-    }
+static const char * physfsError() {
+	auto errVal = PHYSFS_getLastErrorCode();
+	return PHYSFS_getErrorByCode(errVal);
+}
+
+struct AdapterUserdata {
+	PHYSFS_File * file;
+	const std::string & name;
+};
+
+static constexpr stbi_io_callbacks adapter = {
+	[](void * user, char * data, int size) -> int {
+		AdapterUserdata * d = static_cast<AdapterUserdata *>(user);
+		auto res = PHYSFS_readBytes(d->file, data, size);
+		if(res == -1) {
+			log_error("Failed to read file: {}, {}", d->name, physfsError());
+			return 0;
+		}
+		return res;
+	},
+	[](void * user, int n) -> void {
+		AdapterUserdata * d = static_cast<AdapterUserdata *>(user);
+		auto pos = PHYSFS_tell(d->file);
+		if(pos == -1) {
+			log_error("Failed to tell file: {}, {}", d->name, physfsError());
+		}
+		auto err = PHYSFS_seek(d->file, pos + n);
+		if(err == 0) {
+			log_error("Failed to seek file: {}, {}", d->name, physfsError());
+		}
+	},
+	[](void * user) -> int {
+		AdapterUserdata * d = static_cast<AdapterUserdata *>(user);
+		return PHYSFS_eof(d->file);
+	}
 };
 
 std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
 	auto file = PHYSFS_openRead(fileName.c_str());
 	if(file == nullptr) {
-		auto errVal = PHYSFS_getLastErrorCode();
-		auto errStr = PHYSFS_getErrorByCode(errVal);
-		log_error("Failed to open file: {}, {}", fileName, errStr);
+		log_error("Failed to open file: {}, {}", fileName, physfsError());
 		return std::nullopt;
 	}
 	int64_t fileSize = PHYSFS_fileLength(file);
@@ -44,11 +63,16 @@ std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
 		return std::nullopt;
 	}
 	
+	AdapterUserdata userdata {
+		file,
+		fileName
+	};
+	
 	glm::ivec2 size;
-	auto img = stbi_load_from_callbacks(&adapter, file, &size.x, &size.y, NULL, 4);
+	auto img = stbi_load_from_callbacks(&adapter, &userdata, &size.x, &size.y, NULL, 4);
 	
 	if(img == NULL) {
-		log_error("Failed to load file: {}", fileName);
+		log_error("Failed to load file: {}, {}", fileName, physfsError());
 		return std::nullopt;
 	}
 	
@@ -71,7 +95,7 @@ std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
 	//	*out_height = image_height;
 	
 	if(!PHYSFS_close(file)) {
-		log_error("Failed to close file: {}", fileName);
+		log_error("Failed to close file: {}, {}", fileName, physfsError());
 	}
 	
 	return mh::Texture(image_texture);
