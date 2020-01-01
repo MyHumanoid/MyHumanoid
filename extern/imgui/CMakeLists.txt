@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
 project(imgui)
 
@@ -22,20 +23,17 @@ set(imgui_src
 )
 
 find_package(GLEW REQUIRED)
-find_package(SDL2 REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
 
-add_library(imgui STATIC
-	${imgui_src}
-)
-target_link_libraries(imgui
-PRIVATE
-	GLEW::GLEW
-	${SDL2_LIBRARIES}
-)
-target_include_directories(imgui
-PRIVATE
-	${GLEW_INCLUDE_DIRS}
-	${SDL2_INCLUDE_DIRS}
-PUBLIC
-	${imgui_dir}
-)
+add_library(imgui STATIC ${imgui_src})
+
+target_link_libraries(imgui PUBLIC GLEW::GLEW)
+
+if(TARGET SDL2::SDL2)
+	target_link_libraries(imgui PUBLIC SDL2::SDL2)
+else()
+	target_link_libraries(imgui PUBLIC ${SDL2_LIBRARIES})
+	target_include_directories(imgui PUBLIC ${SDL2_INCLUDE_DIRS})
+endif()
+
+target_include_directories(imgui PUBLIC ${imgui_dir})

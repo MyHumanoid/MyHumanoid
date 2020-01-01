@@ -69,7 +69,7 @@
 #include "MhRender.h"
 #include "Vfs.h"
 
-#include "SDL2/SDL.h"
+#include <SDL.h>
 
 #define kTimerRendering 1000
 
