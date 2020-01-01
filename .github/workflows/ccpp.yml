@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - name: checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2.0.0
       with:
         fetch-depth: 1
     - name: prepare
@@ -39,7 +39,7 @@ jobs:
         cd build
         cmake --build . --target all
     - name: upload
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v1.0.0
       with:
         name: MyHumanoid-linux
         path: build
@@ -47,7 +47,7 @@ jobs:
     runs-on: windows-2019
     steps:
     - name: checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2.0.0
       with:
         fetch-depth: 1
     - name: install
@@ -81,7 +81,7 @@ jobs:
         cp build/MyHumanoid.data build-package/
         ls build-package
     - name: upload
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v1.0.0
       with:
         name: MyHumanoid-windows
         path: build-package
@@ -91,11 +91,11 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - name: download linux
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v1.0.0
       with:
         name: MyHumanoid-linux
     - name: download windows
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v1.0.0
       with:
         name: MyHumanoid-windows
     - name: Pack Build
