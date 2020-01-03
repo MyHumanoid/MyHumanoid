@@ -5,8 +5,11 @@ if(WIN32)
 	cmake_policy(SET CMP0091 NEW)
 endif()
 
+# Separate variable for updating by release scripts
+set(project_version 0.1.0)
+
 project(MyHumanoid
-	VERSION 0.1.0
+	VERSION ${project_version}
 	DESCRIPTION MyHumanoid
 	LANGUAGES CXX
 )
