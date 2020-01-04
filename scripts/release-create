@@ -1,0 +1,88 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+set -euo pipefail
+IFS=$'\n\t'
+
+function print_usage() {
+	echo "usage: $0 <major|minor|patch>"
+}
+
+relase_type=${1:-}
+echo "$relase_type"
+case "$relase_type" in
+	major|minor|patch)
+		echo "Creating a $relase_type release"
+	;;
+	*)
+		print_usage
+		exit 1
+	;;
+esac
+
+git_root=$(git rev-parse --show-toplevel)
+if [ -d "$git_root" ]
+then
+	echo "Found git root directory: $git_root"
+else
+	echo "Git root directory not found!"
+fi
+
+project_version_file="$git_root/ProjectVersion.cmake"
+if [ -f "$project_version_file" ]
+then
+	echo "Found project version file: $project_version_file"
+else
+	echo "Project version file not found!"
+	exit 1
+fi
+
+
+function readCmakeVar() {
+	local foo
+	foo=$(sed -n "s#^set($1 \(.*\))#\1#p" "$project_version_file")
+	echo "$foo"
+}
+function writeCmakeVar() {
+	sed -i "s#^set($1 \(.*\))#set($1 $2)#" "$project_version_file"
+}
+
+major=$(readCmakeVar project_version_major)
+minor=$(readCmakeVar project_version_minor)
+patch=$(readCmakeVar project_version_patch)
+devel=$(readCmakeVar project_version_devel)
+
+if [ "$devel" != "true" ]
+then
+	echo "Inconsistent state 'project_version_devel' variable should be true"
+	exit 1
+fi
+
+echo "Creating release commit"
+
+writeCmakeVar project_version_devel false
+
+git add "$project_version_file"
+git commit -m "Release version $major.$minor.$patch"
+git tag -a "release/v$major.$minor.$patch" -m "Release tag $major.$minor.$patch"
+
+case $relase_type in
+	"major")
+		major=$((major+1))
+	;;
+	"minor")
+		minor=$((minor+1))
+	;;
+	"patch")
+		patch=$((patch+1))
+	;;
+esac
+
+writeCmakeVar project_version_major $major
+writeCmakeVar project_version_minor $minor
+writeCmakeVar project_version_patch $patch
+writeCmakeVar project_version_devel true
+
+git add "$project_version_file"
+git commit -m "Development version $major.$minor.$patch"
+
+echo "DONE"
