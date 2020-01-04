@@ -67,6 +67,7 @@
 #include "MhConfig.h"
 #include "MhUiMain.h"
 #include "MhRender.h"
+#include "Version.h"
 #include "Vfs.h"
 
 #include <SDL.h>
@@ -201,7 +202,7 @@ int main2(int argc, char * argv[])
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	
 	
-	std::string title = mh_app_name + std::string(" ") + mh_version;
+	std::string title = mh_app_name + std::string(" ") + prettyVersion();
 	
 	const auto & winRect = g_config.windowMain;
 	

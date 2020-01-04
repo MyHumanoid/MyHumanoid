@@ -1,0 +1,9 @@
+#pragma once
+
+constexpr int  g_project_version_major = @project_version_major@;
+constexpr int  g_project_version_minor = @project_version_minor@;
+constexpr int  g_project_version_patch = @project_version_patch@;
+constexpr bool g_project_version_devel = @project_version_devel@;
+
+constexpr char g_project_git_commit_hash[] = "@project_git_commit_hash@";
+constexpr char g_project_git_commit_date[] = "@project_git_commit_date@";

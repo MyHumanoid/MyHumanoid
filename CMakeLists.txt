@@ -1,18 +1,45 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
+# DO NOT MANUALLY EDIT (use the scripts/create-release script)
+set(project_version_major 0)
+set(project_version_minor 1)
+set(project_version_patch 0)
+set(project_version_devel true)
+# END DO NOT MANUALLY EDIT
+
+set(project_version ${project_version_major}.${project_version_minor}.${project_version_patch})
+
 if(WIN32)
 	# MSVC runtime library flags are selected by an abstraction.
 	cmake_policy(SET CMP0091 NEW)
 endif()
-
-# Separate variable for updating by release scripts
-set(project_version 0.1.0)
 
 project(MyHumanoid
 	VERSION ${project_version}
 	DESCRIPTION MyHumanoid
 	LANGUAGES CXX
 )
+
+message(STATUS "Resolving GIT Version")
+set(project_git_commit_hash "unknown")
+set(project_git_commit_date "unknown")
+find_package(Git)
+if(GIT_FOUND)
+	set(git_show_output "unknown;unknown")
+	execute_process(
+		COMMAND ${GIT_EXECUTABLE} show -s --encoding=UTF8 "--format=%H;%ci" HEAD
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		OUTPUT_VARIABLE git_show_output
+		ERROR_QUIET
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	list(GET git_show_output 0 project_git_commit_hash)
+	list(GET git_show_output 1 project_git_commit_date)
+	message(STATUS "GIT:\nhash=${project_git_commit_hash}\ndate=${project_git_commit_date}")
+else()
+	message(STATUS "GIT not found")
+endif()
+
 
 #set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -120,6 +147,8 @@ set(myhumanoid_sources
 	src/StringUtils.h
 	src/util.cpp
 	src/util.h
+	src/Version.h
+	src/Version.cpp
 	src/Vfs.h
 	src/Vfs.cpp
 )
@@ -147,6 +176,14 @@ add_executable(MyHumanoid
 	${myhumanoid_sources}
 	${shader_sources}
 )
+
+configure_file(src/VersionConfig.h.in src/VersionConfig.h)
+target_sources(MyHumanoid PRIVATE
+	src/VersionConfig.h.in
+	${CMAKE_CURRENT_BINARY_DIR}/src/VersionConfig.h
+)
+target_include_directories(MyHumanoid PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/src)
+
 set_target_properties(MyHumanoid PROPERTIES
 	CXX_STANDARD 17
 	INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE

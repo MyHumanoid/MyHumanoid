@@ -22,6 +22,7 @@
 #include "Logger.h"
 #include "StringUtils.h"
 #include "util.h"
+#include "Version.h"
 
 
 void openFileDialog()
@@ -398,7 +399,7 @@ void DisplayAbout()
 	
 	ImGui::Text(mh_app_name);
 	ImGui::SameLine();
-	ImGui::Text(mh_version);
+	ImGui::Text("%s", prettyVersion().c_str());
 	
 	ImGui::Text("Developer:");
 	ImGui::Text("  Eli2");
