@@ -1,11 +1,8 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
-# DO NOT MANUALLY EDIT (use the scripts/create-release script)
-set(project_version_major 0)
-set(project_version_minor 1)
-set(project_version_patch 0)
-set(project_version_devel true)
-# END DO NOT MANUALLY EDIT
+include(${CMAKE_CURRENT_LIST_DIR}/ProjectVersion.cmake)
+
+
 
 set(project_version ${project_version_major}.${project_version_minor}.${project_version_patch})
 
