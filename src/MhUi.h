@@ -4,7 +4,6 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 
-#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
 #define IM_VEC2_CLASS_EXTRA                                                                        \
 	ImVec2(const glm::vec2 & other)                                                            \
 	{                                                                                          \
