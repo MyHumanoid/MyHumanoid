@@ -11,9 +11,7 @@ set(imgui_src
 	${imgui_dir}/imgui_draw.cpp
 	${imgui_dir}/imgui_internal.h
 	${imgui_dir}/imgui_widgets.cpp
-	${imgui_dir}/imstb_rectpack.h
 	${imgui_dir}/imstb_textedit.h
-	${imgui_dir}/imstb_truetype.h
 	${imgui_dir}/misc/cpp/imgui_stdlib.cpp
 	${imgui_dir}/misc/cpp/imgui_stdlib.h
 	${imgui_dir}/examples/imgui_impl_opengl3.h
@@ -26,8 +24,19 @@ find_package(GLEW REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 
 add_library(imgui STATIC ${imgui_src})
+add_library(imgui::imgui ALIAS imgui)
 
-target_link_libraries(imgui PUBLIC GLEW::GLEW)
+target_link_libraries(imgui PUBLIC
+	GLEW::GLEW
+	stb::stb
+)
+
+target_compile_definitions(imgui PUBLIC
+	IMGUI_DISABLE_STB_RECT_PACK_IMPLEMENTATION
+	IMGUI_STB_RECT_PACK_FILENAME="stb_rect_pack.h"
+	IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION
+	IMGUI_STB_TRUETYPE_FILENAME="stb_truetype.h"
+)
 
 if(TARGET SDL2::SDL2)
 	target_link_libraries(imgui PUBLIC SDL2::SDL2)

@@ -227,8 +227,8 @@ target_link_libraries(MyHumanoid PRIVATE
 	GLEW::GLEW
 	${PHYSFS_LIBRARY}
 	fmt
-	imgui
-	stb_image
+	imgui::imgui
+	stb::stb
 	simpleini
 	nativefiledialog
 )
