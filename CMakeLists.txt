@@ -1,8 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
 include(${CMAKE_CURRENT_LIST_DIR}/ProjectVersion.cmake)
-
-
 
 set(project_version ${project_version_major}.${project_version_minor}.${project_version_patch})
 
@@ -16,6 +15,8 @@ project(MyHumanoid
 	DESCRIPTION MyHumanoid
 	LANGUAGES CXX
 )
+
+option(MyHumanoid_BUILD_IPO "Build with Interprocedural optimizations" ON)
 
 message(STATUS "Resolving GIT Version")
 set(project_git_commit_hash "unknown")
@@ -40,6 +41,19 @@ endif()
 
 #set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
+if(MyHumanoid_BUILD_IPO)
+	include(CheckIPOSupported)
+	check_ipo_supported(RESULT HAVE_IPO OUTPUT HAVE_IPO_OUTPUT)
+	if(HAVE_IPO)
+		message(STATUS "IPO enabled")
+		set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+	else()
+		message(STATUS "IPO disabled: ${HAVE_IPO_OUTPUT}")
+	endif()
+endif()
+
 
 if(WIN32)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
