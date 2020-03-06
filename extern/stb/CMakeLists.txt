@@ -4,6 +4,7 @@ project(stb)
 
 add_library(stb STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/stb/stb_image.h
+	${CMAKE_CURRENT_SOURCE_DIR}/stb/stb_image_write.h
 	${CMAKE_CURRENT_SOURCE_DIR}/stb/stb_rect_pack.h
 	${CMAKE_CURRENT_SOURCE_DIR}/stb/stb_truetype.h
 	${CMAKE_CURRENT_SOURCE_DIR}/stb.cpp

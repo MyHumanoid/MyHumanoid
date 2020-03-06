@@ -130,6 +130,8 @@ set(myhumanoid_sources
 	src/gui/CGUtilities.cpp
 	src/gui/Rect.h
 	src/gui/Rect.cpp
+	src/io/Gltf.h
+	src/io/Gltf.cpp
 	src/ComponentID.h
 	src/CompositeMorph.h
 	src/CompositeMorph.cpp
@@ -229,6 +231,7 @@ target_link_libraries(MyHumanoid PRIVATE
 	fmt
 	imgui::imgui
 	stb::stb
+	tinygltf::tinygltf
 	simpleini
 	nativefiledialog
 )

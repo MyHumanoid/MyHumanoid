@@ -258,6 +258,10 @@ private:
 public:
 	Mesh();
 	~Mesh();
+	
+	const vector<glm::vec3> & rawVertices() const {
+		return m_vert_orginal;
+	}
 
 	/*! \brief Get a Ptr to a PoseTarget object which belongs to a given name
 	 *
@@ -280,11 +284,11 @@ public:
 
 	const VertexVector & getVertexVectorMorphOnlyRef() { return m_vert_morph_only; }
 
-	const FaceVector & faces() { return m_faces; }
+	const FaceVector & faces() const { return m_faces; }
 
 	const MaterialVector & materials() const { return m_materials; }
 
-	const TargetMap & targets() { return m_targets; }
+	const TargetMap & targets() const { return m_targets; }
 
 	const PoseMap & posemap() { return m_posemap; }
 

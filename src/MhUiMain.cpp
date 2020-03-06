@@ -8,6 +8,8 @@
 #include "animorph/ColladaExporter.h"
 #include "animorph/ObjExporter.h"
 
+#include "io/Gltf.h"
+
 #include "render/GlTypes.h"
 #include "render/RenderUtils.h"
 
@@ -183,6 +185,12 @@ static void exportCollada(string & filename)
 		log_error("Collada export failed");
 	}
 }
+
+static void exportGltf(const string & fileName)
+{
+	IoGltfWrite(g_mesh, fileName);
+}
+
 
 static void saveAutozoom(const string & filename)
 {
@@ -457,6 +465,12 @@ void DisplayMainMenu()
 				auto path = saveFileDialog("obj");
 				if(path) {
 					exportMeshObj(path.value());
+				}
+			}
+			if(ImGui::MenuItem("Export glTF (.gltf)")) {
+				auto path = saveFileDialog("gltf");
+				if(path) {
+					exportGltf(path.value());
 				}
 			}
 			if(ImGui::MenuItem("Export Collada (.dae)")) {
