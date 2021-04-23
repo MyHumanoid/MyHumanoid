@@ -21,7 +21,10 @@ using vec2 = glm::vec2;
 
 struct Tile {
 	
-	using Interaction = std::pair<int, bool>;
+	struct Interaction {
+		int click = -1;
+		bool hover = false;
+	};
 
 	glm::vec2                  m_size = glm::vec2(32, 32);
 	std::string                m_imageBase;
@@ -41,30 +44,31 @@ struct Tile {
 
 	Interaction gui() const
 	{
-		int click = -1;
-		bool hover = false;
+		Interaction interaction;
+		
 		auto p = ImGui::GetCursorPos();
 		if(ImGui::InvisibleButton(m_imageBase.c_str(), m_size)) {
-			click = 0;
+			interaction.click = 0;
 		}
 		if(ImGui::IsItemClicked(1)) {
-			click = 1;
+			interaction.click = 1;
 		}
 		ImGui::SetCursorPos(p);
 		if(ImGui::IsItemHovered()) {
 			if(m_texOver) {
 				MhGui::Image(m_texOver.value(), m_size);
-				hover = true;
+				interaction.hover = true;
 			}
 		} else {
 			if(m_tex)
 				MhGui::Image(m_tex.value(), m_size);
 		}
-		return std::make_pair(click, hover);
+		return interaction;
 	}
 };
 
-template <typename Derived> struct TileGroupChildWindow {
+template <typename Derived>
+struct TileGroupChildWindow {
 
 	std::string m_category;
 	std::string m_categoryRight;
@@ -95,16 +99,16 @@ template <typename Derived> struct TileGroupChildWindow {
 			for(const auto & tile : d.tiles) {
 				ImGui::TableNextColumn();
 				
-				auto interaction = tile.gui();
+				Tile::Interaction interaction = tile.gui();
 	
-				if(interaction.first == 0) {
+				if(interaction.click == 0) {
 					m_category = tile.m_category;
 				}
-				if(interaction.first == 1) {
+				if(interaction.click == 1) {
 					log_info("Down right");
 					m_categoryRight = tile.m_category;
 				}
-				if(interaction.second) {
+				if(interaction.hover) {
 					m_tooltip = tile.m_tooltip;
 				}
 			}
