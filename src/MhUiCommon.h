@@ -81,39 +81,37 @@ template <typename Derived> struct TileGroupChildWindow {
 		int columns = 6;
 		int rows = d.tiles.size() / 6;
 		
-		ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0);
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, vec2(0));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, vec2(0));
+		ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, vec2(0));
 		
 		auto winSize = ivec2((tileSize.x * columns) + 5, (tileSize.y * rows) + 12);
 		
 		ImGui::BeginChild("Pose Groups", vec2(winSize), false);
-		ImGui::Columns(columns, "Pose Groups Grid", false);
+		
+		auto tableFlags = ImGuiTableFlags_NoSavedSettings
+		                | ImGuiTableFlags_SizingFixedFit;
+		
+		if(ImGui::BeginTable("Pose Groups Table", columns, tableFlags)) {
 
-		// FIXME we still have black vertical lines ?!
-		// Maybe a ImGui ClipRect bug ?
-		// Wait for new ImGui Column Api/Impl ?
-		for(int i = 0; i < 6; ++i) {
-			ImGui::SetColumnWidth(i, 33);
+			for(const auto & tile : d.tiles) {
+				ImGui::TableNextColumn();
+				
+				auto interaction = tile.gui();
+	
+				if(interaction.first == 0) {
+					m_category = tile.m_category;
+				}
+				if(interaction.first == 1) {
+					log_info("Down right");
+					m_categoryRight = tile.m_category;
+				}
+				if(interaction.second) {
+					m_tooltip = tile.m_tooltip;
+				}
+			}
+			ImGui::EndTable();
 		}
-		for(const auto & tile : d.tiles) {
-			auto interaction = tile.gui();
-
-			if(interaction.first == 0) {
-				m_category = tile.m_category;
-			}
-			if(interaction.first == 1) {
-				log_info("Down right");
-				m_categoryRight = tile.m_category;
-			}
-			if(interaction.second) {
-				m_tooltip = tile.m_tooltip;
-			}
-			ImGui::NextColumn();
-		}
-		ImGui::Columns(1);
 		ImGui::EndChild();
-		ImGui::PopStyleVar(3);
+		ImGui::PopStyleVar(1);
 	}
 };
 
