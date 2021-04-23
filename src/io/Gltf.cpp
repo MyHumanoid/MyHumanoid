@@ -292,11 +292,6 @@ void IoGltfWrite(const Animorph::Mesh & mhMesh, const string & fileName) {
 					continue;
 				}
 				
-				// TODO too many targets slows down the blender import
-				if(prim.targets.size() >= 10) {
-					break;
-				}
-				
 				auto accIdx = convertMorphTargets(model, name, target);
 				
 				model.accessors[accIdx].count = mhMesh.rawVertices().size();
