@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <optional>
+#include <string>
 
 #include "render/GlTypes.h"
 

@@ -177,7 +177,7 @@ void Camera::moveMouse(int x, int y)
 	float moveRate = 4500;
 
 	if(mCameraPos.z != 0) {
-		moveRate /= abs(mCameraPos.z);
+		moveRate /= std::abs(mCameraPos.z);
 	}
 
 	move((x - last_mouse_pos.x) / moveRate, -(y - last_mouse_pos.y) / moveRate, 0.0f);
