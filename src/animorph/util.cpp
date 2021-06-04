@@ -45,7 +45,7 @@ void Animorph::UtilStringDelSurround(std::string & str, const std::string & char
 
 bool Animorph::hasFileEnding(const std::string & filename, const std::string & ending)
 {
-	unsigned int loc = filename.find(ending, filename.length() - ending.length());
+	size_t loc = filename.find(ending, filename.length() - ending.length());
 
 	if(loc != string::npos) {
 		return true;
@@ -57,14 +57,14 @@ bool Animorph::hasFileEnding(const std::string & filename, const std::string & e
 std::string Animorph::cutFileEnding(std::string filename, const std::string & ending)
 {
 	if(ending == "") {
-		unsigned int loc = filename.find_last_of('.', filename.length());
+		size_t loc = filename.find_last_of('.', filename.length());
 
 		if(loc != string::npos) {
 			filename.erase(loc);
 			return filename;
 		}
 	} else {
-		unsigned int loc = filename.find(ending, filename.length() - ending.length());
+		size_t loc = filename.find(ending, filename.length() - ending.length());
 
 		if(loc != string::npos) {
 			filename.erase(loc);
