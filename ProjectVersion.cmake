@@ -1,5 +1,5 @@
 # DO NOT MANUALLY EDIT (use the scripts/create-release script)
 set(project_version_major 0)
 set(project_version_minor 1)
-set(project_version_patch 0)
-set(project_version_devel false)
+set(project_version_patch 1)
+set(project_version_devel true)
