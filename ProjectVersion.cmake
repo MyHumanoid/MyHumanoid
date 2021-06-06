@@ -2,4 +2,4 @@
 set(project_version_major 0)
 set(project_version_minor 1)
 set(project_version_patch 0)
-set(project_version_devel true)
+set(project_version_devel false)
