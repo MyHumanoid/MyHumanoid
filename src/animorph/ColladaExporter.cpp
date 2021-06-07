@@ -12,10 +12,8 @@ bool ColladaExporter::exportFile(const string & filename)
 	mesh.loadSkeleton();
 
 	string loc_filename = filename;
-	string mesh_name("mesh.dae");
 
 	string temp2;
-	loc_filename += mesh_name;
 	string temp = "mesh"; //.substr(index+1);
 
 	XMLNode xMainNode;

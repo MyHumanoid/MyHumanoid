@@ -171,9 +171,9 @@ static void exportCollada(string & filename)
 {
 	Animorph::ColladaExporter collada_export(g_mesh);
 	
-	if(filename.substr(filename.size() - 1, 1) != "/") {
-		filename.append("/");
-	}
+//	if(filename.substr(filename.size() - 1, 1) != "/") {
+//		filename.append("/");
+//	}
 	
 	//fs::create_directories(filename);
 	
@@ -474,8 +474,10 @@ void DisplayMainMenu()
 				}
 			}
 			if(ImGui::MenuItem("Export Collada (.dae)")) {
-				std::string filename = "foo-ColladaExport";
-				exportCollada(filename);
+				auto path = saveFileDialog("dae");
+				if(path) {
+					exportCollada(path.value());
+				}
 			}
 			ImGui::Separator();
 			if(ImGui::MenuItem("Quit...")) {
