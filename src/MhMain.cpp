@@ -220,7 +220,16 @@ int main2(int argc, char * argv[])
 	}
 	
 	SDL_SetWindowMinimumSize(mainwindow, 800, 600);
-	
+
+	// Set the window icon
+	{
+		auto iconSurface = loadSurfaceFromFile("data/pixmaps/icon.png");
+		if(iconSurface) {
+			SDL_SetWindowIcon(mainwindow, iconSurface->m_ptr);
+			iconSurface->free();
+		}
+	}
+
 	//checkSDLError(__LINE__);
 	
 	/* Create our opengl context and attach it to our window */

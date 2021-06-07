@@ -123,3 +123,55 @@ void loadTexturesFromDir(IconMap & target, const std::string & baseDir)
 		}
 	}
 }
+
+std::optional<Surface> loadSurfaceFromFile(const std::string & fileName) {
+	auto file = PHYSFS_openRead(fileName.c_str());
+	if(file == nullptr) {
+		log_error("Failed to open file: {}, {}", fileName, physfsError());
+		return std::nullopt;
+	}
+	int64_t fileSize = PHYSFS_fileLength(file);
+	if(fileSize < 0) {
+		return std::nullopt;
+	}
+
+	AdapterUserdata userdata {
+		file,
+		fileName
+	};
+
+	glm::ivec2 size;
+	auto img = stbi_load_from_callbacks(&adapter, &userdata, &size.x, &size.y, NULL, STBI_rgb_alpha);
+
+	if(img == NULL) {
+		log_error("Failed to load file: {}, {}", fileName, physfsError());
+		return std::nullopt;
+	}
+
+	int depth = 32;
+	int pitch = 4 * size.y;
+	const auto surface = SDL_CreateRGBSurfaceWithFormatFrom(img, size.x, size.y,
+	                                                        depth, pitch,
+	                                                        SDL_PIXELFORMAT_RGBA32);
+	if(surface == nullptr) {
+		log_error("Failed to create sdl surface");
+		stbi_image_free(img);
+	}
+
+	if(!PHYSFS_close(file)) {
+		log_error("Failed to close file: {}, {}", fileName, physfsError());
+	}
+
+	return Surface(surface, img);
+}
+
+
+Surface::Surface(SDL_Surface *ptr, unsigned char *img)
+    : m_img(img)
+    , m_ptr(ptr)
+{}
+
+void Surface::free() {
+	SDL_FreeSurface(m_ptr);
+	stbi_image_free(m_img);
+}
