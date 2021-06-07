@@ -29,6 +29,7 @@
 #include "animorph/BodySettings.h"
 #include <animorph/Mesh.h>
 #include <gui/Camera.h>
+#include <functional>
 
 using Animorph::SavedCompSetting;
 
@@ -46,8 +47,8 @@ struct Global {
 	bool       quotedBox       = false;
 	bool       m_enableTexture = false;
 	bool       subdivision     = false;
-	
-	
+
+	std::function<void()> toggleFullscreen;
 	SavedCompSetting m_comp;
 	
 	void clearFuzzy() {

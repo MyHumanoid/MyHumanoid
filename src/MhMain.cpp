@@ -164,15 +164,16 @@ static void keyboard(SDL_Keycode key)
 			g_global.camera->resetPosition();
 			g_global.camera->move(0, 0, -125);
 			break;
+	    case SDLK_F11:
+		    g_global.toggleFullscreen();
+		    break;
 		default:
 			break;
 	}
 }
 
-SDL_Window *mainwindow; /* Our window handle */
-SDL_GLContext maincontext; /* Our opengl context handle */
 
-int main2(int argc, char * argv[])
+static int main2(int argc, char * argv[])
 {
 	if(argc == 2) {
 		if(argv[1] && argv[1] == std::string("--debug")) {
@@ -206,7 +207,7 @@ int main2(int argc, char * argv[])
 	
 	const auto & winRect = g_config.windowMain;
 	
-	mainwindow = SDL_CreateWindow(title.c_str(),
+	SDL_Window * mainWindow = SDL_CreateWindow(title.c_str(),
 	                              winRect.pos.x,
 	                              winRect.pos.y,
 	                              winRect.siz.x,
@@ -215,25 +216,31 @@ int main2(int argc, char * argv[])
 	                                  | SDL_WINDOW_SHOWN
 	                                  | SDL_WINDOW_RESIZABLE);
 	
-	if (!mainwindow) {
+	if (!mainWindow) {
 		throw std::runtime_error("Unable to create window");
 	}
 	
-	SDL_SetWindowMinimumSize(mainwindow, 800, 600);
+	SDL_SetWindowMinimumSize(mainWindow, 800, 600);
 
 	// Set the window icon
 	{
 		auto iconSurface = loadSurfaceFromFile("data/pixmaps/icon.png");
 		if(iconSurface) {
-			SDL_SetWindowIcon(mainwindow, iconSurface->m_ptr);
+			SDL_SetWindowIcon(mainWindow, iconSurface->m_ptr);
 			iconSurface->free();
 		}
 	}
 
+	g_global.toggleFullscreen = [&](){
+		Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
+		bool IsFullscreen = SDL_GetWindowFlags(mainWindow) & FullscreenFlag;
+		SDL_SetWindowFullscreen(mainWindow, IsFullscreen ? 0 : FullscreenFlag);
+	};
+
 	//checkSDLError(__LINE__);
 	
 	/* Create our opengl context and attach it to our window */
-	maincontext = SDL_GL_CreateContext(mainwindow);
+	SDL_GLContext maincontext = SDL_GL_CreateContext(mainWindow);
 	//checkSDLError(__LINE__);
 	
 	
@@ -321,7 +328,7 @@ int main2(int argc, char * argv[])
 
 	ImGui::StyleColorsDark();
 	
-	ImGui_ImplSDL2_InitForOpenGL(mainwindow, maincontext);
+	ImGui_ImplSDL2_InitForOpenGL(mainWindow, maincontext);
 	{
 		const char* glsl_version = "#version 130";
 		ImGui_ImplOpenGL3_Init(glsl_version);
@@ -448,7 +455,7 @@ int main2(int argc, char * argv[])
 		
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame(mainwindow);
+		ImGui_ImplSDL2_NewFrame(mainWindow);
 		ImGui::NewFrame();
 		
 		timerTrigger();
@@ -466,7 +473,7 @@ int main2(int argc, char * argv[])
 		
 		ExecuteDeferredActions();
 		
-		SDL_GL_SwapWindow(mainwindow);
+		SDL_GL_SwapWindow(mainWindow);
 		
 		if(g_userAcceptedQuit) {
 			runMainloop = false;
@@ -480,10 +487,10 @@ int main2(int argc, char * argv[])
 	
 	{
 		auto & p = g_config.windowMain.pos;
-		SDL_GetWindowPosition(mainwindow, &p.x, &p.y);
+		SDL_GetWindowPosition(mainWindow, &p.x, &p.y);
 		
 		glm::ivec2 topLeftBorder;
-		SDL_GetWindowBordersSize(mainwindow,
+		SDL_GetWindowBordersSize(mainWindow,
 		                         &topLeftBorder.y, &topLeftBorder.x,
 		                         nullptr, nullptr);
 		
@@ -491,12 +498,12 @@ int main2(int argc, char * argv[])
 	}
 	{
 		auto & s = g_config.windowMain.siz;
-		SDL_GetWindowSize(mainwindow, &s.x, &s.y);
+		SDL_GetWindowSize(mainWindow, &s.x, &s.y);
 	}
 	
 	/* Delete our opengl context, destroy our window, and shutdown SDL */
 	SDL_GL_DeleteContext(maincontext);
-	SDL_DestroyWindow(mainwindow);
+	SDL_DestroyWindow(mainWindow);
 	SDL_Quit();
 	
 	SaveConfig();

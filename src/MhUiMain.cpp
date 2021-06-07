@@ -501,6 +501,12 @@ void DisplayMainMenu()
 				}
 				ImGui::EndMenu();
 			}
+
+			ImGui::Separator();
+
+			if(ImGui::Button("Toggle Fullscreen (F11)")) {
+				g_global.toggleFullscreen();
+			}
 			
 			ImGui::Separator();
 			
