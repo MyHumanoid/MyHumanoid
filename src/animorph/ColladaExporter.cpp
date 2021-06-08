@@ -146,7 +146,6 @@ bool ColladaExporter::exportFile(const string & filename)
 
 void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 {
-	string  temp2;
 	XMLNode xNode_mesh, xNode_source_position, xNode_float_array, xNode_technique_common,
 	        xNode_accessor, xNode_param;
 	XMLNode xNode_source_normals, xNode_source_uv, xNode_vertices, xNode_input;
@@ -167,9 +166,11 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	std::ostringstream vertex_stream;
 
 	xNode_mesh            = xNode_geometry->addChild("mesh");
-	temp2                 = temp + "-Position";
+	string temp2          = temp + "-Position";
+
 	xNode_source_position = xNode_mesh.addChild("source");
 	xNode_source_position.addAttribute("id", temp2.c_str());
+
 	xNode_float_array = xNode_source_position.addChild("float_array");
 
 	std::ostringstream float_array_stream;
@@ -336,132 +337,68 @@ void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int mate
 	const MaterialVector & materialvector = mesh.materials();
 	// int number_p = facevector.size();
 	const FaceVector & facevector = mesh.faces();
-	XMLNode            xNode_p, xNode_t, xNode_polygons, xNode_triangles, xNode_input;
 	// register unsigned int i,j;
 
 	int number_p = 0, number_t = 0;
 	// int old_material_index = -1;
 
 	unsigned int facevector_size = facevector.size();
-	xNode_polygons               = xNode_mesh->addChild("polygons");
 
-	xNode_input = xNode_polygons.addChild("input");
-	xNode_input.addAttribute("offset", "0");
-	xNode_input.addAttribute("semantic", "VERTEX");
-	xNode_input.addAttribute("source", ("#" + name + "-Vertex").c_str());
 
-	xNode_input = xNode_polygons.addChild("input");
-	xNode_input.addAttribute("offset", "1");
-	xNode_input.addAttribute("semantic", "NORMAL");
-	xNode_input.addAttribute("source", ("#" + name + "-Normals").c_str());
+	{
+	auto n_polylist               = xNode_mesh->addChild("polylist");
 
-	xNode_input = xNode_polygons.addChild("input");
-	xNode_input.addAttribute("offset", "2");
-	xNode_input.addAttribute("semantic", "TEXCOORD");
-	xNode_input.addAttribute("source", ("#" + name + "-UV").c_str());
+	n_polylist.addAttribute("material", materialvector[material].name.c_str());
 
-	xNode_triangles = xNode_mesh->addChild("triangles");
+	    {
+		auto n = n_polylist.addChild("input");
+		n.addAttribute("offset", "0");
+		n.addAttribute("semantic", "VERTEX");
+		n.addAttribute("source", ("#" + name + "-Vertex").c_str());
+	    }
 
-	xNode_input = xNode_triangles.addChild("input");
-	xNode_input.addAttribute("offset", "0");
-	xNode_input.addAttribute("semantic", "VERTEX");
-	xNode_input.addAttribute("source", ("#" + name + "-Vertex").c_str());
+//	    {
+//		auto n = n_polylist.addChild("input");
+//		n.addAttribute("offset", "1");
+//		n.addAttribute("semantic", "NORMAL");
+//		n.addAttribute("source", ("#" + name + "-Normals").c_str());
+//	    }
 
-	xNode_input = xNode_triangles.addChild("input");
-	xNode_input.addAttribute("offset", "1");
-	xNode_input.addAttribute("semantic", "NORMAL");
-	xNode_input.addAttribute("source", ("#" + name + "-Normals").c_str());
+//	    {
+//		auto n = n_polylist.addChild("input");
+//		n.addAttribute("offset", "2");
+//		n.addAttribute("semantic", "TEXCOORD");
+//		n.addAttribute("source", ("#" + name + "-UV").c_str());
+//	    }
 
-	xNode_input = xNode_triangles.addChild("input");
-	xNode_input.addAttribute("offset", "2");
-	xNode_input.addAttribute("semantic", "TEXCOORD");
-	xNode_input.addAttribute("source", ("#" + name + "-UV").c_str());
+	    std::ostringstream vcountStream;
+		std::ostringstream vertIndexStream;
 
-	xNode_p = xNode_polygons.addChild("p");
-	xNode_t = xNode_triangles.addChild("p");
-	std::ostringstream polygon_out_stream;
-	std::ostringstream triangle_out_stream;
+		int count = 0;
+		for(unsigned int i = 0; i < facevector_size; i++) {
+			const Face & face(facevector[i]);
 
-	int texture_counter = 0;
-	for(unsigned int i = 0; i < facevector_size; i++) {
-		const Face & face(facevector[i]);
+			int    material_index = face.getMaterialIndex();
+			string name           = materialvector[material_index].name;
+			string name2          = materialvector[material].name;
 
-		int    material_index = face.getMaterialIndex();
-		string name           = materialvector[material_index].name;
-		string name2          = materialvector[material].name;
+			if(name != name2)
+				continue;
 
-		if(name == name2) {
+			vcountStream << face.getSize() << " ";
 
-			unsigned int face_size = face.getSize();
-			switch(face_size) {
-
-			case 4:
-				WriteTriangle(0, 1, 2, xNode_t, face, texture_counter,
-				              triangle_out_stream);
-				number_t++;
-
-				//        xNode_p = xNode_triangles.addChild("p");
-				WriteTriangle(0, 2, 3, xNode_t, face, texture_counter,
-				              triangle_out_stream);
-				number_t++;
-				break;
-			case 3:
-				number_t++;
-				WriteTriangle(0, 1, 2, xNode_t, face, texture_counter,
-				              triangle_out_stream);
-				break;
-			default:
-				xNode_p = xNode_triangles.addChild("p");
-				number_t++;
-				WriteTriangle(0, 1, 2, xNode_t, face, texture_counter,
-				              triangle_out_stream);
-
-				break;
+			for(size_t j = 0; j < face.getSize(); j++) {
+				vertIndexStream << face.vertices[j] << " ";
 			}
+			count += face.getSize();
 		}
-		texture_counter += face.getSize();
-	}
-	if(number_p > 0) {
+		n_polylist.addAttribute("count", fmt::to_string(count).c_str());
 
-		std::ostringstream count_stream;
-		count_stream << number_p;
-		xNode_polygons.addAttribute("count", count_stream.str().c_str());
-		xNode_polygons.addAttribute("material", materialvector[material].name.c_str());
+		auto n_vertCounts = n_polylist.addChild("vcount");
+		n_vertCounts.addText(vcountStream.str().c_str());
 
-	} else {
-		xNode_polygons.deleteNodeContent(0);
-	}
-	if(number_t > 0) {
-		xNode_t.addText(triangle_out_stream.str().c_str());
-		std::ostringstream count_stream;
-		count_stream << number_t;
-		xNode_triangles.addAttribute("count", count_stream.str().c_str());
-		xNode_triangles.addAttribute("material",
-		                             materialvector[material].name.c_str());
-
-	} else {
-		xNode_triangles.deleteNodeContent(0);
-	}
-}
-
-void ColladaExporter::WriteTriangle(int uno, int due, int tre, XMLNode & p, const Face face,
-                                    int texture_counter, std::ostringstream & polygon_out_stream)
-
-{
-	int triangle[3];
-
-	triangle[0] = uno;
-	triangle[1] = due;
-	triangle[2] = tre;
-
-	for(int j = 0; j < 3; j++) {
-
-		int vertex_number = face.getVertexAtIndex(triangle[j]);
-		// cout << texture_number << endl;
-
-		// face vertex geometry
-		polygon_out_stream << vertex_number << " " << vertex_number << " "
-		                   << texture_counter + triangle[j] << " ";
+		auto n_vertIndices = n_polylist.addChild("p");
+		n_vertIndices.addText(vertIndexStream.str().c_str());
 	}
 }
 
