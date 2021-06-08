@@ -1,4 +1,4 @@
-#include "animorph/ObjExporter.h"
+#include "io/ObjExporter.h"
 
 #include <fmt/format.h>
 

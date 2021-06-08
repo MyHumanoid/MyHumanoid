@@ -42,8 +42,6 @@
 
 #include <animorph/Mesh.h>
 #include <animorph/util.h>
-#include <animorph/ColladaExporter.h>
-#include <animorph/ObjExporter.h>
 
 #include <gui/CGUtilities.h>
 #include <gui/Camera.h>

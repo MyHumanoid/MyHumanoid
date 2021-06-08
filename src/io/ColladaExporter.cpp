@@ -1,4 +1,4 @@
-#include "animorph/ColladaExporter.h"
+#include "io/ColladaExporter.h"
 #include "animorph/xmlParser.h"
 
 #include "Logger.h"

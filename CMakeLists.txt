@@ -68,16 +68,12 @@ set(animorph_sources
 	src/animorph/Face.cpp
 	src/animorph/FileReader.h
 	src/animorph/FileReader.cpp
-	src/animorph/ObjExporter.h
-	src/animorph/ObjExporter.cpp
 	src/animorph/Target.h
 	src/animorph/Target.cpp
 	src/animorph/Vertex.h
 	src/animorph/Vertex.cpp
 	src/animorph/xmlParser.h
 	src/animorph/xmlParser.cpp
-	src/animorph/ColladaExporter.h
-	src/animorph/ColladaExporter.cpp
 	src/animorph/FaceGroup.h
 	src/animorph/FaceGroup.cpp
 	src/animorph/FileWriter.h
@@ -130,8 +126,14 @@ set(myhumanoid_sources
 	src/gui/CGUtilities.cpp
 	src/gui/Rect.h
 	src/gui/Rect.cpp
+
+        src/io/ColladaExporter.h
+        src/io/ColladaExporter.cpp
 	src/io/Gltf.h
 	src/io/Gltf.cpp
+        src/io/ObjExporter.h
+        src/io/ObjExporter.cpp
+
 	src/ComponentID.h
 	src/CompositeMorph.h
 	src/CompositeMorph.cpp

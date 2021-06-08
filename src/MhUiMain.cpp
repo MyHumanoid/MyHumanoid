@@ -5,10 +5,10 @@
 #include <nfd.h>
 
 #include "animorph/BodySettings.h"
-#include "animorph/ColladaExporter.h"
-#include "animorph/ObjExporter.h"
 
+#include "io/ColladaExporter.h"
 #include "io/Gltf.h"
+#include "io/ObjExporter.h"
 
 #include "render/GlTypes.h"
 #include "render/RenderUtils.h"

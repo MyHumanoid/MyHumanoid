@@ -27,9 +27,9 @@
  */
 #pragma once
 
-#include "Matrix.h"
-#include "Mesh.h"
-#include "util.h"
+#include "animorph/Matrix.h"
+#include "animorph/Mesh.h"
+#include "animorph/util.h"
 #include <iostream>
 
 using std::ostringstream;

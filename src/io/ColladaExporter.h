@@ -26,10 +26,10 @@
  */
 #pragma once
 
-#include "Matrix.h"
-#include "Mesh.h"
-#include "util.h"
-#include "xmlParser.h"
+#include "animorph/Matrix.h"
+#include "animorph/Mesh.h"
+#include "animorph/util.h"
+#include "animorph/xmlParser.h"
 
 using std::ostringstream;
 using std::string;
