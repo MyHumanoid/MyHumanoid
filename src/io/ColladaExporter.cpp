@@ -130,10 +130,6 @@ bool ColladaExporter::exportFile(const string & filename)
 
 void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 {
-	XMLNode xNode_mesh, xNode_source_position, xNode_float_array, xNode_technique_common,
-	        xNode_accessor, xNode_param;
-	XMLNode xNode_source_normals, xNode_source_uv, xNode_vertices, xNode_input;
-
 	const VertexVector &   vertexvector   = mesh.getVertexVectorMorphOnlyRef();
 	const TextureVector &  texturevector  = mesh.textureVector();
 	const FaceVector &     facevector     = mesh.faces();
@@ -149,13 +145,13 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 
 	std::ostringstream vertex_stream;
 
-	xNode_mesh            = xNode_geometry->addChild("mesh");
+	auto xNode_mesh            = xNode_geometry->addChild("mesh");
 	string temp2          = temp + "-Position";
 
-	xNode_source_position = xNode_mesh.addChild("source");
+	auto xNode_source_position = xNode_mesh.addChild("source");
 	xNode_source_position.addAttribute("id", temp2.c_str());
 
-	xNode_float_array = xNode_source_position.addChild("float_array");
+	auto xNode_float_array = xNode_source_position.addChild("float_array");
 
 	std::ostringstream float_array_stream;
 	float_array_stream << vertexvector.m_verts.size() * 3;
@@ -172,15 +168,16 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	}
 	xNode_float_array.addText(vertex_stream.str().c_str());
 
-	xNode_technique_common = xNode_source_position.addChild("technique_common");
-	xNode_accessor         = xNode_technique_common.addChild("accessor");
+	auto xNode_technique_common = xNode_source_position.addChild("technique_common");
+	auto xNode_accessor         = xNode_technique_common.addChild("accessor");
 
 	std::ostringstream accessor_count_stream;
 	accessor_count_stream << vertexvector.m_verts.size();
 	xNode_accessor.addAttribute("count", accessor_count_stream.str().c_str());
 	xNode_accessor.addAttribute("source", ("#" + temp2 + "-array").c_str());
 	xNode_accessor.addAttribute("stride", "3");
-	xNode_param = xNode_accessor.addChild("param");
+
+	auto xNode_param = xNode_accessor.addChild("param");
 	xNode_param.addAttribute("name", "X");
 	xNode_param.addAttribute("type", "float");
 
@@ -195,7 +192,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	// normals
 	std::ostringstream normals_stream;
 	temp2                = temp + "-Normals";
-	xNode_source_normals = xNode_mesh.addChild("source");
+	auto xNode_source_normals = xNode_mesh.addChild("source");
 	xNode_source_normals.addAttribute("id", temp2.c_str());
 	// fa
 	xNode_float_array = xNode_source_normals.addChild("float_array");
@@ -236,7 +233,7 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 
 	// uv
 	temp2           = temp + "-UV";
-	xNode_source_uv = xNode_mesh.addChild("source");
+	auto xNode_source_uv = xNode_mesh.addChild("source");
 	xNode_source_uv.addAttribute("id", temp2.c_str());
 
 	// fa
@@ -283,9 +280,10 @@ void ColladaExporter::AddGeometry(XMLNode * xNode_geometry, string temp)
 	xNode_param.addAttribute("type", "float");
 
 	// vertices
-	xNode_vertices = xNode_mesh.addChild("vertices");
+	auto xNode_vertices = xNode_mesh.addChild("vertices");
 	xNode_vertices.addAttribute("id", (temp + "-Vertex").c_str());
-	xNode_input = xNode_vertices.addChild("input");
+
+	auto xNode_input = xNode_vertices.addChild("input");
 	xNode_input.addAttribute("semantic", "POSITION");
 	xNode_input.addAttribute("source", ("#" + temp + "-Position").c_str());
 	/*
@@ -319,15 +317,8 @@ void ColladaExporter::CreatePolygons(XMLNode * xNode_mesh, string name, int mate
                                      unsigned int & texture_number)
 {
 	const MaterialVector & materialvector = mesh.materials();
-	// int number_p = facevector.size();
 	const FaceVector & facevector = mesh.faces();
-	// register unsigned int i,j;
-
-	int number_p = 0, number_t = 0;
-	// int old_material_index = -1;
-
 	unsigned int facevector_size = facevector.size();
-
 
 	{
 	auto n_polylist               = xNode_mesh->addChild("polylist");
@@ -390,8 +381,6 @@ void ColladaExporter::CreateLibraryMaterialsNode(XMLNode * xNode_library_materia
                                                  XMLNode * xNode_library_effects)
 {
 	const MaterialVector & materialvector = mesh.materials();
-	XMLNode xNode_diffuse, xNode_color, xNode_material, xNode_effect, xNode_istance_effects,
-	        xNode_profile_common, xNode_technique, xNode_phong;
 
 	for(unsigned int i = 0; i < materialvector.size(); i++) {
 		std::ostringstream out_stream;
@@ -406,25 +395,26 @@ void ColladaExporter::CreateLibraryMaterialsNode(XMLNode * xNode_library_materia
 		}
 		if(found_duplicate == true)
 			continue;
-		xNode_material = xNode_library_materials->addChild("material");
+		auto xNode_material = xNode_library_materials->addChild("material");
 
 		xNode_material.addAttribute("id", material.name.c_str());
 		xNode_material.addAttribute("name", material.name.c_str());
-		xNode_istance_effects = xNode_material.addChild("instance_effect");
+
+		auto xNode_istance_effects = xNode_material.addChild("instance_effect");
 		xNode_istance_effects.addAttribute("url",
 		                                   ("#" + material.name + "-fx").c_str());
 
-		xNode_effect = xNode_library_effects->addChild("effect");
+		auto xNode_effect = xNode_library_effects->addChild("effect");
 		xNode_effect.addAttribute("id", (material.name + "-fx").c_str());
 		xNode_effect.addAttribute("name", (material.name + "-fx").c_str());
 
-		xNode_profile_common = xNode_effect.addChild("profile_COMMON");
-		xNode_technique      = xNode_profile_common.addChild("technique");
+		auto xNode_profile_common = xNode_effect.addChild("profile_COMMON");
+		auto xNode_technique      = xNode_profile_common.addChild("technique");
 		xNode_technique.addAttribute("sid", "");
-		xNode_phong = xNode_technique.addChild("phong");
+		auto xNode_phong = xNode_technique.addChild("phong");
 
-		xNode_diffuse = xNode_phong.addChild("diffuse");
-		xNode_color   = xNode_diffuse.addChild("color");
+		auto xNode_diffuse = xNode_phong.addChild("diffuse");
+		auto xNode_color   = xNode_diffuse.addChild("color");
 
 		out_stream << colRGB.red() << " " << colRGB.green() << " " << colRGB.blue() << " 1";
 		xNode_color.addText(out_stream.str().c_str());
@@ -433,26 +423,18 @@ void ColladaExporter::CreateLibraryMaterialsNode(XMLNode * xNode_library_materia
 
 void ColladaExporter::AddController(XMLNode * xNode_library_controller, string name)
 {
-	XMLNode xNode_controller, xNode_skin, xNode_jointsource, xNode_weightsource,
-	        xNode_bind_poses;
-	XMLNode xNode_IDREFArray, xNode_tecnique_common, xNode_accessor, xNode_param;
-	XMLNode xNode_tecnique_common_2, xNode_accessor_2, xNode_param_2, xNode_float_array,
-	        xNode_float_array_1;
-	XMLNode xNode_vertex_weights, xNode_input1, xNode_input2, xNode_vcount, xNode_v;
-	XMLNode xNode_tecnique_common_3, xNode_accessor_3, xNode_param_3;
-	XMLNode xNode_joints, xNode_inputA, xNode_inputB, xNode_bind_shape_matrix;
 
 	const VertexVector & vertexvector = mesh.getVertexVectorMorphOnlyRef();
 	std::ostringstream   out_stream;
 
-	xNode_controller = xNode_library_controller->addChild("controller");
+	auto xNode_controller = xNode_library_controller->addChild("controller");
 	xNode_controller.addAttribute("id", (name + "-skin").c_str());
 	xNode_controller.addAttribute("name", name.c_str());
 
-	xNode_skin = xNode_controller.addChild("skin");
+	auto xNode_skin = xNode_controller.addChild("skin");
 	xNode_skin.addAttribute("source", ("#" + name).c_str());
 
-	xNode_bind_shape_matrix = xNode_skin.addChild("bind_shape_matrix");
+	auto xNode_bind_shape_matrix = xNode_skin.addChild("bind_shape_matrix");
 	out_stream.str("");
 	out_stream << " 1.000000 "
 	           << " 0.000000 "
@@ -483,10 +465,10 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 
 	out_stream.str("");
 
-	xNode_jointsource = xNode_skin.addChild("source");
+	auto xNode_jointsource = xNode_skin.addChild("source");
 	xNode_jointsource.addAttribute("id", (name + "-skin" + "-joints").c_str());
 
-	xNode_IDREFArray = xNode_jointsource.addChild("IDREF_array");
+	auto xNode_IDREFArray = xNode_jointsource.addChild("IDREF_array");
 	xNode_IDREFArray.addAttribute("id", (name + "-skin" + "-joints" + "-array").c_str());
 
 	int jointcounter = 0;
@@ -508,8 +490,8 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	out_stream << jointcounter;
 	xNode_IDREFArray.addAttribute("count", out_stream.str().c_str());
 
-	xNode_tecnique_common = xNode_jointsource.addChild("technique_common");
-	xNode_accessor        = xNode_tecnique_common.addChild("accessor");
+	auto xNode_tecnique_common = xNode_jointsource.addChild("technique_common");
+	auto xNode_accessor        = xNode_tecnique_common.addChild("accessor");
 
 	out_stream.str("");
 	out_stream << jointcounter;
@@ -518,15 +500,16 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	xNode_accessor.addAttribute("count", out_stream.str().c_str());
 	xNode_accessor.addAttribute("stride", "1");
 
-	xNode_param = xNode_accessor.addChild("param");
+	auto xNode_param = xNode_accessor.addChild("param");
 
 	xNode_param.addAttribute("name", "JOINT");
 	xNode_param.addAttribute("type", "IDREF");
 
 	// SOURCES BIND-POSES
-	xNode_bind_poses = xNode_skin.addChild("source");
+	auto xNode_bind_poses = xNode_skin.addChild("source");
 	xNode_bind_poses.addAttribute("id", (name + "-skin-bind_poses").c_str());
-	xNode_float_array_1 = xNode_bind_poses.addChild("float_array");
+
+	auto xNode_float_array_1 = xNode_bind_poses.addChild("float_array");
 	xNode_float_array_1.addAttribute("id", (name + "-skin-bind_poses-array").c_str());
 
 	out_stream.str("");
@@ -535,8 +518,9 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 
 	loadBindPoses("../data/binding.matrix", &xNode_float_array_1, jointcounter);
 
-	xNode_tecnique_common_3 = xNode_bind_poses.addChild("technique_common");
-	xNode_accessor_3        = xNode_tecnique_common_3.addChild("accessor");
+	auto xNode_tecnique_common_3 = xNode_bind_poses.addChild("technique_common");
+
+	auto xNode_accessor_3        = xNode_tecnique_common_3.addChild("accessor");
 	xNode_accessor_3.addAttribute("source", ("#" + name + "-skin-bind_poses-array").c_str());
 
 	out_stream.str("");
@@ -544,21 +528,22 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	xNode_accessor_3.addAttribute("count", out_stream.str().c_str());
 
 	xNode_accessor_3.addAttribute("stride", "16");
-	xNode_param_3 = xNode_accessor_3.addChild("param");
+	auto xNode_param_3 = xNode_accessor_3.addChild("param");
 	xNode_param_3.addAttribute("type", "float4x4");
 
 	// SOURCES WEIGHTS
 
-	xNode_weightsource = xNode_skin.addChild("source");
+	auto xNode_weightsource = xNode_skin.addChild("source");
 	xNode_weightsource.addAttribute("id", (name + "-skin-weights").c_str());
-	xNode_float_array = xNode_weightsource.addChild("float_array");
+
+	auto xNode_float_array = xNode_weightsource.addChild("float_array");
 	xNode_float_array.addAttribute("id", (name + "-skin-weights-array").c_str());
 	xNode_float_array.addAttribute("count", "10822");
 	loadWeightsVector("data/weights.vector", &xNode_float_array);
 
-	xNode_tecnique_common_2 = xNode_weightsource.addChild("technique_common");
-	xNode_accessor_2        = xNode_tecnique_common_2.addChild("accessor");
-	xNode_param_2           = xNode_accessor_2.addChild("param");
+	auto xNode_tecnique_common_2 = xNode_weightsource.addChild("technique_common");
+	auto xNode_accessor_2        = xNode_tecnique_common_2.addChild("accessor");
+	auto xNode_param_2           = xNode_accessor_2.addChild("param");
 
 	xNode_accessor_2.addAttribute("source", ("#" + name + "-skin-weights-array").c_str());
 	xNode_accessor_2.addAttribute("count", "10822");
@@ -568,9 +553,9 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	xNode_param_2.addAttribute("type", "float");
 
 	// JOINTS
-	xNode_joints = xNode_skin.addChild("joints");
-	xNode_inputA = xNode_joints.addChild("input");
-	xNode_inputB = xNode_joints.addChild("input");
+	auto xNode_joints = xNode_skin.addChild("joints");
+	auto xNode_inputA = xNode_joints.addChild("input");
+	auto xNode_inputB = xNode_joints.addChild("input");
 
 	xNode_inputA.addAttribute("semantic", "JOINT");
 	xNode_inputA.addAttribute("source", ("#" + name + "-skin-joints").c_str());
@@ -578,29 +563,29 @@ void ColladaExporter::AddController(XMLNode * xNode_library_controller, string n
 	xNode_inputB.addAttribute("semantic", "INV_BIND_MATRIX");
 	xNode_inputB.addAttribute("source", ("#" + name + "-skin-bind_poses").c_str());
 	// VERTEX WEIGHTS
-	xNode_vertex_weights = xNode_skin.addChild("vertex_weights");
+	auto xNode_vertex_weights = xNode_skin.addChild("vertex_weights");
 
 	out_stream.str("");
 	out_stream << vertexvector.m_verts.size();
 	xNode_vertex_weights.addAttribute("count", out_stream.str().c_str());
-	xNode_input1 = xNode_vertex_weights.addChild("input");
+	auto xNode_input1 = xNode_vertex_weights.addChild("input");
 	xNode_input1.addAttribute("semantic", "JOINT");
 	xNode_input1.addAttribute("source", ("#" + name + "-skin" + "-joints").c_str());
 	xNode_input1.addAttribute("offset", "0");
 
-	xNode_input2 = xNode_vertex_weights.addChild("input");
+	auto xNode_input2 = xNode_vertex_weights.addChild("input");
 	xNode_input2.addAttribute("semantic", "WEIGHT");
 	xNode_input2.addAttribute("source", ("#" + name + "-skin" + "-weights").c_str());
 	xNode_input2.addAttribute("offset", "1");
 
-	xNode_vcount = xNode_vertex_weights.addChild("vcount");
+	auto xNode_vcount = xNode_vertex_weights.addChild("vcount");
 	out_stream.str("");
 	for(unsigned int i = 0; i < vertexvector.m_verts.size(); i++) {
 		out_stream << jointcounter << " ";
 	}
 	xNode_vcount.addText(out_stream.str().c_str());
 
-	xNode_v = xNode_vertex_weights.addChild("v");
+	auto xNode_v = xNode_vertex_weights.addChild("v");
 
 	loadVertexWeights("data/weights.matrix", &xNode_v, jointcounter);
 }
@@ -622,8 +607,7 @@ bool ColladaExporter::CheckIfJointIsLinked(SKELETON_JOINT joint)
 void ColladaExporter::createSkeleton(XMLNode * mainNode)
 {
 	// subjoint map:
-	XMLNode xNode_joint, xNode_translate;
-	xNode_joint = mainNode->addChild("node");
+	auto xNode_joint = mainNode->addChild("node");
 
 	std::ostringstream out_stream;
 	std::ostringstream out_stream_translate;
@@ -635,7 +619,7 @@ void ColladaExporter::createSkeleton(XMLNode * mainNode)
 	xNode_joint.addAttribute("sid", out_stream.str().c_str());
 	xNode_joint.addAttribute("type", "JOINT");
 
-	xNode_translate = xNode_joint.addChild("translate");
+	auto xNode_translate = xNode_joint.addChild("translate");
 	xNode_translate.addAttribute("sid", "translate");
 
 	out_stream_translate << mesh.GetJoint0_Pos().x << " " << mesh.GetJoint0_Pos().y << " "
@@ -654,7 +638,7 @@ void ColladaExporter::recursiveJointAdd(int row, XMLNode * xNode_Parent)
 		int            i    = subjoint[row][column];
 		SKELETON_JOINT numb = subjoint[i][0];
 
-		XMLNode xNode = xNode_Parent->addChild("node");
+		auto xNode = xNode_Parent->addChild("node");
 		setChildNode(&xNode, (SKELETON_JOINT)i, row, column);
 
 		if(numb != SK_NONE) {
@@ -672,7 +656,6 @@ void ColladaExporter::setChildNode(XMLNode * child, SKELETON_JOINT numb, unsigne
 	if(numb < 0)
 		return;
 
-	XMLNode xNode_translate;
 	// SKELETON_JOINT parent = (SKELETON_JOINT)row;
 	std::ostringstream out_stream;
 	std::ostringstream out_stream_translate;
@@ -683,7 +666,7 @@ void ColladaExporter::setChildNode(XMLNode * child, SKELETON_JOINT numb, unsigne
 	child->addAttribute("sid", out_stream.str().c_str());
 	child->addAttribute("type", "JOINT");
 
-	xNode_translate = child->addChild("translate");
+	auto xNode_translate = child->addChild("translate");
 	xNode_translate.addAttribute("sid", "translate");
 
 	glm::vec3 parentnode = mesh.getJointVector().at(row);
