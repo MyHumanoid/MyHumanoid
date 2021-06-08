@@ -16,26 +16,17 @@ bool ColladaExporter::exportFile(const string & filename)
 	string temp2;
 	string temp = "mesh"; //.substr(index+1);
 
-	XMLNode xMainNode;
-	XMLNode xNode_collada, xNode_asset, xNode_contributor, xNode_author, xNode_unitmeter,
-	        xNode_upaxis, xNode_library_geometries, xNode_library_visual_scenes;
-	XMLNode xNode_geometry, xNode_mesh, xNode_library_effects, xNode_library_materials,
-	        xNode_library_controller;
-	XMLNode xNode_p, xNode_input, xNode_source_position, xNode_float_array,
-	        xNode_technique_common, xNode_accessor, xNode_param, xNode_source_uv,
-	        xNode_source_normals, xNode_vertices, xNode_polygons;
-
-	xMainNode = XMLNode::createXMLTopNode("xml", TRUE);
+	auto xMainNode = XMLNode::createXMLTopNode("xml", TRUE);
 	xMainNode.addAttribute("version", "1.0");
 	xMainNode.addAttribute("encoding", "utf-8");
 
-	xNode_collada = xMainNode.addChild("COLLADA");
+	auto xNode_collada = xMainNode.addChild("COLLADA");
 	xNode_collada.addAttribute("version", "1.4.0");
 	xNode_collada.addAttribute("xmlns", "http://www.collada.org/2005/11/COLLADASchema");
 
-	xNode_asset       = xNode_collada.addChild("asset");
-	xNode_contributor = xNode_asset.addChild("contributor");
-	xNode_author      = xNode_contributor.addChild("author");
+	auto xNode_asset       = xNode_collada.addChild("asset");
+	auto xNode_contributor = xNode_asset.addChild("contributor");
+	auto xNode_author      = xNode_contributor.addChild("author");
 	xNode_author.addText("MH");
 
 	/*
@@ -47,13 +38,13 @@ bool ColladaExporter::exportFile(const string & filename)
 	 xNode_upaxis.addText("Z_UP");
 	*/
 	// node library creation
-	xNode_library_effects       = xNode_collada.addChild("library_effects");
-	xNode_library_geometries    = xNode_collada.addChild("library_geometries");
-	xNode_library_materials     = xNode_collada.addChild("library_materials");
-	xNode_library_visual_scenes = xNode_collada.addChild("library_visual_scenes");
-	xNode_library_controller    = xNode_collada.addChild("library_controllers");
+	auto xNode_library_effects       = xNode_collada.addChild("library_effects");
+	auto xNode_library_geometries    = xNode_collada.addChild("library_geometries");
+	auto xNode_library_materials     = xNode_collada.addChild("library_materials");
+	auto xNode_library_visual_scenes = xNode_collada.addChild("library_visual_scenes");
+	auto xNode_library_controller    = xNode_collada.addChild("library_controllers");
 
-	xNode_geometry  = xNode_library_geometries.addChild("geometry");
+	auto xNode_geometry  = xNode_library_geometries.addChild("geometry");
 	string tempname = temp;
 	temp += "-Geometry";
 
@@ -63,13 +54,7 @@ bool ColladaExporter::exportFile(const string & filename)
 	// THE SCENE
 	const MaterialVector & materialvector = mesh.materials();
 
-	XMLNode xNode_visual_scene;
-	XMLNode xNode_matrix, xNode_node, xNode_instance_geometry, xNode_bind_material,
-	        xNode_instance_controller;
-	XMLNode xNode_scene, xNode_instance_visual_scene, xNode_instance_material, xNode_skeleton,
-	        xNode_node_controller;
-
-	xNode_visual_scene = xNode_library_visual_scenes.addChild("visual_scene");
+	auto xNode_visual_scene = xNode_library_visual_scenes.addChild("visual_scene");
 	xNode_visual_scene.addAttribute("id", "Scene");
 	xNode_visual_scene.addAttribute("name", "Scene");
 
@@ -89,11 +74,11 @@ bool ColladaExporter::exportFile(const string & filename)
 	*/
 	//----------------------------------//
 
-	xNode_node = xNode_visual_scene.addChild("node");
+	auto xNode_node = xNode_visual_scene.addChild("node");
 	xNode_node.addAttribute("id", (temp + "-scene").c_str());
 	xNode_node.addAttribute("name", temp.c_str());
 
-	xNode_matrix = xNode_node.addChild("matrix");
+	auto xNode_matrix = xNode_node.addChild("matrix");
 	xNode_matrix.addText("");
 
 	std::ostringstream matrix_stream;
@@ -114,22 +99,21 @@ bool ColladaExporter::exportFile(const string & filename)
 	xNode_matrix.addText(matrix_stream.str().c_str());
 
 	// geometetry-->controller
-	xNode_instance_geometry = xNode_node.addChild(
-	        "instance_controller"); // it is notr an error...before it was geometry
+	auto xNode_instance_geometry = xNode_node.addChild("instance_controller"); // it is notr an error...before it was geometry
 	xNode_instance_geometry.addAttribute("url", ("#" + temp + "-skin").c_str());
 
-	xNode_bind_material    = xNode_instance_geometry.addChild("bind_material");
-	xNode_technique_common = xNode_bind_material.addChild("technique_common");
+	auto xNode_bind_material    = xNode_instance_geometry.addChild("bind_material");
+	auto xNode_technique_common = xNode_bind_material.addChild("technique_common");
 
 	for(unsigned int i = 0; i < materialvector.size(); i++) {
-		xNode_instance_material = xNode_technique_common.addChild("instance_material");
+		auto xNode_instance_material = xNode_technique_common.addChild("instance_material");
 		xNode_instance_material.addAttribute("symbol", materialvector[i].name.c_str());
 		xNode_instance_material.addAttribute("target",
 		                                     ("#" + materialvector[i].name).c_str());
 	}
 
-	xNode_scene                 = xNode_collada.addChild("scene");
-	xNode_instance_visual_scene = xNode_scene.addChild("instance_visual_scene");
+	auto xNode_scene                 = xNode_collada.addChild("scene");
+	auto xNode_instance_visual_scene = xNode_scene.addChild("instance_visual_scene");
 
 	xNode_instance_visual_scene.addAttribute("url", "#Scene");
 
