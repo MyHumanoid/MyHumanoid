@@ -20,9 +20,7 @@ bool PoseRotation::load(const std::string & filename)
 	std::string vertexNumber;
 	char ax;
 
-	clear();
-
-	PoseRotation & target(*this);
+	m_targetData.clear();
 
 	bool rc  = true; // assume "success" by default
 	
@@ -66,12 +64,12 @@ bool PoseRotation::load(const std::string & filename)
 	
 			if((ret != 2) && (ret != 0)) {
 				log_error("Illegal line while reading target '{}'!", filename);
-				clear();
+				m_targetData.clear();
 				return false;
 			}
 	
 			modVertex.push_back(td.vertex_number);
-			target.push_back(td);
+			m_targetData.push_back(td);
 		}
 	}
 	

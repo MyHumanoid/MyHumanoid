@@ -81,8 +81,11 @@ Further lines are ignored.
 The filenames of these files end in ".rot.info".
 
 */
-class PoseRotation : public vector<PoseTargetData>
+class PoseRotation
 {
+public:
+	vector<PoseTargetData> m_targetData;
+
 	/// Used to calculate center
 	vector<int> centerVertexNumbers;
 	/// Will be used as parameter for Matrix::setRoation()
@@ -111,7 +114,6 @@ class PoseRotation : public vector<PoseTargetData>
 	/// Limb rotation Type
 	bool mbLimb;
 
-public:
 	PoseRotation();
 	/*!
 	 * \param filename the file with PoseTarget data to load

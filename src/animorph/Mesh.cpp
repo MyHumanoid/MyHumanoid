@@ -654,7 +654,7 @@ void Mesh::doPoseRotation(const PoseRotation & pr, float morph_value, const Used
 
 	RotateAxis axis = pr.getAxis();
 
-	for(const PoseTargetData & td : pr) {
+	for(const PoseTargetData & td : pr.m_targetData) {
 
 		// continue if the Pose Target datas Vertex is not part of the modVertex
 		if(modVertex.find(td.vertex_number) == modVertex.end()) {
