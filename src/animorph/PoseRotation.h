@@ -93,14 +93,14 @@ public:
 	/// Set of all indices in the ".rot" file
 	UnsortedUsedVertex modVertex;
 	/// Currently unused
-	bool hasCenter;
+	bool hasCenter = false;
 	/// Minimum angle in radians
-	float minAngle;
+	float minAngle = 0.0f;
 	/// Maximum angle in radians
-	float maxAngle;
+	float maxAngle = 0.0f;
 	/// will be set to true by PoseTarget::calcNormalizations() if our
 	/// (min|max)Angle != PoseTarget::(min|max)Angle
-	bool normalize;
+	bool normalize = false;
 	// string inFilename;
 	/* \brief "Category"? Currently always "00"
 	 * First two characters of the filename, eg . "00" for "00_Z_LIMB_SPINE1.rot"
@@ -114,7 +114,6 @@ public:
 	/// Limb rotation Type
 	bool mbLimb;
 
-	PoseRotation();
 	/*!
 	 * \param filename the file with PoseTarget data to load
 	 * \return true if file is found

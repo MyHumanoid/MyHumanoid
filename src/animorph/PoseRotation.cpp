@@ -5,15 +5,6 @@
 namespace Animorph
 {
 
-PoseRotation::PoseRotation()
-        : modVertex()
-        , hasCenter(false)
-        , minAngle(0.0f)
-        , maxAngle(0.0f)
-        , normalize(false)
-        , cat()
-{
-}
 
 bool PoseRotation::load(const std::string & filename)
 {
