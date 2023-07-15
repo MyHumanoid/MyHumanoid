@@ -108,7 +108,7 @@ void main()
 {
 	vec4 color = flight(io_vertexNormal, vec4(io_FragPos, 1.0));
 	
-	vec4 texColor = texture2D(texture0, io_texCoord);
+	vec4 texColor = texture(texture0, io_texCoord);
 	
 	color = clamp(color * texColor, 0.0, 1.0);
 	io_fragmentColor = color;
