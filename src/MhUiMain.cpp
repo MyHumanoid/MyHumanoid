@@ -467,8 +467,8 @@ void DisplayMainMenu()
 					exportMeshObj(path.value());
 				}
 			}
-			if(ImGui::MenuItem("Export glTF (.gltf)")) {
-				auto path = saveFileDialog("gltf");
+			if(ImGui::MenuItem("Export glTF (.glb)")) {
+				auto path = saveFileDialog("glb");
 				if(path) {
 					exportGltf(path.value());
 				}

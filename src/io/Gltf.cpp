@@ -280,7 +280,7 @@ void IoGltfWrite(const Animorph::Mesh & mhMesh, const string & fileName) {
 			{"POSITION", 1}
 		};
 		
-		
+		/*
 		{
 			// Morph targets
 			auto & targets = mhMesh.targets();
@@ -301,6 +301,7 @@ void IoGltfWrite(const Animorph::Mesh & mhMesh, const string & fileName) {
 				});
 			}
 		}
+		*/
 		
 		Mesh mesh;
 		mesh.name = "Humanoid";
@@ -322,9 +323,9 @@ void IoGltfWrite(const Animorph::Mesh & mhMesh, const string & fileName) {
 	TinyGLTF loader;
 	loader.WriteGltfSceneToFile(&model,
 	                            fileName,
-	                            false, // embedImages
-	                            false, // embedBuffers
+	                            true, // embedImages
+	                            true, // embedBuffers
 	                            true, // prettyPrint
-	                            false // writeBinary
+	                            true // writeBinary
 	);
 }
