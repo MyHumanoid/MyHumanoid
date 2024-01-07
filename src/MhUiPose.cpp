@@ -129,7 +129,7 @@ struct PoseGroupWin : public TileGroupChildWindow<PoseGroupWin> {
 	// clang-format on
 };
 
-auto applier = [](const std::string & name, const float & value, const bool deleteOnZero) {
+auto poseApplier = [](const std::string & name, const float & value, const bool deleteOnZero) {
 	g_mesh.setPose(name, value, deleteOnZero);
 	g_mesh.calcNormals();
 };
@@ -182,7 +182,7 @@ void DisplayPoseTargets()
 			                                     poseTarget->getMaxAngle());
 
 			DrawTargetRow(g_poseImageTextures, minmax, target_name, target_value,
-			              tileWin.m_tooltip, applier);
+			              tileWin.m_tooltip, poseApplier);
 		}
 		ImGui::EndChild();
 	}
@@ -205,7 +205,7 @@ void DisplayPoseTargetsApplied()
 		const auto & minmax =
 		        std::make_pair(poseTarget->getMinAngle(), poseTarget->getMaxAngle());
 
-		DrawAppliedRow(g_poseImageTextures, minmax, target_name, target_value, applier);
+		DrawAppliedRow(g_poseImageTextures, minmax, target_name, target_value, poseApplier);
 	}
 	ImGui::End();
 }
