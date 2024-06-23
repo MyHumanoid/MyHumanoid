@@ -22,14 +22,12 @@ set(imgui_src
 	${imgui_dir}/backends/imgui_impl_sdl2.cpp
 )
 
-find_package(GLEW REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 
 add_library(imgui STATIC ${imgui_src})
 add_library(imgui::imgui ALIAS imgui)
 
 target_link_libraries(imgui PUBLIC
-	GLEW::GLEW
 	stb::stb
 )
 

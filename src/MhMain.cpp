@@ -241,19 +241,8 @@ static int main2(int argc, char * argv[])
 	SDL_GLContext maincontext = SDL_GL_CreateContext(mainWindow);
 	//checkSDLError(__LINE__);
 	
-	
-	glewExperimental = true;
-	GLenum err       = glewInit();
-	if(err != GLEW_OK) {
-		log_error("GLEW error: {}", glewGetErrorString(err));
-	}
-	
 	log_info("GL   version: {}", glGetString(GL_VERSION));
 	log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
-	log_info("GLEW Version: {}.{}.{}",
-	         GLEW_VERSION_MAJOR,
-	         GLEW_VERSION_MINOR,
-	         GLEW_VERSION_MICRO);
 	
 	initDebugGl();
 	

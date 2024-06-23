@@ -1,7 +1,5 @@
 #pragma once
 
-#include <GL/glew.h>
-
 #ifdef _WIN32
 #define NOMINMAX
 #define VC_EXTRALEAN
@@ -9,5 +7,4 @@
 #include <Windows.h>
 #endif
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <epoxy/gl.h>
