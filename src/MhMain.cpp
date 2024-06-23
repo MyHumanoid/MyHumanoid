@@ -453,7 +453,7 @@ static int main2(int argc, char * argv[])
 		
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame(mainWindow);
+		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
 		
 		timerTrigger();

@@ -17,8 +17,9 @@ set(imgui_src
 	${imgui_dir}/misc/cpp/imgui_stdlib.h
 	${imgui_dir}/backends/imgui_impl_opengl3.h
 	${imgui_dir}/backends/imgui_impl_opengl3.cpp
-	${imgui_dir}/backends/imgui_impl_sdl.h
-	${imgui_dir}/backends/imgui_impl_sdl.cpp
+	${imgui_dir}/backends/imgui_impl_opengl3_loader.h
+	${imgui_dir}/backends/imgui_impl_sdl2.h
+	${imgui_dir}/backends/imgui_impl_sdl2.cpp
 )
 
 find_package(GLEW REQUIRED)
