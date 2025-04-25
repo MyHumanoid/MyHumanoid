@@ -86,12 +86,13 @@ const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
 // ================================================================================================
 
-glm::ivec2 g_mainWinSize;
+SDL_Window * g_mainWindow;
 
 static void reshape()
 {
-	int w = g_mainWinSize.x;
-	int h = g_mainWinSize.y;
+	int w;
+	int h;
+	SDL_GL_GetDrawableSize(g_mainWindow, &w, &h);
 	
 	cgutils::reshape(glm::ivec2(w, h), *g_global.camera);
 	g_global.camera->reshape(w, h);
@@ -217,6 +218,7 @@ static int main2(int argc, char * argv[])
 	if (!mainWindow) {
 		throw std::runtime_error("Unable to create window");
 	}
+	g_mainWindow = mainWindow;
 	
 	SDL_SetWindowMinimumSize(mainWindow, 800, 600);
 
@@ -368,12 +370,9 @@ static int main2(int argc, char * argv[])
 //							}
 //							break;
 //						}
-				        case SDL_WINDOWEVENT_SIZE_CHANGED:
+						case SDL_WINDOWEVENT_EXPOSED:
+						case SDL_WINDOWEVENT_SIZE_CHANGED:
 						case SDL_WINDOWEVENT_RESIZED: {
-							g_mainWinSize = {
-								event.window.data1,
-								event.window.data2
-							};
 							reshape();
 							break;
 						}

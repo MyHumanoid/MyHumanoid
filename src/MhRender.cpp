@@ -50,18 +50,17 @@ void RenderBackground::loadShader()
 	}
 }
 
-extern glm::ivec2 g_mainWinSize;
-
 void RenderBackground::render()
 {
-	using glm::vec2;
+	extern SDL_Window * g_mainWindow;
 	
-	vec2 size = vec2(g_mainWinSize);
+	int x, y;
+	SDL_GL_GetDrawableSize(g_mainWindow, &x, &y);
 	
 	glUseProgram(m_shader->handle);
 	GLint myLoc = glGetUniformLocation(m_shader->handle, "u_viewportResolution");
 	if(myLoc != -1) {
-		glProgramUniform2f(m_shader->handle, myLoc, size.x, size.y);
+		glProgramUniform2f(m_shader->handle, myLoc, x, y);
 	}
 	
 	glBindVertexArray(m_vertexArrayObject);
