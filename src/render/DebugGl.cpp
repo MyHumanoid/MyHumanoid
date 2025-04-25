@@ -6,10 +6,6 @@
 static void openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity,
                                    GLsizei length, const GLchar * message, const void * userParam)
 {
-	if(type == GL_DEBUG_TYPE_OTHER) {
-		return;
-	}
-
 	const char * typeStr;
 	switch(type) {
 	case GL_DEBUG_TYPE_ERROR:
@@ -55,4 +51,11 @@ void initDebugGl()
 	glDebugMessageCallback(openglCallbackFunction, nullptr);
 	GLuint unusedIds = 0;
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
+	
+	std::string strInitialized("OpenGL debug output enabled");
+	glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION,
+	                     GL_DEBUG_TYPE_OTHER,
+	                     1,
+	                     GL_DEBUG_SEVERITY_LOW,
+	                     GLsizei(strInitialized.size()), strInitialized.c_str());
 }
