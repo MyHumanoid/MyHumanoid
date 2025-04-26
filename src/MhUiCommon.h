@@ -193,15 +193,15 @@ void DrawTargetRow(const IconMap & icons, const std::pair<float, float> minMax,
 		tooltip = target_name;
 		if(icon.second) {
 			ImGui::SetCursorPos(p);
-			MhGui::ImageButton(*icon.second, iconSize);
+			MhGui::ImageButton((target_name + "a").c_str(), *icon.second, iconSize);
 		} else {
 			ImGui::SetCursorPos(p);
-			MhGui::ImageButton(*icon.first, iconSize);
+			MhGui::ImageButton((target_name + "b").c_str(), *icon.first, iconSize);
 		}
 	} else {
 		if(icon.first) {
 			ImGui::SetCursorPos(p);
-			MhGui::ImageButton(*icon.first, iconSize);
+			MhGui::ImageButton((target_name + "c").c_str(), *icon.first, iconSize);
 		}
 	}
 	ImGui::SameLine();
@@ -228,10 +228,12 @@ void DrawAppliedRow(const IconMap & icons, const std::pair<float, float> minMax,
 	}
 	ImGui::SameLine();
 
-	// FIXME only the button in the first line is working
+	ImGui::PushID(name.c_str());
 	if(ImGui::Button("X")) {
 		applier(name, 0.f, true);
 	}
+	ImGui::PopID();
+	
 	showTooltip |= ImGui::IsItemHovered();
 	ImGui::SameLine();
 

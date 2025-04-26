@@ -26,7 +26,7 @@ void CreateTargetImageTextures()
 }
 
 
-void XYfoobar(OptTex texture, glm::ivec2 & value)
+void XYfoobar(const char* str_id, OptTex texture, glm::ivec2 & value)
 {
 	if(!texture) {
 		return;
@@ -34,7 +34,7 @@ void XYfoobar(OptTex texture, glm::ivec2 & value)
 	
 	ImGuiIO & io = ImGui::GetIO();
 	
-	MhGui::ImageButton(texture.value(), ImVec2(192, 104));
+	MhGui::ImageButton(str_id, texture.value(), ImVec2(192, 104));
 	vec2 pMin = ImGui::GetItemRectMin();
 	vec2 size = ImGui::GetItemRectSize();
 	if(ImGui::IsItemActive()) {
@@ -90,13 +90,13 @@ void DisplayCharacterSettings()
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, vec2(0));
 	
 	//ImGui::Text("Age/Sex");
-	XYfoobar(tex.ageGenderBkg, g_grids.agePos);
+	XYfoobar("Age/Sex", tex.ageGenderBkg, g_grids.agePos);
 	//ImGui::Text("Bodymass Weight/Muscle");
-	XYfoobar(tex.massBkg, g_grids.muscleSizePos);
+	XYfoobar("Bodymass", tex.massBkg, g_grids.muscleSizePos);
 	//ImGui::Text("Breast Size/Shape");
-	XYfoobar(tex.breastBkg, g_grids.breastPos);
+	XYfoobar("Breast", tex.breastBkg, g_grids.breastPos);
 	//ImGui::Text("Bodyshape Shape/Height");
-	XYfoobar(tex.shapeBkg, g_grids.shapePos);
+	XYfoobar("Bodyshape", tex.shapeBkg, g_grids.shapePos);
 	
 	ImGui::PopStyleVar(3);
 	

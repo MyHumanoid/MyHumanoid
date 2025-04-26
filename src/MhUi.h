@@ -40,11 +40,11 @@ namespace MhGui
 
 template <typename... T> void Image(mh::Texture texture, T &&... p)
 {
-	ImGui::Image((void *)(intptr_t)texture.handle, std::forward<T>(p)...);
+	ImGui::Image((intptr_t)texture.handle, std::forward<T>(p)...);
 }
-template <typename... T> bool ImageButton(mh::Texture texture, T &&... p)
+template <typename... T> bool ImageButton(const char* str_id, mh::Texture texture, T &&... p)
 {
-	return ImGui::ImageButton((void *)(intptr_t)texture.handle, std::forward<T>(p)...);
+	return ImGui::ImageButton(str_id, (intptr_t)texture.handle, std::forward<T>(p)...);
 }
 
 } // namespace MhGui
