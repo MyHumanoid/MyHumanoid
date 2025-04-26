@@ -68,7 +68,7 @@
 #include "Version.h"
 #include "Vfs.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #define kTimerRendering 1000
 
@@ -92,7 +92,7 @@ static void reshape()
 {
 	int w;
 	int h;
-	SDL_GL_GetDrawableSize(g_mainWindow, &w, &h);
+	SDL_GetWindowSizeInPixels(g_mainWindow, &w, &h);
 	
 	cgutils::reshape(glm::ivec2(w, h), *g_global.camera);
 	g_global.camera->reshape(w, h);
@@ -186,7 +186,7 @@ static int main2(int argc, char * argv[])
 	
 	LoadConfig();
 	
-	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if(!SDL_Init(SDL_INIT_VIDEO)) {
 		throw std::runtime_error("Unable to initialize SDL");
 	}
 	
@@ -207,12 +207,11 @@ static int main2(int argc, char * argv[])
 	const auto & winRect = g_config.windowMain;
 	
 	SDL_Window * mainWindow = SDL_CreateWindow(title.c_str(),
-	                              winRect.pos.x,
-	                              winRect.pos.y,
+	                              //winRect.pos.x,
+	                              //winRect.pos.y,
 	                              winRect.siz.x,
 	                              winRect.siz.y,
 	                              SDL_WINDOW_OPENGL
-	                                  | SDL_WINDOW_SHOWN
 	                                  | SDL_WINDOW_RESIZABLE);
 	
 	if (!mainWindow) {
@@ -317,7 +316,7 @@ static int main2(int argc, char * argv[])
 
 	ImGui::StyleColorsDark();
 	
-	ImGui_ImplSDL2_InitForOpenGL(mainWindow, maincontext);
+	ImGui_ImplSDL3_InitForOpenGL(mainWindow, maincontext);
 	{
 		const char* glsl_version = "#version 130";
 		ImGui_ImplOpenGL3_Init(glsl_version);
@@ -354,32 +353,29 @@ static int main2(int argc, char * argv[])
 	while(runMainloop) {
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
-			ImGui_ImplSDL2_ProcessEvent(&event);
+			ImGui_ImplSDL3_ProcessEvent(&event);
 			const ImGuiIO & imio = ImGui::GetIO();
 			
 			switch(event.type) {
-				case SDL_QUIT: {
+				case SDL_EVENT_QUIT: {
 					g_userRequestedQuit = true;
 					break;
 				}
-				case SDL_WINDOWEVENT: {
-					switch(event.window.event) {
-//						case SDL_WINDOWEVENT_CLOSE: {
+
+//						case SDL_EVENT_WINDOW_CLOSE_REQUESTED: {
 //							if(event.window.windowID == SDL_GetWindowID(mainwindow)) {
 //								g_userRequestedQuit = true;
 //							}
 //							break;
 //						}
-						case SDL_WINDOWEVENT_EXPOSED:
-						case SDL_WINDOWEVENT_SIZE_CHANGED:
-						case SDL_WINDOWEVENT_RESIZED: {
+						case SDL_EVENT_WINDOW_EXPOSED:
+						case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+						case SDL_EVENT_WINDOW_RESIZED: {
 							reshape();
 							break;
 						}
-					}
-					break;
-				}
-				case SDL_MOUSEBUTTONDOWN: {
+
+				case SDL_EVENT_MOUSE_BUTTON_DOWN: {
 					if(!imio.WantCaptureMouse) {
 						if(event.button.button == SDL_BUTTON_LEFT) {
 							mouseDownLeft = true;
@@ -392,7 +388,7 @@ static int main2(int argc, char * argv[])
 					}
 					break;
 				}
-				case SDL_MOUSEBUTTONUP: {
+				case SDL_EVENT_MOUSE_BUTTON_UP: {
 					if(!imio.WantCaptureMouse) {
 						if(event.button.button == SDL_BUTTON_LEFT) {
 							mouseDownLeft = false;
@@ -403,7 +399,7 @@ static int main2(int argc, char * argv[])
 					}
 					break;
 				}
-				case SDL_MOUSEMOTION: {
+				case SDL_EVENT_MOUSE_MOTION: {
 					if(!imio.WantCaptureMouse) {
 						if(mouseDownLeft) {
 							g_global.camera->rotateMouse(event.motion.x, event.motion.y);
@@ -414,7 +410,7 @@ static int main2(int argc, char * argv[])
 					}
 					break;
 				}
-				case SDL_MOUSEWHEEL: {
+				case SDL_EVENT_MOUSE_WHEEL: {
 					if(!imio.WantCaptureMouse) {
 						if(event.wheel.y > 0) {
 							g_global.camera->move(0, 0, 1);
@@ -432,8 +428,8 @@ static int main2(int argc, char * argv[])
 					}
 					break;
 				}
-				case SDL_KEYUP: {
-					keyboard(event.key.keysym.sym);
+				case SDL_EVENT_KEY_UP: {
+				    keyboard(event.key.key);
 					break;
 				}
 			}
@@ -441,7 +437,7 @@ static int main2(int argc, char * argv[])
 		
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame();
+		ImGui_ImplSDL3_NewFrame();
 		ImGui::NewFrame();
 		
 		timerTrigger();
@@ -468,7 +464,7 @@ static int main2(int argc, char * argv[])
 
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
+	ImGui_ImplSDL3_Shutdown();
 	ImGui::DestroyContext();
 	
 	{
@@ -488,7 +484,7 @@ static int main2(int argc, char * argv[])
 	}
 	
 	/* Delete our opengl context, destroy our window, and shutdown SDL */
-	SDL_GL_DeleteContext(maincontext);
+	SDL_GL_DestroyContext(maincontext);
 	SDL_DestroyWindow(mainWindow);
 	SDL_Quit();
 	

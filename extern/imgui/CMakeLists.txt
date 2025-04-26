@@ -18,8 +18,8 @@ set(imgui_src
 	${imgui_dir}/backends/imgui_impl_opengl3.h
 	${imgui_dir}/backends/imgui_impl_opengl3.cpp
 	${imgui_dir}/backends/imgui_impl_opengl3_loader.h
-	${imgui_dir}/backends/imgui_impl_sdl2.h
-	${imgui_dir}/backends/imgui_impl_sdl2.cpp
+	${imgui_dir}/backends/imgui_impl_sdl3.h
+	${imgui_dir}/backends/imgui_impl_sdl3.cpp
 )
 
 find_package(SDL2 CONFIG REQUIRED)
@@ -38,11 +38,6 @@ target_compile_definitions(imgui PUBLIC
 	IMGUI_STB_TRUETYPE_FILENAME="stb_truetype.h"
 )
 
-if(TARGET SDL2::SDL2)
-	target_link_libraries(imgui PUBLIC SDL2::SDL2)
-else()
-	target_link_libraries(imgui PUBLIC ${SDL2_LIBRARIES})
-	target_include_directories(imgui PUBLIC ${SDL2_INCLUDE_DIRS})
-endif()
+target_link_libraries(imgui PUBLIC SDL3::SDL3)
 
 target_include_directories(imgui PUBLIC ${imgui_dir})

@@ -24,7 +24,7 @@ project(MyHumanoid
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-
+option(MyHumanoid_USE_SYSTEM_SDL     "Use system provided SDL library" OFF)
 option(MyHumanoid_USE_SYSTEM_GLM     "Use system provided glm library" ON)
 option(MyHumanoid_USE_SYSTEM_PHYSFS  "Use system provided physfs library" ON)
 
@@ -60,7 +60,19 @@ add_subdirectory(extern)
 
 include(FetchContent)
 
-find_package(SDL2       CONFIG REQUIRED)
+if(MyHumanoid_USE_SYSTEM_SDL)
+	find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3)
+else()
+	set(SDL_SHARED OFF)
+	set(SDL_STATIC ON)
+	set(SDL_TEST_LIBRARY OFF)
+	FetchContent_Declare(
+		SDL3
+		GIT_REPOSITORY https://github.com/libsdl-org/SDL
+		GIT_TAG        877399b2b2cf21e67554ed9046410f268ce1d1b2) # 3.2.10
+	FetchContent_MakeAvailable(SDL3)
+endif()
+
 find_package(epoxy      REQUIRED)
 
 if(MyHumanoid_USE_SYSTEM_GLM)
@@ -241,8 +253,7 @@ target_include_directories(MyHumanoid PRIVATE
 )
 
 target_link_libraries(MyHumanoid PRIVATE
-	SDL2::SDL2
-	SDL2::SDL2main
+	SDL3::SDL3
 	epoxy::epoxy
 	glm::glm
 	${PHYSFS_LIBRARY}

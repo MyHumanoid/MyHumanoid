@@ -150,9 +150,12 @@ std::optional<Surface> loadSurfaceFromFile(const std::string & fileName) {
 
 	int depth = 32;
 	int pitch = 4 * size.y;
-	const auto surface = SDL_CreateRGBSurfaceWithFormatFrom(img, size.x, size.y,
-	                                                        depth, pitch,
-	                                                        SDL_PIXELFORMAT_RGBA32);
+	
+	const auto surface = SDL_CreateSurfaceFrom(size.x, size.y, SDL_PIXELFORMAT_RGBA32, img , pitch);
+	
+	// const auto surface = SDL_CreateRGBSurfaceWithFormatFrom(img, size.x, size.y,
+	//                                                         depth, pitch,
+	//                                                         SDL_PIXELFORMAT_RGBA32);
 	if(surface == nullptr) {
 		log_error("Failed to create sdl surface");
 		stbi_image_free(img);
@@ -172,6 +175,6 @@ Surface::Surface(SDL_Surface *ptr, unsigned char *img)
 {}
 
 void Surface::free() {
-	SDL_FreeSurface(m_ptr);
+	SDL_DestroySurface(m_ptr);
 	stbi_image_free(m_img);
 }

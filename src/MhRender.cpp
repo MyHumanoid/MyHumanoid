@@ -55,7 +55,7 @@ void RenderBackground::render()
 	extern SDL_Window * g_mainWindow;
 	
 	int x, y;
-	SDL_GL_GetDrawableSize(g_mainWindow, &x, &y);
+	SDL_GetWindowSizeInPixels(g_mainWindow, &x, &y);
 	
 	glUseProgram(m_shader->handle);
 	GLint myLoc = glGetUniformLocation(m_shader->handle, "u_viewportResolution");
