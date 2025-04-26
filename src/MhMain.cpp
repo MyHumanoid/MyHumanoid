@@ -26,8 +26,6 @@
  */
 
 #include <stdexcept>
-#include <iostream>
-#include <unordered_map>
 
 #include <fmt/format.h>
 
@@ -70,6 +68,10 @@
 
 #include <SDL3/SDL.h>
 
+#define SDL_MAIN_USE_CALLBACKS
+#include <SDL3/SDL_main.h>
+
+
 #define kTimerRendering 1000
 
 
@@ -87,6 +89,7 @@ const Color edges_color(0.4, 0.3, 0.3, 0.5);
 // ================================================================================================
 
 SDL_Window * g_mainWindow;
+SDL_GLContext g_maincontext;
 
 static void reshape()
 {
@@ -172,22 +175,21 @@ static void keyboard(SDL_Keycode key)
 }
 
 
-static int main2(int argc, char * argv[])
-{
+SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
+	
 	if(argc == 2) {
 		if(argv[1] && argv[1] == std::string("--debug")) {
 			g_logLevel = LogLevel::debug;
 		}
 	}
 	
-	// throw std::overflow_error("TEST exception");
-	
 	vfs::init(argv[0]);
 	
 	LoadConfig();
 	
 	if(!SDL_Init(SDL_INIT_VIDEO)) {
-		throw std::runtime_error("Unable to initialize SDL");
+		log_error("Unable to initialize SDL");
+		return SDL_APP_FAILURE;
 	}
 	
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -215,7 +217,8 @@ static int main2(int argc, char * argv[])
 	                                  | SDL_WINDOW_RESIZABLE);
 	
 	if (!mainWindow) {
-		throw std::runtime_error("Unable to create window");
+		log_error("Unable to create window");
+		return SDL_APP_FAILURE;
 	}
 	g_mainWindow = mainWindow;
 	
@@ -239,7 +242,7 @@ static int main2(int argc, char * argv[])
 	//checkSDLError(__LINE__);
 	
 	/* Create our opengl context and attach it to our window */
-	SDL_GLContext maincontext = SDL_GL_CreateContext(mainWindow);
+	g_maincontext = SDL_GL_CreateContext(mainWindow);
 	//checkSDLError(__LINE__);
 	
 	log_info("GL   version: {}", glGetString(GL_VERSION));
@@ -270,19 +273,19 @@ static int main2(int argc, char * argv[])
 	
 	if(!mesh_loaded) {
 		log_error("couldn't load mesh geometry");
-		return 1;
+		return SDL_APP_FAILURE;
 	}
 	if(!material_loaded) {
 		log_error("couldn't load mesh material informations");
-		return 1;
+		return SDL_APP_FAILURE;
 	}
 	if(!groups_loaded) {
 		log_error("couldn't load face groups");
-		return 1;
+		return SDL_APP_FAILURE;
 	}
 	if(!smooth_loaded) {
 		log_error("couldn't load smooth info");
-		return 1;
+		return SDL_APP_FAILURE;
 	}
 
 	CreateTargetImageTextures();
@@ -316,7 +319,7 @@ static int main2(int argc, char * argv[])
 
 	ImGui::StyleColorsDark();
 	
-	ImGui_ImplSDL3_InitForOpenGL(mainWindow, maincontext);
+	ImGui_ImplSDL3_InitForOpenGL(mainWindow, g_maincontext);
 	{
 		const char* glsl_version = "#version 130";
 		ImGui_ImplOpenGL3_Init(glsl_version);
@@ -346,122 +349,123 @@ static int main2(int argc, char * argv[])
 	// io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f,
 	// NULL, io.Fonts->GetGlyphRangesJapanese()); IM_ASSERT(font != NULL);
 	
-	bool mouseDownLeft = false;
-	bool mouseDownRight = false;
+	return SDL_APP_CONTINUE;
+}
+
+SDL_AppResult SDL_AppIterate(void *appstate) {
 	
-	bool runMainloop = true;
-	while(runMainloop) {
-		SDL_Event event;
-		while(SDL_PollEvent(&event)) {
-			ImGui_ImplSDL3_ProcessEvent(&event);
-			const ImGuiIO & imio = ImGui::GetIO();
-			
-			switch(event.type) {
-				case SDL_EVENT_QUIT: {
-					g_userRequestedQuit = true;
-					break;
-				}
+	// Start the Dear ImGui frame
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL3_NewFrame();
+	ImGui::NewFrame();
+	
+	timerTrigger();
+	
+	g_global.camera->applyMatrix();
+	
+	g_renderBody.render();
+	
+	g_renderBackground.render();
+	
+	DisplayMainMenu();
+	
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	
+	ExecuteDeferredActions();
+	
+	SDL_GL_SwapWindow(g_mainWindow);
+	
+	if(g_userAcceptedQuit) {
+		return SDL_APP_SUCCESS;
+	} else {
+		return SDL_APP_CONTINUE;
+	}
+}
 
-//						case SDL_EVENT_WINDOW_CLOSE_REQUESTED: {
-//							if(event.window.windowID == SDL_GetWindowID(mainwindow)) {
-//								g_userRequestedQuit = true;
-//							}
-//							break;
-//						}
-						case SDL_EVENT_WINDOW_EXPOSED:
-						case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
-						case SDL_EVENT_WINDOW_RESIZED: {
-							reshape();
-							break;
-						}
+bool mouseDownLeft = false;
+bool mouseDownRight = false;
 
-				case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-					if(!imio.WantCaptureMouse) {
-						if(event.button.button == SDL_BUTTON_LEFT) {
-							mouseDownLeft = true;
-							g_global.camera->mouseRotateStart(event.button.x, event.button.y);
-						}
-						if(event.button.button == SDL_BUTTON_RIGHT) {
-							mouseDownRight = true;
-							g_global.camera->mouseRotateStart(event.button.x, event.button.y);
-						}
-					}
-					break;
+SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
+	ImGui_ImplSDL3_ProcessEvent(event);
+	const ImGuiIO & imio = ImGui::GetIO();
+	
+	switch(event->type) {
+		case SDL_EVENT_QUIT: {
+			g_userRequestedQuit = true;
+			break;
+		}
+		case SDL_EVENT_WINDOW_EXPOSED:
+		case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+		case SDL_EVENT_WINDOW_RESIZED: {
+			reshape();
+			break;
+		}
+		case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+			if(!imio.WantCaptureMouse) {
+			    if(event->button.button == SDL_BUTTON_LEFT) {
+					mouseDownLeft = true;
+				    g_global.camera->mouseRotateStart(event->button.x, event->button.y);
 				}
-				case SDL_EVENT_MOUSE_BUTTON_UP: {
-					if(!imio.WantCaptureMouse) {
-						if(event.button.button == SDL_BUTTON_LEFT) {
-							mouseDownLeft = false;
-						}
-						if(event.button.button == SDL_BUTTON_RIGHT) {
-							mouseDownRight = false;
-						}
-					}
-					break;
-				}
-				case SDL_EVENT_MOUSE_MOTION: {
-					if(!imio.WantCaptureMouse) {
-						if(mouseDownLeft) {
-							g_global.camera->rotateMouse(event.motion.x, event.motion.y);
-						}
-						if(mouseDownRight) {
-							g_global.camera->moveMouse(event.motion.x, event.motion.y);
-						}
-					}
-					break;
-				}
-				case SDL_EVENT_MOUSE_WHEEL: {
-					if(!imio.WantCaptureMouse) {
-						if(event.wheel.y > 0) {
-							g_global.camera->move(0, 0, 1);
-		//					    if(!g_global.camera->isPerspective()) {
-		//						    reshape(g_mainWindow.getSize().x,
-		//						            mainWindow.getSize().y);
-		//					    }
-						} else if(event.wheel.y < 0) {
-							g_global.camera->move(0, 0, -1);
-		//					    if(!g_global.camera->isPerspective()) {
-		//						    reshape(mainWindow.getSize().x,
-		//						            mainWindow.getSize().y);
-		//					    }
-						}
-					}
-					break;
-				}
-				case SDL_EVENT_KEY_UP: {
-				    keyboard(event.key.key);
-					break;
+			    if(event->button.button == SDL_BUTTON_RIGHT) {
+					mouseDownRight = true;
+				    g_global.camera->mouseRotateStart(event->button.x, event->button.y);
 				}
 			}
+			break;
 		}
-		
-		// Start the Dear ImGui frame
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL3_NewFrame();
-		ImGui::NewFrame();
-		
-		timerTrigger();
-		
-		g_global.camera->applyMatrix();
-		
-		g_renderBody.render();
-		
-		g_renderBackground.render();
-		
-		DisplayMainMenu();
-		
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		
-		ExecuteDeferredActions();
-		
-		SDL_GL_SwapWindow(mainWindow);
-		
-		if(g_userAcceptedQuit) {
-			runMainloop = false;
+		case SDL_EVENT_MOUSE_BUTTON_UP: {
+			if(!imio.WantCaptureMouse) {
+				if(event->button.button == SDL_BUTTON_LEFT) {
+					mouseDownLeft = false;
+				}
+				if(event->button.button == SDL_BUTTON_RIGHT) {
+					mouseDownRight = false;
+				}
+			}
+			break;
+		}
+		case SDL_EVENT_MOUSE_MOTION: {
+			if(!imio.WantCaptureMouse) {
+				if(mouseDownLeft) {
+					g_global.camera->rotateMouse(event->motion.x, event->motion.y);
+				}
+				if(mouseDownRight) {
+					g_global.camera->moveMouse(event->motion.x, event->motion.y);
+				}
+			}
+			break;
+		}
+		case SDL_EVENT_MOUSE_WHEEL: {
+			if(!imio.WantCaptureMouse) {
+				if(event->wheel.y > 0) {
+					g_global.camera->move(0, 0, 1);
+					//					    if(!g_global.camera->isPerspective()) {
+					//						    reshape(g_mainWindow.getSize().x,
+					//						            mainWindow.getSize().y);
+					//					    }
+				} else if(event->wheel.y < 0) {
+					g_global.camera->move(0, 0, -1);
+					//					    if(!g_global.camera->isPerspective()) {
+					//						    reshape(mainWindow.getSize().x,
+					//						            mainWindow.getSize().y);
+					//					    }
+				}
+			}
+			break;
+		}
+		case SDL_EVENT_KEY_UP: {
+			keyboard(event->key.key);
+			break;
 		}
 	}
+	
+	return SDL_APP_CONTINUE;
+}
 
+
+void SDL_AppQuit(void *appstate, SDL_AppResult result) {
+	
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL3_Shutdown();
@@ -469,10 +473,10 @@ static int main2(int argc, char * argv[])
 	
 	{
 		auto & p = g_config.windowMain.pos;
-		SDL_GetWindowPosition(mainWindow, &p.x, &p.y);
+		SDL_GetWindowPosition(g_mainWindow, &p.x, &p.y);
 		
 		glm::ivec2 topLeftBorder;
-		SDL_GetWindowBordersSize(mainWindow,
+		SDL_GetWindowBordersSize(g_mainWindow,
 		                         &topLeftBorder.y, &topLeftBorder.x,
 		                         nullptr, nullptr);
 		
@@ -480,34 +484,15 @@ static int main2(int argc, char * argv[])
 	}
 	{
 		auto & s = g_config.windowMain.siz;
-		SDL_GetWindowSize(mainWindow, &s.x, &s.y);
+		SDL_GetWindowSize(g_mainWindow, &s.x, &s.y);
 	}
 	
 	/* Delete our opengl context, destroy our window, and shutdown SDL */
-	SDL_GL_DestroyContext(maincontext);
-	SDL_DestroyWindow(mainWindow);
+	SDL_GL_DestroyContext(g_maincontext);
+	SDL_DestroyWindow(g_mainWindow);
 	SDL_Quit();
 	
 	SaveConfig();
 	
 	vfs::deinit();
-	
-	return 0;
-}
-
-int main(int argc, char * argv[])
-{
-	try {
-		return main2(argc, argv);
-	} catch(...) {
-		// TODO log this
-		auto eptr = std::current_exception();
-		
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
-		                         "MyHumanoid",
-		                         "ERROR\nFailed to start.\nCheck the log.",
-		                         NULL);
-		
-		return 1;
-	} 
 }
