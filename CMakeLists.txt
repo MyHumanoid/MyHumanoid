@@ -262,7 +262,6 @@ target_link_libraries(MyHumanoid PRIVATE
 	stb::stb
 	tinygltf::tinygltf
 	simpleini
-	nativefiledialog
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

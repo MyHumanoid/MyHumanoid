@@ -1,8 +1,9 @@
 #include "MhUiMain.h"
 
+#include <array>
+#include <mutex>
 #include <optional>
 #include <imgui.h>
-#include <nfd.h>
 
 #include "animorph/BodySettings.h"
 
@@ -26,51 +27,7 @@
 #include "util.h"
 #include "Version.h"
 
-
-void openFileDialog()
-{
-	nfdchar_t *outPath = NULL;
-	nfdresult_t result = NFD_OpenDialog( NULL, NULL, &outPath );
-	
-	if ( result == NFD_OKAY ) {
-		puts("Success!");
-		puts(outPath);
-		free(outPath);
-	}
-	else if ( result == NFD_CANCEL ) {
-		puts("User pressed cancel.");
-	}
-	else {
-		printf("Error: %s\n", NFD_GetError() );
-	}
-	
-	//return 0;
-}
-
-std::optional<std::string> saveFileDialog(const std::string & ending) {
-	const nfdchar_t * filterList = ending.c_str();
-	const nfdchar_t * defaultPath = "./";
-	nfdchar_t * outPath = NULL;
-	
-	auto res = NFD_SaveDialog(filterList, defaultPath, &outPath);
-	switch(res) {
-	case NFD_OKAY: {
-		std::string path(outPath);
-		free(outPath);
-		if(!endsWithCaseInsensitive(path, "." + ending)) {
-			return path + "." + ending;
-		} else {
-			return path;
-		}
-	}
-	case NFD_CANCEL:
-		return std::nullopt;
-	default:
-		log_error("Save Dialog failed: {}", NFD_GetError());
-		return std::nullopt;
-	}
-}
-
+extern SDL_Window * g_mainWindow;
 
 
 // ================================================================================================
@@ -311,6 +268,86 @@ void loadPose(const std::string & character_name)
 	}
 }
 
+class FileDialog {
+	std::recursive_mutex m_mutex;
+	std::string m_toLoad;
+	
+public:
+	void openFileDialog()
+	{
+		SDL_ShowOpenFileDialog([](void *userdata, const char * const *filelist, int filter) {
+			auto c = static_cast<FileDialog*>(userdata);
+			
+			if(filelist == nullptr) {
+				printf("Error: %s\n", SDL_GetError());
+				return;
+			}
+			if(*filelist == nullptr) {
+				puts("User pressed cancel.");
+				return;
+			}
+			
+			for(; *filelist != NULL; filelist++) {
+				printf("File %s\n", *filelist);
+			}
+			
+		}, static_cast<void*>(this), g_mainWindow, nullptr, 0, nullptr, false);
+	}
+	
+	void saveFileDialog()
+	{
+		std::array<SDL_DialogFileFilter, 3> filters = {
+			(SDL_DialogFileFilter) {"Wavefront Obj", "obj"},
+			(SDL_DialogFileFilter) {"GlTF", "glb"},
+			(SDL_DialogFileFilter) {"Collada", "dae"}
+		};
+		
+		SDL_ShowSaveFileDialog([](void *userdata, const char * const *filelist, int filter) {
+			auto c = static_cast<FileDialog*>(userdata);
+			
+			if(filelist == nullptr) {
+				log_error("{}", SDL_GetError());
+				return;
+			}
+			if(*filelist == nullptr) {
+				log_info("User pressed cancel.");
+				return;
+			}
+			
+			for(; *filelist != NULL; filelist++) {
+				std::string path(*filelist);
+				{
+					std::lock_guard<std::recursive_mutex> lk(c->m_mutex);
+					c->m_toLoad = path;
+				}
+				break;
+			}
+			
+		}, static_cast<void*>(this), g_mainWindow, filters.data(), filters.size(), nullptr);
+	}
+	
+	void process() {
+		std::lock_guard<std::recursive_mutex> lk(m_mutex);
+		
+		if(m_toLoad.size() == 0) {
+			return;
+		}
+		
+		if(m_toLoad.ends_with("obj")) {
+			exportMeshObj(m_toLoad);
+		} else if(m_toLoad.ends_with("glb")) {
+			exportGltf(m_toLoad);
+		} else if(m_toLoad.ends_with("dae")) {
+			exportCollada(m_toLoad);
+		} else {
+			log_error("Unknown filetype: {}", m_toLoad);
+		}
+		m_toLoad = "";
+	}
+};
+
+FileDialog g_fileDialog;
+
 void DisplayLibraryPoses()
 {
 	
@@ -461,23 +498,8 @@ void DisplayMainMenu()
 	if(ImGui::BeginMainMenuBar()) {
 		if(ImGui::BeginMenu("File")) {
 			ImGui::Separator();
-			if(ImGui::MenuItem("Export wavefront (.obj)")) {
-				auto path = saveFileDialog("obj");
-				if(path) {
-					exportMeshObj(path.value());
-				}
-			}
-			if(ImGui::MenuItem("Export glTF (.glb)")) {
-				auto path = saveFileDialog("glb");
-				if(path) {
-					exportGltf(path.value());
-				}
-			}
-			if(ImGui::MenuItem("Export Collada (.dae)")) {
-				auto path = saveFileDialog("dae");
-				if(path) {
-					exportCollada(path.value());
-				}
+			if(ImGui::MenuItem("Export model")) {
+				g_fileDialog.saveFileDialog();
 			}
 			ImGui::Separator();
 			if(ImGui::MenuItem("Quit...")) {
@@ -686,6 +708,8 @@ void ExecuteDeferredActions()
 		
 		g_renderBackground.loadShader();
 	}
+	
+	g_fileDialog.process();
 }
 
 
