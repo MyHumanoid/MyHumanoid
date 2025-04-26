@@ -240,9 +240,11 @@ void DisplayLibraryCharacters()
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
 			const auto & tex = icon->second;
+			ImGui::PushID(foobar.c_str());
 			if(ImGui::ImageButton("Load Character", (intptr_t)tex.handle, ImVec2(48, 48))) {
 				loadCharacter(character_name);
 			}
+			ImGui::PopID();
 			ImGui::Text("%s", foobar.c_str());
 		} else {
 			if(ImGui::Button(foobar.c_str())) {
@@ -379,10 +381,11 @@ void DisplayLibraryPoses()
 		IconMap::iterator icon = g_charactersIconTextures.find(foobar);
 		if(icon != g_charactersIconTextures.end()) {
 			const auto & tex = icon->second;
+			ImGui::PushID(foobar.c_str());
 			if(ImGui::ImageButton("Load Pose", (intptr_t)tex.handle, ImVec2(48, 48))) {
-				
 				loadPose(character_name);
 			}
+			ImGui::PopID();
 		} else {
 			if(ImGui::Button(foobar.c_str())) {
 				loadPose(character_name);
