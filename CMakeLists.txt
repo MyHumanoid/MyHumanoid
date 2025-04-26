@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-cmake_minimum_required(VERSION 3.22 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
 include(${CMAKE_CURRENT_LIST_DIR}/ProjectVersion.cmake)
 
@@ -10,6 +10,12 @@ if(WIN32)
 	cmake_policy(SET CMP0091 NEW)
 endif()
 
+cmake_policy(SET CMP0069 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
+
+cmake_policy(SET CMP0077 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
 project(MyHumanoid
 	VERSION ${project_version}
 	DESCRIPTION MyHumanoid
@@ -19,9 +25,8 @@ project(MyHumanoid
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 
-option(MyHumanoid_BUILD_IPO "Build with Interprocedural optimizations" ON)
-option(MyHumanoid_USE_SYSTEM_GLM "Use system provided glm library" ON)
-option(MyHumanoid_USE_SYSTEM_PHYSFS "Use system provided physfs library" ON)
+option(MyHumanoid_USE_SYSTEM_GLM     "Use system provided glm library" ON)
+option(MyHumanoid_USE_SYSTEM_PHYSFS  "Use system provided physfs library" ON)
 
 
 message(STATUS "Resolving GIT Version")
@@ -44,20 +49,6 @@ else()
 	message(STATUS "GIT not found")
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-if(MyHumanoid_BUILD_IPO)
-	include(CheckIPOSupported)
-	check_ipo_supported(RESULT HAVE_IPO OUTPUT HAVE_IPO_OUTPUT)
-	if(HAVE_IPO)
-		message(STATUS "IPO enabled")
-		set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-	else()
-		message(STATUS "IPO disabled: ${HAVE_IPO_OUTPUT}")
-	endif()
-endif()
-
 
 if(WIN32)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -68,6 +59,9 @@ add_subdirectory(extern)
 # Libraries
 
 include(FetchContent)
+
+find_package(SDL2       CONFIG REQUIRED)
+find_package(epoxy      REQUIRED)
 
 if(MyHumanoid_USE_SYSTEM_GLM)
 	find_package(glm REQUIRED)
@@ -98,7 +92,7 @@ else()
 	FetchContent_Declare(
 	  physfs
 	  GIT_REPOSITORY https://github.com/icculus/physfs
-	  GIT_TAG        eb3383b532c5f74bfeb42ec306ba2cf80eed988c) # 3.2.0
+	  GIT_TAG        adfdec6af14e4d12551446e7ad060415ca563950)
 	FetchContent_MakeAvailable(physfs)
 endif()
 
@@ -172,12 +166,12 @@ set(myhumanoid_sources
 	src/gui/Rect.h
 	src/gui/Rect.cpp
 
-        src/io/ColladaExporter.h
-        src/io/ColladaExporter.cpp
+	src/io/ColladaExporter.h
+	src/io/ColladaExporter.cpp
 	src/io/Gltf.h
 	src/io/Gltf.cpp
-        src/io/ObjExporter.h
-        src/io/ObjExporter.cpp
+	src/io/ObjExporter.h
+	src/io/ObjExporter.cpp
 
 	src/ComponentID.h
 	src/CompositeMorph.h
@@ -220,12 +214,6 @@ set(shader_sources
 	data/shader/body_2.frag
 )
 
-
-find_package(OpenGL     REQUIRED)
-find_package(epoxy      REQUIRED)
-find_package(SDL2       CONFIG REQUIRED)
-
-
 add_executable(MyHumanoid
 	${animorph_sources}
 	${render_sources}
@@ -241,37 +229,22 @@ target_sources(MyHumanoid PRIVATE
 target_include_directories(MyHumanoid PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/src)
 
 set_target_properties(MyHumanoid PROPERTIES
-	CXX_STANDARD 17
 	INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE
 )
 target_compile_features(MyHumanoid PRIVATE
-	cxx_std_17
+	cxx_std_20
 )
 
-if(UNIX)
-	#target_link_libraries(MyHumanoid -static)
-else()
-	#target_compile_options(MyHumanoid PUBLIC/PRIVATE /MT)
-	#target_link_options(MyHumanoid PUBLIC/PRIVATE /INCREMENTAL:NO /NODEFAULTLIB:MSVCRT)
-endif()
-
 target_include_directories(MyHumanoid PRIVATE
-	${OPENGL_INCLUDE_DIRS}
-	${GLM_INCLUDE_DIRS}
 	${PHYSFS_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-if(TARGET SDL2::SDL2)
-	target_link_libraries(MyHumanoid PRIVATE SDL2::SDL2 SDL2::SDL2main)
-else()
-	target_link_libraries(MyHumanoid PRIVATE ${SDL2_LIBRARIES})
-	target_include_directories(MyHumanoid PRIVATE ${SDL2_INCLUDE_DIRS})
-endif()
-
 target_link_libraries(MyHumanoid PRIVATE
-	${OPENGL_LIBRARIES}
+	SDL2::SDL2
+	SDL2::SDL2main
 	epoxy::epoxy
+	glm::glm
 	${PHYSFS_LIBRARY}
 	fmt
 	imgui::imgui
@@ -300,7 +273,7 @@ else()
 	#message(${files_str})
 	
 	add_custom_command(TARGET MyHumanoid POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E tar "cfv" MyHumanoid.zip
+		COMMAND ${CMAKE_COMMAND} -E tar "cf" MyHumanoid.zip
 		--files-from="${CMAKE_CURRENT_BINARY_DIR}/dataFilesList.txt"
 		--format=zip "${CMAKE_CURRENT_SOURCE_DIR}/data/"
 		WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data"
