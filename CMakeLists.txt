@@ -18,7 +18,10 @@ project(MyHumanoid
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
+
 option(MyHumanoid_BUILD_IPO "Build with Interprocedural optimizations" ON)
+option(MyHumanoid_USE_SYSTEM_GLM "Use system provided glm library" ON)
+
 
 message(STATUS "Resolving GIT Version")
 set(project_git_commit_hash "unknown")
@@ -60,6 +63,20 @@ if(WIN32)
 endif()
 
 add_subdirectory(extern)
+
+
+if(MyHumanoid_USE_SYSTEM_GLM)
+	find_package(glm REQUIRED)
+else()
+	include(FetchContent)
+	
+	FetchContent_Declare(
+	  glm
+	  GIT_REPOSITORY https://github.com/g-truc/glm
+	  GIT_TAG        0af55ccecd98d4e5a8d1fad7de25ba429d60e863) # 1.0.1
+	FetchContent_MakeAvailable(glm)
+endif()
+
 
 set(animorph_sources
 	src/animorph/BodySettings.h
@@ -181,7 +198,6 @@ set(shader_sources
 find_package(OpenGL     REQUIRED)
 find_package(epoxy      REQUIRED)
 find_package(SDL2       CONFIG REQUIRED)
-find_package(glm        REQUIRED)
 find_package(PhysFS 2.1 REQUIRED)
 
 
