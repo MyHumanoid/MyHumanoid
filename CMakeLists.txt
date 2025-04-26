@@ -21,6 +21,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 option(MyHumanoid_BUILD_IPO "Build with Interprocedural optimizations" ON)
 option(MyHumanoid_USE_SYSTEM_GLM "Use system provided glm library" ON)
+option(MyHumanoid_USE_SYSTEM_PHYSFS "Use system provided physfs library" ON)
 
 
 message(STATUS "Resolving GIT Version")
@@ -64,12 +65,13 @@ endif()
 
 add_subdirectory(extern)
 
+# Libraries
+
+include(FetchContent)
 
 if(MyHumanoid_USE_SYSTEM_GLM)
 	find_package(glm REQUIRED)
 else()
-	include(FetchContent)
-	
 	FetchContent_Declare(
 	  glm
 	  GIT_REPOSITORY https://github.com/g-truc/glm
@@ -77,6 +79,30 @@ else()
 	FetchContent_MakeAvailable(glm)
 endif()
 
+if(MyHumanoid_USE_SYSTEM_PHYSFS)
+	find_package(PhysFS 2.1 REQUIRED)
+else()
+	set(PHYSFS_ARCHIVE_GRP OFF)
+	set(PHYSFS_ARCHIVE_WAD OFF)
+	set(PHYSFS_ARCHIVE_HOG OFF)
+	set(PHYSFS_ARCHIVE_MVL OFF)
+	set(PHYSFS_ARCHIVE_QPAK OFF)
+	set(PHYSFS_ARCHIVE_SLB OFF)
+	set(PHYSFS_ARCHIVE_ISO9660 OFF)
+	set(PHYSFS_ARCHIVE_VDF OFF)
+	set(PHYSFS_BUILD_SHARED OFF)
+	set(PHYSFS_BUILD_TEST OFF)
+	set(PHYSFS_DISABLE_INSTALL ON)
+	set(PHYSFS_BUILD_DOCS OFF)
+	
+	FetchContent_Declare(
+	  physfs
+	  GIT_REPOSITORY https://github.com/icculus/physfs
+	  GIT_TAG        eb3383b532c5f74bfeb42ec306ba2cf80eed988c) # 3.2.0
+	FetchContent_MakeAvailable(physfs)
+endif()
+
+# Sources
 
 set(animorph_sources
 	src/animorph/BodySettings.h
@@ -198,7 +224,6 @@ set(shader_sources
 find_package(OpenGL     REQUIRED)
 find_package(epoxy      REQUIRED)
 find_package(SDL2       CONFIG REQUIRED)
-find_package(PhysFS 2.1 REQUIRED)
 
 
 add_executable(MyHumanoid
