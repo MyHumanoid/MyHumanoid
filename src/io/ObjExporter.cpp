@@ -224,14 +224,14 @@ static void writeMtl(const Mesh & mesh, const string & mtlPath, const string & o
 		stream << "newmtl " << mat.name << std::endl;
 		//stream << "illum " << 2 << endl;
 		// Diffuse color
-		stream << "kd " << col.r << " " << col.g << " " << col.b << std::endl;
+		stream << "Kd " << col.r << " " << col.g << " " << col.b << std::endl;
 		
 		{
 			// Diffuse Texture
 			std::string inTexPath = "data/pixmaps/ui/" + mat.name + "_color.png";
 			if(vfs::exists(inTexPath)) {
 				std::string foo = removeExtension(objName) + "_"+ mat.name + "_color.png";
-				stream << "map_kd " << foo << std::endl;
+				stream << "map_Kd " << foo << std::endl;
 				
 				std::string outTexPath = removeExtension(mtlPath) + "_"+ mat.name + "_color.png";
 				vfs::copyToFilesystem(inTexPath, outTexPath);
