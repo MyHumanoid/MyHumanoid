@@ -243,9 +243,16 @@ target_include_directories(MyHumanoid PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/src)
 set_target_properties(MyHumanoid PROPERTIES
 	INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE
 )
+
 target_compile_features(MyHumanoid PRIVATE
 	cxx_std_20
 )
+
+if(MSVC)
+	target_compile_options(MyHumanoid PUBLIC /W4)
+else()
+	target_compile_options(MyHumanoid PUBLIC -Wall -Wextra -Wpedantic)
+endif()
 
 target_include_directories(MyHumanoid PRIVATE
 	${PHYSFS_INCLUDE_DIRS}
