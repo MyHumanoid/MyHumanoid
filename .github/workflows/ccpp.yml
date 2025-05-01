@@ -64,12 +64,12 @@ jobs:
         -B build
         -G "Visual Studio 17 2022"
         -A x64
-        -D CMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
-        -D CMAKE_BUILD_TYPE=Release
-        -D MH_USE_SYSTEM_FMT=OFF
-        -D MH_USE_SYSTEM_GLM=OFF
-        -D MH_USE_SYSTEM_PHYSFS=OFF
-        -D MH_USE_SYSTEM_SDL=OFF
+        -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -DCMAKE_BUILD_TYPE=Release
+        -DMH_USE_SYSTEM_FMT=OFF
+        -DMH_USE_SYSTEM_GLM=OFF
+        -DMH_USE_SYSTEM_PHYSFS=OFF
+        -DMH_USE_SYSTEM_SDL=OFF
     - name: build
       shell: bash
       run: |
