@@ -176,9 +176,6 @@ static void ResetMeshMorph()
 // ================================================================================================
 // ================================================================================================
 
-bool g_userRequestedQuit = false;
-bool g_userAcceptedQuit = false;
-
 static bool g_displayAxis       = false;
 
 static bool g_requestShaderReload  = false;
@@ -399,14 +396,14 @@ void DisplayPerformance(AppState& app)
 	ImGui::Begin("Performance");
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
 	            1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::Checkbox("Demo Window", &app.window.show_demo_window);
+	ImGui::Checkbox("Demo Window", &app.uiState.show_demo_window);
 	ImGui::End();
 }
 
 
 void DisplayGlInfo(AppState& app)
 {
-	if(!ImGui::Begin("Gl info", &app.window.glInfo)) {
+	if(!ImGui::Begin("Gl info", &app.uiState.glInfo)) {
 		ImGui::End();
 		return;
 	}
@@ -440,7 +437,7 @@ void DisplayAbout(AppState& app)
 	    ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize |
 	    ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings;
 	
-	if(!ImGui::Begin("About", &app.window.about, winFlags)) {
+	if(!ImGui::Begin("About", &app.uiState.about, winFlags)) {
 		ImGui::End();
 		return;
 	}
@@ -477,15 +474,28 @@ void DisplayAbout(AppState& app)
 	ImGui::End();
 }
 
+static void DisplaySettings(AppState& app)
+{
+	if(!ImGui::Begin("Settings", &app.uiState.settings)) {
+		ImGui::End();
+		return;
+	}
+	
+	ImGui::Checkbox("Ask on close", &app.settings.askOnClose);
+	ImGui::Checkbox("Developer mode", &app.settings.developerMode);
+	
+	ImGui::End();
+}
+
 // ================================================================================================
 
-void DisplayQuitPopup()
+static void DisplayQuitPopup(AppState& app)
 {
 	if(ImGui::BeginPopupModal("Quit?", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 		ImGui::Text("Do you really want to quit?\n");
 		ImGui::Separator();
 		if(ImGui::Button("YES", ImVec2(120, 0))) {
-			g_userAcceptedQuit = true;
+			app.ui.request.quitAccept = true;
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
@@ -500,13 +510,16 @@ void DisplayMainMenu(AppState& app)
 {
 	if(ImGui::BeginMainMenuBar()) {
 		if(ImGui::BeginMenu("File")) {
+			if(ImGui::MenuItem("Settings")) {
+				app.uiState.settings = true;
+			}
 			ImGui::Separator();
 			if(ImGui::MenuItem("Export model")) {
 				g_fileDialog.saveFileDialog(app);
 			}
 			ImGui::Separator();
 			if(ImGui::MenuItem("Quit...")) {
-				g_userRequestedQuit = true;
+				app.ui.request.quit = true;
 			}
 			ImGui::EndMenu();
 		}
@@ -611,39 +624,39 @@ void DisplayMainMenu(AppState& app)
 			}
 			ImGui::EndMenu();
 		}
-		ImGui::Separator();
-		if(ImGui::BeginMenu("Shading")) {
-			if(ImGui::MenuItem("Load Shader 1")) {
-				g_requestShaderVersion = 1;
-				g_requestShaderReload  = true;
-			}
-			if(ImGui::MenuItem("Load Shader 2")) {
-				g_requestShaderVersion = 2;
-				g_requestShaderReload  = true;
-			}
+		if(app.settings.developerMode) {
 			ImGui::Separator();
-			if(ImGui::MenuItem("Load Background Shader")) {
-				g_requestBackgroundShaderReload = true;
+			if(ImGui::BeginMenu("Developer")) {
+				if(ImGui::BeginMenu("Shading")) {
+					if(ImGui::MenuItem("Load Shader 1")) {
+						g_requestShaderVersion = 1;
+						g_requestShaderReload  = true;
+					}
+					if(ImGui::MenuItem("Load Shader 2")) {
+						g_requestShaderVersion = 2;
+						g_requestShaderReload  = true;
+					}
+					ImGui::Separator();
+					if(ImGui::MenuItem("Load Background Shader")) {
+						g_requestBackgroundShaderReload = true;
+					}
+					ImGui::EndMenu();
+				}
+				if(ImGui::MenuItem("Gl Info")) {
+					app.uiState.glInfo = true;
+				}
+				ImGui::Checkbox("Performance", &app.uiState.performance);
+				ImGui::Separator();
+				if(ImGui::Button("CreateWeightsFile")) {
+					CreateWeightsFile();
+				}
+				ImGui::EndMenu();
 			}
-			
-			ImGui::EndMenu();
-		}
-		ImGui::Separator();
-		if(ImGui::BeginMenu("Broken stuff")) {
-			if(ImGui::Button("CreateWeightsFile")) {
-				CreateWeightsFile();
-			}
-			ImGui::EndMenu();
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Help")) {
-			if(ImGui::MenuItem("Gl Info")) {
-				app.window.glInfo = true;
-			}
-			ImGui::Checkbox("Performance", &app.window.performance);
-			ImGui::Separator();
 			if(ImGui::MenuItem("About ...")) {
-				app.window.about = true;
+				app.uiState.about = true;
 			}
 			ImGui::EndMenu();
 		}
@@ -669,26 +682,35 @@ void DisplayMainMenu(AppState& app)
 		}
 	}
 	
-	if(app.window.glInfo) {
+	if(app.uiState.settings) {
+		DisplaySettings(app);
+	}
+	
+	if(app.uiState.glInfo) {
 		DisplayGlInfo(app);
 	}
 	
-	if(app.window.performance) {
+	if(app.uiState.performance) {
 		DisplayPerformance(app);
-		if(app.window.show_demo_window) {
-			ImGui::ShowDemoWindow(&app.window.show_demo_window);
+		if(app.uiState.show_demo_window) {
+			ImGui::ShowDemoWindow(&app.uiState.show_demo_window);
 		}
 	}
-	if(app.window.about) {
+	if(app.uiState.about) {
 		DisplayAbout(app);
 	}
 	
-	if(g_userRequestedQuit) {
-		g_userRequestedQuit = false;
-		ImGui::OpenPopup("Quit?");
+	if(app.ui.request.quit) {
+		app.ui.request.quit = false;
+		
+		if(app.settings.askOnClose) {
+			ImGui::OpenPopup("Quit?");
+		} else {
+			app.ui.request.quitAccept = true;
+		}
 	}
 	
-	DisplayQuitPopup();
+	DisplayQuitPopup(app);
 }
 
 void ExecuteDeferredActions()

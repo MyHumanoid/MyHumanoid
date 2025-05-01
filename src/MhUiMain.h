@@ -3,9 +3,6 @@
 
 #include "Global.h"
 
-extern bool g_userRequestedQuit;
-extern bool g_userAcceptedQuit;
-
 void CreateCaractersIconTextures();
 void DisplayMainMenu(AppState &app);
 

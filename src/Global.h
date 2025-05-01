@@ -44,12 +44,26 @@ struct AppState {
 	SDL_Window*   mainWindow;
 	SDL_GLContext mainContext;
 	
+	struct Ui {
+		struct Request {
+			bool quit = false;
+			bool quitAccept = false;
+		} request;
+		
+	} ui;
+	
 	struct WindowVisibility {
 		bool glInfo = false;
 		bool performance         = false;
 		bool show_demo_window    = false;
 		bool about               = false;
-	} window;
+		bool settings = false;
+	} uiState;
+	
+	struct Settings {
+		bool askOnClose = true;
+		bool developerMode = false;
+	} settings;
 	
 };
 

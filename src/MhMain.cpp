@@ -319,7 +319,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 	SDL_GL_SwapWindow(app.mainWindow);
 	TracyGpuCollect;
 	
-	if(g_userAcceptedQuit) {
+	if(app.ui.request.quitAccept) {
 		return SDL_APP_SUCCESS;
 	} else {
 		return SDL_APP_CONTINUE;
@@ -337,7 +337,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 	
 	switch(event->type) {
 		case SDL_EVENT_QUIT: {
-			g_userRequestedQuit = true;
+			app.ui.request.quit = true;
 			break;
 		}
 		case SDL_EVENT_WINDOW_EXPOSED:
