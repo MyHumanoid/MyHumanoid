@@ -24,7 +24,7 @@ struct AdapterUserdata {
 	const std::string & name;
 };
 
-static constexpr stbi_io_callbacks adapter = {
+static constexpr stbi_io_callbacks stbi_io_adapter = {
 	[](void * user, char * data, int size) -> int {
 		AdapterUserdata * d = static_cast<AdapterUserdata *>(user);
 		auto res = PHYSFS_readBytes(d->file, data, size);
@@ -72,7 +72,7 @@ std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
 	};
 	
 	glm::ivec2 size;
-	auto img = stbi_load_from_callbacks(&adapter, &userdata, &size.x, &size.y, NULL, 4);
+	auto img = stbi_load_from_callbacks(&stbi_io_adapter, &userdata, &size.x, &size.y, NULL, 4);
 	
 	if(img == NULL) {
 		log_error("Failed to load file: {}, {}", fileName, physfsError());
@@ -145,7 +145,7 @@ std::optional<Surface> loadSurfaceFromFile(const std::string & fileName) {
 	};
 
 	glm::ivec2 size;
-	auto img = stbi_load_from_callbacks(&adapter, &userdata, &size.x, &size.y, NULL, STBI_rgb_alpha);
+	auto img = stbi_load_from_callbacks(&stbi_io_adapter, &userdata, &size.x, &size.y, NULL, STBI_rgb_alpha);
 
 	if(img == NULL) {
 		log_error("Failed to load file: {}, {}", fileName, physfsError());

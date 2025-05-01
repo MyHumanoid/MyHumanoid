@@ -142,8 +142,8 @@ static void createOBJStream(Mesh & mesh,
 		}
 	}
 
-	int v_offset  = 0;
-	int vt_offset = 0;
+	size_t v_offset  = 0;
+	size_t vt_offset = 0;
 	
 	int smoothGroup = 1;
 	for(const auto & [partname, groupValue] : facegroup.m_groups) {
@@ -181,15 +181,12 @@ static void createOBJStream(Mesh & mesh,
 				// does implicitly insert an entry for a particular has if it does
 				// not exists!
 				VertexData::const_iterator vertex_iterator;
-				if((vertex_iterator = vertexgroupdata.find(
-				            face.getVertexAtIndex(j))) != vertexgroupdata.end()) {
+				if((vertex_iterator = vertexgroupdata.find(face.getVertexAtIndex(j))) != vertexgroupdata.end()) {
 					int vertex_number = vertex_iterator->second;
 					// cout << texture_number << endl;
 					
 					// face vertex geometry
-					obj.write("{}/{} ",
-					             vertex_number + 1 + v_offset,
-					             texture_number + vt_offset);
+					obj.write("{}/{} ", vertex_number + 1 + v_offset, texture_number + vt_offset);
 					
 					texture_number++;
 				}

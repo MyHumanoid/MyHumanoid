@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "Gltf.h"
 
+#include <algorithm>
 #include <vector>
 #include <glm/glm.hpp>
 #include <physfs.h>
@@ -10,7 +11,6 @@
 #include "tiny_gltf.h"
 #include "animorph/Mesh.h"
 #include "Logger.h"
-#include "Version.h"
 
 namespace gltf = tinygltf;
 
