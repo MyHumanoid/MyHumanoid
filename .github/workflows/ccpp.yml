@@ -55,6 +55,8 @@ jobs:
       run: >
         vcpkg install
         libepoxy:x64-windows
+        sdl3:x64-windows
+        physfs:x64-windows
     - name: configure
       shell: bash
       run: >
@@ -64,12 +66,12 @@ jobs:
         -B build
         -G "Visual Studio 17 2022"
         -A x64
-        -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
-        -DCMAKE_BUILD_TYPE=Release
-        -DMH_USE_SYSTEM_FMT=OFF
-        -DMH_USE_SYSTEM_GLM=OFF
-        -DMH_USE_SYSTEM_PHYSFS=OFF
-        -DMH_USE_SYSTEM_SDL=OFF
+        -D CMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -D CMAKE_BUILD_TYPE=Release
+        -D MH_USE_SYSTEM_FMT=OFF
+        -D MH_USE_SYSTEM_GLM=OFF
+        -D MH_USE_SYSTEM_PHYSFS=ON
+        -D MH_USE_SYSTEM_SDL=ON
     - name: build
       shell: bash
       run: |
