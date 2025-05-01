@@ -36,17 +36,11 @@ namespace Animorph
  */
 class Euler : public glm::vec3
 {
-public:
-	enum Notation { XYZ };
-
-private:
-	Notation n;
 
 public:
 	/// constructor for Euler with all components 0.
-	Euler(Notation n)
+	Euler()
 	        : glm::vec3(0, 0, 0)
-	        , n(XYZ)
 	{
 	}
 
@@ -57,16 +51,10 @@ public:
 	 * \param z The rotation about the Z-Axis (in PI).
 	 * \param n A Notation for this three rotations.
 	 */
-	Euler(float x, float y, float z, Notation n)
+	Euler(float x, float y, float z)
 	        : glm::vec3(x, y, z)
-	        , n(n)
 	{
 	}
-
-	/*!
-	 * \return The Notation of this Euler angle.
-	 */
-	Notation getNotation() { return n; }
 };
 
 } // namespace Animorph

@@ -12,19 +12,15 @@ void Matrix::fromEuler(Euler & e)
 	float cry = cosf(e.y);
 	float crz = cosf(e.z);
 
-	switch(e.getNotation()) {
-	case Euler::XYZ:
-		data[0]  = cry * crz;
-		data[4]  = cry * (-srz);
-		data[8]  = sry;
-		data[1]  = crx * srz + srx * sry * crz;
-		data[5]  = crx * crz - srx * sry * srz;
-		data[9]  = -srx * cry;
-		data[2]  = srx * srz - crx * sry * crz;
-		data[6]  = srx * crz + crx * sry * srz;
-		data[10] = crx * cry;
-		break;
-	}
+	data[0]  = cry * crz;
+	data[4]  = cry * (-srz);
+	data[8]  = sry;
+	data[1]  = crx * srz + srx * sry * crz;
+	data[5]  = crx * crz - srx * sry * srz;
+	data[9]  = -srx * cry;
+	data[2]  = srx * srz - crx * sry * crz;
+	data[6]  = srx * crz + crx * sry * srz;
+	data[10] = crx * cry;
 }
 
 void Matrix::setRotation(float theta, RotateAxis axis)
