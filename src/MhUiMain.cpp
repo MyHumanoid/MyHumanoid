@@ -298,10 +298,10 @@ public:
 	
 	void saveFileDialog(AppState& app)
 	{
-		std::array<SDL_DialogFileFilter, 3> filters = {
-			(SDL_DialogFileFilter) {"Wavefront Obj", "obj"},
-			(SDL_DialogFileFilter) {"GlTF", "glb"},
-			(SDL_DialogFileFilter) {"Collada", "dae"}
+		std::array<SDL_DialogFileFilter, 1> filters = {
+			{{"Wavefront Obj", "obj"}},
+			//{{"GlTF", "glb"}},
+			//{{"Collada", "dae"}}
 		};
 		
 		SDL_ShowSaveFileDialog([](void *userdata, const char * const *filelist, int filter) {
@@ -337,10 +337,10 @@ public:
 		
 		if(m_toLoad.ends_with("obj")) {
 			exportMeshObj(m_toLoad);
-		} else if(m_toLoad.ends_with("glb")) {
-			exportGltf(m_toLoad);
-		} else if(m_toLoad.ends_with("dae")) {
-			exportCollada(m_toLoad);
+		// } else if(m_toLoad.ends_with("glb")) {
+		// 	exportGltf(m_toLoad);
+		// } else if(m_toLoad.ends_with("dae")) {
+		// 	exportCollada(m_toLoad);
 		} else {
 			log_error("Unknown filetype: {}", m_toLoad);
 		}
@@ -394,19 +394,19 @@ void DisplayLibraryPoses()
 	}
 }
 
-void DisplayPerformance()
+void DisplayPerformance(AppState& app)
 {
 	ImGui::Begin("Performance");
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
 	            1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::Checkbox("Demo Window", &g_displayWin.show_demo_window);
+	ImGui::Checkbox("Demo Window", &app.window.show_demo_window);
 	ImGui::End();
 }
 
 
-void DisplayGlInfo()
+void DisplayGlInfo(AppState& app)
 {
-	if(!ImGui::Begin("Gl info", &g_displayWin.glInfo)) {
+	if(!ImGui::Begin("Gl info", &app.window.glInfo)) {
 		ImGui::End();
 		return;
 	}
@@ -433,14 +433,14 @@ void DisplayGlInfo()
 	ImGui::End();
 }
 
-void DisplayAbout()
+void DisplayAbout(AppState& app)
 {
 	
 	constexpr static ImGuiWindowFlags winFlags =
 	    ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize |
 	    ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings;
 	
-	if(!ImGui::Begin("About", &g_displayWin.about, winFlags)) {
+	if(!ImGui::Begin("About", &app.window.about, winFlags)) {
 		ImGui::End();
 		return;
 	}
@@ -637,21 +637,13 @@ void DisplayMainMenu(AppState& app)
 		}
 		ImGui::Separator();
 		if(ImGui::BeginMenu("Help")) {
-#if PROFILER_ENABLED
-			if(ImGui::MenuItem("Print Profiler Data")) {
-				ProfilerPrint();
-			}
-			if(ImGui::MenuItem("Clear Profiler Data")) {
-				ProfilerClear();
-			}
-#endif
 			if(ImGui::MenuItem("Gl Info")) {
-				g_displayWin.glInfo = true;
+				app.window.glInfo = true;
 			}
-			ImGui::Checkbox("Performance", &g_displayWin.performance);
+			ImGui::Checkbox("Performance", &app.window.performance);
 			ImGui::Separator();
 			if(ImGui::MenuItem("About ...")) {
-				g_displayWin.about = true;
+				app.window.about = true;
 			}
 			ImGui::EndMenu();
 		}
@@ -677,18 +669,18 @@ void DisplayMainMenu(AppState& app)
 		}
 	}
 	
-	if(g_displayWin.glInfo) {
-		DisplayGlInfo();
+	if(app.window.glInfo) {
+		DisplayGlInfo(app);
 	}
 	
-	if(g_displayWin.performance) {
-		DisplayPerformance();
-		if(g_displayWin.show_demo_window) {
-			ImGui::ShowDemoWindow(&g_displayWin.show_demo_window);
+	if(app.window.performance) {
+		DisplayPerformance(app);
+		if(app.window.show_demo_window) {
+			ImGui::ShowDemoWindow(&app.window.show_demo_window);
 		}
 	}
-	if(g_displayWin.about) {
-		DisplayAbout();
+	if(app.window.about) {
+		DisplayAbout(app);
 	}
 	
 	if(g_userRequestedQuit) {

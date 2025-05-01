@@ -38,20 +38,19 @@ struct Global {
 
 extern Global g_global;
 
-struct WindowVisibility {
-	bool glInfo = false;
-	bool performance         = false;
-	bool show_demo_window    = false;
-	bool about               = false;
-};
-
-extern WindowVisibility g_displayWin;
-
 extern bool g_morphMode;
 
 struct AppState {
 	SDL_Window*   mainWindow;
 	SDL_GLContext mainContext;
+	
+	struct WindowVisibility {
+		bool glInfo = false;
+		bool performance         = false;
+		bool show_demo_window    = false;
+		bool about               = false;
+	} window;
+	
 };
 
 

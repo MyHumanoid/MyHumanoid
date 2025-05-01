@@ -5,7 +5,7 @@
 #include <fmt/format.h>
 #include <glm/glm.hpp>
 
-enum class LogLevel {
+enum class LogLevel : uint8_t {
 	debug,
 	info,
 	error
@@ -16,7 +16,7 @@ extern LogLevel g_logLevel;
 template <typename... T>
 void log_internal(const char * file, int line, LogLevel level, fmt::format_string<T...> f, T &&... p)
 {
-	if(g_logLevel <= level) {
+	if(level >= g_logLevel) {
 		std::string s = file;
 		std::size_t found = s.find("src");
 		std::string foo = s.substr(found + 4);
