@@ -27,8 +27,8 @@ struct Grid
 			}
 		}
 		
-		float cellWidth  = size.x / (cols - 1);
-		float cellHeight = size.y / (rows - 1);
+		float cellWidth  = float(size.x) / (cols - 1);
+		float cellHeight = float(size.y) / (rows - 1);
 		
 		cellRatio = cellWidth / cellHeight;
 		maxValue  = glm::min(cellWidth, cellHeight * cellRatio);

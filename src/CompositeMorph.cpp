@@ -77,56 +77,39 @@ void Grids::applyCompositeMorphTargets() const
 		g_mesh.setMorphTarget(tmpTargetName, ageGrid.dists[i]);
 	}
 	
-	unsigned int i = 0;
-	unsigned int j = 0;
-	unsigned int k = 0;
-	
+	size_t muscle = 0;
 	for(const float & ms_it : muscleSizeGrid.dists) {
-		
-		i = 0;
-		
+		size_t age = 0;
 		for(const float & di_it : ageGrid.dists) {
-			if(j < muscleSizeLabels.size() && i < ageLabels.size()) {
-				string tmpTargetName("muscleSize/" + ageLabels[i] + "_" +
-				                     muscleSizeLabels[j] + ".target");
-				float  tmpTargetValue = di_it * ms_it;
+			if(muscle < muscleSizeLabels.size() && age < ageLabels.size()) {
+				{
+					string muscleName = "muscleSize/" + ageLabels[age] + "_" + muscleSizeLabels[muscle] + ".target";
+					float  muscleValue = di_it * ms_it;
+					g_mesh.setMorphTarget(muscleName, muscleValue);
+				}
 				
-				g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
-				
-				// breast widget
-				
-				k = 0;
-				if(i <= 4) {
-					
+				if(age <= 4) {
+					size_t breast = 0;
 					for(const float & br_it : breastGrid.dists) {
-						
-						if(k < breastLabels.size()) {
-							string tmpTargetName(
-							    "breast/" + ageLabels[i] + "_" +
-							    muscleSizeLabels[j] + "_" +
-							    breastLabels[k] + ".target");
-							float tmpTargetValue =
-							    di_it * ms_it * br_it;
+						if(breast < breastLabels.size()) {
+							string name = "breast/" + ageLabels[age] + "_" + muscleSizeLabels[muscle] + "_" + breastLabels[breast] + ".target";
+							float value = di_it * ms_it * br_it;
 							
-							if(tmpTargetValue > 0) {
-								//log_info("{} {}", tmpTargetName, tmpTargetValue);
-							}
-							
-							g_mesh.setMorphTarget(tmpTargetName, tmpTargetValue);
+							g_mesh.setMorphTarget(name, value);
 						}
-						k++;
+						breast++;
 					}
 				}
 			}
-			i++;
+			age++;
 		}
-		j++;
+		muscle++;
 	}
 	
-	for(size_t i = 0; i < shapeGrid.dists.size(); ++i) {
-	
-		string tmpTargetName("shapes/" + shapeLabels[i] + ".target");
-		g_mesh.setMorphTarget(tmpTargetName, shapeGrid.dists[i]);
+	for(size_t shape = 0; shape < shapeGrid.dists.size(); ++shape) {
+		string name = "shapes/" + shapeLabels[shape] + ".target";
+		float value = shapeGrid.dists[shape];
+		g_mesh.setMorphTarget(name, value);
 	}
 }
 
