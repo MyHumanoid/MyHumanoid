@@ -3,11 +3,27 @@ MyHumanoid
 
 MyHumanoid is a modernized fork of MakeHuman 0.9.1
 
-Install dependencies under Debian and derivatives e.g. Ubuntu
+#### Building
 
-~~~~
-apt install libsdl2-dev libglew-dev libglm-dev libphysfs-dev libgtk-3-dev
-~~~~
+Dependencies can be either sourced from the system or by cmake from sourcecode.
+
+| CMake option         | Description                        | Default |
+| -------------------- | ---------------------------------- | ------- |
+| MH_ENABLE_TRACY      | Enable tracing using tracy         | OFF     |
+| MH_USE_SYSTEM_FMT    | Use system provided fmt library    | OFF     |
+| MH_USE_SYSTEM_SDL    | Use system provided SDL library    | OFF     |
+| MH_USE_SYSTEM_GLM    | Use system provided glm library    | ON      |
+| MH_USE_SYSTEM_PHYSFS | Use system provided physfs library | ON      |
+
+Configure these by using cmake-gui or on the commandline (cmake -DMH_ENABLE_TRACY=ON ..).
+
+If you want to use system provided libraries you have to install them using the system dependent package manager:
+
+Debian and derivatives e.g. Ubuntu:
+
+```sh
+apt install libsdl3-dev libepoxy-dev libfmt-dev libglm-dev libphysfs-dev
+```
 
 
 #### Original MakeHuman 0.9.1 licenses
