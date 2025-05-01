@@ -7,4 +7,4 @@
 #include <Windows.h>
 #endif
 
-#include <epoxy/gl.h>
+#include <glad/gl.h>

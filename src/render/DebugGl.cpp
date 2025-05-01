@@ -3,7 +3,13 @@
 #include "GlInclude.h"
 #include "Logger.h"
 
-static void openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity,
+#include <glad/gl.h>
+
+#define MH_GL_DEBUG_SUPPORTED 1
+
+#if MH_GL_DEBUG_SUPPORTED
+
+void GLAPIENTRY openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity,
                                    GLsizei length, const GLchar * message, const void * userParam)
 {
 	const char * typeStr;
@@ -59,3 +65,12 @@ void initDebugGl()
 	                     GL_DEBUG_SEVERITY_LOW,
 	                     GLsizei(strInitialized.size()), strInitialized.c_str());
 }
+
+#else
+
+void initDebugGl()
+{
+	log_info("GL debug not supported");
+}
+
+#endif

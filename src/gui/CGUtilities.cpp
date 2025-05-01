@@ -52,7 +52,7 @@ void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar
 	fH = tan(fovY / 360 * pi) * zNear;
 	fW = fH * aspect;
 
-	glFrustum(-fW, fW, -fH, fH, zNear, zFar);
+	//glFrustum(-fW, fW, -fH, fH, zNear, zFar);
 }
 
 // Glut call back functions

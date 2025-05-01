@@ -89,8 +89,6 @@ else()
 	FetchContent_MakeAvailable(SDL3)
 endif()
 
-find_package(epoxy      REQUIRED)
-
 if(MH_USE_SYSTEM_GLM)
 	find_package(glm REQUIRED)
 else()
@@ -296,7 +294,7 @@ target_include_directories(MyHumanoid PRIVATE
 
 target_link_libraries(MyHumanoid PRIVATE
 	SDL3::SDL3
-	epoxy::epoxy
+	glad::glad
 	glm::glm
 	${PHYSFS_LIBRARY}
 	fmt::fmt

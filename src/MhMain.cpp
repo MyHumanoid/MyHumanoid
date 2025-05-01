@@ -74,7 +74,6 @@
 #include "Profiler.h"
 
 
-
 #define kTimerRendering 1000
 
 
@@ -133,7 +132,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
@@ -176,6 +175,13 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	/* Create our opengl context and attach it to our window */
 	app.mainContext = SDL_GL_CreateContext(app.mainWindow);
+	
+	int version = gladLoadGL((GLADloadfunc) SDL_GL_GetProcAddress);
+	if (version == 0) {
+		printf("Failed to initialize OpenGL context\n");
+		return SDL_APP_FAILURE;
+	}
+	
 	//checkSDLError(__LINE__);
 	TracyGpuContext;
 	
