@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
 project(imgui)
 
@@ -22,13 +21,12 @@ set(imgui_src
 	${imgui_dir}/backends/imgui_impl_sdl3.cpp
 )
 
-find_package(SDL2 CONFIG REQUIRED)
-
 add_library(imgui STATIC ${imgui_src})
 add_library(imgui::imgui ALIAS imgui)
 
 target_link_libraries(imgui PUBLIC
 	stb::stb
+	SDL3::SDL3
 )
 
 target_compile_definitions(imgui PUBLIC
@@ -37,7 +35,5 @@ target_compile_definitions(imgui PUBLIC
 	IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION
 	IMGUI_STB_TRUETYPE_FILENAME="stb_truetype.h"
 )
-
-target_link_libraries(imgui PUBLIC SDL3::SDL3)
 
 target_include_directories(imgui PUBLIC ${imgui_dir})
