@@ -26,7 +26,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 
 option(MH_ENABLE_TRACY       "Enable tracing using tracy"         OFF)
-option(MH_USE_SYSTEM_FMT     "Use system provided fmt library"    OFF)
+option(MH_USE_SYSTEM_FMT     "Use system provided fmt library"    ON)
 option(MH_USE_SYSTEM_SDL     "Use system provided SDL library"    OFF)
 option(MH_USE_SYSTEM_GLM     "Use system provided glm library"    ON)
 option(MH_USE_SYSTEM_PHYSFS  "Use system provided physfs library" ON)

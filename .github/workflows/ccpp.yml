@@ -24,10 +24,10 @@ jobs:
         sudo apt install
         ninja-build
         libsdl2-dev
+        libfmt-dev
         libepoxy-dev
         libglm-dev
         libphysfs-dev
-        libgtk-3-dev
     - name: configure
       run: |
         cmake --version
@@ -54,18 +54,22 @@ jobs:
       shell: bash
       run: >
         vcpkg install
-        sdl2:x64-windows
         libepoxy:x64-windows
-        glm:x64-windows
-        physfs:x64-windows
     - name: configure
       shell: bash
-      run: |
-        cmake --version
-        mkdir build
-        cd build
-        cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
-        ls
+      run: >
+        cmake --version ;
+        cmake
+        -S .
+        -B build
+        -G "Visual Studio 17 2022"
+        -A x64
+        -D CMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -D CMAKE_BUILD_TYPE=Release
+        -D MH_USE_SYSTEM_FMT=OFF
+        -D MH_USE_SYSTEM_GLM=OFF
+        -D MH_USE_SYSTEM_PHYSFS=OFF
+        -D MH_USE_SYSTEM_SDL=OFF
     - name: build
       shell: bash
       run: |

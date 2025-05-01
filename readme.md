@@ -10,12 +10,12 @@ Dependencies can be either sourced from the system or by cmake from sourcecode.
 | CMake option         | Description                        | Default |
 | -------------------- | ---------------------------------- | ------- |
 | MH_ENABLE_TRACY      | Enable tracing using tracy         | OFF     |
-| MH_USE_SYSTEM_FMT    | Use system provided fmt library    | OFF     |
-| MH_USE_SYSTEM_SDL    | Use system provided SDL library    | OFF     |
+| MH_USE_SYSTEM_FMT    | Use system provided fmt library    | ON      |
 | MH_USE_SYSTEM_GLM    | Use system provided glm library    | ON      |
 | MH_USE_SYSTEM_PHYSFS | Use system provided physfs library | ON      |
+| MH_USE_SYSTEM_SDL    | Use system provided SDL library    | OFF     |
 
-Configure these by using cmake-gui or on the commandline (cmake -DMH_ENABLE_TRACY=ON ..).
+Configure these by using cmake-gui or on the commandline (cmake -D MH_ENABLE_TRACY=ON ..).
 
 If you want to use system provided libraries you have to install them using the system dependent package manager:
 
