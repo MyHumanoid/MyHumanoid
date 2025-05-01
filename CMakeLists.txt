@@ -57,8 +57,6 @@ if(WIN32)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
-add_subdirectory(extern)
-
 # Libraries
 
 include(FetchContent)
@@ -142,6 +140,9 @@ if(MH_ENABLE_TRACY)
 	)
 	FetchContent_MakeAvailable(tracy)
 endif()
+
+
+add_subdirectory(extern)
 
 # Sources
 
