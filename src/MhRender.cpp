@@ -12,6 +12,7 @@
 #include "render/Shader.h"
 #include "Global.h"
 
+#include "Profiler.h"
 
 RenderBackground g_renderBackground;
 
@@ -207,6 +208,9 @@ extern glm::mat4 g_projectionMatrix;
 
 void RenderBody::render()
 {
+	ZoneScoped;
+	TracyGpuZone("RenderBody");
+	
 	using Animorph::MaterialVector;
 	using Animorph::TextureVector;
 	using Animorph::FaceVector;

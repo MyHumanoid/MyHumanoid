@@ -24,6 +24,8 @@ project(MyHumanoid
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
+
+option(MH_ENABLE_TRACY       "Enable tracing using tracy"         OFF)
 option(MH_USE_SYSTEM_FMT     "Use system provided fmt library"    OFF)
 option(MH_USE_SYSTEM_SDL     "Use system provided SDL library"    OFF)
 option(MH_USE_SYSTEM_GLM     "Use system provided glm library"    ON)
@@ -129,6 +131,18 @@ else()
 	FetchContent_MakeAvailable(physfs)
 endif()
 
+if(MH_ENABLE_TRACY)
+	set(TRACY_LTO    ON)
+	
+	FetchContent_Declare(
+		tracy
+		GIT_SHALLOW    ON
+		GIT_REPOSITORY https://github.com/wolfpld/tracy
+		GIT_TAG        a03c7580b9101df3225937524e09a9a885d5464a
+	)
+	FetchContent_MakeAvailable(tracy)
+endif()
+
 # Sources
 
 set(animorph_sources
@@ -228,7 +242,6 @@ set(myhumanoid_sources
 	src/MhUiPose.h
 	src/MhUiPose.cpp
 	src/Profiler.h
-	src/Profiler.cpp
 	src/StringUtils.h
 	src/util.cpp
 	src/util.h
@@ -291,6 +304,16 @@ target_link_libraries(MyHumanoid PRIVATE
 	tinygltf::tinygltf
 	simpleini
 )
+
+if(MH_ENABLE_TRACY)
+	target_compile_definitions(MyHumanoid PRIVATE
+		MH_ENABLE_TRACY=1
+	)
+	target_link_libraries(MyHumanoid PRIVATE
+		TracyClient
+	)
+endif()
+
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	execute_process(COMMAND "${CMAKE_COMMAND}" -E create_symlink

@@ -521,7 +521,7 @@ const Target * Mesh::getTargetForName(const string & inTargetname)
 
 bool Mesh::setMorphTarget(const string & target_name, float morph_value)
 {
-	PROFILE
+	ZoneScoped;
 
 	// return if target doesn't exist
 	if(!m_targets.count(target_name)) {
@@ -563,7 +563,7 @@ bool Mesh::setMorphTarget(const string & target_name, float morph_value)
 
 void Mesh::doMorph(const BodySettings & bs)
 {
-	PROFILE
+	ZoneScoped;
 
 	m_morphTargets.m_targets.clear();
 	m_vert_morph.setCoordinates(m_vert_orginal);
@@ -827,7 +827,7 @@ void Mesh::prepareSkeleton()
 
 void Mesh::doPose(const BodySettings & bs, bool clear)
 {
-	PROFILE
+	ZoneScoped;
 	//  bool pose = false;
 
 	if(clear) {

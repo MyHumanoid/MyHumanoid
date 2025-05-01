@@ -45,7 +45,7 @@
 #include <gui/Camera.h>
 
 #include "Logger.h"
-#include "Profiler.h"
+
 
 #include "render/DebugGl.h"
 #include "render/RenderUtils.h"
@@ -70,6 +70,9 @@
 
 #define SDL_MAIN_USE_CALLBACKS
 #include <SDL3/SDL_main.h>
+
+#include "Profiler.h"
+
 
 
 #define kTimerRendering 1000
@@ -244,11 +247,16 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	/* Create our opengl context and attach it to our window */
 	g_maincontext = SDL_GL_CreateContext(mainWindow);
 	//checkSDLError(__LINE__);
+	TracyGpuContext;
 	
 	log_info("GL   version: {}", (const char*)glGetString(GL_VERSION));
 	log_info("GLSL version: {}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
 	
 	initDebugGl();
+	
+	printTracingStatus();
+	
+	// ===========
 	
 	glEnable(GL_DEPTH_TEST);
 	
@@ -354,6 +362,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
 	
+	FrameMark;
+	ZoneScoped;
+	
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
@@ -375,6 +386,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 	ExecuteDeferredActions();
 	
 	SDL_GL_SwapWindow(g_mainWindow);
+	TracyGpuCollect;
 	
 	if(g_userAcceptedQuit) {
 		return SDL_APP_SUCCESS;
