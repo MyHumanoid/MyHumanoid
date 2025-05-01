@@ -123,7 +123,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	vfs::init(argv[0]);
 	
-	LoadConfig();
+	LoadConfig(app);
 	
 	if(!SDL_Init(SDL_INIT_VIDEO)) {
 		log_error("Unable to initialize SDL");
@@ -500,7 +500,7 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
 	SDL_DestroyWindow(app.mainWindow);
 	SDL_Quit();
 	
-	SaveConfig();
+	SaveConfig(app);
 	
 	vfs::deinit();
 	

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Global.h"
+
 #include <glm/vec2.hpp>
 
 struct MhConfig {
@@ -27,5 +29,5 @@ struct MhConfig {
 
 extern MhConfig g_config;
 
-void LoadConfig();
-void SaveConfig();
+void LoadConfig(AppState& app);
+void SaveConfig(AppState& app);

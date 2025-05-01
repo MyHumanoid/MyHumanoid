@@ -37,7 +37,7 @@ struct Section {
 	};
 };
 
-void LoadConfig()
+void LoadConfig(AppState& app)
 {
 	auto iniData = fs::loadString(fileName);
 	if(!iniData) {
@@ -59,6 +59,11 @@ void LoadConfig()
 		log_info("Config loaded");
 	}
 	
+	{
+		Section s(ini, "settings");
+		s.getVal(app.settings.askOnClose, "askOnClose");
+		s.getVal(app.settings.developerMode, "developerMode");
+	}
 	
 	{
 		Section s(ini, "window-main");
@@ -78,12 +83,18 @@ void LoadConfig()
 	}
 }
 
-void SaveConfig()
+void SaveConfig(AppState& app)
 {
 	CSimpleIniA ini;
 	ini.SetUnicode(true);
 	ini.SetMultiKey(true);
 	ini.SetMultiLine(true);
+	
+	{
+		Section s(ini, "settings");
+		s.setVal(app.settings.askOnClose, "askOnClose");
+		s.setVal(app.settings.developerMode, "developerMode");
+	}
 	
 	{
 		Section s(ini, "window-main");
