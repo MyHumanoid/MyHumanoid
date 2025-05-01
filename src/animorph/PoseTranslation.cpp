@@ -134,9 +134,9 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 		maxZ += it;
 	}
 
-	int xsize = maxXSet.size();
-	int ysize = maxYSet.size();
-	int zsize = maxZSet.size();
+	double xsize = maxXSet.size();
+	double ysize = maxYSet.size();
+	double zsize = maxZSet.size();
 
 	formFactor = glm::vec3((maxX / xsize - minX / xsize) / originalSize.x,
 	                       (maxY / ysize - minY / ysize) / originalSize.y,
