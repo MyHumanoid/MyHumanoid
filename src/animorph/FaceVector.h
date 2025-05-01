@@ -27,6 +27,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include "Face.h"
 #include "FileReader.h"
 

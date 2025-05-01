@@ -7,10 +7,7 @@ namespace Animorph
  */
 /* ========================================================================== */
 Color::Color(const Color & inColor)
-        : r(inColor.r)
-        , g(inColor.g)
-        , b(inColor.b)
-        , a(inColor.a)
+        : m_color(inColor.m_color)
 {
 }
 
@@ -20,10 +17,10 @@ Color::Color(const Color & inColor)
 /* ========================================================================== */
 Color & Color::operator=(const Color & inRHS)
 {
-	r = inRHS.r;
-	g = inRHS.g;
-	b = inRHS.b;
-	a = inRHS.a;
+	m_color.r = inRHS.m_color.r;
+	m_color.g = inRHS.m_color.g;
+	m_color.b = inRHS.m_color.b;
+	m_color.a = inRHS.m_color.a;
 
 	return *this;
 }

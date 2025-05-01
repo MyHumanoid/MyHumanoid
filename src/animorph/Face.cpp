@@ -6,7 +6,7 @@ namespace Animorph
 Face::Face(int v0, int v1, int v2, int v3)
         : vertices()
         , size(4)
-        , material_index(-1)
+        , m_materialIndex(-1)
         , no()
 {
 	vertices[0] = v0;
@@ -18,7 +18,7 @@ Face::Face(int v0, int v1, int v2, int v3)
 Face::Face(int v0, int v1, int v2)
         : vertices()
         , size(3)
-        , material_index(-1)
+        , m_materialIndex(-1)
         , no()
 {
 	vertices[0] = v0;

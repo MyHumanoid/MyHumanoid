@@ -282,7 +282,7 @@ void RenderBody::render()
 				const Material & material(materialvector[material_index]);
 				const Color &    color(material.color);
 				
-				faceColor = glm::vec4(color.r, color.g, color.b, color.a);
+				faceColor = glm::vec4(color.m_color.r, color.m_color.g, color.m_color.b, color.m_color.a);
 			}
 			
 			auto pushVert = [&](int j) {

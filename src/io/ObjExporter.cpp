@@ -225,7 +225,7 @@ static void writeMtl(const Mesh & mesh, const string & mtlPath, const string & o
 		stream << "newmtl " << mat.name << std::endl;
 		//stream << "illum " << 2 << endl;
 		// Diffuse color
-		stream << "Kd " << col.r << " " << col.g << " " << col.b << std::endl;
+		stream << "Kd " << col.m_color.r << " " << col.m_color.g << " " << col.m_color.b << std::endl;
 		
 		{
 			// Diffuse Texture
