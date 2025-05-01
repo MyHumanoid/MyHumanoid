@@ -24,9 +24,9 @@ project(MyHumanoid
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-option(MyHumanoid_USE_SYSTEM_SDL     "Use system provided SDL library" OFF)
-option(MyHumanoid_USE_SYSTEM_GLM     "Use system provided glm library" ON)
-option(MyHumanoid_USE_SYSTEM_PHYSFS  "Use system provided physfs library" ON)
+option(MH_USE_SYSTEM_SDL     "Use system provided SDL library"    OFF)
+option(MH_USE_SYSTEM_GLM     "Use system provided glm library"    ON)
+option(MH_USE_SYSTEM_PHYSFS  "Use system provided physfs library" ON)
 
 
 message(STATUS "Resolving GIT Version")
@@ -60,51 +60,59 @@ add_subdirectory(extern)
 
 include(FetchContent)
 
-if(MyHumanoid_USE_SYSTEM_SDL)
+if(MH_USE_SYSTEM_SDL)
 	find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3)
 else()
 	set(SDL_SHARED OFF)
 	set(SDL_STATIC ON)
 	set(SDL_TEST_LIBRARY OFF)
+	
 	FetchContent_Declare(
 		SDL3
+		GIT_SHALLOW    ON
 		GIT_REPOSITORY https://github.com/libsdl-org/SDL
-		GIT_TAG        877399b2b2cf21e67554ed9046410f268ce1d1b2) # 3.2.10
+		GIT_TAG        877399b2b2cf21e67554ed9046410f268ce1d1b2 # 3.2.10
+	)
 	FetchContent_MakeAvailable(SDL3)
 endif()
 
 find_package(epoxy      REQUIRED)
 
-if(MyHumanoid_USE_SYSTEM_GLM)
+if(MH_USE_SYSTEM_GLM)
 	find_package(glm REQUIRED)
 else()
 	FetchContent_Declare(
-	  glm
-	  GIT_REPOSITORY https://github.com/g-truc/glm
-	  GIT_TAG        0af55ccecd98d4e5a8d1fad7de25ba429d60e863) # 1.0.1
+		glm
+		GIT_SHALLOW    ON
+		GIT_REPOSITORY https://github.com/g-truc/glm
+		GIT_TAG        0af55ccecd98d4e5a8d1fad7de25ba429d60e863 # 1.0.1
+	)
 	FetchContent_MakeAvailable(glm)
 endif()
 
-if(MyHumanoid_USE_SYSTEM_PHYSFS)
+if(MH_USE_SYSTEM_PHYSFS)
 	find_package(PhysFS 2.1 REQUIRED)
 else()
-	set(PHYSFS_ARCHIVE_GRP OFF)
-	set(PHYSFS_ARCHIVE_WAD OFF)
-	set(PHYSFS_ARCHIVE_HOG OFF)
-	set(PHYSFS_ARCHIVE_MVL OFF)
-	set(PHYSFS_ARCHIVE_QPAK OFF)
-	set(PHYSFS_ARCHIVE_SLB OFF)
+	set(PHYSFS_ARCHIVE_GRP     OFF)
+	set(PHYSFS_ARCHIVE_WAD     OFF)
+	set(PHYSFS_ARCHIVE_CSM     OFF)
+	set(PHYSFS_ARCHIVE_HOG     OFF)
+	set(PHYSFS_ARCHIVE_MVL     OFF)
+	set(PHYSFS_ARCHIVE_QPAK    OFF)
+	set(PHYSFS_ARCHIVE_SLB     OFF)
 	set(PHYSFS_ARCHIVE_ISO9660 OFF)
-	set(PHYSFS_ARCHIVE_VDF OFF)
-	set(PHYSFS_BUILD_SHARED OFF)
-	set(PHYSFS_BUILD_TEST OFF)
+	set(PHYSFS_ARCHIVE_VDF     OFF)
+	set(PHYSFS_BUILD_SHARED    OFF)
+	set(PHYSFS_BUILD_TEST      OFF)
 	set(PHYSFS_DISABLE_INSTALL ON)
-	set(PHYSFS_BUILD_DOCS OFF)
+	set(PHYSFS_BUILD_DOCS      OFF)
 	
 	FetchContent_Declare(
-	  physfs
-	  GIT_REPOSITORY https://github.com/icculus/physfs
-	  GIT_TAG        adfdec6af14e4d12551446e7ad060415ca563950)
+		physfs
+		GIT_SHALLOW    ON
+		GIT_REPOSITORY https://github.com/icculus/physfs
+		GIT_TAG        adfdec6af14e4d12551446e7ad060415ca563950
+	)
 	FetchContent_MakeAvailable(physfs)
 endif()
 
