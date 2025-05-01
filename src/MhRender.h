@@ -2,6 +2,7 @@
 
 #include <optional>
 
+#include "Global.h"
 #include "GlInclude.h"
 #include "render/GlTypes.h"
 
@@ -13,7 +14,7 @@ struct RenderBackground {
 	
 	void init();
 	void loadShader();
-	void render();
+	void render(AppState &app);
 };
 
 extern RenderBackground g_renderBackground;

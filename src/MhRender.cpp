@@ -51,12 +51,10 @@ void RenderBackground::loadShader()
 	}
 }
 
-void RenderBackground::render()
+void RenderBackground::render(AppState& app)
 {
-	extern SDL_Window * g_mainWindow;
-	
 	int x, y;
-	SDL_GetWindowSizeInPixels(g_mainWindow, &x, &y);
+	SDL_GetWindowSizeInPixels(app.mainWindow, &x, &y);
 	
 	glUseProgram(m_shader->handle);
 	GLint myLoc = glGetUniformLocation(m_shader->handle, "u_viewportResolution");

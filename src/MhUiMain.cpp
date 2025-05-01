@@ -275,7 +275,7 @@ class FileDialog {
 	std::string m_toLoad;
 	
 public:
-	void openFileDialog()
+	void openFileDialog(AppState& app)
 	{
 		SDL_ShowOpenFileDialog([](void *userdata, const char * const *filelist, int filter) {
 			auto c = static_cast<FileDialog*>(userdata);
@@ -293,10 +293,10 @@ public:
 				printf("File %s\n", *filelist);
 			}
 			
-		}, static_cast<void*>(this), g_mainWindow, nullptr, 0, nullptr, false);
+		}, static_cast<void*>(this), app.mainWindow, nullptr, 0, nullptr, false);
 	}
 	
-	void saveFileDialog()
+	void saveFileDialog(AppState& app)
 	{
 		std::array<SDL_DialogFileFilter, 3> filters = {
 			(SDL_DialogFileFilter) {"Wavefront Obj", "obj"},
@@ -325,7 +325,7 @@ public:
 				break;
 			}
 			
-		}, static_cast<void*>(this), g_mainWindow, filters.data(), filters.size(), nullptr);
+		}, static_cast<void*>(this), app.mainWindow, filters.data(), filters.size(), nullptr);
 	}
 	
 	void process() {
@@ -496,13 +496,13 @@ void DisplayQuitPopup()
 	}
 }
 
-void DisplayMainMenu()
+void DisplayMainMenu(AppState& app)
 {
 	if(ImGui::BeginMainMenuBar()) {
 		if(ImGui::BeginMenu("File")) {
 			ImGui::Separator();
 			if(ImGui::MenuItem("Export model")) {
-				g_fileDialog.saveFileDialog();
+				g_fileDialog.saveFileDialog(app);
 			}
 			ImGui::Separator();
 			if(ImGui::MenuItem("Quit...")) {

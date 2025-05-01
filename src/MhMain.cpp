@@ -91,94 +91,29 @@ const Color edges_color(0.4, 0.3, 0.3, 0.5);
 
 // ================================================================================================
 
-SDL_Window * g_mainWindow;
-SDL_GLContext g_maincontext;
-
-static void reshape()
+static void reshape(AppState& app)
 {
 	int w;
 	int h;
-	SDL_GetWindowSizeInPixels(g_mainWindow, &w, &h);
+	SDL_GetWindowSizeInPixels(app.mainWindow, &w, &h);
 	
 	cgutils::reshape(glm::ivec2(w, h), *g_global.camera);
 	g_global.camera->reshape(w, h);
 }
 
-static void timerTrigger()
+static void timerTrigger(AppState& app)
 {
 	bool     tmp;
 	tmp = g_global.camera->timerTrigger();
 
 	if(!g_global.camera->isPerspective()) {
-		reshape();
+		reshape(app);
 	}
 }
-
-static void keyboard(SDL_Keycode key)
-{
-	switch(key) {
-		case SDLK_UP:
-			g_global.camera->move(0, 1, 0);
-			break;
-		case SDLK_DOWN:
-			g_global.camera->move(0, -1, 0);
-			break;
-		case SDLK_LEFT:
-			g_global.camera->move(-1, 0, 0);
-			break;
-		case SDLK_RIGHT:
-			g_global.camera->move(1, 0, 0);
-			break;
-		case SDLK_KP_PLUS:
-			g_global.camera->move(0, 0, 1);
-			break;
-		case SDLK_KP_MINUS:
-			g_global.camera->move(0, 0, -1);
-			break;
-		case SDLK_KP_8:
-			g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::X_AXIS);
-			break;
-		case SDLK_KP_2:
-			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::X_AXIS);
-			break;
-		case SDLK_KP_1:
-			g_global.camera->resetRotation();
-			// camera->resetPosition();
-			// camera->rotate (-M_PI/2, X_AXIS);
-			// camera->move (0,0,-75);
-			break;
-		case SDLK_KP_7:
-			g_global.camera->resetRotation();
-			g_global.camera->rotate(glm::pi<float>() / 2, Animorph::X_AXIS);
-			break;
-		case SDLK_KP_6:
-			g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::Y_AXIS);
-			break;
-		case SDLK_KP_5:
-			g_global.camera->setPerspective(!g_global.camera->isPerspective());
-			reshape();
-			break;
-		case SDLK_KP_4:
-			g_global.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
-			break;
-		case SDLK_KP_3:
-			g_global.camera->resetRotation();
-			g_global.camera->rotate(-glm::pi<float>() / 2, Animorph::Y_AXIS);
-			break;
-		case SDLK_KP_COMMA:
-			g_global.camera->resetPosition();
-			g_global.camera->move(0, 0, -125);
-			break;
-	    case SDLK_F11:
-		    g_global.toggleFullscreen();
-		    break;
-		default:
-			break;
-	}
-}
-
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
+	*appstate = new AppState;
+	AppState& app = *static_cast<AppState*>(*appstate);
 	
 	if(argc == 2) {
 		if(argv[1] && argv[1] == std::string("--debug")) {
@@ -211,7 +146,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	const auto & winRect = g_config.windowMain;
 	
-	SDL_Window * mainWindow = SDL_CreateWindow(title.c_str(),
+	app.mainWindow = SDL_CreateWindow(title.c_str(),
 	                              //winRect.pos.x,
 	                              //winRect.pos.y,
 	                              winRect.siz.x,
@@ -219,33 +154,28 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	                              SDL_WINDOW_OPENGL
 	                                  | SDL_WINDOW_RESIZABLE);
 	
-	if (!mainWindow) {
+	if (!app.mainWindow) {
 		log_error("Unable to create window");
 		return SDL_APP_FAILURE;
 	}
-	g_mainWindow = mainWindow;
 	
-	SDL_SetWindowMinimumSize(mainWindow, 800, 600);
+	SDL_SetWindowMinimumSize(app.mainWindow, 800, 600);
 
-	// Set the window icon
-	{
-		auto iconSurface = loadSurfaceFromFile("data/pixmaps/icon.png");
-		if(iconSurface) {
-			SDL_SetWindowIcon(mainWindow, iconSurface->m_ptr);
-			iconSurface->free();
-		}
+	if(auto iconSurface = loadSurfaceFromFile("data/pixmaps/icon.png")) {
+		SDL_SetWindowIcon(app.mainWindow, iconSurface->m_ptr);
+		iconSurface->free();
 	}
 
 	g_global.toggleFullscreen = [&](){
 		Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
-		bool IsFullscreen = SDL_GetWindowFlags(mainWindow) & FullscreenFlag;
-		SDL_SetWindowFullscreen(mainWindow, IsFullscreen ? 0 : FullscreenFlag);
+		bool IsFullscreen = SDL_GetWindowFlags(app.mainWindow) & FullscreenFlag;
+		SDL_SetWindowFullscreen(app.mainWindow, IsFullscreen ? 0 : FullscreenFlag);
 	};
 
 	//checkSDLError(__LINE__);
 	
 	/* Create our opengl context and attach it to our window */
-	g_maincontext = SDL_GL_CreateContext(mainWindow);
+	app.mainContext = SDL_GL_CreateContext(app.mainWindow);
 	//checkSDLError(__LINE__);
 	TracyGpuContext;
 	
@@ -327,7 +257,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 
 	ImGui::StyleColorsDark();
 	
-	ImGui_ImplSDL3_InitForOpenGL(mainWindow, g_maincontext);
+	ImGui_ImplSDL3_InitForOpenGL(app.mainWindow, app.mainContext);
 	{
 		const char* glsl_version = "#version 130";
 		ImGui_ImplOpenGL3_Init(glsl_version);
@@ -361,6 +291,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 }
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
+	AppState& app = *static_cast<AppState*>(appstate);
 	
 	FrameMark;
 	ZoneScoped;
@@ -370,22 +301,22 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 	
-	timerTrigger();
+	timerTrigger(app);
 	
 	g_global.camera->applyMatrix();
 	
 	g_renderBody.render();
 	
-	g_renderBackground.render();
+	g_renderBackground.render(app);
 	
-	DisplayMainMenu();
+	DisplayMainMenu(app);
 	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	
 	ExecuteDeferredActions();
 	
-	SDL_GL_SwapWindow(g_mainWindow);
+	SDL_GL_SwapWindow(app.mainWindow);
 	TracyGpuCollect;
 	
 	if(g_userAcceptedQuit) {
@@ -399,6 +330,8 @@ bool mouseDownLeft = false;
 bool mouseDownRight = false;
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
+	AppState& app = *static_cast<AppState*>(appstate);
+	
 	ImGui_ImplSDL3_ProcessEvent(event);
 	const ImGuiIO & imio = ImGui::GetIO();
 	
@@ -410,7 +343,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 		case SDL_EVENT_WINDOW_EXPOSED:
 		case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
 		case SDL_EVENT_WINDOW_RESIZED: {
-			reshape();
+			reshape(app);
 			break;
 		}
 		case SDL_EVENT_MOUSE_BUTTON_DOWN: {
@@ -467,7 +400,65 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			break;
 		}
 		case SDL_EVENT_KEY_UP: {
-			keyboard(event->key.key);
+			switch(event->key.key) {
+				case SDLK_UP:
+					g_global.camera->move(0, 1, 0);
+					break;
+				case SDLK_DOWN:
+					g_global.camera->move(0, -1, 0);
+					break;
+				case SDLK_LEFT:
+					g_global.camera->move(-1, 0, 0);
+					break;
+				case SDLK_RIGHT:
+					g_global.camera->move(1, 0, 0);
+					break;
+				case SDLK_KP_PLUS:
+					g_global.camera->move(0, 0, 1);
+					break;
+				case SDLK_KP_MINUS:
+					g_global.camera->move(0, 0, -1);
+					break;
+				case SDLK_KP_8:
+					g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::X_AXIS);
+					break;
+				case SDLK_KP_2:
+					g_global.camera->rotate(glm::pi<float>() / 12, Animorph::X_AXIS);
+					break;
+				case SDLK_KP_1:
+					g_global.camera->resetRotation();
+					// camera->resetPosition();
+					// camera->rotate (-M_PI/2, X_AXIS);
+					// camera->move (0,0,-75);
+					break;
+				case SDLK_KP_7:
+					g_global.camera->resetRotation();
+					g_global.camera->rotate(glm::pi<float>() / 2, Animorph::X_AXIS);
+					break;
+				case SDLK_KP_6:
+					g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::Y_AXIS);
+					break;
+				case SDLK_KP_5:
+					g_global.camera->setPerspective(!g_global.camera->isPerspective());
+					reshape(app);
+					break;
+				case SDLK_KP_4:
+					g_global.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
+					break;
+				case SDLK_KP_3:
+					g_global.camera->resetRotation();
+					g_global.camera->rotate(-glm::pi<float>() / 2, Animorph::Y_AXIS);
+					break;
+				case SDLK_KP_COMMA:
+					g_global.camera->resetPosition();
+					g_global.camera->move(0, 0, -125);
+					break;
+				case SDLK_F11:
+					g_global.toggleFullscreen();
+					break;
+				default:
+					break;
+			}
 			break;
 		}
 	}
@@ -477,6 +468,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
+	AppState& app = *static_cast<AppState*>(appstate);
+	
+	if(result == SDL_APP_SUCCESS) {
+		log_info("Shutting down...");
+	}
 	
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
@@ -485,10 +481,10 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
 	
 	{
 		auto & p = g_config.windowMain.pos;
-		SDL_GetWindowPosition(g_mainWindow, &p.x, &p.y);
+		SDL_GetWindowPosition(app.mainWindow, &p.x, &p.y);
 		
 		glm::ivec2 topLeftBorder;
-		SDL_GetWindowBordersSize(g_mainWindow,
+		SDL_GetWindowBordersSize(app.mainWindow,
 		                         &topLeftBorder.y, &topLeftBorder.x,
 		                         nullptr, nullptr);
 		
@@ -496,15 +492,17 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
 	}
 	{
 		auto & s = g_config.windowMain.siz;
-		SDL_GetWindowSize(g_mainWindow, &s.x, &s.y);
+		SDL_GetWindowSize(app.mainWindow, &s.x, &s.y);
 	}
 	
 	/* Delete our opengl context, destroy our window, and shutdown SDL */
-	SDL_GL_DestroyContext(g_maincontext);
-	SDL_DestroyWindow(g_mainWindow);
+	SDL_GL_DestroyContext(app.mainContext);
+	SDL_DestroyWindow(app.mainWindow);
 	SDL_Quit();
 	
 	SaveConfig();
 	
 	vfs::deinit();
+	
+	delete static_cast<AppState*>(appstate);
 }
