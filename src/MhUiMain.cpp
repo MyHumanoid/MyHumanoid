@@ -544,24 +544,6 @@ void DisplayMainMenu(AppState& app)
 				g_global.toggleFullscreen();
 			}
 			
-			ImGui::Separator();
-			
-			if(ImGui::MenuItem("Save autozoom")) {
-				
-				// searchDataDir("targets")
-				std::string fooAutozoom = "foo-Autozoom";
-				
-				//				if(targetPanel) {
-				//					string      target            = targetPanel->getCategory();
-				//					std::string pathAutozoom_data = fooAutozoom + "/" + target +
-				//					                                "/" + target + ".camera";
-				
-				//					saveAutozoom(pathAutozoom_data);
-				//				} else {
-				saveAutozoom("foo-Default.camera");
-				//				}
-			}
-			
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
@@ -647,6 +629,21 @@ void DisplayMainMenu(AppState& app)
 				ImGui::Separator();
 				if(ImGui::Button("CreateWeightsFile")) {
 					CreateWeightsFile();
+				}
+				if(ImGui::MenuItem("Save autozoom")) {
+					
+					// searchDataDir("targets")
+					std::string fooAutozoom = "foo-Autozoom";
+					
+					//				if(targetPanel) {
+					//					string      target            = targetPanel->getCategory();
+					//					std::string pathAutozoom_data = fooAutozoom + "/" + target +
+					//					                                "/" + target + ".camera";
+					
+					//					saveAutozoom(pathAutozoom_data);
+					//				} else {
+					saveAutozoom("foo-Default.camera");
+					//				}
 				}
 				ImGui::EndMenu();
 			}
