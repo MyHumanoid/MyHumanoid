@@ -12,42 +12,43 @@ namespace Animorph
 struct ObjStream {
 	fmt::memory_buffer m_out;
 	
+	template <typename... Args>
+	void write(fmt::format_string<Args...> format, Args &&... args)
+	{
+		fmt::format_to(std::back_inserter(m_out), format, std::forward<Args>(args)...);
+	}
+	
 	void comment(const std::string & comment)
 	{
-		fmt::format_to(m_out, "# {}\n", comment);
+		write("# {}\n", comment);
 	}
 	void materialLib(const std::string & libFilePath)
 	{
-		fmt::format_to(m_out, "mtllib {}\n", libFilePath);
+		write("mtllib {}\n", libFilePath);
 	}
 	void startObject(const std::string & name)
 	{
-		fmt::format_to(m_out, "o {}\n", name);
+		write("o {}\n", name);
 	}
 	void vertex(const glm::vec3 & v)
 	{
-		fmt::format_to(m_out, "v {} {} {}\n", v.x, v.y, v.z);
+		write("v {} {} {}\n", v.x, v.y, v.z);
 	}
 	void uv(const glm::vec2 & uv)
 	{
-		fmt::format_to(m_out, "vt {} {} 0.0\n", uv.x, uv.y);
+		write("vt {} {} 0.0\n", uv.x, uv.y);
 	}
 	void startFaceGroup(const std::string & name)
 	{
-		fmt::format_to(m_out, "g {}\n", name);
+		write("g {}\n", name);
 	}
 	void writeSmoothingGroup(const int groupId)
 	{
-		fmt::format_to(m_out, "s {}\n", groupId);
+		write("s {}\n", groupId);
 	}
 	void startUseMaterial(const std::string & materialName)
 	{
-		fmt::format_to(m_out, "usemtl {}\n", materialName);
-	}
-	template <typename... T>
-	void writeRaw(T &&... p)
-	{
-		fmt::format_to(m_out, std::forward<T>(p)...);
+		write("usemtl {}\n", materialName);
 	}
 };
 
@@ -170,9 +171,9 @@ static void createOBJStream(Mesh & mesh,
 			}
 			
 			if(face.size == 3) {
-				obj.writeRaw("f ");
+				obj.write("f ");
 			} else if(face.size == 4) {
-				obj.writeRaw("f ");
+				obj.write("f ");
 			}
 			
 			for(unsigned int j = 0; j < face.getSize(); j++) {
@@ -186,14 +187,14 @@ static void createOBJStream(Mesh & mesh,
 					// cout << texture_number << endl;
 					
 					// face vertex geometry
-					obj.writeRaw("{}/{} ",
+					obj.write("{}/{} ",
 					             vertex_number + 1 + v_offset,
 					             texture_number + vt_offset);
 					
 					texture_number++;
 				}
 			}
-			obj.writeRaw("\n");
+			obj.write("\n");
 
 			old_material_index = matIdx;
 		}

@@ -14,7 +14,7 @@ enum class LogLevel {
 extern LogLevel g_logLevel;
 
 template <typename... T>
-void log_internal(const char * file, int line, LogLevel level, T &&... p)
+void log_internal(const char * file, int line, LogLevel level, fmt::format_string<T...> f, T &&... p)
 {
 	if(g_logLevel <= level) {
 		std::string s = file;
@@ -22,7 +22,7 @@ void log_internal(const char * file, int line, LogLevel level, T &&... p)
 		std::string foo = s.substr(found + 4);
 		
 		std::cout << fmt::format("{: <36}", fmt::format("{}:{}", foo, line)) <<
-		    fmt::format(std::forward<T>(p)...) << std::endl;
+		    fmt::format(f, std::forward<T>(p)...) << std::endl;
 	}
 }
 

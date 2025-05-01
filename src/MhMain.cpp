@@ -245,8 +245,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	g_maincontext = SDL_GL_CreateContext(mainWindow);
 	//checkSDLError(__LINE__);
 	
-	log_info("GL   version: {}", glGetString(GL_VERSION));
-	log_info("GLSL version: {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	log_info("GL   version: {}", (const char*)glGetString(GL_VERSION));
+	log_info("GLSL version: {}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
 	
 	initDebugGl();
 	

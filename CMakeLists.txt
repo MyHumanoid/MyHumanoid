@@ -24,6 +24,7 @@ project(MyHumanoid
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
+option(MH_USE_SYSTEM_FMT     "Use system provided fmt library"    OFF)
 option(MH_USE_SYSTEM_SDL     "Use system provided SDL library"    OFF)
 option(MH_USE_SYSTEM_GLM     "Use system provided glm library"    ON)
 option(MH_USE_SYSTEM_PHYSFS  "Use system provided physfs library" ON)
@@ -59,6 +60,18 @@ add_subdirectory(extern)
 # Libraries
 
 include(FetchContent)
+
+if(MH_USE_SYSTEM_FMT)
+	find_package(fmt REQUIRED)
+else()
+	FetchContent_Declare(
+		fmt
+		GIT_SHALLOW    ON
+		GIT_REPOSITORY https://github.com/fmtlib/fmt
+		GIT_TAG        123913715afeb8a437e6388b4473fcc4753e1c9a # 11.1.4
+	)
+	FetchContent_MakeAvailable(fmt)
+endif()
 
 if(MH_USE_SYSTEM_SDL)
 	find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3)
@@ -272,7 +285,7 @@ target_link_libraries(MyHumanoid PRIVATE
 	epoxy::epoxy
 	glm::glm
 	${PHYSFS_LIBRARY}
-	fmt
+	fmt::fmt
 	imgui::imgui
 	stb::stb
 	tinygltf::tinygltf
