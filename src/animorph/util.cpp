@@ -84,8 +84,7 @@ std::string Animorph::cutFileEnding(std::string filename, const std::string & en
  * @param maxReplace Give a int to limit the replace matches. If 0 is given
  * there's no limit.
  */
-int Animorph::replaceString(const string & match, const string & replace, string & str,
-                            unsigned int maxReplace)
+int Animorph::replaceString(const string & match, const string & replace, string & str, size_t maxReplace)
 {
 	int          start = 0;
 	unsigned int i     = 0;

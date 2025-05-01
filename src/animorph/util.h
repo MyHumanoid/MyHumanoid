@@ -28,7 +28,6 @@
 #pragma once
 
 #include <glm/vec3.hpp>
-#include "Vertex.h"
 #include "VertexVector.h"
 #include <iomanip>
 #include <iostream>
@@ -54,18 +53,6 @@ void UtilStringDelSurround(std::string & str, const std::string & characters);
 bool        hasFileEnding(const std::string & filename, const std::string & ending);
 std::string cutFileEnding(std::string filename, const std::string & ending = "");
 
-// some generic template functions for delete algorithms
-template <typename T> void delete_one(T * t)
-{
-	delete t;
-	t = NULL;
-}
-
-template <typename T> void delete_array(T * t)
-{
-	delete[] t;
-	t = NULL;
-}
 
 template <typename T> void printVector(std::vector<T> iv)
 {
@@ -127,8 +114,7 @@ void stringTokeni(const std::string & line, const std::string & separator, T & r
 	} while(std::string::npos != start);
 }
 
-int replaceString(const std::string & match, const std::string & replace, std::string & str,
-                  unsigned int maxReplace = 0);
+int replaceString(const std::string & match, const std::string & replace, std::string & str, size_t maxReplace = 0);
 
 /*! \brief Returns the location of the center of gravity
  * \param vertexNumbers a vector of indices into vertexvector

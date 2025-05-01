@@ -32,7 +32,11 @@ static constexpr stbi_io_callbacks adapter = {
 			log_error("Failed to read file: {}, {}", d->name, physfsError());
 			return 0;
 		}
-		return res;
+		if(res > std::numeric_limits<int>::max()) {
+			log_error("Too large read!");
+			return 0;
+		}
+	    return int(res);
 	},
 	[](void * user, int n) -> void {
 		AdapterUserdata * d = static_cast<AdapterUserdata *>(user);
