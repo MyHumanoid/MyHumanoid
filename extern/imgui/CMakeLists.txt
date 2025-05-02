@@ -26,6 +26,7 @@ add_library(imgui::imgui ALIAS imgui)
 
 target_link_libraries(imgui PUBLIC
 	stb::stb
+	glad::glad
 	SDL3::SDL3
 )
 
@@ -35,5 +36,11 @@ target_compile_definitions(imgui PUBLIC
 	IMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION
 	IMGUI_STB_TRUETYPE_FILENAME="stb_truetype.h"
 )
+
+if(MH_USE_GLES)
+	target_compile_definitions(imgui PUBLIC
+		IMGUI_IMPL_OPENGL_ES3=1
+	)
+endif()
 
 target_include_directories(imgui PUBLIC ${imgui_dir})

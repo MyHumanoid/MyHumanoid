@@ -29,6 +29,7 @@ struct GlType {
 using Texture = GlType<struct Texture_TAG, unsigned int>;
 using Shader  = GlType<struct Shader_TAG, unsigned int>;
 
+void setWindowAttributes();
 bool init();
 
 std::optional<agl::Shader> LoadShader(const char * vertex_path, const char * fragment_path);

@@ -56,7 +56,8 @@ void RenderBackground::render(AppState& app)
 	glUseProgram(m_shader->handle);
 	GLint myLoc = glGetUniformLocation(m_shader->handle, "u_viewportResolution");
 	if(myLoc != -1) {
-		glProgramUniform2f(m_shader->handle, myLoc, x, y);
+		glUseProgram(m_shader->handle);
+		glUniform2f(myLoc, x, y);
 	}
 	
 	glBindVertexArray(m_vertexArrayObject);

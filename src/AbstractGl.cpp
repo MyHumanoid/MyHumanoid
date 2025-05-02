@@ -9,9 +9,60 @@
 
 namespace agl {
 
+#ifdef AGL_USE_GLES
+	#define loadGl gladLoadGLES2
+	#define glDebugMessageCallback glDebugMessageCallbackKHR
+	#define glDebugMessageControl glDebugMessageControlKHR
+	#define glDebugMessageInsert glDebugMessageInsertKHR
+
+	#define GL_DEBUG_OUTPUT_SYNCHRONOUS GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR
+
+	#define GL_DEBUG_SOURCE_APPLICATION GL_DEBUG_SOURCE_APPLICATION_KHR
+	#define GL_DEBUG_SOURCE_SHADER_COMPILER GL_DEBUG_SOURCE_SHADER_COMPILER_KHR
+
+	#define GL_DEBUG_TYPE_ERROR GL_DEBUG_TYPE_ERROR_KHR
+	#define GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_KHR
+	#define GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_KHR
+	#define GL_DEBUG_TYPE_PORTABILITY GL_DEBUG_TYPE_PORTABILITY_KHR
+	#define GL_DEBUG_TYPE_PERFORMANCE GL_DEBUG_TYPE_PERFORMANCE_KHR
+	#define GL_DEBUG_TYPE_OTHER GL_DEBUG_TYPE_OTHER_KHR
+	
+	#define GL_DEBUG_SEVERITY_LOW GL_DEBUG_SEVERITY_LOW_KHR
+	#define GL_DEBUG_SEVERITY_MEDIUM GL_DEBUG_SEVERITY_MEDIUM_KHR
+	#define GL_DEBUG_SEVERITY_HIGH GL_DEBUG_SEVERITY_HIGH_KHR
+#else
+	#define loadGl gladLoadGL
+#endif
+
+void setWindowAttributes() {
+	
+	#ifdef AGL_USE_GLES
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	#else
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	#endif
+	
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+	
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+}
+
 void GLAPIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
                               GLsizei length, const GLchar * message, const void * userParam)
 {
+	if(source == GL_DEBUG_SOURCE_SHADER_COMPILER) {
+		// We handle shader compiler errors explicitly
+		return;
+	}
+	
 	const char * typeStr;
 	switch(type) {
 		case GL_DEBUG_TYPE_ERROR:
@@ -51,7 +102,7 @@ void GLAPIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum seve
 }
 
 bool init() {
-	int version = gladLoadGL((GLADloadfunc) SDL_GL_GetProcAddress);
+	int version = loadGl((GLADloadfunc) SDL_GL_GetProcAddress);
 	if(version == 0) {
 		return false;
 	}
@@ -76,9 +127,10 @@ bool init() {
 	return true;
 }
 
-static void compileShader(GLuint shaderId, std::string & shaderStr)
+static void compileShader(GLuint shaderId, const std::string& header, const std::string& shaderStr)
 {
-	const char * vertSrc = shaderStr.c_str();
+	const std::string foo = fmt::format("{}\n{}", header, shaderStr);
+	const char * vertSrc = foo.c_str();
 	glShaderSource(shaderId, 1, &vertSrc, NULL);
 	glCompileShader(shaderId);
 	
@@ -98,17 +150,26 @@ static void compileShader(GLuint shaderId, std::string & shaderStr)
 
 std::optional<agl::Shader> LoadShader(const char * vertex_path, const char * fragment_path)
 {
+	#ifdef AGL_USE_GLES
+		const char * headerFile = "data/shader/common_es.glsl";
+	#else
+		const char * headerFile = "data/shader/common_gl.glsl";
+	#endif
+	
+	std::string header;
+	vfs::loadString(headerFile, header);
+	
 	log_info("Compiling vertex shader");
 	std::string vertShaderStr;
 	vfs::loadString(vertex_path, vertShaderStr);
 	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
-	compileShader(vertShader, vertShaderStr);
+	compileShader(vertShader, header, vertShaderStr);
 	
 	log_info("Compiling fragment shader");
 	std::string fragShaderStr;
 	vfs::loadString(fragment_path, fragShaderStr);
 	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-	compileShader(fragShader, fragShaderStr);
+	compileShader(fragShader, header, fragShaderStr);
 	
 	log_info("Linking program");
 	GLuint program = glCreateProgram();

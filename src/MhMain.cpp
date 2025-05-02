@@ -124,17 +124,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 		return SDL_APP_FAILURE;
 	}
 	
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
-	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	
+	agl::setWindowAttributes();
 	
 	std::string title = mh_app_name + std::string(" ") + prettyVersion();
 	
@@ -252,7 +242,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	ImGui_ImplSDL3_InitForOpenGL(app.mainWindow, app.mainContext);
 	{
-		const char* glsl_version = "#version 130";
+		#ifdef AGL_USE_GLES
+			const char* glsl_version = "#version 300 es";
+		#else
+			const char* glsl_version = "#version 130";
+		#endif
 		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
 	

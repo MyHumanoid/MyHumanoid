@@ -18,10 +18,10 @@ namespace vfs
 void init(const char * argv0) {
 	PHYSFS_init(argv0);
 	PHYSFS_permitSymbolicLinks(1);
-	if(PHYSFS_mount("./MyHumanoid.data", "/data", 1)) {
+	if(PHYSFS_mount("./MyHumanoid.data", "/data", 0)) {
 		log_info("Added MyHumanoid.data file");
 	}
-	if(PHYSFS_mount("./data", "/data", 1)) {
+	if(PHYSFS_mount("./data", "/data", 0)) {
 		log_info("Added data directory");
 	}
 }

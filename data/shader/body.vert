@@ -1,62 +1,53 @@
-#version 450 core
-
 // Fixed function shading emulation
 
 // See:
 // https://github.com/mojocorp/ShaderGen
 // https://www.opengl.org/sdk/docs/tutorials/ClockworkCoders/lighting.php
 
-uniform vec4 light_model_ambient = vec4(0.2, 0.2, 0.2, 1.0);
+vec4 light_model_ambient = vec4(0.2, 0.2, 0.2, 1.0);
 
 // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glMaterial.xml
-uniform vec4  mat_ambient   = vec4(0.7, 0.7, 0.7, 1.0);
-uniform vec4  mat_diffuse   = vec4(0.8, 0.8, 0.8, 1.0);
-uniform vec4  mat_specular  = vec4(1.0, 1.0, 1.0, 1.0);
-uniform vec4  mat_emission  = vec4(0.0, 0.0, 0.0, 1.0);
-uniform float mat_shininess = 100.0;
+vec4  mat_ambient   = vec4(0.7, 0.7, 0.7, 1.0);
+vec4  mat_diffuse   = vec4(0.8, 0.8, 0.8, 1.0);
+vec4  mat_specular  = vec4(1.0, 1.0, 1.0, 1.0);
+vec4  mat_emission  = vec4(0.0, 0.0, 0.0, 1.0);
+float mat_shininess = 100.0;
 
 // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glLight.xml
-uniform vec4 light_position[2] = vec4[2](
+vec4 light_position[2] = vec4[2](
 	vec4( 1.0, 1.0, 1.0, 0.0),
 	vec4(-1.0, 1.0, 1.0, 0.0)
 );
-uniform vec4 light_ambient[2] = vec4[2](
+vec4 light_ambient[2] = vec4[2](
 	vec4(0.0, 0.0, 0.0, 1.0),
 	vec4(0.0, 0.0, 0.0, 1.0)
 );
-uniform vec4 light_diffuse[2] = vec4[2](
+vec4 light_diffuse[2] = vec4[2](
 	vec4(1.0, 1.0, 1.0, 1.0),
 	vec4(1.0, 1.0, 1.0, 1.0)
 );
-uniform vec4 light_specular[2] = vec4[2](
+vec4 light_specular[2] = vec4[2](
 	vec4(1.0, 1.0, 1.0, 1.0),
 	vec4(1.0, 1.0, 1.0, 1.0)
 );
+
 
 uniform mat4 u_modelViewMatrix;
 uniform mat3 u_NormalMatrix;
 uniform mat4 u_projectionMatrix;
 
-
-layout(location = 0)
 in vec3 i_Vertex;
-layout(location = 1)
 in vec3 i_Normal;
-layout(location = 2)
 in vec4 i_Color;
-layout(location = 3)
 in vec2 i_TexCoord;
 
-layout(location = 0)
-out vec4 o_FrontColor;
-layout(location = 1)
-out vec2 o_TexCoord;
+out vec4 io_Color;
+out vec2 io_TexCoord;
 
 
 vec4 Ambient;
 vec4 Diffuse;
 vec4 Specular;
-
 
 void directionalLight(in int i, in vec3 normal, in vec3 eye, in vec3 ecPosition3)
 {
@@ -106,7 +97,7 @@ void flight(in vec3 normal, in vec4 ecPosition)
 	      + Diffuse  * i_Color;
 	      + Specular * mat_specular;
 	
-	o_FrontColor = clamp(color, 0.0, 1.0);
+	io_Color = clamp(color, 0.0, 1.0);
 }
 
 void main(void)
@@ -120,5 +111,5 @@ void main(void)
 	vec4 ecPosition = u_modelViewMatrix * vec4(i_Vertex, 1.0);
 	flight(transformedNormal, ecPosition);
 	
-	o_TexCoord = i_TexCoord;
+	io_TexCoord = i_TexCoord;
 }

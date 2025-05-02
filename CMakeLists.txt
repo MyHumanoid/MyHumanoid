@@ -253,6 +253,9 @@ set(shader_sources
 	data/shader/body.frag
 	data/shader/body_2.vert
 	data/shader/body_2.frag
+	
+	data/shader/common_es.glsl
+	data/shader/common_gl.glsl
 )
 
 add_executable(MyHumanoid

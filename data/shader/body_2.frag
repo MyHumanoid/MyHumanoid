@@ -1,44 +1,38 @@
-#version 450 core
 
 uniform sampler2D texture0;
 uniform sampler2D texture1;
 uniform sampler2D texture2;
 
-layout(location = 0)
 in vec3 io_vertexNormal;
-layout(location = 1)
 in vec4 io_vertexColor;
-layout(location = 2)
 in vec2 io_texCoord;
-layout(location = 3)
 in vec3 io_FragPos;
 
-layout(location = 0)
-out vec4 io_fragmentColor;
+out vec4 o_fragmentColor;
 
 
-uniform vec4 light_model_ambient = vec4(0.2, 0.2, 0.2, 1.0);
+vec4 light_model_ambient = vec4(0.2, 0.2, 0.2, 1.0);
 
-uniform vec4  mat_emission  = vec4(0.0, 0.0, 0.0, 1.0);
-uniform vec4  mat_ambient   = vec4(0.7, 0.7, 0.7, 1.0);
-uniform vec4  mat_diffuse   = vec4(0.8, 0.8, 0.8, 1.0);
-uniform vec4  mat_specular  = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float mat_shininess = 1.0;
+vec4  mat_emission  = vec4(0.0, 0.0, 0.0, 1.0);
+vec4  mat_ambient   = vec4(0.7, 0.7, 0.7, 1.0);
+vec4  mat_diffuse   = vec4(0.8, 0.8, 0.8, 1.0);
+vec4  mat_specular  = vec4(1.0, 1.0, 1.0, 1.0);
+float mat_shininess = 1.0;
 
 // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glLight.xml
-uniform vec4 light_position[2] = vec4[2](
+vec4 light_position[2] = vec4[2](
 	vec4( 1.0, 1.0, 1.0, 0.0),
 	vec4(-1.0, 1.0, 1.0, 0.0)
 );
-uniform vec4 light_ambient[2] = vec4[2](
+vec4 light_ambient[2] = vec4[2](
 	vec4(0.0, 0.0, 0.0, 1.0),
 	vec4(0.0, 0.0, 0.0, 1.0)
 );
-uniform vec4 light_diffuse[2] = vec4[2](
+vec4 light_diffuse[2] = vec4[2](
 	vec4(1.0, 1.0, 1.0, 1.0),
 	vec4(1.0, 1.0, 1.0, 1.0)
 );
-uniform vec4 light_specular[2] = vec4[2](
+vec4 light_specular[2] = vec4[2](
 	vec4(1.0, 1.0, 1.0, 1.0),
 	vec4(1.0, 1.0, 1.0, 1.0)
 );
@@ -111,7 +105,7 @@ void main()
 	vec4 texColor = texture(texture0, io_texCoord);
 	
 	color = clamp(color * texColor, 0.0, 1.0);
-	io_fragmentColor = color;
+	o_fragmentColor = color;
 	
 	
 	//vec4 color = io_vertexColor;
