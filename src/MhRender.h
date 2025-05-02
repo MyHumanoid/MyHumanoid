@@ -2,15 +2,14 @@
 
 #include <optional>
 
+#include "AbstractGl.h"
 #include "Global.h"
-#include "GlInclude.h"
-#include "render/GlTypes.h"
 
 struct RenderBackground {
 	
 	GLuint m_vertexArrayObject;
 	GLuint m_vertexBufferObject;
-	std::optional<mh::Shader> m_shader;
+	std::optional<agl::Shader> m_shader;
 	
 	void init();
 	void loadShader();
@@ -20,7 +19,7 @@ struct RenderBackground {
 extern RenderBackground g_renderBackground;
 
 struct RenderBody {
-	std::optional<mh::Shader> m_shader;
+	std::optional<agl::Shader> m_shader;
 	
 	void init();
 	void loadShader(int version);

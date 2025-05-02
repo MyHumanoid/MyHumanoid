@@ -35,7 +35,7 @@
 #include <ios>
 #include <map>
 
-#include "render/GlTypes.h"
+#include "AbstractGl.h"
 
 namespace Animorph
 {
@@ -45,9 +45,9 @@ typedef std::map<int, int> VertexData;
 
 struct FGroup {
 	bool                       visible;
-	std::optional<mh::Texture> texture;
-	std::optional<mh::Texture> specular;
-	std::optional<mh::Texture> bump;
+	std::optional<agl::Texture> texture;
+	std::optional<agl::Texture> specular;
+	std::optional<agl::Texture> bump;
 
 	/// A vector of ints
 	FGroupData facesIndexes;

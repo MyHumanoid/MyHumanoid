@@ -29,8 +29,6 @@
 
 #include <fmt/format.h>
 
-#include "GlInclude.h"
-
 #include "MhUi.h"
 #include "MhUiMorph.h"
 #include "MhUiPose.h"
@@ -46,10 +44,7 @@
 
 #include "Logger.h"
 
-
-#include "render/DebugGl.h"
 #include "render/RenderUtils.h"
-#include "render/Shader.h"
 
 #include "StringUtils.h"
 
@@ -175,20 +170,12 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	/* Create our opengl context and attach it to our window */
 	app.mainContext = SDL_GL_CreateContext(app.mainWindow);
-	
-	int version = gladLoadGL((GLADloadfunc) SDL_GL_GetProcAddress);
-	if (version == 0) {
+	if(!agl::init()) {
 		printf("Failed to initialize OpenGL context\n");
 		return SDL_APP_FAILURE;
 	}
 	
-	//checkSDLError(__LINE__);
 	TracyGpuContext;
-	
-	log_info("GL   version: {}", (const char*)glGetString(GL_VERSION));
-	log_info("GLSL version: {}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
-	
-	initDebugGl();
 	
 	printTracingStatus();
 	

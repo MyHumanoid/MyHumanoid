@@ -31,18 +31,18 @@
 #include <string>
 #include <unordered_map>
 
-#include "render/GlTypes.h"
+#include "AbstractGl.h"
 
-using IconMap = std::unordered_map<std::string, mh::Texture>;
+using IconMap = std::unordered_map<std::string, agl::Texture>;
 
 namespace MhGui
 {
 
-template <typename... T> void Image(mh::Texture texture, T &&... p)
+template <typename... T> void Image(agl::Texture texture, T &&... p)
 {
 	ImGui::Image((intptr_t)texture.handle, std::forward<T>(p)...);
 }
-template <typename... T> bool ImageButton(const char* str_id, mh::Texture texture, T &&... p)
+template <typename... T> bool ImageButton(const char* str_id, agl::Texture texture, T &&... p)
 {
 	return ImGui::ImageButton(str_id, (intptr_t)texture.handle, std::forward<T>(p)...);
 }

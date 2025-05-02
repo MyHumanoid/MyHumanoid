@@ -2,13 +2,11 @@
 #include "render/RenderUtils.h"
 
 #include <stb_image.h>
-
-#include "GlInclude.h"
-
 #include <vector>
 #include <glm/glm.hpp>
 #include <physfs.h>
 
+#include "AbstractGl.h"
 #include "Logger.h"
 #include "StringUtils.h"
 #include "Vfs.h"
@@ -55,7 +53,7 @@ static constexpr stbi_io_callbacks stbi_io_adapter = {
 	}
 };
 
-std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
+std::optional<agl::Texture> LoadTextureFromFile(const std::string & fileName) {
 	auto file = PHYSFS_openRead(fileName.c_str());
 	if(file == nullptr) {
 		log_error("Failed to open file: {}, {}", fileName, physfsError());
@@ -101,7 +99,7 @@ std::optional<mh::Texture> LoadTextureFromFile(const std::string & fileName) {
 		log_error("Failed to close file: {}, {}", fileName, physfsError());
 	}
 	
-	return mh::Texture(image_texture);
+	return agl::Texture(image_texture);
 }
 
 void loadTexturesFromDir(IconMap & target, const std::string & baseDir)

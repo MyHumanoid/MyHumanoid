@@ -30,8 +30,8 @@ struct Tile {
 	std::string                m_imageBase;
 	std::string                m_tooltip;
 	std::string                m_category;
-	std::optional<mh::Texture> m_tex;
-	std::optional<mh::Texture> m_texOver;
+	std::optional<agl::Texture> m_tex;
+	std::optional<agl::Texture> m_texOver;
 	
 	Tile(const std::string & img, const std::string & _tip, const std::string & _targ)
 	{
@@ -134,7 +134,7 @@ inline bool pathStartsWith(const std::string & path, const std::string prefix)
 
 static float poseTargetDragStartValue = 0;
 
-using OptText = std::optional<mh::Texture>;
+using OptText = std::optional<agl::Texture>;
 using TexPair = std::pair<OptText, OptText>;
 
 inline TexPair getImage(const IconMap & icons, const std::string & name)

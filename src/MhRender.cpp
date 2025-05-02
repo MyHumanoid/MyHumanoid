@@ -1,17 +1,14 @@
 #include "MhRender.h"
 
-#include "GlInclude.h"
-
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include "gui/CGUtilities.h"
 #include "render/RenderUtils.h"
-#include "Logger.h"
-#include "render/Shader.h"
+#include "AbstractGl.h"
 #include "Global.h"
-
+#include "Logger.h"
 #include "Profiler.h"
 
 RenderBackground g_renderBackground;
@@ -43,7 +40,7 @@ void RenderBackground::loadShader()
 {
 	log_info("Loading Background Shader");
 	
-	auto shader = LoadShader("data/shader/background.vert", "data/shader/background.frag");
+	auto shader = agl::LoadShader("data/shader/background.vert", "data/shader/background.frag");
 	
 	if(shader) {
 		glDeleteProgram(m_shader->handle);
@@ -169,11 +166,11 @@ void RenderBody::loadShader(int version)
 {
 	log_info("Loading Shader set {}", version);
 	
-	std::optional<mh::Shader> shader;
+	std::optional<agl::Shader> shader;
 	if(version == 1) {
-		shader = LoadShader("data/shader/body.vert", "data/shader/body.frag");
+		shader = agl::LoadShader("data/shader/body.vert", "data/shader/body.frag");
 	} else {
-		shader = LoadShader("data/shader/body_2.vert", "data/shader/body_2.frag");
+		shader = agl::LoadShader("data/shader/body_2.vert", "data/shader/body_2.frag");
 	}
 	
 	if(shader) {

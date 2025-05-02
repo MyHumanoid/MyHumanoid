@@ -7,12 +7,12 @@
 
 #include <SDL3/SDL.h>
 
-#include "render/GlTypes.h"
+#include "AbstractGl.h"
 
-using OptTex = std::optional<mh::Texture>;
-using IconMap = std::unordered_map<std::string, mh::Texture>;
+using OptTex = std::optional<agl::Texture>;
+using IconMap = std::unordered_map<std::string, agl::Texture>;
 
-std::optional<mh::Texture> LoadTextureFromFile(const std::string & file);
+std::optional<agl::Texture> LoadTextureFromFile(const std::string & file);
 
 void loadTexturesFromDir(IconMap & target, const std::string & baseDir);
 

@@ -28,14 +28,12 @@
 
 #include <glm/ext.hpp>
 
-#include "GlInclude.h"
-
 #include "gui/Camera.h"
 #include "gui/Rect.h"
+#include "AbstractGl.h"
 
 #include "Logger.h"
 
-#include "render/DebugGl.h"
 
 using Animorph::Color;
 using mhgui::Rect;

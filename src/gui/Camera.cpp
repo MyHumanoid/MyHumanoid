@@ -30,7 +30,7 @@
 #include <iostream>
 #include <glm/ext.hpp>
 #include "gui/CGUtilities.h"
-#include "GlInclude.h"
+#include "AbstractGl.h"
 #include "Logger.h"
 
 #define MAX_LINE 3500

@@ -11,11 +11,9 @@
 #include "io/Gltf.h"
 #include "io/ObjExporter.h"
 
-#include "render/GlTypes.h"
 #include "render/RenderUtils.h"
-
+#include "AbstractGl.h"
 #include "CompositeMorph.h"
-#include "GlInclude.h"
 #include "Global.h"
 #include "MhConfig.h"
 #include "MhRender.h"

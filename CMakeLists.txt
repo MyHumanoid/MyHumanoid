@@ -24,7 +24,7 @@ project(MyHumanoid
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-
+option(MH_USE_GLES           "Use OpenGL ES for rendering"        OFF)
 option(MH_ENABLE_TRACY       "Enable tracing using tracy"         OFF)
 option(MH_USE_SYSTEM_FMT     "Use system provided fmt library"    ON)
 option(MH_USE_SYSTEM_SDL     "Use system provided SDL library"    OFF)
@@ -195,13 +195,8 @@ set(animorph_sources
 )
 
 set(render_sources
-	src/render/DebugGl.h
-	src/render/DebugGl.cpp
-	src/render/GlTypes.h
 	src/render/RenderUtils.h
 	src/render/RenderUtils.cpp
-	src/render/Shader.h
-	src/render/Shader.cpp
 )
 
 set(myhumanoid_sources
@@ -219,10 +214,11 @@ set(myhumanoid_sources
 	src/io/ObjExporter.h
 	src/io/ObjExporter.cpp
 
+	src/AbstractGl.h
+	src/AbstractGl.cpp
 	src/ComponentID.h
 	src/CompositeMorph.h
 	src/CompositeMorph.cpp
-	src/GlInclude.h
 	src/Global.cpp
 	src/Global.h
 	src/Logger.h
@@ -303,6 +299,12 @@ target_link_libraries(MyHumanoid PRIVATE
 	tinygltf::tinygltf
 	simpleini
 )
+
+if(MH_USE_GLES)
+	target_compile_definitions(MyHumanoid PRIVATE
+		AGL_USE_GLES=1
+	)
+endif()
 
 if(MH_ENABLE_TRACY)
 	target_compile_definitions(MyHumanoid PRIVATE
