@@ -1,0 +1,17 @@
+<html>
+	<body>
+		<canvas id="canvas"></canvas>
+		<script>
+			var Module = {
+				preRun: ()=>{
+					const canRead = true;
+					const canWrite = false;
+					const dataFileName = "MyHumanoid.data";
+					FS.createPreloadedFile('/', dataFileName, dataFileName, canRead, canWrite);
+				},
+				canvas: document.getElementById("canvas")
+			};
+		</script>
+		<script src="MyHumanoid.js"></script>
+	</body>
+</html>

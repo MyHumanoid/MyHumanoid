@@ -110,19 +110,22 @@ bool init() {
 	log_info("GL   version: {}", (const char*)glGetString(GL_VERSION));
 	log_info("GLSL version: {}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
 	
-	
-	log_info("Register OpenGL debug callback");
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(debugCallback, nullptr);
-	GLuint unusedIds = 0;
-	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
-	
-	std::string strInitialized("OpenGL debug output enabled");
-	glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION,
-	                     GL_DEBUG_TYPE_OTHER,
-	                     1,
-	                     GL_DEBUG_SEVERITY_LOW,
-	                     GLsizei(strInitialized.size()), strInitialized.c_str());
+	if(GLAD_GL_KHR_debug) {
+		log_info("Gl debug supported");
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(debugCallback, nullptr);
+		GLuint unusedIds = 0;
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
+		
+		std::string strInitialized("OpenGL debug output enabled");
+		glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION,
+							 GL_DEBUG_TYPE_OTHER,
+							 1,
+							 GL_DEBUG_SEVERITY_LOW,
+							 GLsizei(strInitialized.size()), strInitialized.c_str());
+	} else {
+		log_info("Gl debug not supported :(");
+	}
 	
 	return true;
 }

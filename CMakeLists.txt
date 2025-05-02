@@ -1,4 +1,5 @@
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 Eli2
 cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
 include(${CMAKE_CURRENT_LIST_DIR}/ProjectVersion.cmake)
@@ -29,7 +30,7 @@ option(MH_ENABLE_TRACY       "Enable tracing using tracy"         OFF)
 option(MH_USE_SYSTEM_FMT     "Use system provided fmt library"    ON)
 option(MH_USE_SYSTEM_SDL     "Use system provided SDL library"    OFF)
 option(MH_USE_SYSTEM_GLM     "Use system provided glm library"    ON)
-option(MH_USE_SYSTEM_PHYSFS  "Use system provided physfs library" ON)
+option(MH_USE_SYSTEM_PHYSFS  "Use system provided physfs library" OFF)
 
 
 message(STATUS "Resolving GIT Version")
@@ -287,7 +288,6 @@ else()
 endif()
 
 target_include_directories(MyHumanoid PRIVATE
-	${PHYSFS_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
@@ -295,7 +295,7 @@ target_link_libraries(MyHumanoid PRIVATE
 	SDL3::SDL3
 	glad::glad
 	glm::glm
-	${PHYSFS_LIBRARY}
+	PhysFS::PhysFS-static
 	fmt::fmt
 	imgui::imgui
 	stb::stb
@@ -315,6 +315,13 @@ if(MH_ENABLE_TRACY)
 	)
 	target_link_libraries(MyHumanoid PRIVATE
 		TracyClient
+	)
+endif()
+
+if(DEFINED EMSCRIPTEN)
+	set_target_properties(MyHumanoid PROPERTIES
+		LINK_FLAGS
+		"-O3 -sSTACK_SIZE=2mb -sINITIAL_MEMORY=256mb -sALLOW_MEMORY_GROWTH -sMIN_WEBGL_VERSION=2"
 	)
 endif()
 
