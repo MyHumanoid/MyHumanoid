@@ -26,6 +26,7 @@ project(MyHumanoid
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 option(MH_USE_GLES           "Use OpenGL ES for rendering"        OFF)
+option(MH_ENABLE_ASAN        "Enable address sanitizer"           OFF)
 option(MH_ENABLE_TRACY       "Enable tracing using tracy"         OFF)
 option(MH_USE_SYSTEM_FMT     "Use system provided fmt library"    ON)
 option(MH_USE_SYSTEM_SDL     "Use system provided SDL library"    OFF)
@@ -56,6 +57,12 @@ endif()
 
 if(WIN32)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
+if(MH_ENABLE_ASAN)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+	set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
 endif()
 
 # Libraries
