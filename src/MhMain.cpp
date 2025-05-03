@@ -105,14 +105,38 @@ static void timerTrigger(AppState& app)
 	}
 }
 
+static void parseArgs(AppState& app, int argc, char **argv)
+{
+	if(argc > 100) {
+		log_error("Too many arguments");
+		return;
+	}
+	
+	const std::vector<std::string_view> args(argv + 1, argv + argc);
+	for(const auto& arg : args) {
+		if(arg == "--debug") {
+			app.args.debug = true;
+			continue;
+		}
+		if(arg == "--viewer") {
+			app.args.editor = false;
+			continue;
+		}
+		if(arg == "--no-background") {
+			app.args.background = false;
+			continue;
+		}
+	}
+}
+
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	*appstate = new AppState;
 	AppState& app = *static_cast<AppState*>(*appstate);
 	
-	if(argc == 2) {
-		if(argv[1] && argv[1] == std::string("--debug")) {
-			g_logLevel = LogLevel::debug;
-		}
+	parseArgs(app, argc, argv);
+	
+	if(app.args.debug) {
+		g_logLevel = LogLevel::debug;
 	}
 	
 	vfs::init(argv[0]);
@@ -130,18 +154,24 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	const auto & winRect = g_config.windowMain;
 	
-	app.mainWindow = SDL_CreateWindow(title.c_str(),
-	                              //winRect.pos.x,
-	                              //winRect.pos.y,
-	                              winRect.siz.x,
-	                              winRect.siz.y,
-	                              SDL_WINDOW_OPENGL
-	                                  | SDL_WINDOW_RESIZABLE);
+	SDL_WindowFlags winFlags = 0;
+	winFlags |= SDL_WINDOW_OPENGL;
+	winFlags |= SDL_WINDOW_RESIZABLE;
+	if(!app.args.background) {
+		winFlags |= SDL_WINDOW_TRANSPARENT;
+	}
+	
+	app.mainWindow = SDL_CreateWindow(title.c_str(), winRect.siz.x, winRect.siz.y, winFlags);
 	
 	if (!app.mainWindow) {
 		log_error("Unable to create window");
 		return SDL_APP_FAILURE;
 	}
+	
+	if(!app.args.background) {
+		SDL_SetWindowOpacity(app.mainWindow, 0.f);
+	}
+	
 	
 	SDL_SetWindowMinimumSize(app.mainWindow, 800, 600);
 
@@ -173,7 +203,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	glEnable(GL_DEPTH_TEST);
 	
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0, 0, 0, 0.f);
 	
 	/* This makes our buffer swap syncronized with the monitor's vertical refresh */
 	SDL_GL_SetSwapInterval(1);
@@ -184,7 +214,10 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	
 	
 	g_renderBody.init();
-	g_renderBackground.init();
+	
+	if(app.args.background) {
+		g_renderBackground.init();
+	}
 	
 	bool mesh_loaded = g_mesh.loadMesh("base.vertices", "base.faces");
 	bool material_loaded = g_mesh.loadMaterial("base.materials", "base.colors");
@@ -229,19 +262,19 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	::glPolygonOffset(1.0, 1.0);
 
 	loadDefaultBodySettings();
-
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO & io     = ImGui::GetIO();
-	io.IniSavingRate = 60.f;
-	io.IniFilename   = "MyHumanoid-config-gui.ini";
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-
-	ImGui::StyleColorsDark();
 	
-	ImGui_ImplSDL3_InitForOpenGL(app.mainWindow, app.mainContext);
-	{
+	if(app.args.editor) {
+		// Setup Dear ImGui context
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO & io     = ImGui::GetIO();
+		io.IniSavingRate = 60.f;
+		io.IniFilename   = "MyHumanoid-config-gui.ini";
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	
+		ImGui::StyleColorsDark();
+		
+		ImGui_ImplSDL3_InitForOpenGL(app.mainWindow, app.mainContext);
 		#ifdef AGL_USE_GLES
 			const char* glsl_version = "#version 300 es";
 		#else
@@ -283,10 +316,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 	FrameMark;
 	ZoneScoped;
 	
-	// Start the Dear ImGui frame
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL3_NewFrame();
-	ImGui::NewFrame();
+	if(app.args.editor) {
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL3_NewFrame();
+		ImGui::NewFrame();
+	}
 	
 	timerTrigger(app);
 	
@@ -294,12 +328,18 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 	
 	g_renderBody.render();
 	
-	g_renderBackground.render(app);
+	if(app.args.background) {
+		g_renderBackground.render(app);
+	}
 	
-	DisplayMainMenu(app);
+	if(app.args.editor) {
+		DisplayMainMenu(app);
+	}
 	
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	if(app.args.editor) {
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
 	
 	ExecuteDeferredActions();
 	
@@ -319,12 +359,20 @@ bool mouseDownRight = false;
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 	AppState& app = *static_cast<AppState*>(appstate);
 	
-	ImGui_ImplSDL3_ProcessEvent(event);
-	const ImGuiIO & imio = ImGui::GetIO();
+	bool WantCaptureMouse = false;
+	if(app.args.editor) {
+		ImGui_ImplSDL3_ProcessEvent(event);
+		const ImGuiIO & imio = ImGui::GetIO();
+		WantCaptureMouse = imio.WantCaptureMouse;
+	}
 	
 	switch(event->type) {
 		case SDL_EVENT_QUIT: {
-			app.ui.request.quit = true;
+			if(app.args.editor) {
+				app.ui.request.quit = true;
+			} else {
+				app.ui.request.quitAccept = true;
+			}
 			break;
 		}
 		case SDL_EVENT_WINDOW_EXPOSED:
@@ -334,7 +382,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			break;
 		}
 		case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-			if(!imio.WantCaptureMouse) {
+			if(!WantCaptureMouse) {
 			    if(event->button.button == SDL_BUTTON_LEFT) {
 					mouseDownLeft = true;
 				    g_global.camera->mouseRotateStart(event->button.x, event->button.y);
@@ -347,7 +395,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			break;
 		}
 		case SDL_EVENT_MOUSE_BUTTON_UP: {
-			if(!imio.WantCaptureMouse) {
+			if(!WantCaptureMouse) {
 				if(event->button.button == SDL_BUTTON_LEFT) {
 					mouseDownLeft = false;
 				}
@@ -358,7 +406,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			break;
 		}
 		case SDL_EVENT_MOUSE_MOTION: {
-			if(!imio.WantCaptureMouse) {
+			if(!WantCaptureMouse) {
 				if(mouseDownLeft) {
 					g_global.camera->rotateMouse(event->motion.x, event->motion.y);
 				}
@@ -369,7 +417,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			break;
 		}
 		case SDL_EVENT_MOUSE_WHEEL: {
-			if(!imio.WantCaptureMouse) {
+			if(!WantCaptureMouse) {
 				if(event->wheel.y > 0) {
 					g_global.camera->move(0, 0, 1);
 					//					    if(!g_global.camera->isPerspective()) {
@@ -462,9 +510,11 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
 	}
 	
 	// Cleanup
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL3_Shutdown();
-	ImGui::DestroyContext();
+	if(app.args.editor) {
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplSDL3_Shutdown();
+		ImGui::DestroyContext();
+	}
 	
 	{
 		auto & p = g_config.windowMain.pos;

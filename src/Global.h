@@ -41,6 +41,13 @@ extern Global g_global;
 extern bool g_morphMode;
 
 struct AppState {
+	
+	struct Args {
+		bool debug = false;
+		bool editor = true;
+		bool background = true;
+	} args;
+	
 	SDL_Window*   mainWindow;
 	SDL_GLContext mainContext;
 	
