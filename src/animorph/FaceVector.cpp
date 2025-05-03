@@ -64,15 +64,13 @@ void FaceVector::fromColorsStream(FileReader & in_stream)
 
 	while(in_stream.getline(buffer)) {
 		if(sscanf(buffer.c_str(), "%d\n", &mat_index) == 1) {
-			try {
+			if(n >= 0 && size_t(n) < this->size()) {
 				Face & face = (*this).at(n);
-
+				
 				face.setMaterialIndex(mat_index);
-			} catch(const std::exception & e) {
-				std::cerr << "Face with number " << n << " doesn't exist!" << std::endl;
-				continue;
+			} else {
+				log_error("Face with number {} doesn't exist!", n);
 			}
-
 			n++;
 		}
 	}
