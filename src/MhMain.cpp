@@ -360,11 +360,13 @@ bool mouseDownRight = false;
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 	AppState& app = *static_cast<AppState*>(appstate);
 	
-	bool WantCaptureMouse = false;
+	bool guiWantCaptureMouse = false;
+	bool guiWantCaptureKeyboard = false;
 	if(app.args.editor) {
 		ImGui_ImplSDL3_ProcessEvent(event);
 		const ImGuiIO & imio = ImGui::GetIO();
-		WantCaptureMouse = imio.WantCaptureMouse;
+		guiWantCaptureMouse = imio.WantCaptureMouse;
+		guiWantCaptureKeyboard = imio.WantCaptureKeyboard;
 	}
 	
 	switch(event->type) {
@@ -383,59 +385,67 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			break;
 		}
 		case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-			if(!WantCaptureMouse) {
-			    if(event->button.button == SDL_BUTTON_LEFT) {
-					mouseDownLeft = true;
-				    g_global.camera->mouseRotateStart(event->button.x, event->button.y);
-				}
-			    if(event->button.button == SDL_BUTTON_RIGHT) {
-					mouseDownRight = true;
-				    g_global.camera->mouseRotateStart(event->button.x, event->button.y);
-				}
+			if(guiWantCaptureMouse) {
+				break;
+			}
+			if(event->button.button == SDL_BUTTON_LEFT) {
+				mouseDownLeft = true;
+				g_global.camera->mouseRotateStart(event->button.x, event->button.y);
+			}
+			if(event->button.button == SDL_BUTTON_RIGHT) {
+				mouseDownRight = true;
+				g_global.camera->mouseRotateStart(event->button.x, event->button.y);
 			}
 			break;
 		}
 		case SDL_EVENT_MOUSE_BUTTON_UP: {
-			if(!WantCaptureMouse) {
-				if(event->button.button == SDL_BUTTON_LEFT) {
-					mouseDownLeft = false;
-				}
-				if(event->button.button == SDL_BUTTON_RIGHT) {
-					mouseDownRight = false;
-				}
+			if(guiWantCaptureMouse) {
+				break;
+			}
+			if(event->button.button == SDL_BUTTON_LEFT) {
+				mouseDownLeft = false;
+			}
+			if(event->button.button == SDL_BUTTON_RIGHT) {
+				mouseDownRight = false;
 			}
 			break;
 		}
 		case SDL_EVENT_MOUSE_MOTION: {
-			if(!WantCaptureMouse) {
-				if(mouseDownLeft) {
-					g_global.camera->rotateMouse(event->motion.x, event->motion.y);
-				}
-				if(mouseDownRight) {
-					g_global.camera->moveMouse(event->motion.x, event->motion.y);
-				}
+			if(guiWantCaptureMouse) {
+				break;
+			}
+			if(mouseDownLeft) {
+				g_global.camera->rotateMouse(event->motion.x, event->motion.y);
+			}
+			if(mouseDownRight) {
+				g_global.camera->moveMouse(event->motion.x, event->motion.y);
 			}
 			break;
 		}
 		case SDL_EVENT_MOUSE_WHEEL: {
-			if(!WantCaptureMouse) {
-				if(event->wheel.y > 0) {
-					g_global.camera->move(0, 0, 1);
-					//					    if(!g_global.camera->isPerspective()) {
-					//						    reshape(g_mainWindow.getSize().x,
-					//						            mainWindow.getSize().y);
-					//					    }
-				} else if(event->wheel.y < 0) {
-					g_global.camera->move(0, 0, -1);
-					//					    if(!g_global.camera->isPerspective()) {
-					//						    reshape(mainWindow.getSize().x,
-					//						            mainWindow.getSize().y);
-					//					    }
-				}
+			if(guiWantCaptureMouse) {
+				break;
+			}
+			if(event->wheel.y > 0) {
+				g_global.camera->move(0, 0, 1);
+				//					    if(!g_global.camera->isPerspective()) {
+				//						    reshape(g_mainWindow.getSize().x,
+				//						            mainWindow.getSize().y);
+				//					    }
+			} else if(event->wheel.y < 0) {
+				g_global.camera->move(0, 0, -1);
+				//					    if(!g_global.camera->isPerspective()) {
+				//						    reshape(mainWindow.getSize().x,
+				//						            mainWindow.getSize().y);
+				//					    }
 			}
 			break;
 		}
 		case SDL_EVENT_KEY_UP: {
+			if(guiWantCaptureKeyboard) {
+				break;
+			}
+			
 			switch(event->key.key) {
 				case SDLK_UP:
 					g_global.camera->move(0, 1, 0);
