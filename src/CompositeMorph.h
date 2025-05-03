@@ -5,6 +5,9 @@
 #include <glm/glm.hpp>
 #include "animorph/BodySettings.h"
 
+
+constexpr glm::vec2 foobarScale = glm::vec2(192, 104);
+
 template<int rows, int cols>
 struct Grid
 {
@@ -34,13 +37,15 @@ struct Grid
 		maxValue  = glm::min(cellWidth, cellHeight * cellRatio);
 	}
 	
-	void calculateDists(glm::ivec2 cursorPos)
+	void calculateDists(glm::vec2 cursorPos)
 	{
+		glm::vec2 scaledPos = cursorPos * foobarScale;
+		
 		for(int i = 0; i < (rows * cols); ++i) {
 			const glm::ivec2 & tmp = points[i];
 			
-			float dist  = sqrt(pow(tmp.x - cursorPos.x, 2) +
-                              pow((tmp.y - cursorPos.y) * cellRatio, 2));
+			float dist  = sqrt(pow(tmp.x - scaledPos.x, 2) +
+                              pow((tmp.y - scaledPos.y) * cellRatio, 2));
 			float value = 1 - (dist / maxValue);
 			if(value > 0) {
 				dists[i] = value;
@@ -55,18 +60,16 @@ struct Grid
 
 struct Grids {
 	void setAgeNorm(float age) {
-		agePos.x = age * 192.f;
+		agePos.x = age;
 	}
 	void setSexNorm(float sex) {
-		agePos.y = sex * 104.f;
+		agePos.y = sex;
 	}
 	
-	glm::vec2 ageNorm;
-	
-	glm::ivec2 agePos;
-	glm::ivec2 muscleSizePos;
-	glm::ivec2 breastPos;
-	glm::ivec2 shapePos;
+	glm::vec2 agePos;
+	glm::vec2 muscleSizePos;
+	glm::vec2 breastPos;
+	glm::vec2 shapePos;
 	
 	Grid<2, 5> ageGrid;
 	Grid<2, 2> muscleSizeGrid;
@@ -81,18 +84,14 @@ struct Grids {
 		shapeGrid.calcPoints(glm::ivec2(192, 104));
 	}
 	
-	void foobarToNorm();
-	
 	void clearPos()
 	{
-		auto defPos = glm::ivec2(96, 52);
+		auto defPos = glm::vec2(96, 52);
 		
-		agePos = defPos;
-		muscleSizePos = defPos;
-		breastPos = defPos;
-		shapePos = defPos;
-		
-		foobarToNorm();
+		agePos = defPos / foobarScale;
+		muscleSizePos = defPos/ foobarScale;;
+		breastPos = defPos / foobarScale;;
+		shapePos = defPos / foobarScale;;
 	}
 	
 	void clearDists()

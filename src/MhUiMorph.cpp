@@ -26,7 +26,7 @@ void CreateTargetImageTextures()
 }
 
 
-void XYfoobar(const char* str_id, OptTex texture, glm::ivec2 & value)
+void XYfoobar(const char* str_id, OptTex texture, glm::vec2 & value)
 {
 	if(!texture) {
 		return;
@@ -42,8 +42,7 @@ void XYfoobar(const char* str_id, OptTex texture, glm::ivec2 & value)
 		relPos      = glm::max(relPos, vec2(0));
 		relPos      = glm::min(relPos, size);
 		
-		value.x = relPos.x;
-		value.y = size.y - relPos.y;
+		value = glm::vec2(relPos.x, size.y - relPos.y) / foobarScale;
 		
 		g_grids.calcDists();
 		g_grids.applyCompositeMorphTargets();
@@ -52,7 +51,8 @@ void XYfoobar(const char* str_id, OptTex texture, glm::ivec2 & value)
 	}
 	//vec2        cursorPos    = pMin + vec2(value * vec2(size));
 	
-	vec2 cursorPos = pMin + vec2(value.x, 104) - vec2(0, value.y);
+	vec2 scaled = value * foobarScale;
+	vec2 cursorPos = pMin + vec2(scaled.x, 104) - vec2(0, scaled.y);
 	
 	float       radius       = 5.0f;
 	const ImU32 col_white    = IM_COL32(255, 255, 255, 255);

@@ -41,12 +41,6 @@ static std::array<string, 4> shapeLabels = {
     "longilinear_peershape"
 };
 
-
-
-void Grids::foobarToNorm() {
-	ageNorm = agePos / glm::ivec2(192, 104);
-}
-
 void Grids::calcDists()
 {
 	ageGrid.calculateDists(agePos);
@@ -136,6 +130,7 @@ void Grids::fromSavedPositions(const Animorph::SavedCompSetting & saved)
 	} else {
 		agePos = defPos;
 	}
+	agePos /= foobarScale;
 	
 	if(saved.m_kMuscleSize != InvalidPoint){
 		const int bottom = yOff + 124 + size.y;
@@ -145,6 +140,7 @@ void Grids::fromSavedPositions(const Animorph::SavedCompSetting & saved)
 	} else {
 		muscleSizePos = defPos;
 	}
+	muscleSizePos /= foobarScale;
 	
 	if(saved.m_kBreast != InvalidPoint){
 		const int bottom = yOff + 238 + size.y;
@@ -154,6 +150,7 @@ void Grids::fromSavedPositions(const Animorph::SavedCompSetting & saved)
 	} else {
 		breastPos = defPos;
 	}
+	breastPos /= foobarScale;
 	
 	if(saved.m_kShape != InvalidPoint){
 		const int bottom = yOff + 352 + size.y;
@@ -163,6 +160,7 @@ void Grids::fromSavedPositions(const Animorph::SavedCompSetting & saved)
 	} else {
 		shapePos = defPos;
 	}
+	shapePos /= foobarScale;
 }
 
 void Grids::toSavedPositions(Animorph::SavedCompSetting & saved)
@@ -172,8 +170,13 @@ void Grids::toSavedPositions(Animorph::SavedCompSetting & saved)
 	int yOff = 16;
 	auto size = ivec2(192, 104);
 	
-	saved.m_kAge = ivec2(agePos.x, yOff + 10 + size.y - agePos.y);
-	saved.m_kMuscleSize = ivec2(muscleSizePos.x, yOff + 124 + size.y - muscleSizePos.y);
-	saved.m_kBreast = ivec2(breastPos.x, yOff + 238 + size.y - breastPos.y);
-	saved.m_kShape = ivec2(shapePos.x, yOff + 352 + size.y - shapePos.y);
+	glm::vec2 a = agePos * foobarScale;
+	glm::vec2 m = muscleSizePos * foobarScale;
+	glm::vec2 b = breastPos * foobarScale;
+	glm::vec2 s = shapePos * foobarScale;
+	
+	saved.m_kAge = ivec2(a.x, yOff + 10 + size.y - a.y);
+	saved.m_kMuscleSize = ivec2(m.x, yOff + 124 + size.y - m.y);
+	saved.m_kBreast = ivec2(b.x, yOff + 238 + size.y - b.y);
+	saved.m_kShape = ivec2(s.x, yOff + 352 + size.y - s.y);
 }
