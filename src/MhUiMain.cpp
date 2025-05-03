@@ -605,6 +605,9 @@ void DisplayMainMenu(AppState& app)
 		if(app.settings.developerMode) {
 			ImGui::Separator();
 			if(ImGui::BeginMenu("Developer")) {
+				if(ImGui::Button("ROUNDTRIP CHARS")) {
+					g_mesh.roundtripCharacters();
+				}
 				if(ImGui::BeginMenu("Shading")) {
 					if(ImGui::MenuItem("Load Shader 1")) {
 						g_requestShaderVersion = 1;

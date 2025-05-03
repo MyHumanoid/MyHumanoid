@@ -340,7 +340,9 @@ public:
 	 * if files aren't found
 	 */
 	void loadCharacters(const string & characters_root_path, int recursive_level = 1);
-
+	
+	void roundtripCharacters();
+	
 	bool loadGroups(const string & partsFile);
 	bool loadSmoothVertex(const string & smoothFile);
 

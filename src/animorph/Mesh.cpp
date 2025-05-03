@@ -9,6 +9,9 @@
 #include "Profiler.h"
 #include "Vfs.h"
 
+#include <filesystem>
+#include "CompositeMorph.h"
+
 namespace Animorph
 {
 
@@ -476,6 +479,41 @@ void Mesh::loadCharacters(const string & characters_root_path, int recursive_lev
 		BodySettings character;
 		character.load(file);
 		m_characters[character_name] = character;
+	}
+}
+
+
+
+void Mesh::roundtripCharacters() {
+	// reading all the targets recursively
+	DirectoryList dir_list;
+	
+	dir_list.setRootPath(searchDataDir("bs_data"));
+	dir_list.setRecursive(1);
+	dir_list.setFileFilter(".bs");
+	
+	for(const string & file : dir_list.getDirectoryList()) {
+		string character_name(file);
+		
+		BodySettings in;
+		in.load(file);
+		
+		Grids grid;
+		grid.fromSavedPositions(in.m_comp);
+		
+		BodySettings out;
+		grid.toSavedPositions(out.m_comp);
+		
+		for(auto a : in.m_targets)
+			out.m_targets[a.first] = a.second;
+		
+		
+		namespace fs = std::filesystem;
+		fs::path p = fs::path("../MyHumanoid/") / fs::path(file);
+		auto foo = fs::canonical(fs::absolute(p));
+		log_info("OUT: {}", foo.string());
+		//fs::create_directories(foo.parent_path());
+		out.save(foo.string());
 	}
 }
 
