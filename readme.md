@@ -22,9 +22,8 @@ If you want to use system provided libraries you have to install them using the 
 Debian and derivatives e.g. Ubuntu:
 
 ```sh
-apt install libsdl3-dev libepoxy-dev libfmt-dev libglm-dev libphysfs-dev
+apt install cmake libfmt-dev libglm-dev libphysfs-dev libsdl3-dev
 ```
-
 
 #### Original MakeHuman 0.9.1 licenses
 ~~~~

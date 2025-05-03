@@ -17,7 +17,6 @@ jobs:
     - name: prepare
       run: |
         export DEBIAN_FRONTEND=noninteractive
-        sudo apt autoremove -y
         sudo apt update -y --fix-missing
     - name: install
       run: >
@@ -25,7 +24,6 @@ jobs:
         ninja-build
         libsdl2-dev
         libfmt-dev
-        libepoxy-dev
         libglm-dev
         libphysfs-dev
     - name: configure
@@ -54,7 +52,6 @@ jobs:
       shell: bash
       run: >
         vcpkg install
-        libepoxy:x64-windows
         sdl3:x64-windows
         physfs:x64-windows
     - name: configure
