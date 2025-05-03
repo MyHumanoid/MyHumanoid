@@ -54,6 +54,15 @@ struct Grid
 };
 
 struct Grids {
+	void setAgeNorm(float age) {
+		agePos.x = age * 192.f;
+	}
+	void setSexNorm(float sex) {
+		agePos.y = sex * 104.f;
+	}
+	
+	glm::vec2 ageNorm;
+	
 	glm::ivec2 agePos;
 	glm::ivec2 muscleSizePos;
 	glm::ivec2 breastPos;
@@ -72,6 +81,8 @@ struct Grids {
 		shapeGrid.calcPoints(glm::ivec2(192, 104));
 	}
 	
+	void foobarToNorm();
+	
 	void clearPos()
 	{
 		auto defPos = glm::ivec2(96, 52);
@@ -80,6 +91,8 @@ struct Grids {
 		muscleSizePos = defPos;
 		breastPos = defPos;
 		shapePos = defPos;
+		
+		foobarToNorm();
 	}
 	
 	void clearDists()

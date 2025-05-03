@@ -172,8 +172,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 		SDL_SetWindowOpacity(app.mainWindow, 0.f);
 	}
 	
-	
-	SDL_SetWindowMinimumSize(app.mainWindow, 800, 600);
+	if(app.args.editor) {
+		SDL_SetWindowMinimumSize(app.mainWindow, 800, 600);
+	}
 
 	if(auto iconSurface = loadSurfaceFromFile("data/pixmaps/icon.png")) {
 		SDL_SetWindowIcon(app.mainWindow, iconSurface->m_ptr);

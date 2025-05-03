@@ -43,6 +43,10 @@ static std::array<string, 4> shapeLabels = {
 
 
 
+void Grids::foobarToNorm() {
+	ageNorm = agePos / glm::ivec2(192, 104);
+}
+
 void Grids::calcDists()
 {
 	ageGrid.calculateDists(agePos);

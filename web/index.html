@@ -1,8 +1,24 @@
 <html>
 	<head>
 		<style>
+			body {
+				background-color: #000000;
+				font-family: sans-serif;
+				color: white;
+			}
+			.flex {
+				display: flex;
+				flex-direction: column;
+			}
+			.sliders {
+				width: 400px;
+			}
+			.slider {
+				display: inline-block;
+				vertical-align: middle;
+			}
 			.bg-gradient {
-				background-image: linear-gradient(
+				background: linear-gradient(
 					rgba(0, 0, 0, 1),
 					rgba(0, 0, 0, 1),
 					rgba(20, 25, 51, 1),
@@ -12,8 +28,20 @@
 		</style>
 	</head>
 	<body>
-		<div class="bg-gradient">
-			<canvas id="canvas"></canvas>
+		<div class="flex">
+			<div class="bg-gradient">
+				<canvas id="canvas"></canvas>
+			</div>
+			<div class="sliders">
+				<div class="slider">
+					<span>Age</span>
+					<input type="range" min="20" max="90" step="1" value="30" class="slider" id="age">
+				</div>
+				<div class="slider">
+					<span>Sex</span>
+					<input type="range" min="-1.0" max="1.0" step="0.1" value="0" class="slider" id="sex">
+				</div>
+			</div>
 		</div>
 		<script>
 			var Module = {
@@ -26,6 +54,16 @@
 				},
 				canvas: document.getElementById("canvas")
 			};
+
+			function addSlider(elementId, apiFunction) {
+				document.getElementById(elementId).addEventListener("input", (ev)=>{
+					const value = ev.target.value;
+					Module.ccall(apiFunction, "void", ['number'], [value]); // arguments
+				});
+			}
+
+			addSlider("age", "mh_setAge");
+			addSlider("sex", "mh_setSex");
 		</script>
 		<script src="MyHumanoid.js"></script>
 	</body>

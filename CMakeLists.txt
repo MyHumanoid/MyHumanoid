@@ -247,6 +247,8 @@ set(myhumanoid_sources
 	src/Global.h
 	src/Logger.h
 	src/Logger.cpp
+	src/MhApi.h
+	src/MhApi.cpp
 	src/MhConfig.h
 	src/MhConfig.cpp
 	src/MhMain.cpp
@@ -342,9 +344,28 @@ if(MH_ENABLE_TRACY)
 endif()
 
 if(DEFINED EMSCRIPTEN)
+	set(EM_FUNCS
+		"main"
+		"mh_setAge"
+		"mh_setSex"
+	)
+	set(EM_FUNCS_DECORATED "")
+	foreach(f ${EM_FUNCS})
+		list(APPEND EM_FUNCS_DECORATED "'_${f}'")
+	endforeach()
+	list(JOIN EM_FUNCS_DECORATED "," EM_FUNCS_JOINED)
+	
+	message(STATUS "EM_FUNCS: ${EM_FUNCS_JOINED}")
+	
 	set_target_properties(MyHumanoid PROPERTIES
 		LINK_FLAGS
-		"-O3 -sSTACK_SIZE=2mb -sINITIAL_MEMORY=256mb -sALLOW_MEMORY_GROWTH -sMIN_WEBGL_VERSION=2"
+		"-O3 -sSTACK_SIZE=2mb \
+		-sINITIAL_MEMORY=256mb \
+		-sALLOW_MEMORY_GROWTH \
+		-sMIN_WEBGL_VERSION=2 \
+		-sEXPORTED_FUNCTIONS=\"[${EM_FUNCS_JOINED}]\" \
+		-sEXPORTED_RUNTIME_METHODS=ccall \
+		"
 	)
 endif()
 
