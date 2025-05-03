@@ -1,109 +1,38 @@
-/* SPDX-License-Identifier: GPL-3.0-or-later */
-/*
- *  Copyright (C) 2005-2007  MakeHuman Project
- *
- *  This program is free software; you  can  redistribute  it  and/or
- *  modify  it  under  the terms of the GNU General Public License as
- *  published by the Free Software Foundation; either  version  3  of
- *  the License, or (at your option) any later version.
- *
- *  This  program  is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the  implied  warranty  of
- *  MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- *  General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software Foun-
- *  dation, Inc., 59 Temple Place, Suite 330, Boston,  MA  02111-1307
- *  USA
- *
- *  File   : makehuman.cpp
- *  Project: MakeHuman <info@makehuman.org>, http://www.makehuman.org/
- *  App    : makehuman
- *
- *  For individual developers look into the AUTHORS file.
- *
- */
-
-#include <stdexcept>
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2025 Eli2
 
 #include <fmt/format.h>
 
-#include "MhUi.h"
-#include "MhUiMorph.h"
-#include "MhUiPose.h"
+#include <SDL3/SDL.h>
+#define SDL_MAIN_USE_CALLBACKS
+#include <SDL3/SDL_main.h>
+
+#include <imgui.h>
+#include <backends/imgui_impl_sdl3.h>
+#include <backends/imgui_impl_opengl3.h>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-#include <animorph/Mesh.h>
-#include <animorph/util.h>
-
-#include <gui/CGUtilities.h>
-#include <gui/Camera.h>
-
-#include "Logger.h"
-
+#include "animorph/Mesh.h"
+#include "animorph/util.h"
+#include "gui/CGUtilities.h"
+#include "gui/Camera.h"
 #include "render/RenderUtils.h"
-
-#include "StringUtils.h"
-
-#include <time.h>
-
-#include "ComponentID.h"
 #include "Global.h"
-#include "util.h"
-
-#include "CompositeMorph.h"
+#include "Logger.h"
 #include "MhConfig.h"
 #include "MhUiMain.h"
 #include "MhRender.h"
+#include "MhUiMorph.h"
+#include "MhUiPose.h"
+#include "Profiler.h"
+#include "util.h"
 #include "Version.h"
 #include "Vfs.h"
 
-#include <SDL3/SDL.h>
-
-#define SDL_MAIN_USE_CALLBACKS
-#include <SDL3/SDL_main.h>
-
-#include "Profiler.h"
 
 
-#define kTimerRendering 1000
-
-
-bool  init; // shows the init status
-int   average           = 0;
-int   n_display         = 0;
-int   tickCount         = 0;
-float kTimePerRaster(0.03f);
-bool  oldCameraTimerTrigger = false;
-
-const Color border_color(1.0, 0.55, 0.0, 0.8);
-const Color grid_color(0.35, 0.50, 0.30, 0.50);
-const Color edges_color(0.4, 0.3, 0.3, 0.5);
-
-// ================================================================================================
-
-static void reshape(AppState& app)
-{
-	int w;
-	int h;
-	SDL_GetWindowSizeInPixels(app.mainWindow, &w, &h);
-	
-	cgutils::reshape(glm::ivec2(w, h), *g_global.camera);
-	g_global.camera->reshape(w, h);
-}
-
-static void timerTrigger(AppState& app)
-{
-	bool     tmp;
-	tmp = g_global.camera->timerTrigger();
-
-	if(!g_global.camera->isPerspective()) {
-		reshape(app);
-	}
-}
 
 static void parseArgs(AppState& app, int argc, char **argv)
 {
@@ -255,8 +184,6 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	g_mesh.loadPoseTargets(searchDataDir("rotations"));
 	g_mesh.loadCharacters(searchDataDir("bs_data"));
 
-	init = false;
-	
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
 	g_global.camera->move(0, 0, -125.0f);
 	
@@ -311,6 +238,16 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	return SDL_APP_CONTINUE;
 }
 
+static void reshape(AppState& app)
+{
+	int w;
+	int h;
+	SDL_GetWindowSizeInPixels(app.mainWindow, &w, &h);
+	
+	cgutils::reshape(glm::ivec2(w, h), *g_global.camera);
+	g_global.camera->reshape(w, h);
+}
+
 SDL_AppResult SDL_AppIterate(void *appstate) {
 	AppState& app = *static_cast<AppState*>(appstate);
 	
@@ -323,7 +260,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 		ImGui::NewFrame();
 	}
 	
-	timerTrigger(app);
+	g_global.camera->timerTrigger();
+	
+	if(!g_global.camera->isPerspective()) {
+		reshape(app);
+	}
 	
 	g_global.camera->applyMatrix();
 	
@@ -378,7 +319,6 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			}
 			break;
 		}
-		case SDL_EVENT_WINDOW_EXPOSED:
 		case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
 		case SDL_EVENT_WINDOW_RESIZED: {
 			reshape(app);

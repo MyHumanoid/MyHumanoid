@@ -24,6 +24,8 @@ set(imgui_src
 add_library(imgui STATIC ${imgui_src})
 add_library(imgui::imgui ALIAS imgui)
 
+target_include_directories(imgui PUBLIC ${imgui_dir})
+
 target_link_libraries(imgui PUBLIC
 	stb::stb
 	glad::glad
@@ -42,5 +44,3 @@ if(MH_USE_GLES)
 		IMGUI_IMPL_OPENGL_ES3=1
 	)
 endif()
-
-target_include_directories(imgui PUBLIC ${imgui_dir})
