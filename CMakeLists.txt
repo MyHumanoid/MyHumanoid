@@ -1,29 +1,21 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025 Eli2
-cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
+
+cmake_minimum_required(VERSION 3.28)
+
+set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
 
 include(${CMAKE_CURRENT_LIST_DIR}/ProjectVersion.cmake)
 
-set(project_version ${project_version_major}.${project_version_minor}.${project_version_patch})
-
-if(WIN32)
-	# MSVC runtime library flags are selected by an abstraction.
-	cmake_policy(SET CMP0091 NEW)
-endif()
-
-cmake_policy(SET CMP0069 NEW)
-set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
-
-cmake_policy(SET CMP0077 NEW)
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
-
-project(MyHumanoid
-	VERSION ${project_version}
+project(
+	MyHumanoid
+	VERSION ${project_version_major}.${project_version_minor}.${project_version_patch}
 	DESCRIPTION MyHumanoid
-	LANGUAGES CXX
+	LANGUAGES C CXX
 )
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+message(STATUS "${PROJECT_NAME} version: ${PROJECT_VERSION}")
 
 option(MH_USE_GLES           "Use OpenGL ES for rendering"        OFF)
 option(MH_ENABLE_ASAN        "Enable address sanitizer"           OFF)
@@ -34,6 +26,29 @@ option(MH_USE_SYSTEM_GLM     "Use system provided glm library"    ON)
 option(MH_USE_SYSTEM_PHYSFS  "Use system provided physfs library" OFF)
 
 
+if(DEFINED EMSCRIPTEN)
+	message(STATUS "Overriding options for emscripten")
+	set(MH_USE_GLES ON)
+	set(MH_ENABLE_ASAN OFF)
+	set(MH_ENABLE_TRACY OFF)
+	set(MH_USE_SYSTEM_FMT OFF)
+	set(MH_USE_SYSTEM_SDL OFF)
+	set(MH_USE_SYSTEM_GLM OFF)
+	set(MH_USE_SYSTEM_PHYSFS OFF)
+endif()
+
+message(STATUS "")
+message(STATUS "MyHumanoid configured options:")
+message(STATUS "MH_USE_GLES           Use OpenGL ES for rendering        ${MH_USE_GLES}")
+message(STATUS "MH_ENABLE_ASAN        Enable address sanitizer           ${MH_ENABLE_ASAN}")
+message(STATUS "MH_ENABLE_TRACY       Enable tracing using tracy         ${MH_ENABLE_TRACY}")
+message(STATUS "MH_USE_SYSTEM_FMT     Use system provided fmt library    ${MH_USE_SYSTEM_FMT}")
+message(STATUS "MH_USE_SYSTEM_SDL     Use system provided SDL library    ${MH_USE_SYSTEM_SDL}")
+message(STATUS "MH_USE_SYSTEM_GLM     Use system provided glm library    ${MH_USE_SYSTEM_GLM}")
+message(STATUS "MH_USE_SYSTEM_PHYSFS  Use system provided physfs library ${MH_USE_SYSTEM_PHYSFS}")
+message(STATUS "")
+
+
 message(STATUS "Resolving GIT Version")
 set(project_git_commit_hash "unknown")
 set(project_git_commit_date "unknown")
@@ -41,7 +56,7 @@ find_package(Git)
 if(GIT_FOUND)
 	set(git_show_output "unknown;unknown")
 	execute_process(
-		COMMAND ${GIT_EXECUTABLE} show -s --encoding=UTF8 "--format=%H;%ci" HEAD
+		COMMAND ${GIT_EXECUTABLE} show -s --encoding=UTF8 "--format=%H;%cs" HEAD
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 		OUTPUT_VARIABLE git_show_output
 		ERROR_QUIET
@@ -49,7 +64,8 @@ if(GIT_FOUND)
 	)
 	list(GET git_show_output 0 project_git_commit_hash)
 	list(GET git_show_output 1 project_git_commit_date)
-	message(STATUS "GIT:\nhash=${project_git_commit_hash}\ndate=${project_git_commit_date}")
+	message(STATUS "GIT hash=${project_git_commit_hash}")
+	message(STATUS "GIT date=${project_git_commit_date}")
 else()
 	message(STATUS "GIT not found")
 endif()
