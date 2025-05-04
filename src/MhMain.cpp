@@ -188,8 +188,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	g_global.camera->move(0, 0, -125.0f);
 	
 	::glPolygonOffset(1.0, 1.0);
-
-	loadDefaultBodySettings();
+	
+	loadCharacter("characters1/_default.bs");
 	
 	if(app.args.editor) {
 		// Setup Dear ImGui context

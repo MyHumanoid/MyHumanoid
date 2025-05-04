@@ -59,8 +59,6 @@ static void loadBodySettings(const string & filename)
 	bool         state = bodyset.load(filename);
 	
 	if(state) {
-		g_global.clearFuzzy();
-		
 		//g_global.m_comp = bodyset.m_comp;
 		g_grids.fromSavedPositions(bodyset.m_comp);
 		
@@ -156,19 +154,6 @@ static void saveAutozoom(const string & filename)
 	}
 }
 
-
-static void ResetMeshMorph()
-{
-	g_grids.clearPos();
-	
-	Animorph::BodySettings bodyset_empty;
-	g_mesh.doMorph(bodyset_empty);
-	
-	loadDefaultBodySettings();
-	
-	g_global.clearFuzzy();
-}
-
 // ================================================================================================
 // ================================================================================================
 
@@ -184,23 +169,7 @@ static bool g_requestBackgroundShaderReload = false;
 // ================================================================================================
 // ================================================================================================
 
-void loadCharacter(const std::string & character_name)
-{
-	const Animorph::CharactersMap & charactersmap = g_mesh.characters();
-	
-	auto f = charactersmap.find(character_name);
-	if(f != charactersmap.end()) {
-		g_mesh.doMorph(f->second);
-		g_mesh.calcNormals();
-		
-		auto & bodyset = f->second;
-		
-		//g_global.m_comp = bodyset.m_comp;
-		g_grids.fromSavedPositions(bodyset.m_comp);
-		
-		//mhgui::g_mainWindow->characterSettingPanel->updateUi();
-	}
-}
+
 
 void DisplayLibraryCharacters()
 {
@@ -572,7 +541,7 @@ void DisplayMainMenu(AppState& app)
 			ImGui::Separator();
 			if(ImGui::BeginMenu("Reset Morph? ...")) {
 				if(ImGui::MenuItem("YES")) {
-					ResetMeshMorph();
+					loadCharacter("characters1/_default.bs");
 				}
 				ImGui::EndMenu();
 			}

@@ -29,11 +29,6 @@ struct Global {
 	bool       subdivision     = false;
 
 	std::function<void()> toggleFullscreen;
-	SavedCompSetting m_comp;
-	
-	void clearFuzzy() {
-		m_comp = SavedCompSetting();
-	}
 };
 
 extern Global g_global;

@@ -26,9 +26,7 @@
  */
 #pragma once
 
-#include <iostream>
 #include <string>
-#include <vector>
 
 const std::string searchDataFile(const std::string & data_file);
 
@@ -36,4 +34,4 @@ const std::string searchDataDir(const std::string & data_dir);
 
 void CreateWeightsFile();
 
-void loadDefaultBodySettings();
+void loadCharacter(const std::string & character_name);

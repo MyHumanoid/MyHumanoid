@@ -26,8 +26,8 @@
  */
 #include "util.h"
 
-#include "ComponentID.h"
 #include "Global.h"
+#include "animorph/BodySettings.h"
 #include <animorph/DirectoryList.h>
 #include <animorph/util.h>
 #include <gui/CGUtilities.h>
@@ -203,22 +203,22 @@ void CreateWeightsFile()
 	file_reader.close();
 }
 
-void loadDefaultBodySettings()
+void loadCharacter(const std::string & character_name)
 {
-	Animorph::BodySettings bodyset;
-	bool         state = bodyset.load(searchDataFile("default.bs"));
-
-	if(state) {
-		g_global.clearFuzzy();
+	const Animorph::CharactersMap & charactersmap = g_mesh.characters();
+	
+	auto f = charactersmap.find(character_name);
+	if(f != charactersmap.end()) {
+		g_mesh.doMorph(f->second);
+		g_mesh.calcNormals();
+		
+		auto & bodyset = f->second;
 		
 		//g_global.m_comp = bodyset.m_comp;
 		g_grids.fromSavedPositions(bodyset.m_comp);
 		
 		//mhgui::g_mainWindow->characterSettingPanel->updateUi();
-	}
-
-	if(state) {
-		g_mesh.doMorph(bodyset);
-		g_mesh.calcNormals();
+	} else {
+		log_error("Failed to find character: {}", character_name);
 	}
 }
