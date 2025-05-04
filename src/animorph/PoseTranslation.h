@@ -35,9 +35,8 @@ The fourth line indicates minAngle and maxAngle.
 The filenames of these files end in ".target.info".
 
  */
-class PoseTranslation
+struct PoseTranslation
 {
-private:
 	Target *  target;
 	glm::vec3 originalSize;
 	glm::vec3 formFactor;
@@ -60,8 +59,6 @@ public:
 	 * \return false if file isn't found
 	 */
 	bool load(const string & filename);
-
-	UnsortedUsedVertex & getModVertex() { return target->getModVertex(); }
 
 	/// The distance between startVertexNumbers and endVertexNumbers, divided by
 	/// originalSize

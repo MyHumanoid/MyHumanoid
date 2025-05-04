@@ -60,7 +60,6 @@ class Target : public std::vector<TargetData>
 {
 public:
 	UnsortedUsedVertex modVertex;
-	UnsortedUsedVertex & getModVertex() { return modVertex; }
 };
 
 bool loadTarget(Target &target, const std::string & filename);
