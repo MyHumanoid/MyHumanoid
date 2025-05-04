@@ -29,14 +29,12 @@
 #include <glm/ext.hpp>
 
 #include "gui/Camera.h"
-#include "gui/Rect.h"
 #include "AbstractGl.h"
 
 #include "Logger.h"
 
 
 using Animorph::Color;
-using mhgui::Rect;
 using mhgui::Camera;
 
 glm::mat4 g_projectionMatrix;

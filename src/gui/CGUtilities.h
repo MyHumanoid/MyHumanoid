@@ -27,7 +27,6 @@
 #pragma once
 
 #include <cstdio>
-#include <iostream>
 #include <string>
 
 #include <animorph/Color.h>
@@ -35,11 +34,9 @@
 #include <glm/vec3.hpp>
 
 #include "Camera.h"
-#include "Rect.h"
 
 using std::string;
 using Animorph::Color;
-using mhgui::Rect;
 
 typedef void * FontType;
 

@@ -236,8 +236,6 @@ set(myhumanoid_sources
 	src/gui/Camera.cpp
 	src/gui/CGUtilities.h
 	src/gui/CGUtilities.cpp
-	src/gui/Rect.h
-	src/gui/Rect.cpp
 
 	src/io/ColladaExporter.h
 	src/io/ColladaExporter.cpp
