@@ -36,24 +36,7 @@
 namespace Animorph
 {
 
-/*! \brief Represents a vertex by its coordinates and a normal vector.
- */
-class Vertex
-{
-public:
-	/// vertex coordinate
-	glm::vec3 pos;
-
-	Vertex()
-	        : pos(0.f)
-	{
-	}
-
-	Vertex(float x, float y, float z)
-	        : pos(x, y, z)
-	{
-	}
-};
+using Vertex = glm::vec3;
 
 class VertexMeta {
 protected:

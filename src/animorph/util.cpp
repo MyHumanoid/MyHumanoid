@@ -117,7 +117,7 @@ glm::vec3 Animorph::calcCenteroid(const vector<int> &  vertexNumbers,
 		int vn = *v_it;
 
 		const Vertex & vertex(vertexvector.m_verts[vn]);
-		center += vertex.pos;
+		center += vertex;
 	}
 
 	if(vertexNumbers.size()) {

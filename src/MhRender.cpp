@@ -284,7 +284,7 @@ void RenderBody::render()
 				const glm::vec3 & normal = vertexvector.m_normals[vertIndex];
 				const glm::vec2 & uv = texture_face[j];
 				
-				g_buffers.vert.push_back(vertex.pos);
+				g_buffers.vert.push_back(vertex);
 				g_buffers.normal.push_back(normal);
 				g_buffers.color.push_back(faceColor);
 				g_buffers.texCoord.push_back(uv);
