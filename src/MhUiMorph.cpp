@@ -200,7 +200,7 @@ auto nopApplier = [](const std::string & name, const float & value, const bool d
 };
 
 
-void DisplayMorphTargets()
+void DisplayMorphTargets(AppState& app)
 {
 	ImGui::SetNextWindowSize(vec2(380, 540));
 	if(!ImGui::Begin("Morph Targets",
@@ -221,10 +221,10 @@ void DisplayMorphTargets()
 		auto & target = tileWin.m_categoryRight;
 		std::string pathAutozoom_data =
 		    searchDataDir("targets") + "/" + target + "/" + target + ".camera";
-		if(g_global.autozoom->lazyLoadData(pathAutozoom_data)) {
-			g_global.camera->moveCameraAnimated(
+		if(app.autozoom->lazyLoadData(pathAutozoom_data)) {
+			app.camera->moveCameraAnimated(
 			    pathAutozoom_data,
-			    g_global.autozoom->getAutozoomData(pathAutozoom_data),
+			    app.autozoom->getAutozoomData(pathAutozoom_data),
 			    g_mesh.getVertexVectorRef());
 		}
 	}

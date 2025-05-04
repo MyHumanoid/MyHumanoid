@@ -144,9 +144,9 @@ static void exportGltf(const string & fileName)
 }
 
 
-static void saveAutozoom(const string & filename)
+static void saveAutozoom(AppState& app, const string & filename)
 {
-	bool state = g_global.autozoom->save(filename, *g_global.camera);
+	bool state = app.autozoom->save(filename, *app.camera);
 	
 	if(state) {
 		log_info("Autozoom saved");
@@ -612,7 +612,7 @@ void DisplayMainMenu(AppState& app)
 					
 					//					saveAutozoom(pathAutozoom_data);
 					//				} else {
-					saveAutozoom("foo-Default.camera");
+					saveAutozoom(app, "foo-Default.camera");
 					//				}
 				}
 				ImGui::EndMenu();
@@ -633,7 +633,7 @@ void DisplayMainMenu(AppState& app)
 			DisplayCharacterSettings();
 		}
 		if(g_config.morphTargets.visible) {
-			DisplayMorphTargets();
+			DisplayMorphTargets(app);
 		}
 		if(g_config.morphTargetsApplied.visible) {
 			DisplayMorphTargetsApplied();

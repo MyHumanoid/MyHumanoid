@@ -13,9 +13,6 @@
 extern Animorph::Mesh g_mesh;
 
 struct Global {
-	mhgui::Camera *   camera          = NULL;
-	mhgui::Autozoom * autozoom        = NULL;
-
 	std::function<void()> toggleFullscreen;
 };
 
@@ -25,14 +22,16 @@ extern bool g_morphMode;
 
 struct AppState {
 	
+	SDL_Window*   mainWindow;
+	SDL_GLContext mainContext;
+	mhgui::Camera *   camera          = NULL;
+	mhgui::Autozoom * autozoom        = NULL;
+	
 	struct Args {
 		bool debug = false;
 		bool editor = true;
 		bool background = true;
 	} args;
-	
-	SDL_Window*   mainWindow;
-	SDL_GLContext mainContext;
 	
 	struct Ui {
 		struct Request {

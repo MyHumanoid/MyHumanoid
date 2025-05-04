@@ -139,8 +139,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	SDL_GL_SetSwapInterval(1);
 	
 	
-	g_global.camera   = new mhgui::Camera();
-	g_global.autozoom = new mhgui::Autozoom();
+	app.camera   = new mhgui::Camera();
+	app.autozoom = new mhgui::Autozoom();
 	
 	
 	g_renderBody.init();
@@ -184,7 +184,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	g_mesh.loadCharacters(searchDataDir("bs_data"));
 
 	// camera->rotate (-glm::pi<float>()/2, X_AXIS);
-	g_global.camera->move(0, 0, -125.0f);
+	app.camera->move(0, 0, -125.0f);
 	
 	::glPolygonOffset(1.0, 1.0);
 	
@@ -243,8 +243,8 @@ static void reshape(AppState& app)
 	int h;
 	SDL_GetWindowSizeInPixels(app.mainWindow, &w, &h);
 	
-	cgutils::reshape(glm::ivec2(w, h), *g_global.camera);
-	g_global.camera->reshape(w, h);
+	cgutils::reshape(glm::ivec2(w, h), *app.camera);
+	app.camera->reshape(w, h);
 }
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
@@ -259,13 +259,13 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 		ImGui::NewFrame();
 	}
 	
-	g_global.camera->timerTrigger();
+	app.camera->timerTrigger();
 	
-	if(!g_global.camera->isPerspective()) {
+	if(!app.camera->isPerspective()) {
 		reshape(app);
 	}
 	
-	g_global.camera->applyMatrix();
+	app.camera->applyMatrix();
 	
 	g_renderBody.render();
 	
@@ -329,11 +329,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			}
 			if(event->button.button == SDL_BUTTON_LEFT) {
 				mouseDownLeft = true;
-				g_global.camera->mouseRotateStart(event->button.x, event->button.y);
+				app.camera->mouseRotateStart(event->button.x, event->button.y);
 			}
 			if(event->button.button == SDL_BUTTON_RIGHT) {
 				mouseDownRight = true;
-				g_global.camera->mouseRotateStart(event->button.x, event->button.y);
+				app.camera->mouseRotateStart(event->button.x, event->button.y);
 			}
 			break;
 		}
@@ -354,10 +354,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 				break;
 			}
 			if(mouseDownLeft) {
-				g_global.camera->rotateMouse(event->motion.x, event->motion.y);
+				app.camera->rotateMouse(event->motion.x, event->motion.y);
 			}
 			if(mouseDownRight) {
-				g_global.camera->moveMouse(event->motion.x, event->motion.y);
+				app.camera->moveMouse(event->motion.x, event->motion.y);
 			}
 			break;
 		}
@@ -366,13 +366,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 				break;
 			}
 			if(event->wheel.y > 0) {
-				g_global.camera->move(0, 0, 1);
+				app.camera->move(0, 0, 1);
 				//					    if(!g_global.camera->isPerspective()) {
 				//						    reshape(g_mainWindow.getSize().x,
 				//						            mainWindow.getSize().y);
 				//					    }
 			} else if(event->wheel.y < 0) {
-				g_global.camera->move(0, 0, -1);
+				app.camera->move(0, 0, -1);
 				//					    if(!g_global.camera->isPerspective()) {
 				//						    reshape(mainWindow.getSize().x,
 				//						            mainWindow.getSize().y);
@@ -387,56 +387,56 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 			
 			switch(event->key.key) {
 				case SDLK_UP:
-					g_global.camera->move(0, 1, 0);
+					app.camera->move(0, 1, 0);
 					break;
 				case SDLK_DOWN:
-					g_global.camera->move(0, -1, 0);
+					app.camera->move(0, -1, 0);
 					break;
 				case SDLK_LEFT:
-					g_global.camera->move(-1, 0, 0);
+					app.camera->move(-1, 0, 0);
 					break;
 				case SDLK_RIGHT:
-					g_global.camera->move(1, 0, 0);
+					app.camera->move(1, 0, 0);
 					break;
 				case SDLK_KP_PLUS:
-					g_global.camera->move(0, 0, 1);
+					app.camera->move(0, 0, 1);
 					break;
 				case SDLK_KP_MINUS:
-					g_global.camera->move(0, 0, -1);
+					app.camera->move(0, 0, -1);
 					break;
 				case SDLK_KP_8:
-					g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::X_AXIS);
+					app.camera->rotate(-glm::pi<float>() / 12, Animorph::X_AXIS);
 					break;
 				case SDLK_KP_2:
-					g_global.camera->rotate(glm::pi<float>() / 12, Animorph::X_AXIS);
+					app.camera->rotate(glm::pi<float>() / 12, Animorph::X_AXIS);
 					break;
 				case SDLK_KP_1:
-					g_global.camera->resetRotation();
+					app.camera->resetRotation();
 					// camera->resetPosition();
 					// camera->rotate (-M_PI/2, X_AXIS);
 					// camera->move (0,0,-75);
 					break;
 				case SDLK_KP_7:
-					g_global.camera->resetRotation();
-					g_global.camera->rotate(glm::pi<float>() / 2, Animorph::X_AXIS);
+					app.camera->resetRotation();
+					app.camera->rotate(glm::pi<float>() / 2, Animorph::X_AXIS);
 					break;
 				case SDLK_KP_6:
-					g_global.camera->rotate(-glm::pi<float>() / 12, Animorph::Y_AXIS);
+					app.camera->rotate(-glm::pi<float>() / 12, Animorph::Y_AXIS);
 					break;
 				case SDLK_KP_5:
-					g_global.camera->setPerspective(!g_global.camera->isPerspective());
+					app.camera->setPerspective(!app.camera->isPerspective());
 					reshape(app);
 					break;
 				case SDLK_KP_4:
-					g_global.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
+					app.camera->rotate(glm::pi<float>() / 12, Animorph::Y_AXIS);
 					break;
 				case SDLK_KP_3:
-					g_global.camera->resetRotation();
-					g_global.camera->rotate(-glm::pi<float>() / 2, Animorph::Y_AXIS);
+					app.camera->resetRotation();
+					app.camera->rotate(-glm::pi<float>() / 2, Animorph::Y_AXIS);
 					break;
 				case SDLK_KP_COMMA:
-					g_global.camera->resetPosition();
-					g_global.camera->move(0, 0, -125);
+					app.camera->resetPosition();
+					app.camera->move(0, 0, -125);
 					break;
 				case SDLK_F11:
 					g_global.toggleFullscreen();
