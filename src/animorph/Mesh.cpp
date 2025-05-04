@@ -667,7 +667,7 @@ bool Mesh::setPose(const std::string & target_name, float morph_value, bool remo
 	for(const auto & [target_name, morph_value] : m_poseTargets.m_targets) {
 		PoseTarget * poseTarget = getPoseTargetForName(target_name);
 		assert(poseTarget);
-		doPose(target_name, morph_value, poseTarget->getModVertex());
+		doPose(target_name, morph_value, poseTarget->modVertex);
 	}
 
 	applySmooth(2);
@@ -759,12 +759,12 @@ void Mesh::doPose(const string & target_name, float morph_value, const UsedVerte
 	PoseTarget * poseTarget = getPoseTargetForName(target_name);
 	assert(poseTarget);
 
-	list<PoseRotation> & rotations = (morph_value < 0) ? poseTarget->getNegativeRotations()
-	                                                   : poseTarget->getPositiveRotations();
+	list<PoseRotation> & rotations = (morph_value < 0) ? poseTarget->negativeRotations
+	                                                   : poseTarget->positiveRotations;
 
 	list<PoseTranslation> & translations = (morph_value < 0)
-	                                               ? poseTarget->getNegativeTranslations()
-	                                               : poseTarget->getPositiveTranslations();
+	                                               ? poseTarget->negativeTranslations
+	                                               : poseTarget->positiveTranslations;
 
 	list<PoseTranslation>::iterator translations_it;
 	list<PoseRotation>::iterator    rotations_it = rotations.begin();
@@ -887,7 +887,7 @@ void Mesh::doPose(const BodySettings & bs, bool clear)
 
 		PoseTarget * poseTarget = getPoseTargetForName(target_name);
 		assert(poseTarget);
-		UsedVertex & modVertex(poseTarget->getModVertex());
+		UsedVertex & modVertex(poseTarget->modVertex);
 
 		doPose(target_name, morph_value, modVertex);
 	}

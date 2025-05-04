@@ -90,14 +90,6 @@ struct PoseTarget
 	/// Determines, whether normalizations of the rotations or translations are
 	/// required
 	void                    calcNormalizations();
-	bool                    hasNegative() const { return negative; }
-	bool                    hasPositive() const { return positive; }
-	PoseTranslationVector & getPositiveTranslations() { return positiveTranslations; }
-	PoseTranslationVector & getNegativeTranslations() { return negativeTranslations; }
-	PoseRotationVector &    getPositiveRotations() { return positiveRotations; }
-	PoseRotationVector &    getNegativeRotations() { return negativeRotations; }
-
-	UsedVertex & getModVertex() { return modVertex; }
 };
 
 bool loadPoseTarget(PoseTarget &pt, const std::string & fullPath);
