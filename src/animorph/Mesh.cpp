@@ -488,7 +488,7 @@ void Mesh::roundtripCharacters() {
 	// reading all the targets recursively
 	DirectoryList dir_list;
 	
-	dir_list.setRootPath(searchDataDir("bs_data"));
+	dir_list.setRootPath(searchDataDir("bs_data/characters1"));
 	dir_list.setRecursive(1);
 	dir_list.setFileFilter(".bs");
 	
@@ -504,7 +504,12 @@ void Mesh::roundtripCharacters() {
 		BodySettings out;
 		grid.toSavedPositions(out.m_comp);
 		
-		for(auto a : in.m_targets)
+	//	for(auto a : in.m_targets)
+	//		out.m_targets[a.first] = a.second;
+		
+		m_morphTargets.m_targets.clear();
+		grid.applyCompositeMorphTargets(*this);
+		for(auto a : m_morphTargets.m_targets)
 			out.m_targets[a.first] = a.second;
 		
 		
