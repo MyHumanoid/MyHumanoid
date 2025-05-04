@@ -56,11 +56,7 @@ The format of Target files:
 ...
 \endverbatim
 */
-class Target : public std::vector<TargetData>
-{
-public:
-	UnsortedUsedVertex modVertex;
-};
+using Target = std::vector<TargetData>;
 
 bool loadTarget(Target &target, const std::string & filename);
 bool saveTarget(Target &t, const std::string & filename);

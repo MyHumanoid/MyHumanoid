@@ -31,7 +31,6 @@ bool loadTarget(Target &target, const std::string & filename)
 		}
 		
 		target.push_back(td);
-		target.modVertex.push_back(td.vertex_number);
 	}
 	log_debug("Loaded {: <8} target vectors from {}", target.size(), filename);
 	

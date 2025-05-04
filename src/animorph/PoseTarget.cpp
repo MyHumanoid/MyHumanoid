@@ -76,8 +76,10 @@ bool loadPoseTarget(PoseTarget &pt, const string & fullPath)
 			if(tmpTranslation.load(file)) {
 				tmpTranslation.setCat(target_name.substr(0, 2));
 				pt.negativeTranslations.push_back(tmpTranslation);
-				pt.modVertex.insert(tmpTranslation.target->modVertex.begin(), tmpTranslation.target->modVertex.end());
-
+				
+				for(auto t : *tmpTranslation.target) {
+					pt.modVertex.insert(t.vertex_number);
+				}
 				pt.minAngle = (tmpTranslation.getMinAngle() < pt.minAngle)
 				                   ? tmpTranslation.getMinAngle()
 				                   : pt.minAngle;
@@ -88,8 +90,10 @@ bool loadPoseTarget(PoseTarget &pt, const string & fullPath)
 			if(tmpTranslation.load(file)) {
 				tmpTranslation.setCat(target_name.substr(0, 2));
 				pt.positiveTranslations.push_back(tmpTranslation);
-				pt.modVertex.insert(tmpTranslation.target->modVertex.begin(), tmpTranslation.target->modVertex.end());
-
+				
+				for(auto t : *tmpTranslation.target) {
+					pt.modVertex.insert(t.vertex_number);
+				}
 				pt.maxAngle = (tmpTranslation.getMaxAngle() > pt.maxAngle)
 				                   ? tmpTranslation.getMaxAngle()
 				                   : pt.maxAngle;
