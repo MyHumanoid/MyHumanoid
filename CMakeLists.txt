@@ -198,8 +198,6 @@ set(animorph_sources
 	src/animorph/Matrix.cpp
 	src/animorph/PoseTarget.h
 	src/animorph/PoseTarget.cpp
-	src/animorph/RawMesh.h
-	src/animorph/RawMesh.cpp
 	src/animorph/TextureVector.h
 	src/animorph/TextureVector.cpp
 	src/animorph/VertexGroup.h
