@@ -1,12 +1,13 @@
 #include "animorph/SmoothVertex.h"
 
+#include "animorph/FileReader.h"
 #include "animorph/util.h"
 #include "Logger.h"
 
 namespace Animorph
 {
 
-bool SmoothVertex::load(const std::string & filename)
+bool loadSmoothVertex(SmoothVertex &sv, const std::string & filename)
 {
 	FileReader file_reader;
 	
@@ -14,22 +15,16 @@ bool SmoothVertex::load(const std::string & filename)
 	if(!file_reader.open(filename))
 		return false;
 
-	fromStream(file_reader);
-
-	return true;
-}
-
-void SmoothVertex::fromStream(FileReader & in_stream)
-{
-	clear();
+	sv.clear();
 
 	std::string buffer;
-	while(in_stream.getline(buffer)) {
+	while(file_reader.getline(buffer)) {
 		SmoothData vertexes;
 
 		stringTokeni(buffer, ",", vertexes);
-		push_back(vertexes);
+		sv.push_back(vertexes);
 	}
+	return true;
 }
 
 }

@@ -27,16 +27,11 @@
  */
 #pragma once
 
-#include "FileReader.h"
-#include <iostream>
+#include <string>
 #include <vector>
-
-#define MAX_LINE 350000
 
 namespace Animorph
 {
-
-typedef std::vector<int> SmoothData;
 
 /*!
 The format of EdgeStrips files:
@@ -45,22 +40,10 @@ The format of EdgeStrips files:
 <int>,<int>,<int>,...
 ...
 \endverbatim
-
 */
+using SmoothData = std::vector<int>;
+using SmoothVertex = std::vector<SmoothData>;
 
-class SmoothVertex : public std::vector<SmoothData>
-{
-private:
-	void fromStream(FileReader &in_stream);
-
-public:
-	/// Load the Strip data from a file
-	/*!
-	 * \param filename the file to load
-	 * \return true if file is found
-	 * \return false if file isn't found
-	 */
-	bool load(const std::string & filename);
-};
+bool loadSmoothVertex(SmoothVertex &sv, const std::string & filename);
 
 } // namespace Animorph

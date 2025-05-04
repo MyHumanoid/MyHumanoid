@@ -369,7 +369,7 @@ bool Mesh::loadSmoothVertex(const string & smoothFile)
 {
 	auto filename = searchDataFile(smoothFile);
 	
-	return m_smoothvertex.load(filename);
+	return Animorph::loadSmoothVertex(m_smoothvertex, filename);
 }
 
 bool Mesh::loadMesh(const string & meshFile, const string & faceFile)
