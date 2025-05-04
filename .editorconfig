@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 Eli2
+
+root = true
+
+[CMakeLists.txt]
+charset = utf-8
+indent_style = tab
+
+[*.{h,cpp}]
+charset = utf-8
+indent_style = tab
