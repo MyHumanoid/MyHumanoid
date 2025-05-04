@@ -543,7 +543,7 @@ void Mesh::loadTargets(const string & target_root_path, int recursive_level, boo
 		target_name.erase(0, target_root_path.length() + 1);
 
 		Target * targetEntry = new Target();
-		bool     rc          = targetEntry->load(file);
+		bool     rc          = loadTarget(*targetEntry, file);
 		if(!rc) {
 			delete targetEntry;
 			targetEntry = nullptr;

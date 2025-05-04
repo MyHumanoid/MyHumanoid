@@ -5,21 +5,9 @@
 namespace Animorph
 {
 
-void Target::createStream(std::ostringstream & out_stream)
+bool loadTarget(Target &target, const std::string & filename)
 {
-	for(Target::iterator target_it = begin(); target_it != end(); target_it++) {
-		TargetData td = (*target_it);
-
-		out_stream << td.vertex_number << "," << td.morph_vector.x << ","
-		           << td.morph_vector.y << "," << td.morph_vector.z << "," << std::endl;
-	}
-}
-
-bool Target::load(const std::string & filename)
-{
-	clear();
-	
-	Target & target(*this);
+	target.clear();
 	
 	FileReader reader;
 	if(!reader.open(filename)) {
@@ -38,19 +26,19 @@ bool Target::load(const std::string & filename)
 		
 		if((ret != 4) && (ret != 0)) {
 			log_error("Illegal line while reading target '{}'!", filename);
-			clear();
+			target.clear();
 			return false;
 		}
 		
 		target.push_back(td);
-		modVertex.push_back(td.vertex_number);
+		target.modVertex.push_back(td.vertex_number);
 	}
 	log_debug("Loaded {: <8} target vectors from {}", target.size(), filename);
 	
 	return true;
 }
 
-bool Target::save(const std::string & filename)
+bool saveTarget(Target &t, const std::string & filename)
 {
 	FileWriter file_writer;
 
@@ -60,7 +48,12 @@ bool Target::save(const std::string & filename)
 		return false;
 
 	std::ostringstream out_stream;
-	createStream(out_stream);
+	for(Target::iterator target_it = t.begin(); target_it != t.end(); target_it++) {
+		TargetData td = (*target_it);
+		
+		out_stream << td.vertex_number << "," << td.morph_vector.x << ","
+		           << td.morph_vector.y << "," << td.morph_vector.z << "," << std::endl;
+	}
 
 	file_writer << out_stream.str();
 

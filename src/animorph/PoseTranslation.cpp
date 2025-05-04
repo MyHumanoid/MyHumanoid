@@ -44,7 +44,7 @@ bool PoseTranslation::load(const std::string & filename)
 	sscanf(buffer.c_str(), "%f,%f", &minAngle, &maxAngle);
 	
 	
-	if(!target->load(filename))
+	if(!loadTarget(*target, filename))
 		return false;
 
 	return true;

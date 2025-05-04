@@ -58,27 +58,12 @@ The format of Target files:
 */
 class Target : public std::vector<TargetData>
 {
-private:
-	void createStream(std::ostringstream & out_stream);
-	/// The indices of the vertices from the Target file
-	UnsortedUsedVertex modVertex;
-
 public:
-	/*!
-	 * \param filename the file with Target data to load
-	 * \return true if file was found
-	 * \return false if file wasn't found
-	 */
-	bool load(const std::string & filename);
-
-	/*!
-	 * \param filename the file with Target data to save
-	 * \return true if file was found
-	 * \return false if file wasn't found
-	 */
-	bool save(const std::string & filename);
-
+	UnsortedUsedVertex modVertex;
 	UnsortedUsedVertex & getModVertex() { return modVertex; }
 };
+
+bool loadTarget(Target &target, const std::string & filename);
+bool saveTarget(Target &t, const std::string & filename);
 
 } // namespace Animorph
