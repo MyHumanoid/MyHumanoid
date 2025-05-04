@@ -35,43 +35,9 @@
 namespace Animorph
 {
 
-/*! \brief Represents a vector of faces.
+using FaceVector = std::vector<Face>;
 
-Can be loaded from a file.
-
-The format of Faces file:
-\verbatim
-<int>,<int>,<int>{,<int>}
-...
-\endverbatim
-The format of Face colors file:
-\verbatim
-<int>
-...
-\endverbatim
-*/
-class FaceVector : public std::vector<Face>
-{
-private:
-	void fromGeometryStream(FileReader &in_stream);
-	void fromColorsStream(FileReader &in_stream);
-
-public:
-	/// load the Face data from a file
-	/*!
-	 * \param filename the file to load
-	 * \return true if file is found
-	 * \return false if file isn't found
-	 */
-	bool loadGeometry(const std::string & filename);
-
-	/// load the Face Color data from a file
-	/*!
-	 * \param filename the file to load
-	 * \return true if file was found
-	 * \return false if file wasn't found
-	 */
-	bool loadColors(const std::string & filename);
-};
+bool loadGeometry(FaceVector & fv, const std::string & filename);
+bool loadColors(FaceVector & fv, const std::string & filename);
 
 } // namespace Animorph

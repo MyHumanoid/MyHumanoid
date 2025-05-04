@@ -378,7 +378,7 @@ bool Mesh::loadMesh(const string & meshFile, const string & faceFile)
 	auto faces_filename = searchDataFile(faceFile);
 	
 	bool vload = m_vert_morph.load(mesh_filename);
-	bool fload = m_faces.loadGeometry(faces_filename);
+	bool fload = loadGeometry(m_faces, faces_filename);
 
 	if(!vload || !fload)
 		return false;
@@ -416,7 +416,7 @@ bool Mesh::loadMaterial(const string & matFile, const string & colFile)
 	auto face_colors_filename = searchDataFile(colFile);
 	
 	bool mload  = loadMaterials(m_materials, material_filename);
-	bool fcload = m_faces.loadColors(face_colors_filename);
+	bool fcload = loadColors(m_faces, face_colors_filename);
 
 	if(!mload || !fcload)
 		return false;

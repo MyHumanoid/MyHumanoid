@@ -5,7 +5,7 @@
 namespace Animorph
 {
 
-bool FaceVector::loadGeometry(const std::string & filename)
+bool loadGeometry(FaceVector & fv, const std::string & filename)
 {
 	FileReader file_reader;
 	
@@ -13,59 +13,47 @@ bool FaceVector::loadGeometry(const std::string & filename)
 	if(!file_reader.open(filename))
 		return false;
 
-	fromGeometryStream(file_reader);
-
-	return true;
-}
-
-bool FaceVector::loadColors(const std::string & filename)
-{
-	FileReader file_reader;
-	
-	log_debug("Open File: {}", filename);
-	if(!file_reader.open(filename))
-		return false;
-
-	fromColorsStream(file_reader);
-
-	return true;
-}
-
-void FaceVector::fromGeometryStream(FileReader & in_stream)
-{
 	int nr_faces;
-
-	clear();
-
+	
+	fv.clear();
+	
 	std::string buffer;
 	int  v0, v1, v2, v3;
 	
 	int line = 0;
-	while(in_stream.getline(buffer)) {
+	while(file_reader.getline(buffer)) {
 		nr_faces = sscanf(buffer.c_str(), "%d,%d,%d,%d\n", &v0, &v1, &v2, &v3);
 		line += 1;
-
+		
 		if(nr_faces == 3) {
-			push_back(Face(v0, v1, v2));
+			fv.push_back(Face(v0, v1, v2));
 		} else if(nr_faces == 4) {
-			push_back(Face(v0, v1, v2, v3));
+			fv.push_back(Face(v0, v1, v2, v3));
 		} else {
 			log_error("Impossible number of faces: {} in line {}", nr_faces, line);
 			continue;
 		}
 	}
+
+	return true;
 }
 
-void FaceVector::fromColorsStream(FileReader & in_stream)
+bool loadColors(FaceVector & fv, const std::string & filename)
 {
+	FileReader file_reader;
+	
+	log_debug("Open File: {}", filename);
+	if(!file_reader.open(filename))
+		return false;
+
 	int  n = 0;
 	std::string buffer;
 	int  mat_index;
-
-	while(in_stream.getline(buffer)) {
+	
+	while(file_reader.getline(buffer)) {
 		if(sscanf(buffer.c_str(), "%d\n", &mat_index) == 1) {
-			if(n >= 0 && size_t(n) < this->size()) {
-				Face & face = (*this).at(n);
+			if(n >= 0 && size_t(n) < fv.size()) {
+				Face & face = fv.at(n);
 				
 				face.setMaterialIndex(mat_index);
 			} else {
@@ -74,7 +62,14 @@ void FaceVector::fromColorsStream(FileReader & in_stream)
 			n++;
 		}
 	}
+	
+	
+	return true;
 }
+
+
+
+
 
 }
 
