@@ -12,7 +12,7 @@ namespace Animorph
 {
 
 PoseTranslation::PoseTranslation()
-        : target(new Target())
+        : target()
         , formFactor(1.0, 1.0, 1.0)
         , minAngle(0.0f)
         , maxAngle(0.0f)
@@ -44,7 +44,7 @@ bool PoseTranslation::load(const std::string & filename)
 	sscanf(buffer.c_str(), "%f,%f", &minAngle, &maxAngle);
 	
 	
-	if(!loadTarget(*target, filename))
+	if(!loadTarget(target, filename))
 		return false;
 
 	return true;
@@ -63,13 +63,11 @@ void PoseTranslation::calcFormFactor(const VertexVector & vertexvector)
 	float minZ = 0, maxZ = 0;
 	// pair<set<float>::iterator, bool> pr;
 
-	Target & tmpTarget = getTarget();
-
-	if(tmpTarget.size() < (FF_VERTEX_N * 2)) {
-		n_vertex = (int)(tmpTarget.size() / 2);
+	if(target.size() < (FF_VERTEX_N * 2)) {
+		n_vertex = (int)(target.size() / 2);
 	}
 
-	for(Target::const_iterator target_it = tmpTarget.begin(); target_it != tmpTarget.end();
+	for(Target::const_iterator target_it = target.begin(); target_it != target.end();
 	    target_it++) {
 		const TargetData & td(*target_it);
 		if(counter < n_vertex) {

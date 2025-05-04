@@ -37,7 +37,7 @@ The filenames of these files end in ".target.info".
  */
 struct PoseTranslation
 {
-	Target *  target;
+	Target    target;
 	glm::vec3 originalSize;
 	glm::vec3 formFactor;
 	float     minAngle;
@@ -63,7 +63,6 @@ public:
 	/// The distance between startVertexNumbers and endVertexNumbers, divided by
 	/// originalSize
 	void      calcFormFactor(const VertexVector & vertexvector);
-	Target &  getTarget() const { return *target; }
 	glm::vec3 getFormFactor() const { return formFactor; }
 	float     getMinAngle() const { return minAngle; }
 	float     getMaxAngle() const { return maxAngle; }

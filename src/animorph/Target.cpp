@@ -47,9 +47,7 @@ bool saveTarget(Target &t, const std::string & filename)
 		return false;
 
 	std::ostringstream out_stream;
-	for(Target::iterator target_it = t.begin(); target_it != t.end(); target_it++) {
-		TargetData td = (*target_it);
-		
+	for(auto & td : t) {
 		out_stream << td.vertex_number << "," << td.morph_vector.x << ","
 		           << td.morph_vector.y << "," << td.morph_vector.z << "," << std::endl;
 	}

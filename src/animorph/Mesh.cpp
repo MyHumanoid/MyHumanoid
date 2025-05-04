@@ -716,7 +716,6 @@ void Mesh::doPoseRotation(const PoseRotation & pr, float morph_value, const Used
 void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value,
                              const UsedVertex & modVertex)
 {
-	const Target &  tmpTarget  = pt.getTarget();
 	const glm::vec3 formFactor = pt.getFormFactor();
 	float           real_value = 0;
 
@@ -734,7 +733,7 @@ void Mesh::doPoseTranslation(const PoseTranslation & pt, float morph_value,
 		real_value = morph_value;
 	}
 
-	for(const TargetData & td : tmpTarget) {
+	for(const TargetData & td : pt.target) {
 
 		// continue if the Pose Target datas Vertex is not part of the modVertex
 		if(modVertex.find(td.vertex_number) == modVertex.end()) {
