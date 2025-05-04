@@ -3,7 +3,8 @@
 #include <array>
 #include <mutex>
 #include <optional>
-#include <imgui.h>
+
+#include "adapter/imgui_adapter.h"
 
 #include "animorph/BodySettings.h"
 

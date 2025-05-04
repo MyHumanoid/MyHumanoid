@@ -231,6 +231,7 @@ set(render_sources
 )
 
 set(myhumanoid_sources
+	src/adapter/imgui_adapter.h
 	src/gui/Camera.h
 	src/gui/Camera.cpp
 	src/gui/CGUtilities.h

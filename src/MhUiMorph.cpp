@@ -34,7 +34,7 @@ void XYfoobar(const char* str_id, OptTex texture, glm::vec2 & value)
 	
 	ImGuiIO & io = ImGui::GetIO();
 	
-	MhGui::ImageButton(str_id, texture.value(), ImVec2(192, 104));
+	MhGui::ImageButton(str_id, texture.value(), glm::vec2(192, 104));
 	vec2 pMin = ImGui::GetItemRectMin();
 	vec2 size = ImGui::GetItemRectSize();
 	if(ImGui::IsItemActive()) {
