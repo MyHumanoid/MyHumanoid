@@ -477,7 +477,7 @@ void Mesh::loadCharacters(const string & characters_root_path, int recursive_lev
 		character_name.erase(0, characters_root_path.length() + 1);
 
 		BodySettings character;
-		character.load(file);
+		loadBodySettings(character, file);
 		m_characters[character_name] = character;
 	}
 }
@@ -496,7 +496,7 @@ void Mesh::roundtripCharacters() {
 		string character_name(file);
 		
 		BodySettings in;
-		in.load(file);
+		loadBodySettings(in, file);
 		
 		Grids grid;
 		grid.fromSavedPositions(in.m_comp);
@@ -518,7 +518,7 @@ void Mesh::roundtripCharacters() {
 		auto foo = fs::canonical(fs::absolute(p));
 		log_info("OUT: {}", foo.string());
 		//fs::create_directories(foo.parent_path());
-		out.save(foo.string());
+		saveBodySettings(out, foo.string());
 	}
 }
 

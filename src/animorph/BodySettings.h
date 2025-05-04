@@ -58,30 +58,12 @@ The format of BodySettings file:
 */
 class BodySettings
 {
-private:
-	void createStream(std::ostringstream & out_stream);
-	void fromStream(FileReader &in_stream);
-
 public:
 	std::map<std::string, float> m_targets;
-	
-	/// load a BodySetting
-	/*!
-	 * \param filename the file with BodySettings data to load
-	 * \return true if file is found
-	 * \return false if file isn't found
-	 */
-	bool load(const std::string & filename);
-
-	/// save a BodySetting
-	/*!
-	 * \param filename the file to save
-	 * \return true if file is saved
-	 * \return false if file couldn't be saved
-	 */
-	bool save(const std::string & filename);
-	
 	SavedCompSetting m_comp;
 };
+
+bool loadBodySettings(BodySettings &bs, const std::string & filename);
+bool saveBodySettings(BodySettings &bs, const std::string & filename);
 
 } // namespace Animorph

@@ -45,7 +45,7 @@ static void saveBodySettings(const string & filename)
 	//bodyset.m_comp = g_global.m_comp;
 	g_grids.toSavedPositions(bodyset.m_comp);
 	
-	bool state = bodyset.save(filename);
+	bool state = saveBodySettings(bodyset, filename);
 	
 	if(state) {
 		log_info("BodySettings saved");
@@ -57,7 +57,7 @@ static void saveBodySettings(const string & filename)
 static void loadBodySettings(const string & filename)
 {
 	Animorph::BodySettings bodyset;
-	bool         state = bodyset.load(filename);
+	bool         state = loadBodySettings(bodyset, filename);
 	
 	if(state) {
 		//g_global.m_comp = bodyset.m_comp;
@@ -81,7 +81,7 @@ static void savePoses(const string & filename)
 {
 	Animorph::BodySettings poses = g_mesh.poseTargets();
 	
-	bool state = poses.save(filename);
+	bool state = saveBodySettings(poses, filename);
 	
 	if(state) {
 		log_info("Poses saved");
@@ -93,7 +93,7 @@ static void savePoses(const string & filename)
 static void loadPoses(const string & filename)
 {
 	Animorph::BodySettings poses;
-	bool         state = poses.load(filename);
+	bool         state = loadBodySettings(poses, filename);
 	
 	if(state) {
 		g_mesh.doPose(poses);
