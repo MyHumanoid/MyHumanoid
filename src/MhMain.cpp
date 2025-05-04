@@ -139,8 +139,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	SDL_GL_SetSwapInterval(1);
 	
 	
-	app.camera   = new mhgui::Camera();
-	app.autozoom = new mhgui::Autozoom();
+	app.camera   = std::make_unique<mhgui::Camera>();
+	app.autozoom = std::make_unique<mhgui::Autozoom>();
 	
 	
 	g_renderBody.init();

@@ -24,8 +24,8 @@ struct AppState {
 	
 	SDL_Window*   mainWindow;
 	SDL_GLContext mainContext;
-	mhgui::Camera *   camera          = NULL;
-	mhgui::Autozoom * autozoom        = NULL;
+	std::unique_ptr<mhgui::Camera> camera;
+	std::unique_ptr<mhgui::Autozoom> autozoom;
 	
 	struct Args {
 		bool debug = false;
