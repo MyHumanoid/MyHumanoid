@@ -1,7 +1,6 @@
 #include "CompositeMorph.h"
 
 #include <array>
-#include "Global.h"
 
 using std::string;
 
@@ -49,7 +48,7 @@ void Grids::calcDists()
 	shapeGrid.calculateDists(shapePos);
 }
 
-void Grids::applyCompositeMorphTargets() const
+void Grids::applyCompositeMorphTargets(Animorph::Mesh & mesh) const
 {
 	static_assert(std::tuple_size<decltype(ageGrid.dists)>::value ==
 	              std::tuple_size<decltype(ageLabels)>::value,
@@ -72,7 +71,7 @@ void Grids::applyCompositeMorphTargets() const
 	for(size_t i = 0; i < ageGrid.dists.size(); ++i) {
 		
 		string tmpTargetName("ages/" + ageLabels[i] + ".target");
-		g_mesh.setMorphTarget(tmpTargetName, ageGrid.dists[i]);
+		mesh.setMorphTarget(tmpTargetName, ageGrid.dists[i]);
 	}
 	
 	size_t muscle = 0;
@@ -83,7 +82,7 @@ void Grids::applyCompositeMorphTargets() const
 				{
 					string muscleName = "muscleSize/" + ageLabels[age] + "_" + muscleSizeLabels[muscle] + ".target";
 					float  muscleValue = di_it * ms_it;
-					g_mesh.setMorphTarget(muscleName, muscleValue);
+					mesh.setMorphTarget(muscleName, muscleValue);
 				}
 				
 				if(age <= 4) {
@@ -93,7 +92,7 @@ void Grids::applyCompositeMorphTargets() const
 							string name = "breast/" + ageLabels[age] + "_" + muscleSizeLabels[muscle] + "_" + breastLabels[breast] + ".target";
 							float value = di_it * ms_it * br_it;
 							
-							g_mesh.setMorphTarget(name, value);
+							mesh.setMorphTarget(name, value);
 						}
 						breast++;
 					}
@@ -107,7 +106,7 @@ void Grids::applyCompositeMorphTargets() const
 	for(size_t shape = 0; shape < shapeGrid.dists.size(); ++shape) {
 		string name = "shapes/" + shapeLabels[shape] + ".target";
 		float value = shapeGrid.dists[shape];
-		g_mesh.setMorphTarget(name, value);
+		mesh.setMorphTarget(name, value);
 	}
 }
 

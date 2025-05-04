@@ -4,10 +4,11 @@
 #include "MhApi.h"
 
 #include "CompositeMorph.h"
+#include "Global.h"
 
 static void update() {
 	g_grids.calcDists();
-	g_grids.applyCompositeMorphTargets();
+	g_grids.applyCompositeMorphTargets(g_mesh);
 }
 
 void mh_setAge(float age) {

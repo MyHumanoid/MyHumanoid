@@ -4,6 +4,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "animorph/BodySettings.h"
+#include "animorph/Mesh.h"
 
 
 constexpr glm::vec2 foobarScale = glm::vec2(192, 104);
@@ -103,7 +104,7 @@ struct Grids {
 	}
 	
 	void calcDists();
-	void applyCompositeMorphTargets() const;
+	void applyCompositeMorphTargets(Animorph::Mesh & mesh) const;
 	
 	
 	
