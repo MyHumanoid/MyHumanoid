@@ -27,35 +27,19 @@
  */
 #pragma once
 
-#include "Face.h"
-#include "FaceVector.h"
-#include "FileReader.h"
 #include "Vertex.h"
-#include <iostream>
 
 namespace Animorph
 {
 
-/*! \brief Loadable vector of Vertices.
-
-The format of Vertices file:
-\verbatim
-<float>,<float>,<float>
-...
-\endverbatim
-*/
-class VertexVector
+struct VertexVector
 {
-private:
-	void fromStream(FileReader &in_stream);
-
-public:
 	std::vector<Vertex> m_verts;
 	std::vector<glm::vec3> m_normals;
 	
-	bool load(const std::string & filename);
-
 	int setCoordinates(std::vector<glm::vec3> & vertexvector);
 };
+
+bool loadVertexVector(VertexVector & vv, const std::string & filename);
 
 } // namespace Animorph

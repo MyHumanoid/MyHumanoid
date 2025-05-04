@@ -377,13 +377,13 @@ bool Mesh::loadMesh(const string & meshFile, const string & faceFile)
 	auto mesh_filename = searchDataFile(meshFile);
 	auto faces_filename = searchDataFile(faceFile);
 	
-	bool vload = m_vert_morph.load(mesh_filename);
+	bool vload = loadVertexVector(m_vert_morph, mesh_filename);
 	bool fload = loadGeometry(m_faces, faces_filename);
 
 	if(!vload || !fload)
 		return false;
 
-	m_vert_morph_only.load(mesh_filename);
+	loadVertexVector(m_vert_morph_only, mesh_filename);
 	calcSharedVertices();
 	calcNormals();
 
