@@ -7,7 +7,7 @@ using std::string;
 namespace Animorph
 {
 
-bool PoseTarget::load(const string & fullPath)
+bool loadPoseTarget(PoseTarget &pt, const string & fullPath)
 {
 	const string positive_rotation_type(".rot");
 	const string negative_rotation_type("-.rot");
@@ -38,15 +38,15 @@ bool PoseTarget::load(const string & fullPath)
 				else
 					tmpRotation.setLimb(false);
 
-				negativeRotations.push_back(tmpRotation);
+				pt.negativeRotations.push_back(tmpRotation);
 
-				modVertex.insert(tmpRotation.getModVertex().begin(),
+				pt.modVertex.insert(tmpRotation.getModVertex().begin(),
 				                 tmpRotation.getModVertex().end());
-				negative = true;
+				pt.negative = true;
 
-				minAngle = (tmpRotation.getMinAngle() < minAngle)
+				pt.minAngle = (tmpRotation.getMinAngle() < pt.minAngle)
 				                   ? tmpRotation.getMinAngle()
-				                   : minAngle;
+				                   : pt.minAngle;
 			}
 		} else if(target_name.find(positive_rotation_type) ==
 		          target_name.length() - positive_rotation_type.length()) {
@@ -61,40 +61,40 @@ bool PoseTarget::load(const string & fullPath)
 				else
 					tmpRotation.setLimb(false);
 
-				positiveRotations.push_back(tmpRotation);
+				pt.positiveRotations.push_back(tmpRotation);
 
-				modVertex.insert(tmpRotation.getModVertex().begin(),
+				pt.modVertex.insert(tmpRotation.getModVertex().begin(),
 				                 tmpRotation.getModVertex().end());
-				positive = true;
-				maxAngle = (tmpRotation.getMaxAngle() > maxAngle)
+				pt.positive = true;
+				pt.maxAngle = (tmpRotation.getMaxAngle() > pt.maxAngle)
 				                   ? tmpRotation.getMaxAngle()
-				                   : maxAngle;
+				                   : pt.maxAngle;
 			}
 		} else if(target_name.find(negative_translation_type) ==
 		          target_name.length() - negative_translation_type.length()) {
 			PoseTranslation tmpTranslation;
 			if(tmpTranslation.load(file)) {
 				tmpTranslation.setCat(target_name.substr(0, 2));
-				negativeTranslations.push_back(tmpTranslation);
-				modVertex.insert(tmpTranslation.getModVertex().begin(),
+				pt.negativeTranslations.push_back(tmpTranslation);
+				pt.modVertex.insert(tmpTranslation.getModVertex().begin(),
 				                 tmpTranslation.getModVertex().end());
 
-				minAngle = (tmpTranslation.getMinAngle() < minAngle)
+				pt.minAngle = (tmpTranslation.getMinAngle() < pt.minAngle)
 				                   ? tmpTranslation.getMinAngle()
-				                   : minAngle;
+				                   : pt.minAngle;
 			}
 		} else if(target_name.find(positive_translation_type) ==
 		          target_name.length() - positive_translation_type.length()) {
 			PoseTranslation tmpTranslation;
 			if(tmpTranslation.load(file)) {
 				tmpTranslation.setCat(target_name.substr(0, 2));
-				positiveTranslations.push_back(tmpTranslation);
-				modVertex.insert(tmpTranslation.getModVertex().begin(),
+				pt.positiveTranslations.push_back(tmpTranslation);
+				pt.modVertex.insert(tmpTranslation.getModVertex().begin(),
 				                 tmpTranslation.getModVertex().end());
 
-				maxAngle = (tmpTranslation.getMaxAngle() > maxAngle)
+				pt.maxAngle = (tmpTranslation.getMaxAngle() > pt.maxAngle)
 				                   ? tmpTranslation.getMaxAngle()
-				                   : maxAngle;
+				                   : pt.maxAngle;
 			}
 		}
 	}

@@ -453,7 +453,7 @@ void Mesh::loadPoseTargets(const string & target_root_path, int recursive_level)
 		}
 
 		PoseTarget * poseTarget = new PoseTarget();
-		bool         rc         = poseTarget->load(file);
+		bool         rc         = loadPoseTarget(*poseTarget, file);
 		if(!rc) {
 			delete poseTarget;
 		} else {

@@ -52,7 +52,7 @@ typedef std::list<PoseRotation>    PoseRotationVector;
  *
  * Can be loaded from several files.
  */
-class PoseTarget
+struct PoseTarget
 {
 	// normally these vectors contain only one element
 	/// Translations to be applied on Mesh::doPose()
@@ -81,7 +81,6 @@ class PoseTarget
 	void calcTranslationsFormFactors(const VertexVector &    vertexvector,
 	                                 PoseTranslationVector & translations);
 
-public:
 	/// Initializes the center of all rotations with the controid of their
 	/// centerVertexNumbers
 	void            calcRotationsCenteroids(const VertexVector & vertexvector);
@@ -101,8 +100,8 @@ public:
 	UsedVertex & getModVertex() { return modVertex; }
 	float        getMinAngle() const { return minAngle; }
 	float        getMaxAngle() const { return maxAngle; }
-
-	bool load(const std::string & fullPath);
 };
+
+bool loadPoseTarget(PoseTarget &pt, const std::string & fullPath);
 
 } // namespace Animorph
