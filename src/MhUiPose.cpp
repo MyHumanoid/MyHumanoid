@@ -178,8 +178,8 @@ void DisplayPoseTargets()
 				continue;
 			}
 
-			const auto & minmax = std::make_pair(poseTarget->getMinAngle(),
-			                                     poseTarget->getMaxAngle());
+			const auto & minmax = std::make_pair(poseTarget->minAngle,
+			                                     poseTarget->maxAngle);
 
 			DrawTargetRow(g_poseImageTextures, minmax, target_name, target_value,
 			              tileWin.m_tooltip, poseApplier);
@@ -203,7 +203,7 @@ void DisplayPoseTargetsApplied()
 		assert(poseTarget);
 
 		const auto & minmax =
-		        std::make_pair(poseTarget->getMinAngle(), poseTarget->getMaxAngle());
+		        std::make_pair(poseTarget->minAngle, poseTarget->maxAngle);
 
 		DrawAppliedRow(g_poseImageTextures, minmax, target_name, target_value, poseApplier);
 	}

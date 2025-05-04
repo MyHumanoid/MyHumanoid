@@ -98,8 +98,6 @@ struct PoseTarget
 	PoseRotationVector &    getNegativeRotations() { return negativeRotations; }
 
 	UsedVertex & getModVertex() { return modVertex; }
-	float        getMinAngle() const { return minAngle; }
-	float        getMaxAngle() const { return maxAngle; }
 };
 
 bool loadPoseTarget(PoseTarget &pt, const std::string & fullPath);
