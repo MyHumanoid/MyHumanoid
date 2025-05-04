@@ -3,20 +3,12 @@
 
 #pragma once
 
-#include <functional>
-
 #include <SDL3/SDL.h>
 
 #include "animorph/Mesh.h"
 #include "gui/Camera.h"
 
 extern Animorph::Mesh g_mesh;
-
-struct Global {
-	std::function<void()> toggleFullscreen;
-};
-
-extern Global g_global;
 
 struct AppState {
 	

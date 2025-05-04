@@ -109,13 +109,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 		SDL_SetWindowIcon(app.mainWindow, iconSurface->m_ptr);
 		iconSurface->free();
 	}
-
-	g_global.toggleFullscreen = [&](){
-		Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
-		bool IsFullscreen = SDL_GetWindowFlags(app.mainWindow) & FullscreenFlag;
-		SDL_SetWindowFullscreen(app.mainWindow, IsFullscreen ? 0 : FullscreenFlag);
-	};
-
+	
 	//checkSDLError(__LINE__);
 	
 	/* Create our opengl context and attach it to our window */
@@ -439,7 +433,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 					app.camera->move(0, 0, -125);
 					break;
 				case SDLK_F11:
-					g_global.toggleFullscreen();
+					toggleFullscreen(app);
 					break;
 				default:
 					break;

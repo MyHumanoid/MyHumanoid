@@ -3,6 +3,8 @@
 
 #include "Global.h"
 
+void toggleFullscreen(AppState& app);
+
 void CreateCaractersIconTextures();
 void DisplayMainMenu(AppState &app);
 

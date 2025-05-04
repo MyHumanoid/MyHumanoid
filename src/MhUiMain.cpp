@@ -470,6 +470,12 @@ static void DisplayQuitPopup(AppState& app)
 	}
 }
 
+void toggleFullscreen(AppState& app) {
+	Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
+	bool IsFullscreen = SDL_GetWindowFlags(app.mainWindow) & FullscreenFlag;
+	SDL_SetWindowFullscreen(app.mainWindow, IsFullscreen ? 0 : FullscreenFlag);
+};
+
 void DisplayMainMenu(AppState& app)
 {
 	if(ImGui::BeginMainMenuBar()) {
@@ -508,7 +514,7 @@ void DisplayMainMenu(AppState& app)
 			ImGui::Separator();
 
 			if(ImGui::Button("Toggle Fullscreen (F11)")) {
-				g_global.toggleFullscreen();
+				toggleFullscreen(app);
 			}
 			
 			ImGui::EndMenu();

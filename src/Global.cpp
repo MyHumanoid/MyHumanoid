@@ -28,5 +28,3 @@
 #include "Global.h"
 
 Animorph::Mesh   g_mesh;
-Global           g_global;
-
