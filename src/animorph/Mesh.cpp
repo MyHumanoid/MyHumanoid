@@ -415,7 +415,7 @@ bool Mesh::loadMaterial(const string & matFile, const string & colFile)
 	auto material_filename = searchDataFile(matFile);
 	auto face_colors_filename = searchDataFile(colFile);
 	
-	bool mload  = m_materials.loadMaterials(material_filename);
+	bool mload  = loadMaterials(m_materials, material_filename);
 	bool fcload = m_faces.loadColors(face_colors_filename);
 
 	if(!mload || !fcload)

@@ -1,26 +1,20 @@
 #include "animorph/Material.h"
 
+#include "FileReader.h"
 #include "Logger.h"
 
 namespace Animorph
 {
 
-bool MaterialVector::loadMaterials(const std::string & filename)
+bool loadMaterials(MaterialVector & mv, const std::string & filename)
 {
-	FileReader file_reader;
+	FileReader in_stream;
 	
 	log_debug("Open File: {}", filename);
-	if(!file_reader.open(filename))
+	if(!in_stream.open(filename))
 		return false;
-
-	fromStream(file_reader);
-
-	return true;
-}
-
-void MaterialVector::fromStream(FileReader & in_stream)
-{
-	clear();
+	
+	mv.clear();
 
 	std::string buffer;
 	char  name[MAX_LINE_BUFFER];
@@ -36,11 +30,12 @@ void MaterialVector::fromStream(FileReader & in_stream)
 			color.rgba(c0, c1, c2, alpha);
 			mat.color = color;
 
-			(*this).push_back(mat);
+			mv.push_back(mat);
 		} else {
 			std::cerr << "illegal Material data format:" << std::endl << buffer << std::endl;
 		};
 	}
+	return true;
 }
 
 }

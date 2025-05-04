@@ -28,42 +28,20 @@
 #pragma once
 
 #include "Color.h"
-#include "FileReader.h"
-#include <iostream>
 #include <string>
 #include <vector>
 
-using std::string;
 namespace Animorph
 {
 
 struct Material
 {
 	Color  color;
-	string name;
+	std::string name;
 };
 
-/*! \brief A loadable vector of materials
+using MaterialVector = std::vector<Material>;
 
-The format of Material file:
-\verbatim
-<string>,<float>,<float>,<float>
-...
-\endverbatim
-*/
-class MaterialVector : public std::vector<Material>
-{
-private:
-	void fromStream(FileReader &in_stream);
-
-public:
-	/// load a Material file
-	/*!
-	 * \param filename the file with Material data to load
-	 * \return true if file is found
-	 * \return false if file isn't found
-	 */
-	bool loadMaterials(const std::string & filename);
-};
+bool loadMaterials(MaterialVector & mv, const std::string & filename);
 
 } // namespace Animorph
