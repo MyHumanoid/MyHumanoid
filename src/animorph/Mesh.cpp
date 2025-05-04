@@ -276,10 +276,6 @@ Mesh::~Mesh()
 
 void Mesh::clearTargetmap()
 {
-	TargetMap::iterator i;
-	for(i = m_targets.begin(); i != m_targets.end(); ++i) {
-		delete i->second;
-	}
 	m_targets.clear();
 }
 
@@ -542,24 +538,17 @@ void Mesh::loadTargets(const string & target_root_path, int recursive_level, boo
 		string target_name(file);
 		target_name.erase(0, target_root_path.length() + 1);
 
-		Target * targetEntry = new Target();
-		bool     rc          = loadTarget(*targetEntry, file);
-		if(!rc) {
-			delete targetEntry;
-			targetEntry = nullptr;
+		Target targetEntry;
+		if(loadTarget(targetEntry, file)) {
+			m_targets[target_name] = targetEntry;
 		}
-
-		m_targets[target_name] = targetEntry;
 	}
 }
 
-const Target * Mesh::getTargetForName(const string & inTargetname)
+const std::optional<Target> Mesh::getTargetForName(const string & inTargetname)
 {
-	TargetMap::iterator i = m_targets.find(inTargetname);
-	if(i == m_targets.end())
-		return NULL;
-
-	return i->second;
+	auto i = m_targets.find(inTargetname);
+	return (i == m_targets.end()) ? std::nullopt : std::optional(i->second);
 }
 
 bool Mesh::setMorphTarget(const string & target_name, float morph_value)
@@ -585,8 +574,12 @@ bool Mesh::setMorphTarget(const string & target_name, float morph_value)
 		real_morph_value = morph_value - bs_morph_value;
 	}
 
-	const Target * target = getTargetForName(target_name);
-
+	const auto target = getTargetForName(target_name);
+	if(!target) {
+		log_error("Target not found: {}", target_name);
+		return false;
+	}
+	
 	for(const TargetData & td : *target) {
 		// vertexvector_morph[td.vertex_number].co += (td.morph_vector -
 		// vertexvector_orginal[td.vertex_number]) * real_morph_value;

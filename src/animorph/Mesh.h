@@ -27,6 +27,13 @@
  */
 #pragma once
 
+#include <iostream>
+#include <memory>
+#include <stdio.h>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "BodySettings.h"
 #include "DirectoryList.h"
 #include "Euler.h"
@@ -43,11 +50,6 @@
 #include "VertexGroup.h"
 #include "VertexVector.h"
 #include "util.h"
-#include <iostream>
-#include <memory>
-#include <stdio.h>
-#include <string>
-#include <vector>
 
 
 using std::map;
@@ -150,7 +152,7 @@ typedef struct DummyJoint {
 	glm::vec3      v3;
 } DummyJoint;
 
-using TargetMap     = map<string, Target *>;
+using TargetMap     = map<string, Target>;
 using PoseMap       = map<string, PoseTarget *>;
 using CharactersMap = map<string, BodySettings>;
 
@@ -219,7 +221,7 @@ private:
 	void calcVertexNormals();
 
 	/// Looks up inTargetname in targetmap
-	const Target * getTargetForName(const string & inTargetname);
+	const std::optional<Target> getTargetForName(const string & inTargetname);
 
 	void initPoses();
 
