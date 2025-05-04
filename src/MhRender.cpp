@@ -248,25 +248,20 @@ void RenderBody::render()
 		
 		g_buffers.clear();
 		
-		if(g_global.m_enableTexture) {
-			if(groupValue.texture) {
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
-				glUniform1i(glGetUniformLocation(m_shader->handle, "texture0"),
-				            0);
-			}
-			if(groupValue.specular) {
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
-				glUniform1i(glGetUniformLocation(m_shader->handle, "texture1"),
-				            1);
-			}
-			if(groupValue.bump) {
-				glActiveTexture(GL_TEXTURE2);
-				glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
-				glUniform1i(glGetUniformLocation(m_shader->handle, "texture2"),
-				            2);
-			}
+		if(groupValue.texture) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, groupValue.texture.value().handle);
+			glUniform1i(glGetUniformLocation(m_shader->handle, "texture0"), 0);
+		}
+		if(groupValue.specular) {
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, groupValue.specular.value().handle);
+			glUniform1i(glGetUniformLocation(m_shader->handle, "texture1"), 1);
+		}
+		if(groupValue.bump) {
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, groupValue.bump.value().handle);
+			glUniform1i(glGetUniformLocation(m_shader->handle, "texture2"), 2);
 		}
 		
 		for(const auto & faceIndex : groupValue.facesIndexes) {

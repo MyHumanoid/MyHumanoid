@@ -177,7 +177,6 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	CreateCaractersIconTextures();
 
 	g_renderBody.loadTexture();
-	g_global.m_enableTexture = true;
 
 	g_mesh.loadTargets(searchDataDir("targets"));
 	g_mesh.loadTargets(searchDataDir("selectors"), 1, false);

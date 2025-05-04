@@ -158,8 +158,6 @@ static void saveAutozoom(const string & filename)
 // ================================================================================================
 // ================================================================================================
 
-static bool g_displayAxis       = false;
-
 static bool g_requestShaderReload  = false;
 static int  g_requestShaderVersion = 1;
 
@@ -490,10 +488,11 @@ void DisplayMainMenu(AppState& app)
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("View")) {
-			ImGui::Checkbox("Grid", &g_global.drawGrid);
-			ImGui::Checkbox("Quoted box", &g_global.quotedBox);
-			ImGui::Checkbox("Texture", &g_global.m_enableTexture);
-			ImGui::Checkbox("Axis", &g_displayAxis);
+			// TODO
+			// ImGui::Checkbox("Grid", &g_global.drawGrid);
+			// ImGui::Checkbox("Quoted box", &g_global.quotedBox);
+			// ImGui::Checkbox("Texture", &g_global.m_enableTexture);
+			// ImGui::Checkbox("Axis", &g_displayAxis);
 			
 			ImGui::Separator();
 			

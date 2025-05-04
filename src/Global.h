@@ -7,26 +7,14 @@
 
 #include <SDL3/SDL.h>
 
-#include "animorph/BodySettings.h"
 #include "animorph/Mesh.h"
 #include "gui/Camera.h"
 
-using Animorph::SavedCompSetting;
-
 extern Animorph::Mesh g_mesh;
 
-struct GlobalPaths {
-};
-
 struct Global {
-	GlobalPaths paths;
-
 	mhgui::Camera *   camera          = NULL;
 	mhgui::Autozoom * autozoom        = NULL;
-	bool       drawGrid        = false;
-	bool       quotedBox       = false;
-	bool       m_enableTexture = false;
-	bool       subdivision     = false;
 
 	std::function<void()> toggleFullscreen;
 };
