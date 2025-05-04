@@ -514,15 +514,15 @@ void DisplayMainMenu(AppState& app)
 			ImGui::EndMenu();
 		}
 		ImGui::Separator();
-		if(ImGui::Checkbox("MorphMode", &g_morphMode)) {
-			if(g_morphMode) {
+		if(ImGui::Checkbox("MorphMode", &app.ui.state.morphMode)) {
+			if(app.ui.state.morphMode) {
 				g_mesh.bodyDetailsMode();
 			} else {
 				g_mesh.poseMode();
 			}
 		}
 		ImGui::Separator();
-		if(ImGui::BeginMenu("Morph", g_morphMode)) {
+		if(ImGui::BeginMenu("Morph", app.ui.state.morphMode)) {
 			ImGui::Checkbox("Composite Morph", &g_config.characterSettings.visible);
 			ImGui::Checkbox("Morph Targets", &g_config.morphTargets.visible);
 			ImGui::Checkbox("Applied Morph Targets", &g_config.morphTargetsApplied.visible);
@@ -547,7 +547,7 @@ void DisplayMainMenu(AppState& app)
 			}
 			ImGui::EndMenu();
 		}
-		if(ImGui::BeginMenu("Pose", !g_morphMode)) {
+		if(ImGui::BeginMenu("Pose", !app.ui.state.morphMode)) {
 			ImGui::Checkbox("Pose Targets", &g_config.poseTargets.visible);
 			ImGui::Checkbox("Applied Pose Targets", &g_config.poseTargetsApplied.visible);
 			ImGui::Separator();
@@ -628,7 +628,7 @@ void DisplayMainMenu(AppState& app)
 		ImGui::EndMainMenuBar();
 	}
 	
-	if(g_morphMode) {
+	if(app.ui.state.morphMode) {
 		if(g_config.characterSettings.visible) {
 			DisplayCharacterSettings();
 		}

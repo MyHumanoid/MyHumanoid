@@ -29,4 +29,4 @@
 
 Animorph::Mesh   g_mesh;
 Global           g_global;
-bool             g_morphMode = true;
+

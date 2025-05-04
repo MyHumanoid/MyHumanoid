@@ -18,8 +18,6 @@ struct Global {
 
 extern Global g_global;
 
-extern bool g_morphMode;
-
 struct AppState {
 	
 	SDL_Window*   mainWindow;
@@ -34,11 +32,13 @@ struct AppState {
 	} args;
 	
 	struct Ui {
+		struct State {
+			bool morphMode = true;
+		} state;
 		struct Request {
 			bool quit = false;
 			bool quitAccept = false;
 		} request;
-		
 	} ui;
 	
 	struct WindowVisibility {
