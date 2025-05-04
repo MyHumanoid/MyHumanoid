@@ -44,7 +44,6 @@ void XYfoobar(const char* str_id, OptTex texture, glm::vec2 & value)
 		
 		value = glm::vec2(relPos.x, size.y - relPos.y) / foobarScale;
 		
-		g_grids.calcDists();
 		g_grids.applyCompositeMorphTargets(g_mesh);
 		
 		//value       = vec2(relPos) / vec2(size);

@@ -19,9 +19,12 @@ struct Grid
 	
 	// from left-bottom point to right-up point
 	std::array<glm::ivec2, flatSize> points;
+	std::array<float, flatSize> dists;
 	
-	void calcPoints(glm::ivec2 size)
+	Grid()
 	{
+		auto size = glm::ivec2(192, 104);
+		
 		for(int y = 0; y < rows; y++) {
 			for(int x = 0; x < cols; x++) {
 				glm::ivec2 tmp(x * size.x / (cols - 1),
@@ -55,8 +58,6 @@ struct Grid
 			}
 		}
 	}
-	
-	std::array<float, flatSize> dists;
 };
 
 struct Grids {
@@ -67,6 +68,7 @@ struct Grids {
 		agePos.y = sex;
 	}
 	
+	// XXX auto defPos = glm::vec2(96, 52) / foobarScale;
 	glm::vec2 agePos;
 	glm::vec2 muscleSizePos;
 	glm::vec2 breastPos;
@@ -77,36 +79,7 @@ struct Grids {
 	Grid<2, 2> breastGrid;
 	Grid<2, 2> shapeGrid;
 	
-	Grids()
-	{
-		ageGrid.calcPoints(glm::ivec2(192, 104));
-		muscleSizeGrid.calcPoints(glm::ivec2(192, 104));
-		breastGrid.calcPoints(glm::ivec2(192, 104));
-		shapeGrid.calcPoints(glm::ivec2(192, 104));
-	}
-	
-	void clearPos()
-	{
-		auto defPos = glm::vec2(96, 52);
-		
-		agePos = defPos / foobarScale;
-		muscleSizePos = defPos/ foobarScale;;
-		breastPos = defPos / foobarScale;;
-		shapePos = defPos / foobarScale;;
-	}
-	
-	void clearDists()
-	{
-		ageGrid.dists.fill(0.f);
-		muscleSizeGrid.dists.fill(0.f);
-		breastGrid.dists.fill(0.f);
-		shapeGrid.dists.fill(0.f);
-	}
-	
-	void calcDists();
-	void applyCompositeMorphTargets(Animorph::Mesh & mesh) const;
-	
-	
+	void applyCompositeMorphTargets(Animorph::Mesh & mesh);
 	
 	void fromSavedPositions(const Animorph::SavedCompSetting & saved);
 	void toSavedPositions(Animorph::SavedCompSetting & saved);

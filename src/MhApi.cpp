@@ -7,7 +7,6 @@
 #include "Global.h"
 
 static void update() {
-	g_grids.calcDists();
 	g_grids.applyCompositeMorphTargets(g_mesh);
 }
 

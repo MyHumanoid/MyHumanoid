@@ -40,15 +40,7 @@ static std::array<string, 4> shapeLabels = {
     "longilinear_peershape"
 };
 
-void Grids::calcDists()
-{
-	ageGrid.calculateDists(agePos);
-	breastGrid.calculateDists(breastPos);
-	muscleSizeGrid.calculateDists(muscleSizePos);
-	shapeGrid.calculateDists(shapePos);
-}
-
-void Grids::applyCompositeMorphTargets(Animorph::Mesh & mesh) const
+void Grids::applyCompositeMorphTargets(Animorph::Mesh & mesh)
 {
 	static_assert(std::tuple_size<decltype(ageGrid.dists)>::value ==
 	              std::tuple_size<decltype(ageLabels)>::value,
@@ -66,6 +58,10 @@ void Grids::applyCompositeMorphTargets(Animorph::Mesh & mesh) const
 	              std::tuple_size<decltype(shapeLabels)>::value,
 	              "");
 	
+	ageGrid.calculateDists(agePos);
+	breastGrid.calculateDists(breastPos);
+	muscleSizeGrid.calculateDists(muscleSizePos);
+	shapeGrid.calculateDists(shapePos);
 	
 	// std::cout << "--------------------------" << std::endl;
 	for(size_t i = 0; i < ageGrid.dists.size(); ++i) {
